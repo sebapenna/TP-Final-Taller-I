@@ -2,7 +2,7 @@
 #define TP_FINAL_RECEPTOR_ENERGIA_H
 
 
-#include "bloque.h"
+#include "../Bloques/bloque.h"
 
 class ReceptorEnergia: public Bloque {
 

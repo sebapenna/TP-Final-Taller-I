@@ -4,6 +4,7 @@
 // Esta clase se refiera a los objetos que se pueden colocar sobre los bloques
 class ElementoBloque {
 
+public:
 };
 
 

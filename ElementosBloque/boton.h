@@ -2,7 +2,7 @@
 #define TP_FINAL_BOTON_H
 
 
-#include "entidad_sin_movimiento.h"
+#include "../entidad_sin_movimiento.h"
 #include "elemento_bloque.h"
 
 class Boton: public ElementoBloque, EntidadSinMovimiento {
@@ -17,6 +17,8 @@ public:
     void desactivar();
 
     bool estaActivado();
+
+    Boton& operator=(Boton &&other);
 };
 
 

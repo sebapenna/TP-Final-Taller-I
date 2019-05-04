@@ -5,6 +5,12 @@
 
 class BloqueRoca: public Bloque {
 
+public:
+    explicit BloqueRoca(Posicion posicion);
+
+    void setElemento(ElementoBloque &&n_elem) override;
+
+    bool hasElemento() override;
 };
 
 

@@ -3,7 +3,7 @@
 
 
 #include "elemento_bloque.h"
-#include "entidad_sin_movimiento.h"
+#include "../entidad_sin_movimiento.h"
 
 class Compuerta: public ElementoBloque, EntidadSinMovimiento {
 private:
@@ -17,6 +17,8 @@ public:
     void cerrar();
 
     bool estaAbierta();
+
+    Compuerta& operator=(Compuerta &&other);
 };
 
 

@@ -7,6 +7,13 @@
 class BloqueMetalDiagonal: public Bloque {
 private:
     uint8_t _orientacion;
+
+public:
+    BloqueMetalDiagonal(Posicion posicion, uint8_t orientacion);
+
+    void setElemento(ElementoBloque &&n_elem) override;
+
+    bool hasElemento() override;
 };
 
 

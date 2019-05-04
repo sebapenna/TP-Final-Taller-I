@@ -4,8 +4,8 @@
 #include "posicion.h"
 
 class IEntidad {
-private:
-    Posicion posicion;
+protected:
+    Posicion _posicion;
 
 public:
 };

@@ -15,3 +15,7 @@ void Boton::desactivar() {
 bool Boton::estaActivado() {
     return _activado;
 }
+
+Boton &Boton::operator=(Boton &&other) {
+    this->_activado = other._activado;
+}

@@ -15,3 +15,7 @@ bool Compuerta::estaAbierta() {
 Compuerta::Compuerta() {
     _abierta = false;
 }
+
+Compuerta &Compuerta::operator=(Compuerta &&other) {
+    _abierta = other._abierta;
+}
