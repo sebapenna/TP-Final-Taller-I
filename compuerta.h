@@ -3,8 +3,9 @@
 
 
 #include "elemento_bloque.h"
+#include "entidad_sin_movimiento.h"
 
-class Compuerta: public ElementoBloque {
+class Compuerta: public ElementoBloque, EntidadSinMovimiento {
 private:
     bool _abierta;
 

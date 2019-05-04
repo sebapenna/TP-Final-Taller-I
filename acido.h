@@ -2,8 +2,9 @@
 #define TP_FINAL_ACIDO_H
 
 #include "elemento_bloque.h"
+#include "entidad_sin_movimiento.h"
 
-class Acido: public ElementoBloque {
+class Acido: public ElementoBloque, EntidadSinMovimiento {
 
 };
 

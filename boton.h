@@ -3,8 +3,9 @@
 
 
 #include "entidad_sin_movimiento.h"
+#include "elemento_bloque.h"
 
-class Boton: public EntidadSinMovimiento {
+class Boton: public ElementoBloque, EntidadSinMovimiento {
 private:
     bool _activado;
 
