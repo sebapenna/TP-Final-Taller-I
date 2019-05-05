@@ -4,22 +4,25 @@
 #include <cstdint>
 
 /* Orientaciones cara diagonal bloque metal diagonal */
-#define O_NE    (uint8_t 0) /* Noreste*/
+#define O_NE    (uint8_t) 0 /* Noreste*/
 
-#define O_NO    (uint8_t 1) /* Noroeste*/
+#define O_NO    (uint8_t) 1 /* Noroeste*/
 
-#define O_SE    (uint8_t 2) /* Sureste */
+#define O_SE    (uint8_t) 2 /* Sureste */
 
-#define O_SO    (uint8_t 3) /* Suroeste */
+#define O_SO    (uint8_t) 3 /* Suroeste */
 
-/* Direccion */
-#define ARRIBA  (uint8_t 0)
+/* Direcciones */
+#define O_N  (uint8_t) 6    /* Norte */
 
-#define ABAJO   (uint8_t 1)
+#define O_S   (uint8_t) 7 /* Sur */
 
-#define IZQ (uint8_t 2)
+#define O_O (uint8_t) 8 /* Oeste */
 
-#define DER (uint8_t 3)
+#define O_E (uint8_t) 9 /* Este */
+
+/* Velocidad bola de energia */
+#define VELOCIDAD   1   /**************** REVISAR ESTE VALOR *************/
 
 
 #endif //TP_FINAL_CONSTANTES_H

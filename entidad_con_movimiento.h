@@ -7,6 +7,8 @@
 
 class EntidadConMovimiento: public IEntidad {
 
+public:
+    void mover(Posicion n_posicion);
 };
 
 

@@ -12,6 +12,6 @@ void BloqueRoca::setElemento(ElementoBloque &&n_elem) {
     _elemento = std::move(&n_elem);
 }
 
-bool BloqueRoca::hasElemento() {
-    return _elemento != nullptr;
+void BloqueRoca::crearPortal(uint8_t orientacion_rayo) {
+    throw BloqueNoPermitePortalException();
 }

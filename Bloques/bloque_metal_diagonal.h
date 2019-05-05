@@ -11,9 +11,9 @@ private:
 public:
     BloqueMetalDiagonal(Posicion posicion, uint8_t orientacion);
 
-    void setElemento(ElementoBloque &&n_elem) override;
+    void crearPortal(uint8_t o_rayo) override;
 
-    bool hasElemento() override;
+    void setElemento(ElementoBloque &&n_elem) override;
 };
 
 

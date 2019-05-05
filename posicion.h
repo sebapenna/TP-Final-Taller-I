@@ -8,6 +8,8 @@ private:
 
 
 public:
+    bool igualA(const Posicion& other);
+
     void operator = (const Posicion& other);
 };
 

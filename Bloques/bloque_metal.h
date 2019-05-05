@@ -7,10 +7,9 @@ class BloqueMetal: public Bloque {
 public:
     explicit BloqueMetal(const Posicion& posicion);
 
+    void crearPortal(uint8_t o_rayo) override;
+
     void setElemento(ElementoBloque &&n_elem) override;
-
-    bool hasElemento() override;
-
 };
 
 

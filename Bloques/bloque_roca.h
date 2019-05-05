@@ -8,9 +8,9 @@ class BloqueRoca: public Bloque {
 public:
     explicit BloqueRoca(Posicion posicion);
 
-    void setElemento(ElementoBloque &&n_elem) override;
+    void crearPortal(uint8_t orientacion_rayo) override;
 
-    bool hasElemento() override;
+    void setElemento(ElementoBloque &&n_elem) override;
 };
 
 
