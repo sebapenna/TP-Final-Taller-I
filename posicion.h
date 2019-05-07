@@ -8,7 +8,15 @@ private:
 
 
 public:
+    Posicion() = default;
+
+    Posicion(int x, int y);
+
     bool igualA(const Posicion& other);
+
+    int getX() const;
+
+    int getY() const;
 
     void operator = (const Posicion& other);
 };

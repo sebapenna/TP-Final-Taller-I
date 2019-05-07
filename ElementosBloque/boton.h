@@ -10,7 +10,7 @@ private:
     bool _activado;
 
 public:
-    Boton();
+    Boton(Posicion posicion);
 
     void activar();
 

@@ -5,6 +5,7 @@
 #include "entidad.h"
 
 class EntidadSinMovimiento: public IEntidad {
+
 };
 
 

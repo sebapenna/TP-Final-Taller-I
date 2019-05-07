@@ -3,8 +3,7 @@
 #include "bloque_metal.h"
 #include "../exceptions.h"
 
-BloqueMetal::BloqueMetal(const Posicion& posicion) : Bloque(posicion) {
-}
+BloqueMetal::BloqueMetal(const Posicion& posicion) : Bloque(posicion) { }
 
 void BloqueMetal::setElemento(ElementoBloque &&n_elem) {
     if (_elemento)

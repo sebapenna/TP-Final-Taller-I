@@ -1,6 +1,7 @@
 #include "boton.h"
 
-Boton::Boton() {
+Boton::Boton(Posicion posicion) {
+    _posicion = posicion;
     _activado = false;
 }
 
