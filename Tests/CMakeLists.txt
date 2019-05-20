@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.10)
+project(Portal)
+
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall  -Werror -pedantic -pedantic-errors" )
+
+
+add_executable(tests
+        test_main.cpp
+        ../Ejemplo/ejemplo.cpp
+        )
+
+target_link_libraries(tests cppunit Box2D)
+
