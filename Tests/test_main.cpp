@@ -1,8 +1,11 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
-#include "test_1.h"
+#include <cppunit/extensions/HelperMacros.h>
+#include "test_stage.h"
+#include "test_chell.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION( FirstTest );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestStage );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestChell );
 
 using CppUnit::TestFactoryRegistry;
 

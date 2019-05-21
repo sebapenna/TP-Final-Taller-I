@@ -1,10 +1,101 @@
 #include "stage.h"
+#include "constants.h"
+#include "contact_listener.h"
 
-Stage::Stage() {
-    b2Vec2 gravity(0.0f, -10.0f);
+
+// todo: pasar vector con posicion/es de cada tipo de objeto
+Stage::Stage(size_t width, size_t height) : _width(width), _height(height) {
+    b2Vec2 gravity(GRAVITY_X, GRAVITY_Y);
     _world = new b2World(gravity);
+    _world->SetContactListener(new ContactListener(_world));
+
+    /* PISO PARA TESTEAR */
+    b2BodyDef piso_def;
+    piso_def.position.Set(0, -10);
+    piso_def.type = b2_staticBody;
+
+    b2Body *piso_body = _world->CreateBody(&piso_def);
+
+    b2PolygonShape piso_box;
+    piso_box.SetAsBox(50, 10);
+
+    piso_body->CreateFixture(&piso_box, 0);
+
+
+    /* Configurar bloques roca */
+
+    /* Configurar bloques metal */
+
+    /* Configurar bloques metal diagonal */
+
+    /* Configurar rocas */
+
+    /* Configurar botones */
+
+    /* Configurar compuertas */
+
+    /* Configurar acido */
+
+    /* Configurar emisores energia */
+
+    /* Configurar receptor energia */
+
+    /* Configurar barreras energia */
+
 }
 
 Stage::~Stage() {
     delete _world;
 }
+
+void Stage::step() {
+    _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
+    for (auto & _chell : _chells)
+        _chell.second->move();  // todo: correcto este loop?
+    // chell.move()
+    // Aplicar todas las fuerzas?
+}
+
+size_t Stage::getWidth() const {
+    return _width;
+}
+
+size_t Stage::getHeight() const {
+    return _height;
+}
+
+void Stage::createChell(float32 x, float32 y, size_t id) {
+    b2BodyDef b_def;
+    b_def.type = b2_dynamicBody;
+    b_def.position.Set(x, y);
+    b_def.fixedRotation = true;
+
+    b2PolygonShape b_shape;
+    b_shape.SetAsBox(CHELL_X_SIZE, CHELL_Y_SIZE);
+
+    b2FixtureDef b_fixture;
+    b_fixture.shape = &b_shape;
+    b_fixture.density = CHELL_DENSITY;
+//    todo: restitution necesaria ?
+
+    auto *n_chell_body = _world->CreateBody(&b_def);
+
+    n_chell_body->CreateFixture(&b_fixture);
+
+    // Creo foot sensor
+    b_shape.SetAsBox(0.3, 0.3, b2Vec2(0,-CHELL_Y_SIZE), 0);
+    b_fixture.isSensor = true;
+    b2Fixture* foot_sensor_fixture = n_chell_body->CreateFixture(&b_fixture);
+    foot_sensor_fixture->SetUserData( (void*)FOOT_SENSOR );
+
+    auto *n_chell = new Chell(id, n_chell_body);
+
+    _chells.insert({id, n_chell});
+}
+
+Chell *Stage::getChell(size_t id) {
+    if (id < _chells.size())
+        return _chells[id];
+    return nullptr;
+}
+

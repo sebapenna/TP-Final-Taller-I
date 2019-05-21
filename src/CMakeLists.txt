@@ -6,6 +6,8 @@ SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
 include_directories(..)
 
 add_library(portal_src
+        chell.cpp
+        contact_listener.cpp
         constants.h
         energy_ball.cpp
         exceptions.h
