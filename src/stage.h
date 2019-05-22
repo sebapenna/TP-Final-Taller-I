@@ -10,7 +10,8 @@ private:
     b2World *_world;
     const size_t _width;
     const size_t _height;
-    std::map<size_t, Chell*> _chells;
+    std::map<size_t, Chell*> _chells;   //todo: pasar avector y flag en chell
+    // muerto
 
 public:
     Stage(size_t width, size_t height);

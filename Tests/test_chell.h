@@ -57,8 +57,10 @@ public:
     void testFall() {
         cout << "TEST chell cae con gravedad: ";
         chell->teletransport(0, 4); // Elevo a chell para que caiga
-        for (int i = 0; i < STEP_ITERATIONS; i++)
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
             stage->step();
+            cout << "x: " << chell->getX() << " y: " << chell->getY() << endl;
+        }
         float y_diff = chell->getY() - chell_ground_y;
         float x_diff = chell->getX() - chell_ground_x;
         CPPUNIT_ASSERT_LESSEQUAL((float) 0.02, x_diff);
@@ -95,6 +97,12 @@ public:
         }
         //todo: test
     }
+
+    // todo: teste de la exception
+
+    // todo: test saltar a otra superficie
+
+    // todo: test saltar y mover
 
 
 

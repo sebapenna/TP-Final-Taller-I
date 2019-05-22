@@ -30,17 +30,23 @@
 #define STEP_ITERATIONS (1 / TIME_STEP)
 
 /* Movimiento */
-#define MOVE_FORCE  10  // todo: que valor seria correcto?
+#define MOVE_FORCE  50  // todo: que valor seria correcto?
 #define FOOT_SENSOR "foot_sensor"
 #define MOVE_LEFT   (uint8) 0
 #define MOVE_RIGHT  (uint8) 1
 #define MOVE_STOP   (uint8) 2
+#define JUMPING (uint8) 0
+#define FALLING (uint8)  1
+#define ON_GROUND (uint8)   2
+#define DELTA_Y_VEL 0.001    // Error de velocidad por caida de cuerpos al suelo
 
-/* Tamaños Shapes */
-#define CHELL_X_SIZE  2
-#define CHELL_Y_SIZE  2
+/* Configuracion Chell */
+#define CHELL_WIDTH  2
+#define CHELL_HEIGHT  2
 #define CHELL_DENSITY   1
 
-
+/* Configuracion Bloques */
+#define BLOCK_FRICTION  0
+#define BLOCK_DENSITY   1
 
 #endif //TP_FINAL_CONSTANTES_H

@@ -7,10 +7,16 @@ class Chell {
 private:
     b2Body *_body;
     const unsigned int _id;
-    uint8 move_state;
-    bool _jumping;
+    uint8 _move_state;
+    uint8 _jump_state;
+    bool _jump;
+
+    bool forceAlreadyApplied();
+
+    uint8 lastMovement();
 
 public:
+
     Chell(unsigned int id, b2Body *body);
 
     const unsigned int getId() const;
@@ -30,6 +36,8 @@ public:
     float getX();
 
     float getY();
+
+    void updateJumpState();
 };
 
 

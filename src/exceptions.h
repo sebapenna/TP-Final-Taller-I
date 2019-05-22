@@ -12,6 +12,12 @@ struct BloqueNoPermitePortalException : public exception {
     }
 };
 
+struct ChellNoEstaSobreSuperficieDondeSaltarException : public exception {
+    const char * what() const throw() override {
+        return "Chell no se encuentra sobre una superficie donde saltar.";
+    }
+};
+
 
 
 #endif //TP_FINAL_EXCEPTIONS_H
