@@ -15,8 +15,9 @@ private:
 
     uint8 lastMovement();
 
-public:
+    void updateJumpState();
 
+public:
     Chell(unsigned int id, b2Body *body);
 
     const unsigned int getId() const;
@@ -33,11 +34,9 @@ public:
 
     void move();
 
-    float getX();
+    float getPositionX();
 
-    float getY();
-
-    void updateJumpState();
+    float getPositionY();
 };
 
 

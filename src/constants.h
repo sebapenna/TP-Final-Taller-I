@@ -39,6 +39,7 @@
 #define FALLING (uint8)  1
 #define ON_GROUND (uint8)   2
 #define DELTA_Y_VEL 0.001    // Error de velocidad por caida de cuerpos al suelo
+#define DELTA_POS   (float) 0.02    // Error posicion (x e y)
 
 /* Configuracion Chell */
 #define CHELL_WIDTH  2

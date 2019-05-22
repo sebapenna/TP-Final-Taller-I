@@ -1,4 +1,3 @@
-#include <iostream>
 #include "chell.h"
 #include "constants.h"
 #include "exceptions.h"
@@ -14,11 +13,11 @@ const unsigned int Chell::getId() const {
     return _id;
 }
 
-float Chell::getX() {
+float Chell::getPositionX() {
     return  _body->GetPosition().x;
 }
 
-float Chell::getY() {
+float Chell::getPositionY() {
     return  _body->GetPosition().y;
 }
 
@@ -107,8 +106,6 @@ void Chell::move() {
         y_impulse = MOVE_FORCE;
     }
     b2Vec2 impulse(x_impulse, y_impulse);
-    std::cout << "velx: " <<_body->GetLinearVelocity().x << " ";
-    std::cout << "vely: " <<_body->GetLinearVelocity().y << " ";
     if (!forceAlreadyApplied()) // Aplico fuerza solo si esta quieto
         _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
     updateJumpState();
