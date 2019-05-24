@@ -10,7 +10,8 @@ add_executable(tests
         ../src/stage.cpp
         test_chell.h
         ../src/chell.cpp
-        ../src/contact_listener.cpp)
+        ../src/contact_listener.cpp
+        ../src/exceptions.h)
 
 target_link_libraries(tests cppunit Box2D)
 

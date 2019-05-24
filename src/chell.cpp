@@ -29,10 +29,6 @@ void Chell::move_right() {
     _move_state = MOVE_RIGHT;
 }
 
-void Chell::stop_movement() {
-    _move_state = MOVE_STOP;
-}
-
 void Chell::jump() {
     if (_jump_state == ON_GROUND)
         _jump = true;
@@ -40,73 +36,75 @@ void Chell::jump() {
         throw ChellNoEstaSobreSuperficieDondeSaltarException();
 }
 
+void Chell::stop_movement() {
+    _move_state = MOVE_STOP;
+}
+
 void Chell::teletransport(float x, float y) {
     b2Vec2 new_pos(x,y);
     _body->SetTransform(new_pos, 0);
 }
 
-bool Chell::forceAlreadyApplied() {
-    float vel_x = _body->GetLinearVelocity().x;
-    if (_move_state == MOVE_RIGHT && vel_x > 0)    // Moviendo hacia derecha
-        return true;
-    return (_move_state == MOVE_LEFT && vel_x < 0);  // Moviendo hacia izquierda
-}
-
 void Chell::updateJumpState() {
     float vel_y = _body->GetLinearVelocity().y;
     switch (_jump_state) {
-        case FALLING:
-            if (abs(vel_y) < DELTA_Y_VEL)   // Ya no tiene velocidad en eje y
-                _jump_state = ON_GROUND;
-            break;
+        case ON_GROUND:
+            if (vel_y > 0)
+                _jump_state = JUMPING;
+            else if (vel_y < 0)  // Cuerpo cayo de una superficie
+                _jump_state = FALLING;
         case JUMPING:
             if (vel_y <= 0) // Empieza a caer
                 _jump_state = FALLING;
-            else if (abs(vel_y) < DELTA_Y_VEL)
-                _jump_state = ON_GROUND;    // Salta y cae en otra superficie
             break;
-        case ON_GROUND:
-            if (vel_y < 0)  // Cuerpo cayo de una superficie
-                _jump_state = FALLING;
+        case FALLING:
+            if (abs(vel_y) < DELTA_Y_VEL)
+                _jump_state = ON_GROUND;  // Cae en una superficie
+            break;
     }
 }
 
-uint8 Chell::lastMovement() {
-    if (_body->GetLinearVelocity().x > 0)
-        return MOVE_RIGHT;
-    if (_body->GetLinearVelocity().x < 0)
-        return MOVE_LEFT;
-    return MOVE_STOP;
+bool Chell::movementAlreadyApplied() {
+    float vel_x = _body->GetLinearVelocity().x;
+    if (_move_state == MOVE_RIGHT && vel_x > 0)    // Moviendo hacia derecha
+        return true;
+    if (_move_state == MOVE_LEFT && vel_x < 0)  // Moviendo hacia izquierda
+        return true;
+    return (_move_state == MOVE_STOP && vel_x == 0);    // Cuerpo quieto
+}
+
+int Chell::calculateXImpulse() {
+    if (movementAlreadyApplied()) // _move_state no se modifico
+        return 0;
+    float vel_x = _body->GetLinearVelocity().x;
+    int impulse_factor = 0;
+    // Cuando se mueve en un sentido factor sera el doble, para frenarlo y
+    // luego seguir moviendose en sentido contrario
+    switch (_move_state) {
+        case MOVE_RIGHT:
+            (vel_x < 0) ? (impulse_factor = 2) : (impulse_factor = 1);
+            break;
+        case MOVE_LEFT:
+            (vel_x > 0) ? (impulse_factor = -2) : (impulse_factor = -1);
+            break;
+        case MOVE_STOP:
+            if (_jump_state == ON_GROUND) // Verifico que no este en aire
+                (vel_x > 0) ? (impulse_factor = -1) : (impulse_factor = 1);
+            break;
+        default: // No existe este caso
+            break;
+    }
+    return impulse_factor * MOVE_FORCE;
 }
 
 void Chell::move() {
     int x_impulse = 0, y_impulse = 0;
-    switch (_move_state) {
-        case MOVE_RIGHT:
-            x_impulse = MOVE_FORCE;
-            break;
-        case MOVE_LEFT:
-            x_impulse = -1 * MOVE_FORCE;
-            break;
-        case MOVE_STOP:
-            if (_jump_state == ON_GROUND) { // Verifico que no este en aire
-                uint8 last_movement = lastMovement();
-                if (last_movement == MOVE_RIGHT)
-                    x_impulse = -1 * MOVE_FORCE;
-                else if (last_movement == MOVE_LEFT)
-                    x_impulse = MOVE_FORCE;
-            }
-            break;
-        default:
-            break;
-    }
+    x_impulse = calculateXImpulse();
     if (_jump) {
         _jump = false;
-        _jump_state = JUMPING;
         y_impulse = MOVE_FORCE;
     }
     b2Vec2 impulse(x_impulse, y_impulse);
-    if (!forceAlreadyApplied()) // Aplico fuerza solo si esta quieto
-        _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
+    _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
     updateJumpState();
 }
