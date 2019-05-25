@@ -2,7 +2,7 @@
 #include "src/exceptions.h"
 
 void EnergyReceiver::createPortal(uint8_t orientacion_rayo) {
-    throw BloqueNoPermitePortalException();
+    throw BlockCantCreatePortalException();
 }
 
 void EnergyReceiver::receiveEnergyBall() {

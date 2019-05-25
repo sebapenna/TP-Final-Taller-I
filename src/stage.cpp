@@ -85,12 +85,6 @@ void Stage::createChell(float32 x, float32 y, size_t id) {
 
     n_chell_body->CreateFixture(&b_fixture);
 
-    // Creo foot sensor
-    b_shape.SetAsBox(0.3, 0.3, b2Vec2(0,-CHELL_HEIGHT), 0);
-    b_fixture.isSensor = true;
-    b2Fixture* foot_sensor_fixture = n_chell_body->CreateFixture(&b_fixture);
-    foot_sensor_fixture->SetUserData( (void*)FOOT_SENSOR );
-
     auto *n_chell = new Chell(id, n_chell_body);
 
     _chells.insert({id, n_chell});

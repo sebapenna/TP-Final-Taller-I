@@ -24,9 +24,12 @@ CPPUNIT_TEST_SUITE( TestChell );
         CPPUNIT_TEST( testMoveRightAndThenLeft );
         CPPUNIT_TEST( testMoveLeftAndThenRight );
         CPPUNIT_TEST( testJumpOnGround );
-        CPPUNIT_TEST_EXCEPTION( testJumpOnAir,
-                ChellNoEstaSobreSuperficieDondeSaltarException);
+        CPPUNIT_TEST_EXCEPTION( testJumpOnAir, ChellNotOnGroundException);
         CPPUNIT_TEST( testJumpTwoTimes );
+        CPPUNIT_TEST( testJumpAndMoveRight );
+        CPPUNIT_TEST( testJumpAndMoveLeft );
+        CPPUNIT_TEST( testMoveRightAndJump );
+        CPPUNIT_TEST( testMoveLeftAndJump );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -195,7 +198,7 @@ public:
         chell->jump();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             stage->step();
-            if (chell->getPositionY() > chell_init_y)
+            if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped = true;
         }
         CPPUNIT_ASSERT(jumped);
@@ -209,7 +212,7 @@ public:
             stage->step();
             try {
                 chell->jump();
-            } catch (ChellNoEstaSobreSuperficieDondeSaltarException& e) {
+            } catch (ChellNotOnGroundException& e) {
                 cout << "OK";
                 throw e;
             }
@@ -222,14 +225,15 @@ public:
         chell->jump();
         for (int i = 0; i < 10000; i++) {
             stage->step();
-            if (chell->getPositionY() > chell_init_y)
+            if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped1 = true;
         }
         float diff_y = chell->getPositionY() - chell_init_y;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
+        chell->jump();
         for (int i = 0; i < 10000; i++) {
             stage->step();
-            if (chell->getPositionY() > chell_init_y)
+            if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped2 = true;
         }
         diff_y = chell->getPositionY() - chell_init_y;
@@ -239,12 +243,91 @@ public:
         cout << "OK";
     }
 
+    void testJumpAndMoveRight() {
+        cout << endl << "TEST saltar y moverse a la derecha en el aire: ";
+        bool jumped = false, moved_on_air = false;
+        chell->jump();
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            stage->step();
+            if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
+                if (!jumped)
+                    chell->move_right();    // Muevo una vez que salto
+                jumped = true;
+                if (chell->getPositionX() > chell_init_x)
+                    moved_on_air = true;    // Se movio en X estando en el aire
+            }
+        }
+        float diff_y = chell->getPositionY() - chell_init_y;
+        CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
+        CPPUNIT_ASSERT_GREATER(chell_init_x, chell->getPositionX());
+        CPPUNIT_ASSERT(jumped);
+        CPPUNIT_ASSERT(moved_on_air);
+        cout << "OK";
+    }
 
+    void testJumpAndMoveLeft() {
+        cout << endl << "TEST saltar y moverse a la izquierda en el aire: ";
+        bool jumped = false, moved_on_air = false;
+        chell->jump();
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            stage->step();
+            if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
+                if (!jumped)
+                    chell->move_left();    // Muevo una vez que salto
+                jumped = true;
+                if (chell->getPositionX() < chell_init_x)
+                    moved_on_air = true;    // Se movio en X estando en el aire
+            }
+        }
+        float diff_y = chell->getPositionY() - chell_init_y;
+        CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
+        CPPUNIT_ASSERT_LESS(chell_init_x, chell->getPositionX());
+        CPPUNIT_ASSERT(jumped);
+        CPPUNIT_ASSERT(moved_on_air);
+        cout << "OK";
+    }
 
-    // todo: test saltar y mover
+    void testMoveRightAndJump() {
+        cout << endl << "TEST moverse a la derecha y saltar ";
+        bool jumped = false, jumped_after_moving = false;
+        chell->move_right();
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            stage->step();
+            if (chell->getPositionX() > chell_init_x) {
+                if (!jumped) {
+                    jumped = true;
+                    chell->jump();
+                }
+                if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
+                    jumped_after_moving = true;
+            }
+        }
+        CPPUNIT_ASSERT(jumped);
+        CPPUNIT_ASSERT(jumped_after_moving);
+        CPPUNIT_ASSERT_LESS(DELTA_POS, chell->getPositionY() - chell_init_y);
+        cout << "OK";
+    }
 
-
-
+    void testMoveLeftAndJump() {
+        cout << endl << "TEST moverse a la derecha y saltar ";
+        bool jumped = false, jumped_after_moving = false;
+        chell->move_left();
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            stage->step();
+            if (chell->getPositionX() < chell_init_x) {
+                if (!jumped) {
+                    jumped = true;
+                    chell->jump();
+                }
+                if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
+                    jumped_after_moving = true;
+            }
+        }
+        CPPUNIT_ASSERT(jumped);
+        CPPUNIT_ASSERT(jumped_after_moving);
+        CPPUNIT_ASSERT_LESS(DELTA_POS, chell->getPositionY() - chell_init_y);
+        cout << "OK";
+    }
 
 };
 

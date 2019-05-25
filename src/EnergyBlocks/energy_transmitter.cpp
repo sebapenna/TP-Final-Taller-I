@@ -7,7 +7,7 @@ EnergyTransmitter::EnergyTransmitter(b2Body *body, uint8_t direction)
 }
 
 void EnergyTransmitter::createPortal(uint8_t ray_orientaiton) {
-    throw BloqueNoPermitePortalException();
+    throw BlockCantCreatePortalException();
 }
 //
 //EnergyBall* EnergyTransmitter::releaseEnergyBall() {

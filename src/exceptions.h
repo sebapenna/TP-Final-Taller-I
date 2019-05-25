@@ -6,13 +6,13 @@
 
 using std::exception;
 
-struct BloqueNoPermitePortalException : public exception {
+struct BlockCantCreatePortalException : public exception {
     const char * what() const throw() override {
         return "La superficie del bloque no permite la formación de un portal.";
     }
 };
 
-struct ChellNoEstaSobreSuperficieDondeSaltarException : public exception {
+struct ChellNotOnGroundException : public exception {
     const char * what() const throw() override {
         return "Chell no se encuentra sobre una superficie donde saltar.";
     }

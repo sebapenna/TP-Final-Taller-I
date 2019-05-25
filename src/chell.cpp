@@ -33,7 +33,7 @@ void Chell::jump() {
     if (_jump_state == ON_GROUND)
         _jump = true;
     else
-        throw ChellNoEstaSobreSuperficieDondeSaltarException();
+        throw ChellNotOnGroundException();
 }
 
 void Chell::stop_movement() {
@@ -49,10 +49,11 @@ void Chell::updateJumpState() {
     float vel_y = _body->GetLinearVelocity().y;
     switch (_jump_state) {
         case ON_GROUND:
-            if (vel_y > 0)
+            if (vel_y > DELTA_Y_VEL)
                 _jump_state = JUMPING;
             else if (vel_y < 0)  // Cuerpo cayo de una superficie
                 _jump_state = FALLING;
+            break;
         case JUMPING:
             if (vel_y <= 0) // Empieza a caer
                 _jump_state = FALLING;
