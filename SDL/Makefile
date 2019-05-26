@@ -48,10 +48,10 @@ RM = /snap/clion/70/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jonathanmedina/Downloads/test/sdlTest
+CMAKE_SOURCE_DIR = /home/jonathanmedina/Desktop/TP-Final-Taller-I/SDL
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jonathanmedina/Downloads/test/sdlTest
+CMAKE_BINARY_DIR = /home/jonathanmedina/Desktop/TP-Final-Taller-I/SDL
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,8 +69,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/snap/clion/70/bin/cmake/linux/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/snap/clion/70/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Downloads/test/sdlTest/CMakeFiles /home/jonathanmedina/Downloads/test/sdlTest/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TP-Final-Taller-I/SDL/CMakeFiles /home/jonathanmedina/Desktop/TP-Final-Taller-I/SDL/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Downloads/test/sdlTest/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TP-Final-Taller-I/SDL/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -135,6 +135,33 @@ sdl-hello: cmake_check_build_system
 sdl-hello/fast:
 	$(MAKE) -f CMakeFiles/sdl-hello.dir/build.make CMakeFiles/sdl-hello.dir/build
 .PHONY : sdl-hello/fast
+
+AnimatedSprite.o: AnimatedSprite.cpp.o
+
+.PHONY : AnimatedSprite.o
+
+# target to build an object file
+AnimatedSprite.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.o
+.PHONY : AnimatedSprite.cpp.o
+
+AnimatedSprite.i: AnimatedSprite.cpp.i
+
+.PHONY : AnimatedSprite.i
+
+# target to preprocess a source file
+AnimatedSprite.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.i
+.PHONY : AnimatedSprite.cpp.i
+
+AnimatedSprite.s: AnimatedSprite.cpp.s
+
+.PHONY : AnimatedSprite.s
+
+# target to generate assembly for a file
+AnimatedSprite.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.s
+.PHONY : AnimatedSprite.cpp.s
 
 Renderer.o: Renderer.cpp.o
 
@@ -281,6 +308,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... sdldemo"
 	@echo "... sdl-hello"
+	@echo "... AnimatedSprite.o"
+	@echo "... AnimatedSprite.i"
+	@echo "... AnimatedSprite.s"
 	@echo "... Renderer.o"
 	@echo "... Renderer.i"
 	@echo "... Renderer.s"

@@ -8,7 +8,7 @@ add_library(sdldemo
   Renderer.cpp
         SDLException.cpp
   Window.cpp
-        Sprite.cpp Sprite.h)
+        Sprite.cpp Sprite.h AnimatedSprite.cpp AnimatedSprite.h)
 
 # Agrego la carpeta con los headers autogenerados a los includes
 #message("Agregando '${PROJECT_BINARY_DIR}' como directorio de includes")
