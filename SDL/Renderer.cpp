@@ -3,7 +3,7 @@
 
 Renderer::Renderer(Window& window) :
         window(window),
-        renderer(SDL_CreateRenderer(window.getWindow(), -1, 0)),
+        renderer(SDL_CreateRenderer(window.getWindow(), -1, SDL_RENDERER_ACCELERATED)), // | SDL_RENDERER_PRESENTVSYNC
         windowWidth(window.getWidth()), windowHeight(window.getHeight()) {
     if (!renderer)
         throw SDLException("Create renderer error: %s", SDL_GetError());
@@ -13,8 +13,7 @@ Renderer::~Renderer() {
     SDL_DestroyRenderer(renderer);
 }
 
-void Renderer::copyTexture(SDL_Texture* texture, SDL_Rect *src, SDL_Rect
-*dst) {
+void Renderer::copyTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst) {
     SDL_RenderCopy(renderer, texture, src, dst);
 }
 
