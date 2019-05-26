@@ -13,5 +13,5 @@ add_executable(tests
         ../src/contact_listener.cpp
         ../src/exceptions.h)
 
-target_link_libraries(tests cppunit Box2D)
+target_link_libraries(tests cppunit Box2D yaml-cpp)
 

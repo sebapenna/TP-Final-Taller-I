@@ -16,7 +16,6 @@ private:
 
     void updateJumpState();
 
-    // Setear argumento en true si se quiere calcular impulso opuesto al actual
     int calculateXImpulse();
 
 public:
@@ -24,6 +23,10 @@ public:
     Chell(unsigned int id, b2Body *body);
 
     const unsigned int getId() const;
+
+    float getPositionX();
+
+    float getPositionY();
 
     void move_left();
 
@@ -37,10 +40,6 @@ public:
 
     // Metodo a llamar para que se aplique el movimiento seteado previamente
     void move();
-
-    float getPositionX();
-
-    float getPositionY();
 };
 
 

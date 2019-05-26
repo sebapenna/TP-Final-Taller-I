@@ -26,4 +26,4 @@ add_library(portal_src
         Obstacles/rock.cpp
         )
 
-#link_directories(portal_src Box2D)
+#link_directories(portal_src Box2D yaml-cpp)

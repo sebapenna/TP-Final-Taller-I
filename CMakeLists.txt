@@ -12,5 +12,6 @@ set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
 
 add_subdirectory(Box2D)
+add_subdirectory(Yaml)
 add_subdirectory(src)
 add_subdirectory(Tests)

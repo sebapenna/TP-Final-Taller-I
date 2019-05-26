@@ -1,0 +1,40 @@
+stage:  # Centrado en x=0, y=width/2
+  width: 100
+  height: 60
+box_side_length: 2 # Alto o ancho de cada box a usar en Box2D (metros)
+block_rock: # Superficies con bloque roca
+  - id: 0 # floor
+    width: ${stage.width}
+    height: ${box_side_length}
+    x: 0
+    y: -1
+  - id: 1 # roof
+    width: ${stage.width}
+    height: ${box_side_length}
+    x: 0
+    y: ${stage.height} + ${box_side_length}/2
+  - id: 2 # right_wall
+    width: ${box_side_length}
+    height: ${stage.height}
+    x: ${stage.width} + ${box_side_length}/2
+    y: 0
+  - id: 3 # left_wall
+    width: ${box_side_length}
+    height: ${stage.height}
+    x: -1
+    y: 0
+#block_metal
+#block_metal_diagonal
+chell:
+  -id: 0
+   x: 0
+   y: 1
+
+#acid
+#button
+#rock
+#energy_transmitter
+#energy_receiver
+#gate
+#energy_bareer
+#chell

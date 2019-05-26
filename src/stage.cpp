@@ -1,9 +1,8 @@
 #include "stage.h"
 #include "constants.h"
 #include "contact_listener.h"
+#include "Yaml/include/yaml-cpp/yaml.h"
 
-
-// todo: pasar vector con posicion/es de cada tipo de objeto
 Stage::Stage(size_t width, size_t height) : _width(width), _height(height) {
     b2Vec2 gravity(GRAVITY_X, GRAVITY_Y);
     _world = new b2World(gravity);

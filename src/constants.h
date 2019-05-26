@@ -30,8 +30,7 @@
 #define STEP_ITERATIONS (1 / TIME_STEP)
 
 /* Movimiento */
-#define MOVE_FORCE  50  // todo: que valor seria correcto?
-#define FOOT_SENSOR "foot_sensor"
+#define MOVE_FORCE  50
 #define MOVE_LEFT   (uint8) 0
 #define MOVE_RIGHT  (uint8) 1
 #define MOVE_STOP   (uint8) 2
