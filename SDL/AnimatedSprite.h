@@ -15,8 +15,8 @@ private:
     int height;
     int startX;
     int startY;
-    int totalColumns;
-    int amountSprites;
+    int totalColumns; // Empieza en 1
+    int amountSprites; // Empieza en 1
     int offSetX;
     int offSetY;
     int currentTime;

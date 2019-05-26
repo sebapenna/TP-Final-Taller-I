@@ -18,7 +18,12 @@ int main(int argc, char** argv){
         //sprite.setDestRect(0,0,200,200);
         //sprite.draw();
         int i = 0;
-        AnimatedSprite sprite("chell.png", renderer, 122, 222, 1, 2080, 6, 6, 0, 0, 122, 222, 1, 0);
+
+        // Chell resting idle
+        AnimatedSprite sprite("chell.png", renderer, 122, 222, 1, 2080, 7, 7, 0, 0, 122, 222, 1, 0);
+
+        // Chell dying
+        //AnimatedSprite sprite("chell.png", renderer, 199, 274, 1, 8340, 12 , 72, 0, 0, 199, 273, 1, 1);
         while (i<9000) {
             renderer.clearRender();
             sprite.drawMovingSprite();

@@ -16,7 +16,7 @@ AnimatedSprite::AnimatedSprite(const std::string &filename, Renderer &renderer,
         width(width), height(height),
         startX(startX), startY(startY),
         totalColumns(totalColumns), amountSprites(amountSprites), offSetX(offSetX), offSetY(offSetY),
-        currentSprite(0), i(0), j(0), currentTime(1), timePerSprite(DEFAULT_TIME_PER_SPRITE) {
+        currentSprite(1), i(0), j(0), currentTime(1), timePerSprite(DEFAULT_TIME_PER_SPRITE) {
     this->setSourceRect(startX, startY, width, height);
     this->setDestRect(finalX, finalY, finalWidth, finalHeight);
 }
@@ -30,9 +30,9 @@ void AnimatedSprite::moveNextSprite() {
     if(amountSprites == currentSprite) { // Reset
         i = 0;
         j = 0;
-        currentSprite = 0;
+        currentSprite = 1;
     } else {
-        if (totalColumns == i) {
+        if (totalColumns-1 == i) {
             i = 0;
             j++;
         } else {
