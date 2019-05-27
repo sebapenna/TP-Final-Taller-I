@@ -13,6 +13,9 @@ Renderer::~Renderer() {
     SDL_DestroyRenderer(renderer);
 }
 
+void Renderer::copyTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst, double angle, SDL_Point* center, SDL_RendererFlip flip) {
+    SDL_RenderCopyEx(renderer, texture, src, dst, angle, center, flip);
+}
 void Renderer::copyTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst) {
     SDL_RenderCopy(renderer, texture, src, dst);
 }

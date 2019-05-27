@@ -7,7 +7,7 @@
 
 
 #include "Sprite.h"
-#define DEFAULT_TIME_PER_SPRITE 5
+#define DEFAULT_TIME_PER_SPRITE 4
 
 class AnimatedSprite : public Sprite{
 private:
