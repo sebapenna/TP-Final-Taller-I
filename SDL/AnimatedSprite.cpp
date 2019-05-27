@@ -21,6 +21,7 @@ AnimatedSprite::AnimatedSprite(const std::string &filename, Renderer &renderer,
     this->setDestRect(finalX, finalY, finalWidth, finalHeight);
 }
 
+
 void AnimatedSprite::moveNextSprite() {
     if (currentTime % timePerSprite != 0) { // Cantidad de frames por sprite.
         currentTime++;
@@ -46,6 +47,11 @@ void AnimatedSprite::moveNextSprite() {
 void AnimatedSprite::drawMovingSprite() {
     this->moveNextSprite();
     this->draw();
+}
+
+void AnimatedSprite::drawMovingSprite(double angle, SDL_RendererFlip flip) {
+    this->moveNextSprite();
+    this->draw(angle, flip);
 }
 
 void AnimatedSprite::setTimePerSprite(Uint32 t) {

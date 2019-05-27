@@ -11,10 +11,16 @@ Sprite::Sprite(const std::string &filename, Renderer& renderer) :
     this->texture = loadTexture(filename);
 }
 
-Sprite::~Sprite() {}
+Sprite::~Sprite() {
+    SDL_DestroyTexture(texture);
+}
 
 void Sprite::draw() {
     renderer.copyTexture(texture, &srcRect, &dstRect);
+}
+
+void Sprite::draw(double angle, SDL_RendererFlip flip) {
+    renderer.copyTexture(texture, &srcRect, &dstRect, angle, NULL, flip);
 }
 
 void Sprite::setSourceXY(int x, int y) {

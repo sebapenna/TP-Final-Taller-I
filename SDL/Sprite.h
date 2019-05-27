@@ -21,6 +21,7 @@ public:
     Sprite(const std::string &filename, Renderer &renderer);
     ~Sprite();
     void draw();
+    void draw(double angle, SDL_RendererFlip flip);
     void setSourceXY(int x, int y);
     void setDestXY(int x, int y);
     void setSourceRect(int x, int y, int w, int h);

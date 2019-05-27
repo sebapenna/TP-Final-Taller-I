@@ -34,6 +34,7 @@ public:
                    int finalWidth, int finalHeight, int offSetX, int offSetY);
     void moveNextSprite();
     void drawMovingSprite();
+    void drawMovingSprite(double angle, SDL_RendererFlip flip);
     void setTimePerSprite(Uint32 t);
     void reset();
 };

@@ -23,10 +23,10 @@ int main(int argc, char** argv){
         // AnimatedSprite sprite("chell.png", renderer, 122, 222, 1, 2080, 7, 7, 0, 0, 122, 222, 1, 0);
 
         // Chell running
-        //AnimatedSprite sprite("chell.png", renderer, 201, 220, 1, 3983, 12, 12, 0, 0, 201, 220, 1, 0);
+        AnimatedSprite sprite("chell.png", renderer, 201, 220, 1, 3983, 12, 12, 0, 0, 201, 220, 1, 0);
 
         // Chell turning around
-        AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
+        //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
 
         // Chell firing
         // AnimatedSprite sprite("chell.png", renderer, 190, 212, 1, 2546, 5, 5, 0, 0, 190, 212, 1, 0);
@@ -35,7 +35,7 @@ int main(int argc, char** argv){
         //AnimatedSprite sprite("chell.png", renderer, 199, 274, 1, 8340, 12 , 72, 0, 0, 199, 273, 1, 1);
         while (i<5000) {
             renderer.clearRender();
-            sprite.drawMovingSprite();
+            sprite.drawMovingSprite(0,SDL_FLIP_HORIZONTAL);
             i++;
             renderer.render();
         }
