@@ -1,11 +1,13 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/extensions/HelperMacros.h>
-#include "test_stage.h"
-#include "test_chell.h"
+#include "TestStage.h"
+#include "TestChell.h"
+#include "TestYamlParser.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION( TestStage );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestChell );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
 
 using CppUnit::TestFactoryRegistry;
 

@@ -1,5 +1,5 @@
-#ifndef PORTAL_TEST_STAGE_H
-#define PORTAL_TEST_STAGE_H
+#ifndef PORTAL_TESTSTAGE_H
+#define PORTAL_TESTSTAGE_H
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "../Box2D/Box2D.h"
@@ -38,4 +38,4 @@ public:
 
 };
 
-#endif //PORTAL_TEST_STAGE_H
+#endif //PORTAL_TESTSTAGE_H

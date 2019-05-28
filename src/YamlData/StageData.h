@@ -1,6 +1,8 @@
 #ifndef PORTAL_STAGEDATA_H
 #define PORTAL_STAGEDATA_H
 
+#include <iostream>
+
 class StageData {
 private:
     size_t _height;

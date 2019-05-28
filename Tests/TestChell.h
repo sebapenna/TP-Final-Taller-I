@@ -1,5 +1,5 @@
-#ifndef PORTAL_TEST_CHELL_H
-#define PORTAL_TEST_CHELL_H
+#ifndef PORTAL_TESTCHELL_H
+#define PORTAL_TESTCHELL_H
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "../Box2D/Box2D.h"
@@ -331,4 +331,4 @@ public:
 
 };
 
-#endif //PORTAL_TEST_CHELL_H
+#endif //PORTAL_TESTCHELL_H

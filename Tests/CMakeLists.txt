@@ -4,14 +4,14 @@ project(Portal)
 SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall  -Werror -pedantic -pedantic-errors" )
 
 add_executable(tests
-        test_main.cpp
-        test_stage.h
+        TestMain.cpp
+        TestStage.h
 #        ../src/Game.cpp
 #        ../src/Stage.cpp
-        test_chell.h
+        TestChell.h
 #        ../src/Chell.cpp
 #        ../src/ContactListener.cpp
 #        ../src/exceptions.h
-        )
+        TestYamlParser.h)
 
 target_link_libraries(tests cppunit portal-src)

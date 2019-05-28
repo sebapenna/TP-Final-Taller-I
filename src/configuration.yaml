@@ -1,8 +1,8 @@
 stage:  # Centrado en x=0, y=width/2
   width: &width  100
   height: &height 60
-box_side_length: &length 2 # Alto o ancho de cada box a usar en Box2D (metros)
-# x e y son posiciones del centro
+box_side_length: &length 2 # Alto/Ancho box en Box2D (metros)
+# x, y: posicion central
 block_rock: # Superficies con bloque roca,
   - width: *width  # floor
     height: *length
@@ -22,16 +22,16 @@ block_rock: # Superficies con bloque roca,
     y: 0
 #block_metal
 #block_metal_diagonal
+  #acid
+  #button
+  #rock
+  #energy_transmitter
+  #energy_receiver
+  #gate
+  #energy_bareer
 chell:
   - id: 0
     x: 0
     y: 1
 
-#acid
-#button
-#rock
-#energy_transmitter
-#energy_receiver
-#gate
-#energy_bareer
 #chell
