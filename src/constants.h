@@ -49,4 +49,7 @@
 #define BLOCK_FRICTION  0
 #define BLOCK_DENSITY   1
 
+/* Path YAML */
+#define YAML_PATH   "/home/seba/Escritorio/Portal/src/"
+
 #endif //TP_FINAL_CONSTANTES_H

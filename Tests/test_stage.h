@@ -3,7 +3,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "../Box2D/Box2D.h"
-#include "../src/stage.h"
+#include "src/Stage.h"
 
 using std::cout;
 using std::endl;
