@@ -5,9 +5,9 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall  -Werror -pedantic -pe
 
 add_executable(tests
         TestMain.cpp
-        TestStage.h
-#        ../src/Game.cpp
+        TestWorld.h
 #        ../src/Stage.cpp
+#        ../src/World.cpp
         TestChell.h
 #        ../src/Chell.cpp
 #        ../src/ContactListener.cpp

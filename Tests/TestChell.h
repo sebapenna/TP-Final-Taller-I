@@ -3,7 +3,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "../Box2D/Box2D.h"
-#include "src/Stage.h"
+#include "src/World.h"
 #include "../src/constants.h"
 #include "../src/exceptions.h"
 
@@ -33,7 +33,7 @@ CPPUNIT_TEST_SUITE( TestChell );
     CPPUNIT_TEST_SUITE_END();
 
 private:
-    Stage *stage;
+    World *world;
     Chell *chell;
     size_t width = 100;
     size_t height = 200;
@@ -42,13 +42,13 @@ private:
 
 public:
     void setUp() {
-        stage = new Stage(width, height);
-        stage->createChell(chell_init_x, chell_init_y, 0);
-        chell = stage->getChell(0);
+        world = new World(width, height);
+        world->createChell(chell_init_x, chell_init_y, 0);
+        chell = world->getChell(0);
     }
 
     void tearDown() {
-        delete stage;
+        delete world;
     }
 
     void testCreateChell() {
@@ -72,7 +72,7 @@ public:
         cout << endl << "TEST caer con gravedad: ";
         chell->teletransport(0, 4); // Elevo a chell para que caiga
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         float y_diff = chell->getPositionY() - chell_init_y;
         float x_diff = chell->getPositionX() - chell_init_x;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, x_diff);
@@ -84,7 +84,7 @@ public:
         cout << endl << "TEST mover hacia derecha: ";
         chell->move_right();
         for (int i = 1; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         float diff_x = chell->getPositionX() - chell_init_x;
         CPPUNIT_ASSERT_GREATER((float) 0, diff_x);
         cout << "OK";
@@ -94,7 +94,7 @@ public:
         cout << endl << "TEST mover hacia izquierda: ";
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         float diff_x = chell->getPositionX() - chell_init_x;
         CPPUNIT_ASSERT_LESS((float) 0, diff_x);
         cout << "OK";
@@ -105,7 +105,7 @@ public:
         float x_step = 0;
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             if (x_step == 0)
                 x_step = chell->getPositionX() - chell_init_x;
             float diff_x = x_step * i - chell->getPositionX();
@@ -119,7 +119,7 @@ public:
         float x_step = 0;
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             if (x_step == 0)
                 x_step = chell->getPositionX() - chell_init_x;
             float diff_x = x_step * i - chell->getPositionX();
@@ -132,13 +132,13 @@ public:
         cout << endl << "TEST mover hacia izquierda y frenar: ";
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         chell->stop_movement();
         for (int i = 0; i < STEP_ITERATIONS; i++)   // Tiempo que demora frenar
-            stage->step(); // Tiempo que demora frenar por el impulso
+            world->step(); // Tiempo que demora frenar por el impulso
         float pos_after_stop = chell->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             float diff_x = pos_after_stop - chell->getPositionX();
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
         }
@@ -149,13 +149,13 @@ public:
         cout << endl << "TEST mover hacia derecha y frenar: ";
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         chell->stop_movement();
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step(); // Tiempo que demora frenar por el impulso
+            world->step(); // Tiempo que demora frenar por el impulso
         float pos_after_stop = chell->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             float diff_x = pos_after_stop - chell->getPositionX();
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
         }
@@ -166,13 +166,13 @@ public:
         cout << endl << "TEST mover hacia derecha y luego hacia izquierda: ";
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         float pos_before_move_left = chell->getPositionX();
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step(); // Tiempo que demora frenar por el impulso
+            world->step(); // Tiempo que demora frenar por el impulso
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         CPPUNIT_ASSERT_LESS(pos_before_move_left,  chell->getPositionX());
         cout << "OK";
     }
@@ -181,13 +181,13 @@ public:
         cout << endl << "TEST mover hacia izquierda y luego hacia derecha: ";
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         float pos_before_move_left = chell->getPositionX();
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step(); // Tiempo que demora frenar por el impulso
+            world->step(); // Tiempo que demora frenar por el impulso
         for (int i = 0; i < STEP_ITERATIONS; i++)
-            stage->step();
+            world->step();
         CPPUNIT_ASSERT_GREATER(pos_before_move_left,  chell->getPositionX());
         cout << "OK";
     }
@@ -197,7 +197,7 @@ public:
         bool jumped = false;
         chell->jump();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped = true;
         }
@@ -209,7 +209,7 @@ public:
         cout << endl << "TEST no es posible saltar en el aire: ";
         chell->jump();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             try {
                 chell->jump();
             } catch (ChellNotOnGroundException& e) {
@@ -224,7 +224,7 @@ public:
         bool jumped1 = false, jumped2 = false;
         chell->jump();
         for (int i = 0; i < 10000; i++) {
-            stage->step();
+            world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped1 = true;
         }
@@ -232,7 +232,7 @@ public:
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
         chell->jump();
         for (int i = 0; i < 10000; i++) {
-            stage->step();
+            world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped2 = true;
         }
@@ -248,7 +248,7 @@ public:
         bool jumped = false, moved_on_air = false;
         chell->jump();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
                 if (!jumped)
                     chell->move_right();    // Muevo una vez que salto
@@ -271,7 +271,7 @@ public:
         bool jumped = false, moved_on_air = false;
         chell->jump();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
                 if (!jumped)
                     chell->move_left();    // Muevo una vez que salto
@@ -293,7 +293,7 @@ public:
         bool jumped = false, jumped_after_moving = false;
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             if (chell->getPositionX() > chell_init_x) {
                 if (!jumped) {
                     jumped = true;
@@ -310,11 +310,11 @@ public:
     }
 
     void testMoveLeftAndJump() {
-        cout << endl << "TEST moverse a la derecha y saltar ";
+        cout << endl << "TEST moverse a la izquierda y saltar ";
         bool jumped = false, jumped_after_moving = false;
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
-            stage->step();
+            world->step();
             if (chell->getPositionX() < chell_init_x) {
                 if (!jumped) {
                     jumped = true;

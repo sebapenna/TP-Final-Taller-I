@@ -1,77 +1,135 @@
-#include <iostream>
+#include <src/YamlData/YamlParser.h>
+#include<vector>
 #include "Stage.h"
-#include "constants.h"
-#include "ContactListener.h"
-#include "yaml-cpp/yaml.h"
-#include "Game.h"
 
-Stage::Stage(size_t width, size_t height) : _width(width), _height(height) {
-    b2Vec2 gravity(GRAVITY_X, GRAVITY_Y);
-    _world = new b2World(gravity);
-    _world->SetContactListener(new ContactListener(_world));
+using std::vector;
 
-    /* PISO PARA TESTEAR */
-    b2BodyDef piso_def;
-    piso_def.position.Set(0, -10);
-    piso_def.type = b2_staticBody;
+Stage::Stage(const std::string &config_file) {
+    YamlParser config(config_file);
 
-    b2Body *piso_body = _world->CreateBody(&piso_def);
+    // Configuracion world
+    WorldData stage_data = config.loadWorldData();
 
-    b2PolygonShape piso_box;
-    piso_box.SetAsBox(50, 10);
+    // Configuracion largo box
+    size_t box_side_length = config.loadBoxSize();
 
-    b2FixtureDef piso_fixture;
-    piso_fixture.shape = &piso_box;
-    piso_fixture.friction = BLOCK_FRICTION;
-    piso_fixture.density = BLOCK_DENSITY;
+    // Configuracion bloques roca
+    vector<RockBlockData> rock_blocks_data_vector;
+    try {
+        rock_blocks_data_vector = config.loadRockBlocksData();
+    } catch(...) { // No hay bloques roca
+        rock_blocks_data_vector.clear();    // Vector vacio
+    }
 
-    piso_body->CreateFixture(&piso_fixture);
+    // Configuracion bloques metal
+    vector<MetalBlockData> metal_blocks_data_vector;
+    try {
+        metal_blocks_data_vector = config.loadMetalBlocksData();
+    } catch(...) { // No hay bloques metal
+        metal_blocks_data_vector.clear();
+    }
+
+    // Configuracion bloques metal diagonal
+    vector<MetalDiagonalBlockData> metal_diagonal_blocks_data_vector;
+    try {
+        metal_diagonal_blocks_data_vector = config.loadMetalDiagonalBlockData();
+    } catch(...) { // No hay bloques metal diagonal
+        metal_diagonal_blocks_data_vector.clear();
+    }
+
+    // Configuracion rocas
+    vector<RockData> rocks_vector;
+    try {
+        rocks_vector = config.loadRockData();
+    } catch(...) { // No hay rocas
+        rocks_vector.clear();
+    }
+
+    // Configuracion botones
+    vector<ButtonData> buttons_vector;
+    try {
+        buttons_vector = config.loadButtonData();
+    } catch(...) { // No hay botones
+        buttons_vector.clear();
+    }
+
+    // Configuracion acido
+    vector<AcidData> acid_vector;
+    try {
+        acid_vector = config.loadAcidData();
+    } catch(...) {  // No hay acido
+        acid_vector.clear();
+    }
+
+    // Configuracion compuertas
+    vector<GateData> gates_vector;
+    try {
+        gates_vector = config.loadGateData();
+    } catch(...) {  // No hay compuertas
+        gates_vector.clear();
+    }
+
+    // Configuracion transmisores energia
+    vector<EnergyTransmitterData> e_transm_vector;
+    try {
+        e_transm_vector = config.loadEnergyTransmitterData();
+    } catch(...) {  // No hay emisores energia
+        e_transm_vector.clear();
+    }
+
+    // Configuracion receptores energia
+    vector<EnergyReceiverData> e_receiver_vector;
+    try {
+        e_receiver_vector = config.loadEnergyReceiverData();
+    } catch(...) {  // No hay receptores energia
+        e_receiver_vector.clear();
+    }
+
+    // Configuracion barreras energia
+    vector<EnergyBarrierData> e_barrier_vector;
+    try {
+        e_barrier_vector = config.loadEnergyBarrierData();
+    } catch(...) {  // No hay barreras eergia
+        e_barrier_vector.clear();
+    }
+
+    // Configuracion chells
+    vector<ChellData> chells_vector;
+    try {
+        chells_vector = config.loadChellData();
+    } catch(...) {  // No hay chells
+        chells_vector.clear();
+    }
+
+
+
+    // initializeStage(todos los vectores)
+//    _stage = new World(stage_data.getWidth(), stage_data.getHeight());
+//world.createBlocks
+// world.createRocks
+//world.createAcid
+//world.createButton
+//world.createGate
+//world.createBarrier
+
+    /* Configurar bloques roca */
+
+    /* Configurar bloques metal */
+
+    /* Configurar bloques metal diagonal */
+
+    /* Configurar rocas */
+
+    /* Configurar botones */
+
+    /* Configurar compuertas */
+
+    /* Configurar acido */
+
+    /* Configurar emisores energia */
+
+    /* Configurar receptor energia */
+
+    /* Configurar barreras energia */
+
 }
-
-Stage::~Stage() {
-    delete _world;
-}
-
-void Stage::step() {
-    _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
-    for (auto & _chell : _chells)
-        _chell.second->move();
-    // Aplicar update/move de todos los cuerpos
-}
-
-size_t Stage::getWidth() const {
-    return _width;
-}
-
-size_t Stage::getHeight() const {
-    return _height;
-}
-
-void Stage::createChell(float32 x, float32 y, size_t id) {
-    b2BodyDef b_def;
-    b_def.type = b2_dynamicBody;
-    b_def.position.Set(x, y);
-    b_def.fixedRotation = true;
-
-    b2PolygonShape b_shape;
-    b_shape.SetAsBox(CHELL_WIDTH, CHELL_HEIGHT);
-
-    b2FixtureDef b_fixture;
-    b_fixture.shape = &b_shape;
-    b_fixture.density = CHELL_DENSITY;
-//    todo: restitution necesaria ? => puede hacer sdl
-    auto *n_chell_body = _world->CreateBody(&b_def);
-
-    n_chell_body->CreateFixture(&b_fixture);
-
-    auto *n_chell = new Chell(id, n_chell_body);
-
-    _chells.insert({id, n_chell});
-}
-
-Chell *Stage::getChell(size_t id) {
-    if (id < _chells.size())
-        return _chells[id];
-    return nullptr;
-}
-

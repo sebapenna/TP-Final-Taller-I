@@ -13,9 +13,9 @@ YamlParser::YamlParser(const string& filename) {
     _config = YAML::LoadFile(filename);
 }
 
-StageData YamlParser::loadStage() {
-    return {_config["stage"]["height"].as<size_t >(),
-            _config["stage"]["width"].as<size_t >()};
+WorldData YamlParser::loadWorldData() {
+    return {_config["world"]["height"].as<size_t >(),
+            _config["world"]["width"].as<size_t >()};
 }
 
 size_t YamlParser::loadBoxSize() {

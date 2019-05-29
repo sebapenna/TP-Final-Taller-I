@@ -13,7 +13,7 @@ add_library(portal-src
         EnergyBall.cpp
         exceptions.h
         Portal.cpp
-        Stage.cpp
+        World.cpp
         EnergyBlocks/EnergyReceiver.cpp
         EnergyBlocks/EnergyTransmitter.cpp
         GroundBlocks/Block.cpp
@@ -25,7 +25,7 @@ add_library(portal-src
         Obstacles/Gate.cpp
         Obstacles/Obstacle.h
         Obstacles/Rock.cpp
-        Game.cpp
+        Stage.cpp
         )
 
 target_link_libraries(portal-src Box2D yaml-parser)

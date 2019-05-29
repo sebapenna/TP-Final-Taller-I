@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "yaml-cpp/yaml.h"
-#include "StageData.h"
+#include "WorldData.h"
 #include "RockBlockData.h"
 #include "MetalBlockData.h"
 #include "MetalDiagonalBlockData.h"
@@ -24,7 +24,7 @@ private:
 public:
     explicit YamlParser(const std::string& filename);
 
-    StageData loadStage();
+    WorldData loadWorldData();
 
     size_t loadBoxSize();
 

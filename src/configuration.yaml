@@ -1,4 +1,4 @@
-stage:  # Centrado en x=0, y=width/2
+world:  # Centrado en x=0, y=width/2
   width: &width  100
   height: &height 60
 box_side_length: &length 2 # Alto/Ancho box en Box2D (metros)

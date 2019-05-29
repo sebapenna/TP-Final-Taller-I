@@ -11,7 +11,7 @@ using std::endl;
 
 class TestYamlParser : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE( TestYamlParser );
-        CPPUNIT_TEST( testParseStage );
+        CPPUNIT_TEST( testParseWorld );
         CPPUNIT_TEST( testParseBoxLength );
         CPPUNIT_TEST( testParseRockBlocks );
         CPPUNIT_TEST( testParseMetalBlocks );
@@ -43,10 +43,10 @@ public:
         delete parser;
     }
 
-    void testParseStage() {
+    void testParseWorld() {
         cout << endl << endl << "TESTS YAML PARSER";
-        cout << endl << "TEST datos stage: ";
-        StageData stage_data = parser->loadStage();
+        cout << endl << "TEST datos world: ";
+        WorldData stage_data = parser->loadWorldData();
         CPPUNIT_ASSERT_EQUAL((size_t) _width, stage_data.getWidth());
         CPPUNIT_ASSERT_EQUAL((size_t) _height, stage_data.getHeight());
         cout << "OK";
