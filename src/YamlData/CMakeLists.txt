@@ -10,6 +10,6 @@ add_library(yaml-parser
         StageData.h
         YamlParser.cpp
         YamlParser.h
-        MetalBlockData.cpp MetalBlockData.h MetalDiagonalBlockData.cpp MetalDiagonalBlockData.h RockData.cpp RockData.h AcidData.cpp AcidData.h ButtonData.cpp ButtonData.h GateData.cpp GateData.h)
+        MetalBlockData.cpp MetalBlockData.h MetalDiagonalBlockData.cpp MetalDiagonalBlockData.h RockData.cpp RockData.h AcidData.cpp AcidData.h ButtonData.cpp ButtonData.h GateData.cpp GateData.h EnergyTransmitterData.cpp EnergyTransmitterData.h EnergyReceiverData.cpp EnergyReceiverData.h EnergyBarrierData.cpp EnergyBarrierData.h ChellData.cpp ChellData.h)
 
 target_link_libraries(yaml-parser yaml-cpp)

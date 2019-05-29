@@ -257,6 +257,7 @@ public:
                     moved_on_air = true;    // Se movio en X estando en el aire
             }
         }
+
         float diff_y = chell->getPositionY() - chell_init_y;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
         CPPUNIT_ASSERT_GREATER(chell_init_x, chell->getPositionX());
@@ -330,5 +331,7 @@ public:
     }
 
 };
+
+// todo: TEST TELETRANSPORTAR Y VER LAS VELOCIDADES ?
 
 #endif //PORTAL_TESTCHELL_H

@@ -28,6 +28,7 @@ public:
     }
 
     void testFixedWidthAndHeight() {
+        cout << endl << "TEST STAGE";
         cout << endl << "TEST ancho y alto de escenario fijo: ";
         stage->step();
         CPPUNIT_ASSERT_EQUAL(stage->getHeight(), height);

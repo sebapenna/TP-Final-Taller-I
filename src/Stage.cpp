@@ -26,26 +26,6 @@ Stage::Stage(size_t width, size_t height) : _width(width), _height(height) {
     piso_fixture.density = BLOCK_DENSITY;
 
     piso_body->CreateFixture(&piso_fixture);
-
-    /* Configurar bloques roca */
-
-    /* Configurar bloques metal */
-
-    /* Configurar bloques metal diagonal */
-
-    /* Configurar rocas */
-
-    /* Configurar botones */
-
-    /* Configurar compuertas */
-
-    /* Configurar acido */
-
-    /* Configurar emisores energia */
-
-    /* Configurar receptor energia */
-
-    /* Configurar barreras energia */
 }
 
 Stage::~Stage() {

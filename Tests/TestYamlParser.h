@@ -20,6 +20,10 @@ class TestYamlParser : public CppUnit::TestFixture {
         CPPUNIT_TEST( testParseAcid );
         CPPUNIT_TEST( testParseButton );
         CPPUNIT_TEST( testParseGate );
+        CPPUNIT_TEST( testParseEnergyTransmitter );
+        CPPUNIT_TEST( testParseEnergyReceiver );
+        CPPUNIT_TEST( testParseEnergyBarrier );
+        CPPUNIT_TEST( testParseChell );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -57,7 +61,7 @@ public:
 
     void testParseRockBlocks() {
         cout << endl << "TEST datos bloques roca: ";
-        auto data_vector = parser->loadRockBlocks();
+        auto data_vector = parser->loadRockBlocksData();
         CPPUNIT_ASSERT_EQUAL(_width, data_vector[0].getWidth());
         CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getHeight());
         CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[0].getX());
@@ -82,7 +86,7 @@ public:
 
     void testParseMetalBlocks() {
         cout << endl << "TEST datos bloques metal: ";
-        auto data_vector = parser->loadMetalBlocks();
+        auto data_vector = parser->loadMetalBlocksData();
         CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getWidth());
         CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getHeight());
         CPPUNIT_ASSERT_EQUAL((float) 5, data_vector[0].getX());
@@ -97,7 +101,7 @@ public:
 
     void testParseMetalDiagonalBlocks() {
         cout << endl << "TEST datos bloques metal diagonal: ";
-        auto data_vector = parser->loadMetalDiagonalBlock();
+        auto data_vector = parser->loadMetalDiagonalBlockData();
         CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getWidth());
         CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getHeight());
         CPPUNIT_ASSERT_EQUAL((float) 10, data_vector[0].getX());
@@ -128,11 +132,9 @@ public:
     void testParseRock() {
         cout << endl << "TEST datos rocas: ";
         auto data_vector = parser->loadRockData();
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, data_vector[0].getId());
         CPPUNIT_ASSERT_EQUAL((float) 30, data_vector[0].getX());
         CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, data_vector[1].getId());
         CPPUNIT_ASSERT_EQUAL((float) -30, data_vector[1].getX());
         CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
         cout << "OK";
@@ -168,9 +170,73 @@ public:
         CPPUNIT_ASSERT_EQUAL((size_t) 0, data_vector[0].getId());
         CPPUNIT_ASSERT_EQUAL((float) 60, data_vector[0].getX());
         CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        auto buttons_needed = data_vector[0].getButtonsNeeded();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, buttons_needed[0]);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, buttons_needed[1]);
+        CPPUNIT_ASSERT_EQUAL((size_t) 2, buttons_needed.size());
+        auto e_receiver_needed = data_vector[0].getEnergyReceiversNeeded();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, e_receiver_needed[0]);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, e_receiver_needed.size());
 
         CPPUNIT_ASSERT_EQUAL((size_t) 1, data_vector[1].getId());
         CPPUNIT_ASSERT_EQUAL((float) -60, data_vector[1].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        buttons_needed = data_vector[1].getButtonsNeeded();
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, buttons_needed[0]);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, buttons_needed.size());
+        e_receiver_needed = data_vector[1].getEnergyReceiversNeeded();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, e_receiver_needed[0]);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, e_receiver_needed[1]);
+        CPPUNIT_ASSERT_EQUAL((size_t) 2, e_receiver_needed.size());
+        cout << "OK";
+    }
+
+    void testParseEnergyTransmitter() {
+        cout << endl << "TEST datos transmisor energia: ";
+        auto data_vector = parser->loadEnergyTransmitterData();
+        CPPUNIT_ASSERT_EQUAL((float) 70, data_vector[0].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+
+        CPPUNIT_ASSERT_EQUAL((float) -70, data_vector[1].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        cout << "OK";
+    }
+
+    void testParseEnergyReceiver() {
+        cout << endl << "TEST datos receptor energia: ";
+        auto data_vector = parser->loadEnergyReceiverData();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, data_vector[0].getId());
+        CPPUNIT_ASSERT_EQUAL((float) 80, data_vector[0].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, data_vector[1].getId());
+        CPPUNIT_ASSERT_EQUAL((float) -80, data_vector[1].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        cout << "OK";
+    }
+
+    void testParseEnergyBarrier() {
+        cout << endl << "TEST datos barrera energia: ";
+        auto data_vector = parser->loadEnergyBarrierData();
+        CPPUNIT_ASSERT_EQUAL((float) 90, data_vector[0].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        CPPUNIT_ASSERT_EQUAL(O_V, data_vector[0].getOrientation());
+
+        CPPUNIT_ASSERT_EQUAL((float) -90, data_vector[1].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        CPPUNIT_ASSERT_EQUAL(O_H, data_vector[1].getOrientation());
+        cout << "OK";
+    }
+
+    void testParseChell() {
+        cout << endl << "TEST datos chell: ";
+        auto data_vector = parser->loadChellData();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, data_vector[0].getId());
+        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[0].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, data_vector[1].getId());
+        CPPUNIT_ASSERT_EQUAL((float) 10, data_vector[1].getX());
         CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
         cout << "OK";
     }

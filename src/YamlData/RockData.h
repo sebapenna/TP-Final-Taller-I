@@ -6,14 +6,11 @@
 
 class RockData {
 private:
-    size_t _id;
     float _x;
     float _y;
 
 public:
-    RockData(const size_t& id, const float& x, const float& y);
-
-    size_t getId() const;
+    RockData(const float& x, const float& y);
 
     float getX() const;
 

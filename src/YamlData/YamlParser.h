@@ -2,6 +2,7 @@
 #define PORTAL_YAMLPARSER_H
 
 #include <string>
+#include <vector>
 #include "yaml-cpp/yaml.h"
 #include "StageData.h"
 #include "RockBlockData.h"
@@ -11,6 +12,10 @@
 #include "AcidData.h"
 #include "ButtonData.h"
 #include "GateData.h"
+#include "EnergyTransmitterData.h"
+#include "EnergyReceiverData.h"
+#include "EnergyBarrierData.h"
+#include "ChellData.h"
 
 class YamlParser {
 private:
@@ -23,11 +28,11 @@ public:
 
     size_t loadBoxSize();
 
-    std::vector<RockBlockData> loadRockBlocks();
+    std::vector<RockBlockData> loadRockBlocksData();
 
-    std::vector<MetalBlockData> loadMetalBlocks();
+    std::vector<MetalBlockData> loadMetalBlocksData();
 
-    std::vector<MetalDiagonalBlockData> loadMetalDiagonalBlock();
+    std::vector<MetalDiagonalBlockData> loadMetalDiagonalBlockData();
 
     std::vector<RockData> loadRockData();
 
@@ -35,14 +40,15 @@ public:
 
     std::vector<ButtonData> loadButtonData();
 
-
     std::vector<GateData> loadGateData();
-//
-//    std::vector<EnergyTransmitterData> loadEnergyTransmitterData();
-//
-//    std::vector<EnergyReceiverData> loadEnergyReceiverData();
-//
-//    std::vector<EnergyBarrierData> loadEnergyBarrierData();
+
+    std::vector<EnergyTransmitterData> loadEnergyTransmitterData();
+
+    std::vector<EnergyReceiverData> loadEnergyReceiverData();
+
+    std::vector<EnergyBarrierData> loadEnergyBarrierData();
+
+    std::vector<ChellData> loadChellData();
 };
 
 

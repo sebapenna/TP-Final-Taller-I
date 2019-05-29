@@ -10,6 +10,14 @@ private:
 
 public:
     explicit Game(const std::string &config_file);
+
+    // run
+    // addPlayer
+    // deletePlayer
+    // send/recv data
+    // atributo: cola protocol
+    // translateProtocol
+    // => llamar metodo stage
 };
 
 

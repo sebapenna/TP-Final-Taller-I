@@ -7,6 +7,10 @@ void GateData::addButtonNeeded(const size_t &id) {
     _buttons_needed.push_back(id);
 }
 
+void GateData::addEnergyReceiverNeeded(const size_t &id) {
+    _energy_receivers_needed.push_back(id);
+}
+
 size_t GateData::getId() const {
     return _id;
 }
@@ -21,4 +25,8 @@ float GateData::getY() const {
 
 const std::vector<size_t> &GateData::getButtonsNeeded() const {
     return _buttons_needed;
+}
+
+const std::vector<size_t> &GateData::getEnergyReceiversNeeded() const {
+    return _energy_receivers_needed;
 }

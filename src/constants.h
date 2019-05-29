@@ -3,6 +3,9 @@
 
 #include <cstdint>
 
+
+// todo: CONFIGURACIONES A UN YAML
+
 /* Orientaciones cara diagonal bloque metal diagonal */
 #define O_NE    (uint8_t) 0 /* Noreste*/
 #define O_NO    (uint8_t) 1 /* Noroeste*/
@@ -14,6 +17,8 @@
 #define O_S   (uint8_t) 7 /* Sur */
 #define O_O (uint8_t) 8 /* Oeste */
 #define O_E (uint8_t) 9 /* Este */
+#define O_V (uint8_t) 10 /* Vertical */
+#define O_H (uint8_t) 11 /* Horizontal */
 
 /* Box2D */
 #define GRAVITY_X   0.0f
@@ -44,6 +49,12 @@
 #define BLOCK_DENSITY   1
 
 /* Path YAML */
+//#ifdef DEBUG_MODE
+//    #define YAML_TEST_PATH "./"
+//#elif
+//#define YAML_TEST_PATH "/etc/portal/"
+//#endif
+// gcc -DDEBUG_MODE
 #define YAML_TEST_PATH "/home/seba/Escritorio/Portal/Tests/"
 #define YAML_PATH   "/home/seba/Escritorio/Portal/src/"
 
