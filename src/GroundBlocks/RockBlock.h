@@ -6,8 +6,6 @@
 class RockBlock: public Block {
 
 public:
-    explicit RockBlock(b2Body *body);
-
     void createPortal(uint8_t ray_orientation) override;
 };
 

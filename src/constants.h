@@ -44,6 +44,24 @@
 #define CHELL_HEIGHT  2
 #define CHELL_DENSITY   1
 
+/* Coniguracion Rock */
+#define ROCK_WIDTH  2
+#define ROCK_HEIGHT  2
+#define ROCK_DENSITY    1
+
+/* Coniguracion Acid */
+#define ACID_WIDTH  2
+#define ACID_HEIGHT  0.5
+#define ACID_FRICTION    100    // Cuerpo se frene en acido
+#define ACID    "acid"
+
+/* Configuracion Button */
+#define BUTTON_WIDTH  2
+#define BUTTON_HEIGHT  0.5
+#define BUTTON_FRICTION    0
+#define PRESSED (uint8_t) 0
+#define NOT_PRESSED   (uint8_t) 1
+
 /* Configuracion Bloques */
 #define BLOCK_FRICTION  0
 #define BLOCK_DENSITY   1

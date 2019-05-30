@@ -20,10 +20,8 @@ add_library(portal-src
         GroundBlocks/MetalBlock.cpp
         GroundBlocks/MetalDiagonalBlock.cpp
         GroundBlocks/RockBlock.cpp
-        Obstacles/Acid.cpp
         Obstacles/Button.cpp
         Obstacles/Gate.cpp
-        Obstacles/Obstacle.h
         Obstacles/Rock.cpp
         Stage.cpp
         )

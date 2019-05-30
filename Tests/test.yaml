@@ -1,3 +1,4 @@
+# NO ES UN ARCHIVO DE REFERENCIA, SOLO PARA PROBAR VALORES
 world:  # Centrado en x=0, y=width/2
   width: &width  100
   height: &height 60

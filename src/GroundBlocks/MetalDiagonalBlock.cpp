@@ -1,10 +1,7 @@
 #include "MetalDiagonalBlock.h"
 #include "src/exceptions.h"
 
-MetalDiagonalBlock::MetalDiagonalBlock(b2Body *body, uint8_t orientation)
-:Block(body) {
-    _orientation = orientation;
-}
+MetalDiagonalBlock::MetalDiagonalBlock(uint8_t o) :_orientation(o) { }
 
 void MetalDiagonalBlock::createPortal(uint8_t ray_orientation) {
     uint8_t o_portal = 0;

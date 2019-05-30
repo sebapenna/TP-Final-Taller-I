@@ -5,8 +5,6 @@
 
 class MetalBlock: public Block {
 public:
-    explicit MetalBlock(b2Body *body);
-
     void createPortal(uint8_t ray_orientation) override;
 };
 

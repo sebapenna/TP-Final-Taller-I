@@ -8,7 +8,7 @@ Stage::Stage(const std::string &config_file) {
     YamlParser config(config_file);
 
     // Configuracion world
-    WorldData stage_data = config.loadWorldData();
+    WorldData world_data = config.loadWorldData();
 
     // Configuracion largo box
     size_t box_side_length = config.loadBoxSize();
@@ -104,27 +104,33 @@ Stage::Stage(const std::string &config_file) {
 
 
     // initializeStage(todos los vectores)
-//    _stage = new World(stage_data.getWidth(), stage_data.getHeight());
-//world.createBlocks
-// world.createRocks
-//world.createAcid
-//world.createButton
+    _world = new World(world_data.getWidth(), world_data.getHeight());
+    for (auto &it : rock_blocks_data_vector)
+        _world->createRockBlock(it.getWidth(), it.getHeight(), it.getX(),
+                it.getY());
+
+    for (auto &it : metal_blocks_data_vector)
+        _world->createMetalBlock(it.getWidth(), it.getHeight(), it.getX(),
+                it.getY());
+
+    for (auto &it : metal_diagonal_blocks_data_vector)
+        _world->createMetalDiagonalBlock(it.getWidth(), it.getHeight(),
+                it.getX(), it.getY(), it.getOrientation());
+
+    for (auto &it : rocks_vector)
+        _world->createRock(it.getX(), it.getY());
+
+    for (auto &it : acid_vector)
+        _world->createAcid(it.getX(), it.getY());
+
+    for (auto &it : buttons_vector)
+        _world->createButton(it.getId(), it.getX(), it.getY());
+
 //world.createGate
 //world.createBarrier
 
-    /* Configurar bloques roca */
-
-    /* Configurar bloques metal */
-
-    /* Configurar bloques metal diagonal */
-
-    /* Configurar rocas */
-
-    /* Configurar botones */
 
     /* Configurar compuertas */
-
-    /* Configurar acido */
 
     /* Configurar emisores energia */
 

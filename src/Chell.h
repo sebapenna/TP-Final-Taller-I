@@ -22,8 +22,6 @@ public:
 
     Chell(unsigned int id, b2Body *body);
 
-    const unsigned int getId() const;
-
     float getPositionX();
 
     float getPositionY();

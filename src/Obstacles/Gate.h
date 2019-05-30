@@ -1,10 +1,7 @@
 #ifndef TP_FINAL_COMPUERTA_H
 #define TP_FINAL_COMPUERTA_H
 
-
-#include "Obstacle.h"
-
-class Gate: public Obstacle {
+class Gate {
 private:
     bool _open;
 

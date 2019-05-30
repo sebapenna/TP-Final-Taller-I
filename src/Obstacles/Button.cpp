@@ -1,23 +1,35 @@
 #include "Button.h"
+#include "../constants.h"
 
-Button::Button(b2Body *body) {
+Button::Button(const size_t id, b2Body *body) : _id(id) {
     _body = body;
+    _state = NOT_PRESSED;
     _activated = false;
 }
 
 void Button::activate() {
-    _activated = true;
+    _state = PRESSED;
 }
 
 void Button::deactivate() {
-    _activated = false;
+    _state = NOT_PRESSED;
 }
 
 bool Button::isActivated() {
     return _activated;
 }
 
-Button &Button::operator=(Button &&other) {
-    this->_activated = other._activated;
-    return *this;
+const size_t Button::getId() const {
+    return _id;
+}
+
+void Button::updateState() {
+    switch (_state) {
+        case PRESSED:
+            _activated = true;
+            break;
+        case NOT_PRESSED:
+            _activated = false;
+            break;
+    }
 }

@@ -6,11 +6,6 @@
 
 class Block {
 protected:
-    b2Body *_body;
-
-    explicit Block(b2Body *body);
-
-    ~Block();
 
 public:
     // Metodo define si el bloque es capaz de establecer un portal

@@ -1,8 +1,7 @@
 #include "EnergyTransmitter.h"
 #include "src/exceptions.h"
 
-EnergyTransmitter::EnergyTransmitter(b2Body *body, uint8_t direction)
-: Block(body) {
+EnergyTransmitter::EnergyTransmitter(b2Body *body, uint8_t direction)  {
     _direction = direction;
 }
 

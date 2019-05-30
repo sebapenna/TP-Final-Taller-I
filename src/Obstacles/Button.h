@@ -1,14 +1,17 @@
 #ifndef TP_FINAL_BOTON_H
 #define TP_FINAL_BOTON_H
 
-#include "Obstacle.h"
+#include "Box2D/Box2D.h"
 
-class Button: public Obstacle {
+class Button {
 private:
+    b2Body *_body;
+    const size_t _id;
+    uint8_t _state;
     bool _activated;
 
 public:
-    Button(b2Body *body);
+    Button(const size_t id, b2Body *body);
 
     void activate();
 
@@ -16,7 +19,9 @@ public:
 
     bool isActivated();
 
-    Button& operator=(Button &&other);
+    void updateState();
+
+    const size_t getId() const;
 };
 
 

@@ -1,12 +1,16 @@
 #include <cppunit/extensions/TestFactoryRegistry.h>
-#include <cppunit/ui/text/TestRunner.h>
 #include <cppunit/extensions/HelperMacros.h>
+#include <cppunit/ui/text/TestRunner.h>
 #include "TestWorld.h"
 #include "TestChell.h"
+#include "TestRock.h"
+#include "TestButton.h"
 #include "TestYamlParser.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION( TestWorld );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestChell );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestRock );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestButton );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
 
 using CppUnit::TestFactoryRegistry;

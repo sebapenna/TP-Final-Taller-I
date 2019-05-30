@@ -43,6 +43,7 @@ private:
 public:
     void setUp() {
         world = new World(width, height);
+        world->createRockBlock(100, 4, 0, -2);  // Piso
         world->createChell(chell_init_x, chell_init_y, 0);
         chell = world->getChell(0);
     }
@@ -54,7 +55,6 @@ public:
     void testCreateChell() {
         cout << endl << endl << "TESTS CHELL";
         cout << endl << "TEST crear correctamente: ";
-        CPPUNIT_ASSERT_EQUAL(chell->getId(), (uint) 0);
         CPPUNIT_ASSERT_EQUAL(chell->getPositionX(), chell_init_x);
         CPPUNIT_ASSERT_EQUAL(chell->getPositionY(), chell_init_y);
         cout << "OK";
@@ -333,5 +333,9 @@ public:
 };
 
 // todo: TEST TELETRANSPORTAR Y VER LAS VELOCIDADES ?
+
+//todo: test chocar con pared, saltar a otra superficie, etc.
+
+//todo: test caminar en diagonal cuando choca con triangulo
 
 #endif //PORTAL_TESTCHELL_H

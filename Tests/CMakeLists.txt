@@ -12,6 +12,6 @@ add_executable(tests
 #        ../src/Chell.cpp
 #        ../src/ContactListener.cpp
 #        ../src/exceptions.h
-        TestYamlParser.h)
+        TestYamlParser.h TestRock.h TestButton.h)
 
 target_link_libraries(tests cppunit portal-src)

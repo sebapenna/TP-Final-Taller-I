@@ -9,7 +9,7 @@ private:
     uint8_t _orientation;   // todo: necesario?
 
 public:
-    MetalDiagonalBlock(b2Body *body, uint8_t orientation);
+    explicit MetalDiagonalBlock(uint8_t orientation);
 
     void createPortal(uint8_t ray_orientation) override;
 };

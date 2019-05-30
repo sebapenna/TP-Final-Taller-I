@@ -9,10 +9,6 @@ Chell::Chell(unsigned int id, b2Body *body) : _id(id){
     _jump = false;
 }
 
-const unsigned int Chell::getId() const {
-    return _id;
-}
-
 float Chell::getPositionX() {
     return  _body->GetPosition().x;
 }

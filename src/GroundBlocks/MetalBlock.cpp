@@ -3,10 +3,6 @@
 #include "MetalBlock.h"
 #include "src/exceptions.h"
 
-MetalBlock::MetalBlock(b2Body *body) : Block(body) {
-
-}
-
 /* Orientacion del portal sera opuesta a sentido rayo*/
 void MetalBlock::createPortal(uint8_t ray_orientation) {
     uint8_t o_portal = 0;
