@@ -11,6 +11,10 @@ private:
 
 public:
     EnergyBall(b2Body *body, uint8_t direction);
+
+    const float getPositionX();
+
+    const float getPositiony();
 };
 
 

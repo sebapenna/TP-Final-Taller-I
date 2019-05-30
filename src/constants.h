@@ -73,9 +73,17 @@
 #define ENRG_RECV_HEIGHT  2
 #define ENRG_RECV_FRICTION    0
 
+/* Configuracion Energy Transmitter */
+#define ENRG_TRANSM_WIDTH  2
+#define ENRG_TRANSM_HEIGHT  2
+#define ENRG_TRANSM_FRICTION    0
+
 /* Configuracion Bloques */
 #define BLOCK_FRICTION  0
 #define BLOCK_DENSITY   1
+
+/* Tiempo EnergyTransmitter */
+#define TIME_TO_RELEASE 10
 
 /* Path YAML */
 //#ifdef DEBUG_MODE

@@ -80,6 +80,12 @@ public:
             const std::vector<size_t>& energy_receiver_needed);
 
     void createEnergyReceiver(const size_t& id, const float& x, const float& y);
+
+    void createEnergyTransmitter(const float &x, const float &y,
+                                 const uint8_t &direction);
+
+    // source_body es el body del tranmitter donde se origino la EnergyBall
+    void createEnergyBall(b2Body *source_body, const uint8_t &direction);
 };
 
 

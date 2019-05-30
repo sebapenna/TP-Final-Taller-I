@@ -106,7 +106,9 @@ vector<GateData> YamlParser::loadGateData() {
 vector<EnergyTransmitterData> YamlParser::loadEnergyTransmitterData() {
     vector<EnergyTransmitterData> e_transm_data_vector;
     for (auto &it : _config["energy_transmitter"].as<vector<Node>>()) {
-        EnergyTransmitterData data(it["x"].as<float>(), it["y"].as<float>());
+        EnergyTransmitterData data(it["x"].as<float>(),
+                                   it["y"].as<float>(),
+                                   it["direction"].as<string>());
         e_transm_data_vector.push_back(data);
     }
     return std::move(e_transm_data_vector);

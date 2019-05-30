@@ -196,9 +196,19 @@ public:
         auto data_vector = parser->loadEnergyTransmitterData();
         CPPUNIT_ASSERT_EQUAL((float) 70, data_vector[0].getX());
         CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        CPPUNIT_ASSERT_EQUAL(O_N, data_vector[0].getDirection());
 
         CPPUNIT_ASSERT_EQUAL((float) -70, data_vector[1].getX());
         CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        CPPUNIT_ASSERT_EQUAL(O_S, data_vector[1].getDirection());
+
+        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[2].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[2].getY());
+        CPPUNIT_ASSERT_EQUAL(O_E, data_vector[2].getDirection());
+
+        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[3].getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[3].getY());
+        CPPUNIT_ASSERT_EQUAL(O_O, data_vector[3].getDirection());
         cout << "OK";
     }
 

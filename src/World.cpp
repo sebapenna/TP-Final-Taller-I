@@ -1,12 +1,12 @@
 #include <iostream>
+#include "yaml-cpp/yaml.h"
 #include "World.h"
 #include "constants.h"
 #include "ContactListener.h"
-#include "yaml-cpp/yaml.h"
-#include "Stage.h"
 #include "GroundBlocks/RockBlock.h"
 #include "GroundBlocks/MetalBlock.h"
 #include "GroundBlocks/MetalDiagonalBlock.h"
+#include "EnergyBlocks/EnergyTransmitter.h"
 
 World::World(size_t width, size_t height) : _width(width), _height(height) {
     b2Vec2 gravity(GRAVITY_X, GRAVITY_Y);
@@ -205,6 +205,14 @@ void World::createEnergyReceiver(const size_t &id, const float &x,
     _energy_receivers.insert({id, e_recv});
 }
 
+void World::createEnergyTransmitter(const float &x, const float &y,
+                                    const uint8_t &direction) {
+    auto body = createStaticBox(x, y, ENRG_TRANSM_WIDTH, ENRG_TRANSM_HEIGHT,
+                                ENRG_TRANSM_FRICTION);
+    auto *e_transm = new EnergyTransmitter(nullptr, direction);
+    body->SetUserData(e_transm);
+}
+
 void World::createChell(const float &x, const float &y, size_t id) {
 //    todo: restitution necesaria ? => puede hacer sdl
     auto body = createDynamicBox(x, y, CHELL_WIDTH, CHELL_HEIGHT,
@@ -212,5 +220,16 @@ void World::createChell(const float &x, const float &y, size_t id) {
     auto *chell = new Chell(id, body);
     body->SetUserData(chell);
     _chells.insert({id, chell});
+}
+
+void World::createEnergyBall(b2Body *source_body, const uint8_t &direction) {
+    // todo: create DISPARO
+    // todo: setear x e y sum/res el ancho del body, sabiendo la orientacion
+    float x = 0;
+    float y = 0;
+    auto body = createDynamicBox(x,y,CHELL_WIDTH, CHELL_HEIGHT,
+            CHELL_DENSITY);
+    auto *energy_ball = new EnergyBall(body, direction);
+    body->SetUserData(energy_ball);
 }
 
