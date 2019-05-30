@@ -5,6 +5,8 @@
 #include "Chell.h"
 #include "Obstacles/Rock.h"
 #include "Obstacles/Button.h"
+#include "Obstacles/Gate.h"
+#include "EnergyBlocks/EnergyReceiver.h"
 #include <vector>
 #include <map>
 
@@ -16,8 +18,8 @@ private:
     std::map<size_t, Chell*> _chells;    //todo: ->vector y flagDead en chell
     std::vector<Rock*> _rocks; //todo: ->vector y flagDead
     std::map<size_t, Button*> _buttons; //todo: ->vector
-    // _gates
-    // _barrier
+    std::map<size_t, Gate*> _gates; //todo: ->vector
+    std::map<size_t, EnergyReceiver*> _energy_receivers; //todo: ->vector
     // _portals ?
     // _pin_tools ?
     // _energy_balls ?
@@ -52,6 +54,10 @@ public:
 
     const std::map<size_t, Button *> &getButtons() const;
 
+    const std::map<size_t, Gate *> &getGates() const;
+
+    const std::map<size_t, EnergyReceiver *> &getEnergyReceivers() const;
+
     void createChell(const float &x, const float &y, size_t id);
 
     void createRockBlock(const float& width, const float& height,
@@ -68,6 +74,12 @@ public:
     void createAcid(const float& x, const float& y);
 
     void createButton(const size_t& id, const float& x, const float& y);
+
+    void createGate(const size_t& id, const float& x, const float& y,
+            const std::vector<size_t>& buttons_needed,
+            const std::vector<size_t>& energy_receiver_needed);
+
+    void createEnergyReceiver(const size_t& id, const float& x, const float& y);
 };
 
 

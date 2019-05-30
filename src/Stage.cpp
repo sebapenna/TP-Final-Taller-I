@@ -126,11 +126,9 @@ Stage::Stage(const std::string &config_file) {
     for (auto &it : buttons_vector)
         _world->createButton(it.getId(), it.getX(), it.getY());
 
-//world.createGate
-//world.createBarrier
-
-
-    /* Configurar compuertas */
+    for (auto &it : gates_vector)
+        _world->createGate(it.getId(), it.getX(), it.getY(),
+                it.getButtonsNeeded(), it.getEnergyReceiversNeeded());
 
     /* Configurar emisores energia */
 

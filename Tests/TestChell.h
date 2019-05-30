@@ -2,7 +2,6 @@
 #define PORTAL_TESTCHELL_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include "../Box2D/Box2D.h"
 #include "src/World.h"
 #include "../src/constants.h"
 #include "../src/exceptions.h"

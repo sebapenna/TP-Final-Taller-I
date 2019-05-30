@@ -5,13 +5,17 @@
 #include "TestChell.h"
 #include "TestRock.h"
 #include "TestButton.h"
+#include "TestEnergyReceiver.h"
 #include "TestYamlParser.h"
+#include "TestGate.h"
 
+CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestWorld );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestChell );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestRock );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestButton );
-CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyReceiver );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestGate );
 
 using CppUnit::TestFactoryRegistry;
 

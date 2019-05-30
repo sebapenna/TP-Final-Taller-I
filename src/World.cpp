@@ -42,14 +42,26 @@ const std::map<size_t, Button *> &World::getButtons() const {
 }
 
 
+const std::map<size_t, Gate *> &World::getGates() const {
+    return _gates;
+}
+
+const std::map<size_t, EnergyReceiver *> &World::getEnergyReceivers() const {
+    return _energy_receivers;
+}
+
 /************************ Step ************************/
 void World::step() {
     _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
+    // Orden de acciones: primero las que su estado afectan a otros
     for (auto &button : _buttons)
         button.second->updateState();
-    for (auto & _chell : _chells)
-        _chell.second->move();
-    // Aplicar update/move de todos los cuerpos
+    for (auto &gate : _gates)
+        gate.second->updateState();
+    for (auto &energy_receiver : _energy_receivers)
+        energy_receiver.second->updateState();
+    for (auto & chell : _chells)
+        chell.second->move();
 }
 
 /************************ Create Bodies ************************/
@@ -166,9 +178,31 @@ void World::createAcid(const float &x, const float &y) {
 void World::createButton(const size_t &id, const float &x, const float &y) {
    auto body = createStaticBox(x, y, BUTTON_WIDTH, BUTTON_HEIGHT,
            BUTTON_FRICTION);
-   auto *button = new Button(id, body);
+   auto *button = new Button();
    body->SetUserData(button);
    _buttons.insert({id, button});
+}
+
+void World::createGate(const size_t &id, const float &x, const float &y,
+                       const std::vector<size_t>& buttons_needed,
+                       const std::vector<size_t>& energy_receiver_needed) {
+    auto body = createStaticBox(x, y, GATE_WIDTH, GATE_HEIGHT, GATE_FRICTION);
+    auto *gate = new Gate();
+    for (auto &button_id : buttons_needed)
+        gate->addButtonNeeded(_buttons.at(button_id));
+    for (auto &e_rec_id : energy_receiver_needed)
+        gate->addEnergyReceiverNeeded(_energy_receivers.at(e_rec_id));
+    body->SetUserData(gate);
+    _gates.insert({id, gate});
+}
+
+void World::createEnergyReceiver(const size_t &id, const float &x,
+                                 const float &y) {
+    auto body = createStaticBox(x, y, ENRG_RECV_WIDTH, ENRG_RECV_HEIGHT,
+            ENRG_RECV_FRICTION);
+    auto *e_recv = new EnergyReceiver();
+    body->SetUserData(e_recv);
+    _energy_receivers.insert({id, e_recv});
 }
 
 void World::createChell(const float &x, const float &y, size_t id) {
@@ -179,5 +213,4 @@ void World::createChell(const float &x, const float &y, size_t id) {
     body->SetUserData(chell);
     _chells.insert({id, chell});
 }
-
 

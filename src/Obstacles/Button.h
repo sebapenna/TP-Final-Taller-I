@@ -2,17 +2,14 @@
 #define TP_FINAL_BOTON_H
 
 #include "Box2D/Box2D.h"
+#include "../constants.h"
 
 class Button {
 private:
-    b2Body *_body;
-    const size_t _id;
-    uint8_t _state;
-    bool _activated;
+    uint8_t _state = NOT_ACTIVATED;
+    bool _activated = false;
 
 public:
-    Button(const size_t id, b2Body *body);
-
     void activate();
 
     void deactivate();
@@ -20,8 +17,6 @@ public:
     bool isActivated();
 
     void updateState();
-
-    const size_t getId() const;
 };
 
 

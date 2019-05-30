@@ -59,8 +59,19 @@
 #define BUTTON_WIDTH  2
 #define BUTTON_HEIGHT  0.5
 #define BUTTON_FRICTION    0
-#define PRESSED (uint8_t) 0
-#define NOT_PRESSED   (uint8_t) 1
+
+#define ACTIVATED (uint8_t) 0
+#define NOT_ACTIVATED   (uint8_t) 1
+
+/* Configuracion Gate */
+#define GATE_WIDTH  2
+#define GATE_HEIGHT  4
+#define GATE_FRICTION    0
+
+/* Configuracion Energy Receiver */
+#define ENRG_RECV_WIDTH  2
+#define ENRG_RECV_HEIGHT  2
+#define ENRG_RECV_FRICTION    0
 
 /* Configuracion Bloques */
 #define BLOCK_FRICTION  0

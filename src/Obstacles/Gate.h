@@ -1,20 +1,24 @@
 #ifndef TP_FINAL_COMPUERTA_H
 #define TP_FINAL_COMPUERTA_H
 
+#include "../EnergyBlocks/EnergyReceiver.h"
+#include "Button.h"
+#include <vector>
+
 class Gate {
 private:
-    bool _open;
+    bool _open = false;
+    std::vector<Button*> _buttons_needed;
+    std::vector<EnergyReceiver*>  _energy_reveivers_needed;
 
 public:
-    Gate();
-
-    void open();
-
-    void close();
-
     bool isOpen();
 
-    Gate& operator=(Gate &&other);
+    void addButtonNeeded(Button* button);
+
+    void addEnergyReceiverNeeded(EnergyReceiver* e_receiver);
+
+    void updateState();
 };
 
 

@@ -1,18 +1,21 @@
 #ifndef TP_FINAL_RECEPTOR_ENERGIA_H
 #define TP_FINAL_RECEPTOR_ENERGIA_H
 
-#include "src/GroundBlocks/Block.h"
+#include "../constants.h"
 
-class EnergyReceiver: public Block {
+class EnergyReceiver {
 private:
-    bool _activated;
+    uint8_t _state = NOT_ACTIVATED;
+    bool _activated = false;
 
 public:
-    void createPortal(uint8_t orientacion_rayo) override;
+    void createPortal(uint8_t orientacion_rayo);
 
-    void receiveEnergyBall();
+    void activate();
 
     bool isActivated();
+
+    void updateState();
 };
 
 

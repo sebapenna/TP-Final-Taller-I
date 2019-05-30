@@ -16,7 +16,6 @@ add_library(portal-src
         World.cpp
         EnergyBlocks/EnergyReceiver.cpp
         EnergyBlocks/EnergyTransmitter.cpp
-        GroundBlocks/Block.cpp
         GroundBlocks/MetalBlock.cpp
         GroundBlocks/MetalDiagonalBlock.cpp
         GroundBlocks/RockBlock.cpp

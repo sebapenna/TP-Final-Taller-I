@@ -1,22 +1,27 @@
 #include "Gate.h"
 
-void Gate::open() {
-    _open = true;
-}
-
-void Gate::close() {
-    _open = false;
-}
-
 bool Gate::isOpen() {
     return _open;
 }
 
-Gate::Gate() {
-    _open = false;
+void Gate::addButtonNeeded(Button *button) {
+    _buttons_needed.push_back(button);
 }
 
-Gate &Gate::operator=(Gate &&other) {
-    _open = other._open;
-    return *this;
+void Gate::addEnergyReceiverNeeded(EnergyReceiver *e_receiver) {
+    _energy_reveivers_needed.push_back(e_receiver);
+}
+
+void Gate::updateState() {
+    for (auto &it : _buttons_needed)
+        if (!it->isActivated()) {
+            _open = false;
+            return;
+        }
+    for (auto &it : _energy_reveivers_needed)
+        if (!it->isActivated()) {
+            _open = false;
+            return;
+        }
+    _open = true;   // Estaban todos activos
 }

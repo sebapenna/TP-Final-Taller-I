@@ -1,11 +1,12 @@
 #ifndef TP_FINAL_BLOQUE_METAL_H
 #define TP_FINAL_BLOQUE_METAL_H
 
-#include "Block.h"
 
-class MetalBlock: public Block {
+#include <cstdint>
+
+class MetalBlock {
 public:
-    void createPortal(uint8_t ray_orientation) override;
+    void createPortal(uint8_t ray_orientation);
 };
 
 
