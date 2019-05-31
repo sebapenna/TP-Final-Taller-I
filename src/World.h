@@ -7,6 +7,8 @@
 #include "Obstacles/Button.h"
 #include "Obstacles/Gate.h"
 #include "EnergyBlocks/EnergyReceiver.h"
+#include "EnergyBlocks/EnergyTransmitter.h"
+#include "EnergyBall.h"
 #include <vector>
 #include <map>
 
@@ -20,9 +22,10 @@ private:
     std::map<size_t, Button*> _buttons; //todo: ->vector
     std::map<size_t, Gate*> _gates; //todo: ->vector
     std::map<size_t, EnergyReceiver*> _energy_receivers; //todo: ->vector
+    std::vector<EnergyTransmitter*> _energy_transmitters;
+    std::vector<EnergyBall*> _energy_balls;
     // _portals ?
     // _pin_tools ?
-    // _energy_balls ?
     // todo: YAML::Node _config => configuracion de constants.h
 
     // box_width y box_height seran los valores que se usaran en setAsBox
@@ -58,6 +61,8 @@ public:
 
     const std::map<size_t, EnergyReceiver *> &getEnergyReceivers() const;
 
+    const std::vector<EnergyBall *> &getEnergyBalls() const;
+
     void createChell(const float &x, const float &y, size_t id);
 
     void createRockBlock(const float& width, const float& height,
@@ -85,7 +90,7 @@ public:
                                  const uint8_t &direction);
 
     // source_body es el body del tranmitter donde se origino la EnergyBall
-    void createEnergyBall(b2Body *source_body, const uint8_t &direction);
+    void createEnergyBall(EnergyTransmitter *energy_transm);
 };
 
 

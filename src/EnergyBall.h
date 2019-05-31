@@ -14,7 +14,7 @@ public:
 
     const float getPositionX();
 
-    const float getPositiony();
+    const float getPositionY();
 };
 
 

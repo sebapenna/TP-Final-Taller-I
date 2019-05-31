@@ -107,7 +107,7 @@ public:
             world->step();
             if (x_step == 0)
                 x_step = chell->getPositionX() - chell_init_x;
-            float diff_x = x_step * i - chell->getPositionX();
+            float diff_x = abs(x_step * i) - abs(chell->getPositionX());
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
         }
         cout << "OK";
@@ -121,7 +121,7 @@ public:
             world->step();
             if (x_step == 0)
                 x_step = chell->getPositionX() - chell_init_x;
-            float diff_x = x_step * i - chell->getPositionX();
+            float diff_x = abs(x_step * i) - abs(chell->getPositionX());
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
         }
         cout << "OK";

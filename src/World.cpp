@@ -1,4 +1,3 @@
-#include <iostream>
 #include "yaml-cpp/yaml.h"
 #include "World.h"
 #include "constants.h"
@@ -50,16 +49,23 @@ const std::map<size_t, EnergyReceiver *> &World::getEnergyReceivers() const {
     return _energy_receivers;
 }
 
+const std::vector<EnergyBall *> &World::getEnergyBalls() const {
+    return _energy_balls;
+}
+
 /************************ Step ************************/
 void World::step() {
     _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
     // Orden de acciones: primero las que su estado afectan a otros
+    for (auto &energy_transmitter : _energy_transmitters)
+        if (energy_transmitter->releaseEnergyBall())
+            this->createEnergyBall(energy_transmitter);
     for (auto &button : _buttons)
         button.second->updateState();
-    for (auto &gate : _gates)
-        gate.second->updateState();
     for (auto &energy_receiver : _energy_receivers)
         energy_receiver.second->updateState();
+    for (auto &gate : _gates)
+        gate.second->updateState();
     for (auto & chell : _chells)
         chell.second->move();
 }
@@ -209,8 +215,50 @@ void World::createEnergyTransmitter(const float &x, const float &y,
                                     const uint8_t &direction) {
     auto body = createStaticBox(x, y, ENRG_TRANSM_WIDTH, ENRG_TRANSM_HEIGHT,
                                 ENRG_TRANSM_FRICTION);
-    auto *e_transm = new EnergyTransmitter(nullptr, direction);
+    auto *e_transm = new EnergyTransmitter(body, direction);
     body->SetUserData(e_transm);
+    _energy_transmitters.push_back(e_transm);
+}
+
+void World::createEnergyBall(EnergyTransmitter *energy_transm) {
+    auto *source_body = energy_transm->getBody();
+    float x = source_body->GetPosition().x;
+    float y = source_body->GetPosition().y;
+    switch (energy_transm->getDirection()) {
+        case O_N:
+            y += (ENRG_TRANSM_HEIGHT + ENRG_BALL_RADIUS);
+            break;
+        case O_S:
+            y -= (ENRG_TRANSM_HEIGHT + ENRG_BALL_RADIUS);
+            break;
+        case O_E:
+            x += (ENRG_TRANSM_WIDTH + ENRG_BALL_RADIUS);
+            break;
+        case O_O:
+            x -= (ENRG_TRANSM_WIDTH + ENRG_BALL_RADIUS);
+            break;
+        default:    // No existe este caso
+            break;
+    }
+    b2BodyDef body_def;
+    body_def.position.Set(x, y);
+    body_def.type = b2_dynamicBody;
+    body_def.gravityScale = 0;  // Cuerpo no afectado por gravedad
+
+    b2CircleShape shape;
+    shape.m_radius = ENRG_BALL_RADIUS;
+
+    b2FixtureDef fixture;
+    fixture.shape = &shape;
+    fixture.density = ENRG_BALL_DENSITY;
+
+    b2Body *body = _world->CreateBody(&body_def);
+
+    body->CreateFixture(&fixture);
+
+    auto *energy_ball = new EnergyBall(body, energy_transm->getDirection());
+    body->SetUserData(energy_ball);
+    _energy_balls.push_back(energy_ball);
 }
 
 void World::createChell(const float &x, const float &y, size_t id) {
@@ -220,16 +268,5 @@ void World::createChell(const float &x, const float &y, size_t id) {
     auto *chell = new Chell(id, body);
     body->SetUserData(chell);
     _chells.insert({id, chell});
-}
-
-void World::createEnergyBall(b2Body *source_body, const uint8_t &direction) {
-    // todo: create DISPARO
-    // todo: setear x e y sum/res el ancho del body, sabiendo la orientacion
-    float x = 0;
-    float y = 0;
-    auto body = createDynamicBox(x,y,CHELL_WIDTH, CHELL_HEIGHT,
-            CHELL_DENSITY);
-    auto *energy_ball = new EnergyBall(body, direction);
-    body->SetUserData(energy_ball);
 }
 

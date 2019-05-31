@@ -77,13 +77,17 @@
 #define ENRG_TRANSM_WIDTH  2
 #define ENRG_TRANSM_HEIGHT  2
 #define ENRG_TRANSM_FRICTION    0
+#define TIME_TO_RELEASE 10
+
+/* Configuracion Energy Ball */
+#define ENRG_BALL_RADIUS    2
+#define ENRG_BALL_DENSITY    1
+#define ENRG_BALL_FORCE 100
 
 /* Configuracion Bloques */
 #define BLOCK_FRICTION  0
 #define BLOCK_DENSITY   1
 
-/* Tiempo EnergyTransmitter */
-#define TIME_TO_RELEASE 10
 
 /* Path YAML */
 //#ifdef DEBUG_MODE
