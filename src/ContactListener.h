@@ -10,7 +10,7 @@ private:
 public:
     explicit ContactListener(b2World *world);
 
-    virtual void beginContact(b2Contact *contact);
+    void BeginContact(b2Contact *contact) override;
 
 //    virtual void endContact(b2Contact *contact);
 

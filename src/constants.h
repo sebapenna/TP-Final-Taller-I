@@ -4,6 +4,13 @@
 #include <cstdint>
 
 
+/*
+ *  IMPORTANTE
+ *
+ *  TODAS LOS ANCHOS Y ALTOS SON DE MEDIO CUERPO
+ *
+ * */
+
 // todo: CONFIGURACIONES A UN YAML
 
 /* Orientaciones cara diagonal bloque metal diagonal */
@@ -29,7 +36,7 @@
 #define STEP_ITERATIONS (1 / TIME_STEP)
 
 /* Movimiento */
-#define MOVE_FORCE  50
+#define MOVE_FORCE  100
 #define MOVE_LEFT   (uint8) 0
 #define MOVE_RIGHT  (uint8) 1
 #define MOVE_STOP   (uint8) 2
@@ -40,42 +47,42 @@
 #define DELTA_POS   (float) 0.02    // Error posicion (x e y)
 
 /* Configuracion Chell */
-#define CHELL_WIDTH  2
-#define CHELL_HEIGHT  2
+#define CHELL_HALF_WIDTH  2
+#define CHELL_HALF_HEIGHT  2
 #define CHELL_DENSITY   1
 
 /* Coniguracion Rock */
-#define ROCK_WIDTH  2
-#define ROCK_HEIGHT  2
+#define ROCK_HALF_WIDTH  2
+#define ROCK_HALF_HEIGHT  2
 #define ROCK_DENSITY    1
 
 /* Coniguracion Acid */
-#define ACID_WIDTH  2
-#define ACID_HEIGHT  0.5
+#define ACID_HALF_WIDTH  2
+#define ACID_HALF_HEIGHT  0.5
 #define ACID_FRICTION    100    // Cuerpo se frene en acido
 #define ACID    "acid"
 
 /* Configuracion Button */
-#define BUTTON_WIDTH  2
-#define BUTTON_HEIGHT  0.5
+#define BUTTON_HALF_WIDTH  2
+#define BUTTON_HALF_HEIGHT  0.5
 #define BUTTON_FRICTION    0
 
 #define ACTIVATED (uint8_t) 0
 #define NOT_ACTIVATED   (uint8_t) 1
 
 /* Configuracion Gate */
-#define GATE_WIDTH  2
-#define GATE_HEIGHT  4
+#define GATE_HALF_WIDTH  2
+#define GATE_HALF_HEIGHT  4
 #define GATE_FRICTION    0
 
 /* Configuracion Energy Receiver */
-#define ENRG_RECV_WIDTH  2
-#define ENRG_RECV_HEIGHT  2
+#define ENRG_RECV_HALF_WIDTH  2
+#define ENRG_RECV_HALF_HEIGHT  2
 #define ENRG_RECV_FRICTION    0
 
 /* Configuracion Energy Transmitter */
-#define ENRG_TRANSM_WIDTH  2
-#define ENRG_TRANSM_HEIGHT  2
+#define ENRG_TRANSM_HALF_WIDTH  2
+#define ENRG_TRANSM_HALF_HEIGHT  2
 #define ENRG_TRANSM_FRICTION    0
 #define TIME_TO_RELEASE 10
 
@@ -88,6 +95,10 @@
 #define BLOCK_FRICTION  0
 #define BLOCK_DENSITY   1
 
+/* Configuracion Energy Barrier */
+#define BARRIER_HALF_LENGTH  4
+#define BARRIER_HALF_WIDTH   1
+#define BARRIER "barrier"
 
 /* Path YAML */
 //#ifdef DEBUG_MODE

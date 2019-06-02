@@ -3,7 +3,6 @@
 
 EnergyBall::EnergyBall(b2Body *body, uint8_t direction) {
     _body = body;
-    _direction = direction;
     int x_impulse = 0, y_impulse = 0;
     switch (direction) {
         case O_N:

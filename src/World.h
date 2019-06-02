@@ -30,13 +30,13 @@ private:
 
     // box_width y box_height seran los valores que se usaran en setAsBox
     b2Body *createStaticBox(const float &x, const float &y,
-                            const float &box_width,
-                            const float &box_height,
+                            const float &box_half_width,
+                            const float &box_half_height,
                             const float &friction);
 
     b2Body *createDynamicBox(const float &x, const float &y,
-                            const float &box_width,
-                            const float &box_height,
+                            const float &box_half_width,
+                            const float &box_half_height,
                             const float &density);
 
 public:
@@ -65,12 +65,16 @@ public:
 
     void createChell(const float &x, const float &y, size_t id);
 
+    /* WIDT Y HEIGHT ES DE EL TOTAL DEL CUERPO */
     void createRockBlock(const float& width, const float& height,
             const float& x, const float& y);
 
     void createMetalBlock(const float& width, const float& height,
             const float& x, const float& y);
 
+    // X e Y deben ser la posicion de la punta inferior izquierda, pensando
+    // el bloque diagonal como un cuadrado completo, sin importar la
+    // orientacion del mismo
     void createMetalDiagonalBlock(const float& width, const float& height,
             const float& x, const float& y, const uint8_t& orientation);
 
@@ -89,8 +93,11 @@ public:
     void createEnergyTransmitter(const float &x, const float &y,
                                  const uint8_t &direction);
 
-    // source_body es el body del tranmitter donde se origino la EnergyBall
+    // El parametro es el transmisor origen
     void createEnergyBall(EnergyTransmitter *energy_transm);
+
+    void createEnergyBarrier(const float& x, const float& y,
+            const uint8_t& direction);
 };
 
 

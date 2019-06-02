@@ -1,5 +1,5 @@
-#ifndef PORTAL_TESTENERGYBALL_H
-#define PORTAL_TESTENERGYBALL_H
+#ifndef PORTAL_TESTENERGYBALLANDENERGYTRANSMITTER_H
+#define PORTAL_TESTENERGYBALLANDENERGYTRANSMITTER_H
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "src/World.h"
@@ -8,8 +8,8 @@
 using std::cout;
 using std::endl;
 
-class TestEnergyBall : public CppUnit::TestFixture {
-CPPUNIT_TEST_SUITE(TestEnergyBall);
+class TestEnergyBallAndEnergyTransmitter : public CppUnit::TestFixture {
+CPPUNIT_TEST_SUITE(TestEnergyBallAndEnergyTransmitter);
         CPPUNIT_TEST(testCreateNorth);
         CPPUNIT_TEST(testCreateSouth);
         CPPUNIT_TEST(testCreateEast);
@@ -41,7 +41,7 @@ public:
     }
 
     void testCreateNorth() {
-        cout << endl << endl << "TEST ENERGY BALL";
+        cout << endl << endl << "TEST ENERGY BALL AND ENERGY TRANSMITTER";
         cout << endl << "TEST crear correctamente en direccion Norte: ";
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
@@ -56,7 +56,7 @@ public:
         CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         auto energy_ball = vec[0];
         CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getPositionX());
-        float new_y = e_transm_y + ENRG_TRANSM_HEIGHT + ENRG_BALL_RADIUS;
+        float new_y = e_transm_y + ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS;
         CPPUNIT_ASSERT_EQUAL(new_y, energy_ball->getPositionY());
         cout << "OK";
     }
@@ -76,7 +76,7 @@ public:
         CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         auto energy_ball = vec[0];
         CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getPositionX());
-        float new_y = e_transm_y - ENRG_TRANSM_HEIGHT - ENRG_BALL_RADIUS;
+        float new_y = e_transm_y - ENRG_TRANSM_HALF_HEIGHT - ENRG_BALL_RADIUS;
         CPPUNIT_ASSERT_EQUAL(new_y, energy_ball->getPositionY());
         cout << "OK";
     }
@@ -96,7 +96,7 @@ public:
         CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         auto energy_ball = vec[0];
         CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getPositionY());
-        float new_x = e_transm_x + ENRG_TRANSM_WIDTH + ENRG_BALL_RADIUS;
+        float new_x = e_transm_x + ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS;
         CPPUNIT_ASSERT_EQUAL(new_x, energy_ball->getPositionX());
         cout << "OK";
     }
@@ -116,7 +116,7 @@ public:
         CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         auto energy_ball = vec[0];
         CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getPositionY());
-        float new_x = e_transm_x - ENRG_TRANSM_WIDTH - ENRG_BALL_RADIUS;
+        float new_x = e_transm_x - ENRG_TRANSM_HALF_WIDTH - ENRG_BALL_RADIUS;
         CPPUNIT_ASSERT_EQUAL(new_x, energy_ball->getPositionX());
         cout << "OK";
     }
@@ -329,4 +329,4 @@ public:
 
 
 };
-#endif //PORTAL_TESTENERGYBALL_H
+#endif //PORTAL_TESTENERGYBALLANDENERGYTRANSMITTER_H

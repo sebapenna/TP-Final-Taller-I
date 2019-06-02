@@ -114,6 +114,9 @@ Stage::Stage(const std::string &config_file) {
         _world->createEnergyTransmitter(it.getX(), it.getY(),
                 it.getDirection());
 
-    /* Configurar barreras energia */
+    for (auto &it : e_barrier_vector)
+        _world->createEnergyBarrier(it.getX(), it.getY(), it.getOrientation());
 
+    for (auto &it : chells_vector)
+        _world->createChell(it.getX(), it.getY(), it.getId());
 }

@@ -29,6 +29,12 @@ CPPUNIT_TEST_SUITE( TestChell );
         CPPUNIT_TEST( testJumpAndMoveLeft );
         CPPUNIT_TEST( testMoveRightAndJump );
         CPPUNIT_TEST( testMoveLeftAndJump );
+        CPPUNIT_TEST( testCollideWithWall );
+        CPPUNIT_TEST( testCollideWithRoof );
+        CPPUNIT_TEST( testMoveRightCollideWithDiagonalBlock );
+        CPPUNIT_TEST( testMoveLeftCollideWithDiagonalBlock );
+        CPPUNIT_TEST( testMoveRightAndFallOverDiagonalBlock );
+        CPPUNIT_TEST( testMoveLeftAndFallOverDiagonalBlock );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -42,7 +48,7 @@ private:
 public:
     void setUp() {
         world = new World(width, height);
-        world->createRockBlock(100, 4, 0, -2);  // Piso
+        world->createRockBlock(1000, 4, 0, -2);  // Piso
         world->createChell(chell_init_x, chell_init_y, 0);
         chell = world->getChell(0);
     }
@@ -195,7 +201,7 @@ public:
         cout << endl << "TEST saltar sobre una superficie: ";
         bool jumped = false;
         chell->jump();
-        for (int i = 0; i < STEP_ITERATIONS; i++) {
+        for (int i = 0; i < 10000; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped = true;
@@ -207,7 +213,7 @@ public:
     void testJumpOnAir() {
         cout << endl << "TEST no es posible saltar en el aire: ";
         chell->jump();
-        for (int i = 0; i < STEP_ITERATIONS; i++) {
+        for (int i = 0; i < 10000; i++) {
             world->step();
             try {
                 chell->jump();
@@ -246,7 +252,7 @@ public:
         cout << endl << "TEST saltar y moverse a la derecha en el aire: ";
         bool jumped = false, moved_on_air = false;
         chell->jump();
-        for (int i = 0; i < STEP_ITERATIONS; i++) {
+        for (int i = 0; i < 10000; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
                 if (!jumped)
@@ -256,7 +262,6 @@ public:
                     moved_on_air = true;    // Se movio en X estando en el aire
             }
         }
-
         float diff_y = chell->getPositionY() - chell_init_y;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
         CPPUNIT_ASSERT_GREATER(chell_init_x, chell->getPositionX());
@@ -269,7 +274,7 @@ public:
         cout << endl << "TEST saltar y moverse a la izquierda en el aire: ";
         bool jumped = false, moved_on_air = false;
         chell->jump();
-        for (int i = 0; i < STEP_ITERATIONS; i++) {
+        for (int i = 0; i < 10000; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
                 if (!jumped)
@@ -291,7 +296,7 @@ public:
         cout << endl << "TEST moverse a la derecha y saltar ";
         bool jumped = false, jumped_after_moving = false;
         chell->move_right();
-        for (int i = 0; i < STEP_ITERATIONS; i++) {
+        for (int i = 0; i < 10000; i++) {
             world->step();
             if (chell->getPositionX() > chell_init_x) {
                 if (!jumped) {
@@ -312,7 +317,7 @@ public:
         cout << endl << "TEST moverse a la izquierda y saltar ";
         bool jumped = false, jumped_after_moving = false;
         chell->move_left();
-        for (int i = 0; i < STEP_ITERATIONS; i++) {
+        for (int i = 0; i < 10000; i++) {
             world->step();
             if (chell->getPositionX() < chell_init_x) {
                 if (!jumped) {
@@ -329,12 +334,138 @@ public:
         cout << "OK";
     }
 
+    void testCollideWithWall() {
+        cout << endl << "TEST moverse y chocar con pared: ";
+        float b_width = 2, b_height = 60;
+        float b_x = chell_init_x + CHELL_HALF_WIDTH + b_width;
+        float b_y = b_height / 2;
+        world->createRockBlock(b_width, b_height, b_x, b_y);
+        chell->move_right();
+        for (int i = 0; i < STEP_ITERATIONS; ++i)
+            world->step();
+        CPPUNIT_ASSERT_GREATER(chell_init_x, chell->getPositionX());
+        float expected_pos = b_x - b_width/2 - CHELL_HALF_WIDTH;
+        CPPUNIT_ASSERT_LESS(expected_pos, chell->getPositionX());
+        float diff_y = chell->getPositionY() - chell_init_y;
+        CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
+        cout << "OK";
+    }
+
+    void testCollideWithRoof() {
+        cout << endl << "TEST saltar y chocar con superficie: ";
+        float b_width = 100;
+        float b_height = 2;
+        float b_x = 0;
+        float b_y = chell_init_y + CHELL_HALF_HEIGHT + b_height;
+        chell->jump();
+        float max_height = 0;
+        for (int i = 0; i < 10000; ++i) {   // Jump with no roof
+            world->step();
+            if (chell->getPositionY() > max_height)
+                max_height = chell->getPositionY();
+        }
+        world->createRockBlock(b_width, b_height, b_x, b_y);
+        chell->jump();
+        for (int i = 0; i < 10000; ++i) {   // Jump with roof
+            world->step();
+            CPPUNIT_ASSERT_LESS(max_height, chell->getPositionY());
+        }
+        cout << "OK";
+    }
+
+    void testMoveRightCollideWithDiagonalBlock() {
+        cout << endl << "TEST mover hacia derecha y caminar sobre diagonal: ";
+        float b_width = 2 * CHELL_HALF_WIDTH, b_height = 2 * CHELL_HALF_HEIGHT;
+        float b_x = chell_init_x + CHELL_HALF_WIDTH + 1;
+        float b_y = 0;
+        world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NO);
+        chell->move_right();
+        bool y_increased = false;
+        for (int i = 1; i < 2000; i++) {
+            world->step();
+            CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->getPositionX());
+            if ((chell->getPositionY() - DELTA_POS) > chell_init_y)
+                y_increased = true; // Subio por bloque diagonal
+        }
+        float diff_y = chell->getPositionY() - chell_init_y;
+        CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y); // Cayo al final del bloque
+        CPPUNIT_ASSERT(y_increased);
+        cout << "OK";
+    }
+
+    void testMoveLeftCollideWithDiagonalBlock() {
+        cout << endl << "TEST mover hacia izquierda y caminar sobre diagonal: ";
+        float b_width = 2 * CHELL_HALF_WIDTH, b_height = 2 * CHELL_HALF_HEIGHT;
+        float b_x = chell_init_x - CHELL_HALF_WIDTH - b_width - 1;
+        float b_y = 0;
+        world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NE);
+        chell->move_left();
+        bool y_increased = false;
+        for (int i = 1; i < 2000; i++) {
+            world->step();
+            CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->getPositionX());
+            if ((chell->getPositionY() - DELTA_POS) > chell_init_y)
+                y_increased = true; // Subio por bloque diagonal
+        }
+        float diff_y = chell->getPositionY() - chell_init_y;
+        CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y); // Cayo al final del bloque
+        CPPUNIT_ASSERT(y_increased);
+        cout << "OK";
+    }
+
+    void testMoveRightAndFallOverDiagonalBlock() {
+        cout << endl << "TEST mover hacia derecha y caer por bloque diagonal: ";
+        float b_width = 2 * CHELL_HALF_WIDTH, b_height = 2 * CHELL_HALF_HEIGHT;
+        float ground_width = 2 * b_width;
+        float ground_x = chell_init_x;
+        float ground_y = chell_init_y + (CHELL_HALF_HEIGHT * 2);
+        float b_x = ground_x + ground_width / 2;
+        float b_y = ground_y - b_height;
+        // Superficie donde probar
+        world->createRockBlock(ground_width, b_height, ground_x, ground_y);
+        world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NE);
+        float new_x = ground_x;
+        float new_y = ground_y + b_height / 2 + CHELL_HALF_HEIGHT;
+        chell->teletransport(new_x, new_y);
+        chell->move_right();
+        for (int i = 1; i < 200; i++) {
+            world->step();
+            CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->getPositionX());
+        }
+        float diff_y = chell->getPositionY() - chell_init_y;
+        CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
+        cout << "OK";
+    }
+
+    void testMoveLeftAndFallOverDiagonalBlock() {
+        cout << endl << "TEST mover hacia izquierda y caer por bloque "
+                        "diagonal: ";
+        float b_width = 2 * CHELL_HALF_WIDTH, b_height = 2 * CHELL_HALF_HEIGHT;
+        float ground_width = 2 * b_width;
+        float ground_x = chell_init_x;
+        float ground_y = chell_init_y + (CHELL_HALF_HEIGHT * 2);
+        float b_x = ground_x - ground_width / 2;
+        float b_y = ground_y - b_height;
+        // Superficie donde probar
+        world->createRockBlock(ground_width, b_height, ground_x, ground_y);
+        world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NO);
+        float new_x = ground_x;
+        float new_y = ground_y + b_height / 2 + CHELL_HALF_HEIGHT;
+        chell->teletransport(new_x, new_y);
+        chell->move_left();
+        for (int i = 1; i < 200; i++) {
+            world->step();
+            if (abs(chell->getPositionX()) > DELTA_POS) // Evito falla por delta
+                CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->getPositionX());
+        }
+        float diff_y = chell->getPositionY() - chell_init_y;
+        CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
+        cout << "OK";
+    }
+
 };
 
 // todo: TEST TELETRANSPORTAR Y VER LAS VELOCIDADES ?
 
-//todo: test chocar con pared, saltar a otra superficie, etc.
-
-//todo: test caminar en diagonal cuando choca con triangulo
 
 #endif //PORTAL_TESTCHELL_H

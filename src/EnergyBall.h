@@ -7,7 +7,6 @@
 class EnergyBall {
 private:
     b2Body *_body;
-    uint8_t _direction;
 
 public:
     EnergyBall(b2Body *body, uint8_t direction);
