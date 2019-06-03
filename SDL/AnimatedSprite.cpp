@@ -6,19 +6,17 @@
 #include "AnimatedSprite.h"
 
 
-
-AnimatedSprite::AnimatedSprite(const std::string &filename, Renderer &renderer,
+// PUEDO HACER UN SPRITE FACTORY
+AnimatedSprite::AnimatedSprite(SDL_Texture* texture, Renderer &renderer,
                                int width, int height,
                                int startX, int startY,
-                               int totalColumns, int amountSprites, int finalX, int finalY,
-                               int finalWidth, int finalHeight, int offSetX, int offSetY) :
-        Sprite(filename, renderer),
+                               int totalColumns, int amountSprites, int offSetX, int offSetY) :
+        Sprite(texture, renderer),
         width(width), height(height),
         startX(startX), startY(startY),
         totalColumns(totalColumns), amountSprites(amountSprites), offSetX(offSetX), offSetY(offSetY),
         currentSprite(1), i(0), j(0), currentTime(1), timePerSprite(DEFAULT_TIME_PER_SPRITE) {
     this->setSourceRect(startX, startY, width, height);
-    this->setDestRect(finalX, finalY, finalWidth, finalHeight);
 }
 
 
@@ -44,14 +42,14 @@ void AnimatedSprite::moveNextSprite() {
     this->setSourceXY(i * width + startX + offSetX * i, j * height + startY + offSetY * j);
 }
 
-void AnimatedSprite::drawMovingSprite() {
+void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect) {
     this->moveNextSprite();
-    this->draw();
+    this->draw(camera, dstRect);
 }
 
-void AnimatedSprite::drawMovingSprite(double angle, SDL_RendererFlip flip) {
+void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect, SDL_RendererFlip flip) {
     this->moveNextSprite();
-    this->draw(angle, flip);
+    this->draw(camera, dstRect, flip);
 }
 
 void AnimatedSprite::setTimePerSprite(Uint32 t) {

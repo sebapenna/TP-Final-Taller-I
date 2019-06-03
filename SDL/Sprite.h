@@ -9,31 +9,27 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 #include "Renderer.h"
+#include "Camera.h"
 
 class Sprite {
 private:
     SDL_Texture* texture;
     Renderer& renderer;
     SDL_Rect srcRect;
-    SDL_Rect dstRect;
 
 public:
-    Sprite(const std::string &filename, Renderer &renderer);
-    ~Sprite();
-    void draw();
-    void draw(double angle, SDL_RendererFlip flip);
-    void setSourceXY(int x, int y);
-    void setDestXY(int x, int y);
-    void setSourceRect(int x, int y, int w, int h);
-    void setDestRect(int x, int y, int w, int h);
+    Sprite(SDL_Texture* texture, Renderer &renderer);
+    void draw(Camera& camera, SDL_Rect* dstRect);
+    void draw(Camera &camera, SDL_Rect* dstRect, SDL_RendererFlip flip);
     void setSourceW(int w);
-    void setDestW(int w);
     void setTexture(SDL_Texture *newTexture);
     void setAlphaMod(Uint8 alpha);
-    int getDestX();
-    int getDestY();
-private:
-    SDL_Texture *loadTexture(const std::string &basicString);
+    SDL_Rect* getSrc();
+    SDL_Texture* getTexture();
+
+protected:
+    void setSourceXY(int x, int y);
+    void setSourceRect(int x, int y, int w, int h);
 };
 
 
