@@ -60,7 +60,6 @@
 #define ACID_HALF_WIDTH  2
 #define ACID_HALF_HEIGHT  0.5
 #define ACID_FRICTION    100    // Cuerpo se frene en acido
-#define ACID    "acid"
 
 /* Configuracion Button */
 #define BUTTON_HALF_WIDTH  2
@@ -90,6 +89,7 @@
 #define ENRG_BALL_RADIUS    2
 #define ENRG_BALL_DENSITY    1
 #define ENRG_BALL_FORCE 100
+#define ENERGY_BALL_MAX_LIFETIME 5
 
 /* Configuracion Bloques */
 #define BLOCK_FRICTION  0
@@ -98,7 +98,23 @@
 /* Configuracion Energy Barrier */
 #define BARRIER_HALF_LENGTH  4
 #define BARRIER_HALF_WIDTH   1
-#define BARRIER "barrier"
+
+/* Class Names*/
+#define ENERGY_RECEIVER "EnergyReceiver"
+#define ENERGY_TRANSMITTER "EnergyTranmistter"
+#define METAL_BLOCK "MetalBlock"
+#define METAL_DIAGONAL_BLOCK "MetalDiagonalBlock"
+#define ROCK_BLOCK "RockBlock"
+#define BUTTON "Button"
+#define GATE "Button"
+#define ROCK "Rock"
+#define ACID    "Acid"
+#define ENERGY_BARRIER "EnergyBarrier"
+#define CHELL   "Chell"
+#define ENERGY_BALL "EnergyBall"
+#define PORTAL  "Portal"
+#define PIN_TOOL    "PinTool"
+#define CAKE    "Cake"
 
 /* Path YAML */
 //#ifdef DEBUG_MODE

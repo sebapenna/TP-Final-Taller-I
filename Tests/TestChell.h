@@ -420,8 +420,8 @@ public:
         float ground_x = chell_init_x;
         float ground_y = chell_init_y + (CHELL_HALF_HEIGHT * 2);
         float b_x = ground_x + ground_width / 2;
-        float b_y = ground_y - b_height;
-        // Superficie donde probar
+        float b_y = ground_y - b_height / 2;
+//         Superficie donde probar
         world->createRockBlock(ground_width, b_height, ground_x, ground_y);
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NE);
         float new_x = ground_x;
@@ -445,7 +445,7 @@ public:
         float ground_x = chell_init_x;
         float ground_y = chell_init_y + (CHELL_HALF_HEIGHT * 2);
         float b_x = ground_x - ground_width / 2;
-        float b_y = ground_y - b_height;
+        float b_y = ground_y - b_height / 2;
         // Superficie donde probar
         world->createRockBlock(ground_width, b_height, ground_x, ground_y);
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NO);

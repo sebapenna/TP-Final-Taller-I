@@ -1,11 +1,11 @@
-#ifndef TP_FINAL_COMPUERTA_H
-#define TP_FINAL_COMPUERTA_H
+#ifndef PORTAL_COMPUERTA_H
+#define PORTAL_COMPUERTA_H
 
-#include "../EnergyBlocks/EnergyReceiver.h"
 #include "Button.h"
 #include <vector>
+#include <src/EnergyBlocks/EnergyReceiver.h>
 
-class Gate {
+class Gate: public Collidable {
 private:
     bool _open = false;
     std::vector<Button*> _buttons_needed;
@@ -19,7 +19,13 @@ public:
     void addEnergyReceiverNeeded(EnergyReceiver* e_receiver);
 
     void updateState();
+
+    const std::string getClassName() override;
+
+    void collideWith(Collidable *other) override;
+
+    void endCollitionWith(Collidable *other) override;
 };
 
 
-#endif //TP_FINAL_COMPUERTA_H
+#endif //PORTAL_COMPUERTA_H

@@ -1,5 +1,5 @@
 #include "EnergyBall.h"
-#include "constants.h"
+#include <src/constants.h>
 
 EnergyBall::EnergyBall(b2Body *body, uint8_t direction) {
     _body = body;
@@ -24,10 +24,31 @@ EnergyBall::EnergyBall(b2Body *body, uint8_t direction) {
     _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
 }
 
+bool EnergyBall::maxLifetameReached() {
+    _lifetime += TIME_STEP;
+    return _lifetime >= ENERGY_BALL_MAX_LIFETIME;
+}
+
 const float EnergyBall::getPositionX() {
     return _body->GetPosition().x;
 }
 
 const float EnergyBall::getPositionY() {
     return _body->GetPosition().y;
+}
+
+const std::string EnergyBall::getClassName() {
+    return ENERGY_BALL;
+}
+
+b2Body *EnergyBall::getBody() const {
+    return _body;
+}
+
+void EnergyBall::collideWith(Collidable *other) {
+
+}
+
+void EnergyBall::endCollitionWith(Collidable *other) {
+
 }

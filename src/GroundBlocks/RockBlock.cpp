@@ -1,7 +1,14 @@
 #include <algorithm>
 #include "RockBlock.h"
-#include "src/exceptions.h"
+#include <src/constants.h>
 
-void RockBlock::createPortal(uint8_t ray_orientation) {
-    throw BlockCantCreatePortalException();
+void RockBlock::collideWith(Collidable *other) {
+}
+
+const std::string RockBlock::getClassName() {
+    return ROCK_BLOCK;
+}
+
+void RockBlock::endCollitionWith(Collidable *other) {
+
 }

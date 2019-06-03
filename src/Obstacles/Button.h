@@ -1,10 +1,10 @@
-#ifndef TP_FINAL_BOTON_H
-#define TP_FINAL_BOTON_H
+#ifndef PORTAL_BOTON_H
+#define PORTAL_BOTON_H
 
-#include "Box2D/Box2D.h"
-#include "../constants.h"
+#include <src/constants.h>
+#include <src/Collidable.h>
 
-class Button {
+class Button: public Collidable {
 private:
     uint8_t _state = NOT_ACTIVATED;
     bool _activated = false;
@@ -17,7 +17,13 @@ public:
     bool isActivated();
 
     void updateState();
+
+    const std::string getClassName() override;
+
+    void collideWith(Collidable *other) override;
+
+    void endCollitionWith(Collidable *other) override;
 };
 
 
-#endif //TP_FINAL_BOTON_H
+#endif //PORTAL_BOTON_H

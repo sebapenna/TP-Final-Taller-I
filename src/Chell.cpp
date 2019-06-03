@@ -1,6 +1,6 @@
 #include "Chell.h"
-#include "constants.h"
-#include "exceptions.h"
+#include <src/constants.h>
+#include <src/exceptions.h>
 
 Chell::Chell(unsigned int id, b2Body *body) : _id(id){
     _body = body;
@@ -104,4 +104,15 @@ void Chell::move() {
     b2Vec2 impulse(x_impulse, y_impulse);
     _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
     updateJumpState();
+}
+
+void Chell::collideWith(Collidable *other) {
+}
+
+const std::string Chell::getClassName() {
+    return CHELL;
+}
+
+void Chell::endCollitionWith(Collidable *other) {
+
 }

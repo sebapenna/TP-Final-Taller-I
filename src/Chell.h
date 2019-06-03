@@ -1,9 +1,10 @@
 #ifndef PORTAL_CHELL_H
 #define PORTAL_CHELL_H
 
-#include "Box2D/Box2D.h"
+#include <Box2D/Box2D.h>
+#include "Collidable.h"
 
-class Chell {
+class Chell: public Collidable {
 private:
     b2Body *_body;
     const unsigned int _id;
@@ -19,7 +20,6 @@ private:
     int calculateXImpulse();
 
 public:
-
     Chell(unsigned int id, b2Body *body);
 
     float getPositionX();
@@ -38,6 +38,12 @@ public:
 
     // Metodo a llamar para que se aplique el movimiento seteado previamente
     void move();
+
+    const std::string getClassName() override;
+
+    void collideWith(Collidable *other) override;
+
+    void endCollitionWith(Collidable *other) override;
 };
 
 

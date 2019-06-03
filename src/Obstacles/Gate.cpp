@@ -25,3 +25,15 @@ void Gate::updateState() {
         }
     _open = true;   // Estaban todos activos
 }
+
+void Gate::collideWith(Collidable *other) {
+
+}
+
+const std::string Gate::getClassName() {
+    return GATE;
+}
+
+void Gate::endCollitionWith(Collidable *other) {
+
+}

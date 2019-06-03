@@ -1,9 +1,10 @@
-#ifndef TP_FINAL_ROCA_H
-#define TP_FINAL_ROCA_H
+#ifndef PORTAL_ROCA_H
+#define PORTAL_ROCA_H
 
-#include "Box2D/Box2D.h"
+#include <Box2D/Box2D.h>
+#include <src/Collidable.h>
 
-class Rock {
+class Rock: public Collidable {
 private:
     b2Body *_body;
 
@@ -14,7 +15,12 @@ public:
 
     float getPositionY();
 
+    const std::string getClassName() override;
+
+    void collideWith(Collidable *other) override;
+
+    void endCollitionWith(Collidable *other) override;
 };
 
 
-#endif //TP_FINAL_ROCA_H
+#endif //PORTAL_ROCA_H

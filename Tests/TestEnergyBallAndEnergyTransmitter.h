@@ -23,6 +23,7 @@ CPPUNIT_TEST_SUITE(TestEnergyBallAndEnergyTransmitter);
         CPPUNIT_TEST(testMovesSouthWithFixedSpeed);
         CPPUNIT_TEST(testMovesEastWithFixedSpeed);
         CPPUNIT_TEST(testMovesWestWithFixedSpeed);
+        CPPUNIT_TEST(testDiesAfterLifetimeReached);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -124,17 +125,25 @@ public:
     void testCreateMoreThanOne() {
         cout << endl << "TEST crear mas de una bola de energia: ";
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
+        size_t total_balls = 0;
+        bool ball_removed = false;
         for (int k = 0; k < 2; ++k) {
-            for (int j = 1; j < TIME_TO_RELEASE; ++j)
+            for (int j = 1; j < TIME_TO_RELEASE; ++j) {
                 for (int i = 0; i < STEP_ITERATIONS; ++i) {
                     world->step();
-                    auto vec = world->getEnergyBalls();
                 }
+                if (total_balls > 0 && world->getEnergyBalls().empty())
+                    // Se elimino una bola por el tiempo transcurrido
+                    ball_removed = true;
+            }
             for (int i = 0; i < STEP_ITERATIONS; ++i)
                 world->step(); // Step donde se crea EnergyBall
+            auto vec_size = world->getEnergyBalls().size();
+            if (vec_size == 1)
+                ++total_balls;
         }
-        auto vec = world->getEnergyBalls();
-        CPPUNIT_ASSERT_EQUAL((size_t) 2, vec.size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 2, total_balls);
+        CPPUNIT_ASSERT(ball_removed);
         cout << "OK";
     }
 
@@ -326,6 +335,28 @@ public:
         cout << "OK";
     }
 
+    void testDiesAfterLifetimeReached() {
+        cout << endl << "TEST muere despues de cierto tiempo: ";
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+            for (int i = 0; i < STEP_ITERATIONS; ++i) {
+                world->step();
+                auto vec = world->getEnergyBalls();
+                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
+            }
+        for (int i = 0; i < STEP_ITERATIONS; ++i)
+            world->step(); // Step donde se crea EnergyBall
+        size_t n_energy_balls = world->getEnergyBalls().size();
+        int n_bodies = world->getWorld()->GetBodyCount();
+        int iterations = ENERGY_BALL_MAX_LIFETIME / TIME_STEP;
+        for (int i = 0; i < iterations; ++i) {
+            world->step(); // Step donde se crea EnergyBall
+        }
+        // Testeo que se haya eliminado de vector y world de Box2D
+        CPPUNIT_ASSERT_LESS(n_energy_balls, world->getEnergyBalls().size());
+        CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
+        cout << "OK";
+    }
 
 
 };

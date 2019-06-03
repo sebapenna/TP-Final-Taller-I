@@ -1,18 +1,22 @@
-#ifndef TP_FINAL_BLOQUE_METAL_DIAGONAL_H
-#define TP_FINAL_BLOQUE_METAL_DIAGONAL_H
+#ifndef PORTAL_BLOQUE_METAL_DIAGONAL_H
+#define PORTAL_BLOQUE_METAL_DIAGONAL_H
 
 #include <cstdint>
-#include "../constants.h"
+#include <src/Collidable.h>
 
-class MetalDiagonalBlock {
+class MetalDiagonalBlock: public Collidable {
 private:
-    uint8_t _orientation;   // todo: necesario?
+    uint8_t _orientation;
 
 public:
     explicit MetalDiagonalBlock(uint8_t orientation);
 
-    void createPortal(uint8_t ray_orientation);
+    const std::string getClassName() override;
+
+    void collideWith(Collidable *other) override;
+
+    void endCollitionWith(Collidable *other) override;
 };
 
 
-#endif //TP_FINAL_BLOQUE_METAL_DIAGONAL_H
+#endif //PORTAL_BLOQUE_METAL_DIAGONAL_H

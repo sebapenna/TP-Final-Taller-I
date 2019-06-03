@@ -23,6 +23,6 @@ add_library(portal-src
         Obstacles/Gate.cpp
         Obstacles/Rock.cpp
         Stage.cpp
-        )
+        Collidable.h Obstacles/Acid.cpp Obstacles/Acid.h Obstacles/EnergyBarrier.cpp Obstacles/EnergyBarrier.h PinTool.cpp PinTool.h)
 
 target_link_libraries(portal-src Box2D yaml-parser)

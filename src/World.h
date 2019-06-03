@@ -63,6 +63,8 @@ public:
 
     const std::vector<EnergyBall *> &getEnergyBalls() const;
 
+    b2World *getWorld() const;
+
     void createChell(const float &x, const float &y, size_t id);
 
     /* WIDT Y HEIGHT ES DE EL TOTAL DEL CUERPO */

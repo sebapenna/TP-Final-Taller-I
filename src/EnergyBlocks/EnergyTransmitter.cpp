@@ -1,14 +1,8 @@
 #include "EnergyTransmitter.h"
-#include "src/exceptions.h"
-#include "../constants.h"
-#include "../World.h"
+#include <src/constants.h>
 
 EnergyTransmitter::EnergyTransmitter(b2Body *body, uint8_t direction) :
 _body(body), _direction(direction) { }
-
-void EnergyTransmitter::createPortal(uint8_t ray_orientaiton) {
-    throw BlockCantCreatePortalException();
-}
 
 bool EnergyTransmitter::releaseEnergyBall() {
     _time_elapsed += TIME_STEP;
@@ -25,4 +19,16 @@ b2Body *EnergyTransmitter::getBody() const {
 
 uint8_t EnergyTransmitter::getDirection() const {
     return _direction;
+}
+
+void EnergyTransmitter::collideWith(Collidable *other) {
+
+}
+
+const std::string EnergyTransmitter::getClassName() {
+    return ENERGY_TRANSMITTER;
+}
+
+void EnergyTransmitter::endCollitionWith(Collidable *other) {
+
 }

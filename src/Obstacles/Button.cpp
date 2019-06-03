@@ -1,5 +1,5 @@
+#include <src/Collidable.h>
 #include "Button.h"
-#include "../constants.h"
 
 void Button::activate() {
     _state = ACTIVATED;
@@ -22,4 +22,16 @@ void Button::updateState() {
             _activated = false;
             break;
     }
+}
+
+void Button::collideWith(Collidable *other) {
+
+}
+
+const std::string Button::getClassName() {
+    return BUTTON;
+}
+
+void Button::endCollitionWith(Collidable *other) {
+
 }

@@ -1,11 +1,16 @@
-#include "yaml-cpp/yaml.h"
+#include <src/EnergyBlocks/EnergyTransmitter.h>
+#include <src/GroundBlocks/MetalDiagonalBlock.h>
+#include <src/GroundBlocks/MetalBlock.h>
+#include <src/GroundBlocks/RockBlock.h>
+#include <src/Obstacles/EnergyBarrier.h>
+#include <src/Obstacles/Acid.h>
+#include <src/ContactListener.h>
+#include <src/constants.h>
+#include <yaml-cpp/yaml.h>
+#include <algorithm>
 #include "World.h"
-#include "constants.h"
-#include "ContactListener.h"
-#include "GroundBlocks/RockBlock.h"
-#include "GroundBlocks/MetalBlock.h"
-#include "GroundBlocks/MetalDiagonalBlock.h"
-#include "EnergyBlocks/EnergyTransmitter.h"
+
+using std::remove_if;
 
 World::World(size_t width, size_t height) : _width(width), _height(height) {
     b2Vec2 gravity(GRAVITY_X, GRAVITY_Y);
@@ -53,13 +58,27 @@ const std::vector<EnergyBall *> &World::getEnergyBalls() const {
     return _energy_balls;
 }
 
+b2World *World::getWorld() const {
+    return _world;
+}
+
+
 /************************ Step ************************/
 void World::step() {
     _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
     // Orden de acciones: primero las que su estado afectan a otros
     for (auto &energy_transmitter : _energy_transmitters)
-        if (energy_transmitter->releaseEnergyBall())
+        if (energy_transmitter->releaseEnergyBall()) {
             this->createEnergyBall(energy_transmitter);
+        }
+    for (auto &energy_ball : _energy_balls)
+        if (energy_ball->maxLifetameReached()) {
+            _world->DestroyBody(energy_ball->getBody());
+        }
+    // Lo elimino del vector
+    _energy_balls.erase(remove_if(_energy_balls.begin(), _energy_balls.end(),
+            [](EnergyBall* e) { return e->maxLifetameReached(); }),
+                    _energy_balls.end());
     for (auto &button : _buttons)
         button.second->updateState();
     for (auto &energy_receiver : _energy_receivers)
@@ -168,6 +187,8 @@ void World::createMetalDiagonalBlock(const float &width, const float &height,
     fixture.friction = BLOCK_FRICTION;
 
     body->CreateFixture(&fixture);
+
+    body->SetUserData(new MetalDiagonalBlock(orientation));
 }
 
 void World::createRock(const float &x, const float &y) {
@@ -179,7 +200,7 @@ void World::createRock(const float &x, const float &y) {
 
 void World::createAcid(const float &x, const float &y) {
     auto body = createStaticBox(x, y, ACID_HALF_WIDTH, ACID_HALF_HEIGHT, ACID_FRICTION);
-    body->SetUserData((void *) ACID);   // Suficiente que sea una macro
+    body->SetUserData(new Acid());   // Suficiente que sea una macro
 }
 
 void World::createButton(const size_t &id, const float &x, const float &y) {
@@ -288,7 +309,7 @@ void World::createEnergyBarrier(const float &x, const float &y,
             break;
     }
     auto body = createStaticBox(x, y , width, height, 0);   // Friction = 0
-    body->SetUserData((void *) BARRIER);
+    body->SetUserData(new EnergyBarrier());
 }
 
 

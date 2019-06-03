@@ -2,11 +2,15 @@
 #define TP_FINAL_BLOQUE_ROCA_H
 
 #include <cstdint>
+#include <src/Collidable.h>
 
-class RockBlock {
-
+class RockBlock: public Collidable {
 public:
-    void createPortal(uint8_t ray_orientation);
+    const std::string getClassName() override;
+
+    void collideWith(Collidable *other) override;
+
+    void endCollitionWith(Collidable *other) override;
 };
 
 
