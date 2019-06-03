@@ -15,6 +15,7 @@ add_library(sdldemo
         ChellAnimationView.cpp
         ChellAnimationView.h TextureFactory.cpp TextureFactory.h SpriteFactory.cpp SpriteFactory.h WorldView.cpp WorldView.h View.cpp View.h Camera.cpp Camera.h BlockView.cpp BlockView.h)
 
+
 # Agrego la carpeta con los headers autogenerados a los includes
 #message("Agregando '${PROJECT_BINARY_DIR}' como directorio de includes")
 #include_directories(${PROJECT_BINARY_DIR})
