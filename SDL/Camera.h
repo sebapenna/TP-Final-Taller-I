@@ -8,8 +8,9 @@
 class Camera {
 private:
     SDL_Rect camera_location;
+    SDL_Rect* chell_pos;
 public:
-    Camera(int x, int y, int w, int h);
+    Camera(int w, int h, SDL_Rect* chell_pos);
 
     void draw(SDL_Texture* texture, SDL_Rect* srcRect,SDL_Rect* dstRect, Renderer& renderer, SDL_RendererFlip flip=SDL_FLIP_NONE);
     void moveCameraLeft();

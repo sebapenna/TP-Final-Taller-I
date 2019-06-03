@@ -23,11 +23,15 @@ void ChellAnimationView::draw(Camera& camera) {
     }
 }
 
-void ChellAnimationView::moveToTheLeft() {
+void ChellAnimationView::moveToTheLeft(int x) {
+    SDL_Rect* nueva_pos = this->getDst();
+    this->setDestRect(nueva_pos->x - x, nueva_pos->y, nueva_pos->w, nueva_pos->h);
     this->state = runningLeft;
 }
 
-void ChellAnimationView::moveToTheRight() {
+void ChellAnimationView::moveToTheRight(int x) {
+    SDL_Rect* nueva_pos = this->getDst();
+    this->setDestRect(nueva_pos->x + x, nueva_pos->y, nueva_pos->w, nueva_pos->h);
     this->state = runningRight;
 }
 

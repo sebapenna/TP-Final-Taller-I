@@ -40,7 +40,7 @@ void WorldView::addView(View* view) {
     views.push_back(view);
 }
 
-void WorldView::addChell(View* chell) {
+void WorldView::addChell(ChellAnimationView* chell) {
     chells.push_back(chell);
 }
 

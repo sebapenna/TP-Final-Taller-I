@@ -7,13 +7,14 @@
 
 
 #include "Camera.h"
+#include "ChellAnimationView.h"
 #include <vector>
 
 class WorldView {
 private:
     Camera& camera;
     std::vector<View*> views;
-    std::vector<View*> chells;
+    std::vector<ChellAnimationView*> chells;
 
 public:
     WorldView(Camera& camera);
@@ -23,7 +24,7 @@ public:
     void moveCameraDown();
     void draw();
     void addView(View* view);
-    void addChell(View* chell);
+    void addChell(ChellAnimationView* chell);
 };
 
 

@@ -163,6 +163,33 @@ AnimatedSprite.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.s
 .PHONY : AnimatedSprite.cpp.s
 
+BlockView.o: BlockView.cpp.o
+
+.PHONY : BlockView.o
+
+# target to build an object file
+BlockView.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockView.cpp.o
+.PHONY : BlockView.cpp.o
+
+BlockView.i: BlockView.cpp.i
+
+.PHONY : BlockView.i
+
+# target to preprocess a source file
+BlockView.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockView.cpp.i
+.PHONY : BlockView.cpp.i
+
+BlockView.s: BlockView.cpp.s
+
+.PHONY : BlockView.s
+
+# target to generate assembly for a file
+BlockView.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockView.cpp.s
+.PHONY : BlockView.cpp.s
+
 Camera.o: Camera.cpp.o
 
 .PHONY : Camera.o
@@ -473,6 +500,9 @@ help:
 	@echo "... AnimatedSprite.o"
 	@echo "... AnimatedSprite.i"
 	@echo "... AnimatedSprite.s"
+	@echo "... BlockView.o"
+	@echo "... BlockView.i"
+	@echo "... BlockView.s"
 	@echo "... Camera.o"
 	@echo "... Camera.i"
 	@echo "... Camera.s"

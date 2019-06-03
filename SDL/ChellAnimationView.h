@@ -20,8 +20,8 @@ private:
 public:
     ChellAnimationView(SDL_Texture* texture, Renderer& renderer);
     void draw(Camera& camera);
-    void moveToTheLeft();
-    void moveToTheRight();
+    void moveToTheLeft(int x);
+    void moveToTheRight(int x);
     void stand();
     void fire();
 

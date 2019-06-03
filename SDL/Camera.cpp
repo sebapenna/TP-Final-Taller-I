@@ -3,17 +3,20 @@
 //
 
 #include "Camera.h"
+
 #define PIXELS_MOVE_CAMERA 10
 
-Camera::Camera(int x, int y, int w, int h){
-    camera_location.x = x;
-    camera_location.y = y;
+Camera::Camera(int w, int h, SDL_Rect* chell_pos) : chell_pos(chell_pos) {
+    camera_location.x = chell_pos->x - w/2;
+    camera_location.y = chell_pos->y - h/2;
     camera_location.w = w;
     camera_location.h = h;
 }
 
 void
 Camera::draw(SDL_Texture *texture, SDL_Rect *srcRect, SDL_Rect *dstRect, Renderer &renderer, SDL_RendererFlip flip) {
+    camera_location.x = chell_pos->x - camera_location.w/2;
+    camera_location.y = chell_pos->y - camera_location.h/2;
     SDL_Rect to_draw;
     to_draw.x =  dstRect->x - camera_location.x;
     to_draw.y =  dstRect->y - camera_location.y;

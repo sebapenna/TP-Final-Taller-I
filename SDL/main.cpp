@@ -47,19 +47,18 @@ int main(int argc, char** argv){
         TextureFactory factory;
         factory.init(renderer);
         std::string chell_file_name("chell");
-        Camera camera(200,200,1000,1000);
-        WorldView world(camera);
-        View* chell = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
+        ChellAnimationView* chell = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
         chell->setDestRect(200,200,201,220);
-        View* chell2 = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
+        Camera camera(1000, 1000, chell->getDst());
+        WorldView world(camera);
+        ChellAnimationView* chell2 = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
         chell2->setDestRect(-200,-100,201,220);
-        View* chell3 = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
+        ChellAnimationView* chell3 = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
         chell3->setDestRect(100,-100,201,220);
 
         world.addChell(chell);
         world.addChell(chell2);
         world.addChell(chell3);
-        // CAMARA CONOCE A RENDERER.
 
         while (true) {
             renderer.clearRender();
@@ -72,6 +71,12 @@ int main(int argc, char** argv){
                     }
                 } else if (e.type == SDL_KEYDOWN) {
                     switch (e.key.keysym.sym) {
+                        case SDLK_d:
+                            chell->moveToTheRight(10);
+                            break;
+                        case SDLK_a:
+                            chell->moveToTheLeft(10);
+                            break;
                         case SDLK_UP:
                             world.moveCameraUp();
                             break;
