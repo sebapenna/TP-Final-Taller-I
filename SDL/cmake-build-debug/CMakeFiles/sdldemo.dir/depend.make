@@ -9,8 +9,21 @@ CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.o: ../Sprite.h
 CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.o: ../View.h
 CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.o: ../Window.h
 
-CMakeFiles/sdldemo.dir/BlockView.cpp.o: ../BlockView.cpp
-CMakeFiles/sdldemo.dir/BlockView.cpp.o: ../BlockView.h
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: ../BlockViewMetal.cpp
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: ../BlockViewMetal.h
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: ../Camera.h
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: ../Renderer.h
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: ../Sprite.h
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: ../View.h
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: ../Window.h
+
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: ../BlockViewRock.cpp
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: ../BlockViewRock.h
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: ../Camera.h
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: ../Renderer.h
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: ../Sprite.h
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: ../View.h
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: ../Window.h
 
 CMakeFiles/sdldemo.dir/Camera.cpp.o: ../Camera.cpp
 CMakeFiles/sdldemo.dir/Camera.cpp.o: ../Camera.h

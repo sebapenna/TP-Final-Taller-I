@@ -9,6 +9,8 @@
 #include "ChellAnimationView.h"
 #include "TextureFactory.h"
 #include "WorldView.h"
+#include "BlockViewMetal.h"
+#include "BlockViewRock.h"
 
 int main(int argc, char** argv){
     // Iniciar socketprotocol
@@ -60,6 +62,17 @@ int main(int argc, char** argv){
         world.addChell(chell2);
         world.addChell(chell3);
 
+        std::string block_file_name("block");
+        for (int startX = -2000; startX<7000; startX+=128) {
+            for (int startY = -2000; startY<7000; startY+=128) {
+                View* block = new BlockViewRock(factory.getTextureByName(block_file_name),renderer);
+                block->setDestRect(startX, startY, 128, 128);
+                world.addView(block);
+            }
+            View* block = new BlockViewMetal(factory.getTextureByName(block_file_name),renderer);
+            block->setDestRect(startX, 400, 128,128);
+            world.addView(block);
+        }
         while (true) {
             renderer.clearRender();
             while (SDL_PollEvent(&e)) {

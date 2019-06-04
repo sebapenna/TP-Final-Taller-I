@@ -5,7 +5,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/AnimatedSprite.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.o"
-  "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockView.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/BlockView.cpp.o"
+  "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewMetal.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o"
+  "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Camera.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/Camera.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/ChellAnimationView.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/ChellAnimationView.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Renderer.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/Renderer.cpp.o"

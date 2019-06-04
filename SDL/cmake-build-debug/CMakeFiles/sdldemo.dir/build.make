@@ -200,18 +200,31 @@ CMakeFiles/sdldemo.dir/Camera.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sdldemo.dir/Camera.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Camera.cpp -o CMakeFiles/sdldemo.dir/Camera.cpp.s
 
-CMakeFiles/sdldemo.dir/BlockView.cpp.o: CMakeFiles/sdldemo.dir/flags.make
-CMakeFiles/sdldemo.dir/BlockView.cpp.o: ../BlockView.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/sdldemo.dir/BlockView.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sdldemo.dir/BlockView.cpp.o -c /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockView.cpp
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: CMakeFiles/sdldemo.dir/flags.make
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o: ../BlockViewMetal.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o -c /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewMetal.cpp
 
-CMakeFiles/sdldemo.dir/BlockView.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sdldemo.dir/BlockView.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockView.cpp > CMakeFiles/sdldemo.dir/BlockView.cpp.i
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewMetal.cpp > CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.i
 
-CMakeFiles/sdldemo.dir/BlockView.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sdldemo.dir/BlockView.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockView.cpp -o CMakeFiles/sdldemo.dir/BlockView.cpp.s
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewMetal.cpp -o CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.s
+
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: CMakeFiles/sdldemo.dir/flags.make
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o: ../BlockViewRock.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o -c /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.cpp
+
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/sdldemo.dir/BlockViewRock.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.cpp > CMakeFiles/sdldemo.dir/BlockViewRock.cpp.i
+
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/sdldemo.dir/BlockViewRock.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.cpp -o CMakeFiles/sdldemo.dir/BlockViewRock.cpp.s
 
 # Object files for target sdldemo
 sdldemo_OBJECTS = \
@@ -226,7 +239,8 @@ sdldemo_OBJECTS = \
 "CMakeFiles/sdldemo.dir/WorldView.cpp.o" \
 "CMakeFiles/sdldemo.dir/View.cpp.o" \
 "CMakeFiles/sdldemo.dir/Camera.cpp.o" \
-"CMakeFiles/sdldemo.dir/BlockView.cpp.o"
+"CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o" \
+"CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o"
 
 # External object files for target sdldemo
 sdldemo_EXTERNAL_OBJECTS =
@@ -242,10 +256,11 @@ libsdldemo.a: CMakeFiles/sdldemo.dir/SpriteFactory.cpp.o
 libsdldemo.a: CMakeFiles/sdldemo.dir/WorldView.cpp.o
 libsdldemo.a: CMakeFiles/sdldemo.dir/View.cpp.o
 libsdldemo.a: CMakeFiles/sdldemo.dir/Camera.cpp.o
-libsdldemo.a: CMakeFiles/sdldemo.dir/BlockView.cpp.o
+libsdldemo.a: CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o
+libsdldemo.a: CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o
 libsdldemo.a: CMakeFiles/sdldemo.dir/build.make
 libsdldemo.a: CMakeFiles/sdldemo.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Linking CXX static library libsdldemo.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX static library libsdldemo.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/sdldemo.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/sdldemo.dir/link.txt --verbose=$(VERBOSE)
 

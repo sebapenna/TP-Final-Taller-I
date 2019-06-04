@@ -163,32 +163,59 @@ AnimatedSprite.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.s
 .PHONY : AnimatedSprite.cpp.s
 
-BlockView.o: BlockView.cpp.o
+BlockViewMetal.o: BlockViewMetal.cpp.o
 
-.PHONY : BlockView.o
+.PHONY : BlockViewMetal.o
 
 # target to build an object file
-BlockView.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockView.cpp.o
-.PHONY : BlockView.cpp.o
+BlockViewMetal.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o
+.PHONY : BlockViewMetal.cpp.o
 
-BlockView.i: BlockView.cpp.i
+BlockViewMetal.i: BlockViewMetal.cpp.i
 
-.PHONY : BlockView.i
+.PHONY : BlockViewMetal.i
 
 # target to preprocess a source file
-BlockView.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockView.cpp.i
-.PHONY : BlockView.cpp.i
+BlockViewMetal.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.i
+.PHONY : BlockViewMetal.cpp.i
 
-BlockView.s: BlockView.cpp.s
+BlockViewMetal.s: BlockViewMetal.cpp.s
 
-.PHONY : BlockView.s
+.PHONY : BlockViewMetal.s
 
 # target to generate assembly for a file
-BlockView.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockView.cpp.s
-.PHONY : BlockView.cpp.s
+BlockViewMetal.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.s
+.PHONY : BlockViewMetal.cpp.s
+
+BlockViewRock.o: BlockViewRock.cpp.o
+
+.PHONY : BlockViewRock.o
+
+# target to build an object file
+BlockViewRock.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o
+.PHONY : BlockViewRock.cpp.o
+
+BlockViewRock.i: BlockViewRock.cpp.i
+
+.PHONY : BlockViewRock.i
+
+# target to preprocess a source file
+BlockViewRock.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewRock.cpp.i
+.PHONY : BlockViewRock.cpp.i
+
+BlockViewRock.s: BlockViewRock.cpp.s
+
+.PHONY : BlockViewRock.s
+
+# target to generate assembly for a file
+BlockViewRock.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewRock.cpp.s
+.PHONY : BlockViewRock.cpp.s
 
 Camera.o: Camera.cpp.o
 
@@ -500,9 +527,12 @@ help:
 	@echo "... AnimatedSprite.o"
 	@echo "... AnimatedSprite.i"
 	@echo "... AnimatedSprite.s"
-	@echo "... BlockView.o"
-	@echo "... BlockView.i"
-	@echo "... BlockView.s"
+	@echo "... BlockViewMetal.o"
+	@echo "... BlockViewMetal.i"
+	@echo "... BlockViewMetal.s"
+	@echo "... BlockViewRock.o"
+	@echo "... BlockViewRock.i"
+	@echo "... BlockViewRock.s"
 	@echo "... Camera.o"
 	@echo "... Camera.i"
 	@echo "... Camera.s"

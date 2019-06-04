@@ -10,6 +10,14 @@
 Sprite.h
 /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Sprite.h
 
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewMetal.h
+Sprite.h
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Sprite.h
+
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.h
+Sprite.h
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Sprite.h
+
 /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Camera.h
 SDL2/SDL_rect.h
 -
@@ -97,4 +105,8 @@ TextureFactory.h
 /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/TextureFactory.h
 WorldView.h
 /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/WorldView.h
+BlockViewMetal.h
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewMetal.h
+BlockViewRock.h
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.h
 

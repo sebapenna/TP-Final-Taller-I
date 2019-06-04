@@ -9,9 +9,22 @@ CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.o
  /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Sprite.h
  /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/View.h
  /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Window.h
-CMakeFiles/sdldemo.dir/BlockView.cpp.o
- /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockView.cpp
- /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockView.h
+CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewMetal.cpp
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewMetal.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Camera.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Renderer.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Sprite.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/View.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Window.h
+CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.cpp
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Camera.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Renderer.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Sprite.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/View.h
+ /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Window.h
 CMakeFiles/sdldemo.dir/Camera.cpp.o
  /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Camera.cpp
  /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Camera.h

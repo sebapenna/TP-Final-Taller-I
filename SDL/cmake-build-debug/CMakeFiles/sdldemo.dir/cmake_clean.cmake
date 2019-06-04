@@ -10,7 +10,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/sdldemo.dir/WorldView.cpp.o"
   "CMakeFiles/sdldemo.dir/View.cpp.o"
   "CMakeFiles/sdldemo.dir/Camera.cpp.o"
-  "CMakeFiles/sdldemo.dir/BlockView.cpp.o"
+  "CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o"
+  "CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o"
   "libsdldemo.pdb"
   "libsdldemo.a"
 )

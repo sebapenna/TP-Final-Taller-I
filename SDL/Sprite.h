@@ -26,10 +26,10 @@ public:
     void setAlphaMod(Uint8 alpha);
     SDL_Rect* getSrc();
     SDL_Texture* getTexture();
+    void setSourceRect(int x, int y, int w, int h);
 
 protected:
     void setSourceXY(int x, int y);
-    void setSourceRect(int x, int y, int w, int h);
 };
 
 
