@@ -71,13 +71,14 @@ void World::step() {
         if (energy_transmitter->releaseEnergyBall()) {
             this->createEnergyBall(energy_transmitter);
         }
-    for (auto &energy_ball : _energy_balls)
-        if (energy_ball->maxLifetameReached()) {
+    for (auto &energy_ball : _energy_balls) {
+        energy_ball->updateLifetime();
+        if (energy_ball->isDead())
             _world->DestroyBody(energy_ball->getBody());
-        }
+    }
     // Lo elimino del vector
     _energy_balls.erase(remove_if(_energy_balls.begin(), _energy_balls.end(),
-            [](EnergyBall* e) { return e->maxLifetameReached(); }),
+            [](EnergyBall* e) { return e->isDead(); }),
                     _energy_balls.end());
     for (auto &button : _buttons)
         button.second->updateState();
@@ -246,18 +247,19 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
     auto *source_body = energy_transm->getBody();
     float x = source_body->GetPosition().x;
     float y = source_body->GetPosition().y;
+    // Sumo delta para evitar posible colision con el transmisor
     switch (energy_transm->getDirection()) {
         case O_N:
-            y += (ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS);
+            y += (ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS + DELTA_POS);
             break;
         case O_S:
-            y -= (ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS);
+            y -= (ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS + DELTA_POS);
             break;
         case O_E:
-            x += (ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS);
+            x += (ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS + DELTA_POS);
             break;
         case O_O:
-            x -= (ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS);
+            x -= (ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS + DELTA_POS);
             break;
         default:    // No existe este caso
             break;

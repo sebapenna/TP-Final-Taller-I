@@ -58,7 +58,7 @@ public:
         auto energy_ball = vec[0];
         CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getPositionX());
         float new_y = e_transm_y + ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS;
-        CPPUNIT_ASSERT_EQUAL(new_y, energy_ball->getPositionY());
+        CPPUNIT_ASSERT_GREATEREQUAL(new_y, energy_ball->getPositionY());
         cout << "OK";
     }
 
@@ -78,7 +78,7 @@ public:
         auto energy_ball = vec[0];
         CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getPositionX());
         float new_y = e_transm_y - ENRG_TRANSM_HALF_HEIGHT - ENRG_BALL_RADIUS;
-        CPPUNIT_ASSERT_EQUAL(new_y, energy_ball->getPositionY());
+        CPPUNIT_ASSERT_LESSEQUAL(new_y, energy_ball->getPositionY());
         cout << "OK";
     }
 
@@ -98,7 +98,7 @@ public:
         auto energy_ball = vec[0];
         CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getPositionY());
         float new_x = e_transm_x + ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS;
-        CPPUNIT_ASSERT_EQUAL(new_x, energy_ball->getPositionX());
+        CPPUNIT_ASSERT_GREATEREQUAL(new_x, energy_ball->getPositionX());
         cout << "OK";
     }
 
@@ -118,7 +118,7 @@ public:
         auto energy_ball = vec[0];
         CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getPositionY());
         float new_x = e_transm_x - ENRG_TRANSM_HALF_WIDTH - ENRG_BALL_RADIUS;
-        CPPUNIT_ASSERT_EQUAL(new_x, energy_ball->getPositionX());
+        CPPUNIT_ASSERT_LESSEQUAL(new_x, energy_ball->getPositionX());
         cout << "OK";
     }
 
@@ -357,7 +357,5 @@ public:
         CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }
-
-
 };
 #endif //PORTAL_TESTENERGYBALLANDENERGYTRANSMITTER_H

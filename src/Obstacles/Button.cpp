@@ -24,14 +24,18 @@ void Button::updateState() {
     }
 }
 
-void Button::collideWith(Collidable *other) {
-
-}
-
 const std::string Button::getClassName() {
     return BUTTON;
 }
 
-void Button::endCollitionWith(Collidable *other) {
+void Button::collideWith(Collidable *other) {
+    auto c_name = other->getClassName();
+    if (c_name == ROCK || c_name == CHELL)
+        this->activate();
+}
 
+void Button::endCollitionWith(Collidable *other) {
+    auto c_name = other->getClassName();
+    if (c_name == ROCK || c_name == CHELL)
+        this->deactivate();
 }

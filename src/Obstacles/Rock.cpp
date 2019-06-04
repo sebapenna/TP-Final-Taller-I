@@ -11,6 +11,11 @@ float Rock::getPositionY() {
     return _body->GetPosition().y;
 }
 
+void Rock::teletransport(float x, float y) {
+    b2Vec2 new_pos(x,y);
+    _body->SetTransform(new_pos, 0);
+}
+
 void Rock::collideWith(Collidable *other) {
 
 }

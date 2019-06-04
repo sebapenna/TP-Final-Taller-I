@@ -1,5 +1,5 @@
-#ifndef TP_FINAL_BLOQUE_ROCA_H
-#define TP_FINAL_BLOQUE_ROCA_H
+#ifndef PORTAL_BLOQUE_ROCA_H
+#define PORTAL_BLOQUE_ROCA_H
 
 #include <cstdint>
 #include <src/Collidable.h>
@@ -14,4 +14,4 @@ public:
 };
 
 
-#endif //TP_FINAL_BLOQUE_ROCA_H
+#endif //PORTAL_BLOQUE_ROCA_H

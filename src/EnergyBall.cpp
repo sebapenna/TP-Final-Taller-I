@@ -24,9 +24,13 @@ EnergyBall::EnergyBall(b2Body *body, uint8_t direction) {
     _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
 }
 
-bool EnergyBall::maxLifetameReached() {
+void EnergyBall::updateLifetime() {
     _lifetime += TIME_STEP;
-    return _lifetime >= ENERGY_BALL_MAX_LIFETIME;
+}
+
+bool EnergyBall::isDead() {
+    float diff_time = ENERGY_BALL_MAX_LIFETIME - _lifetime;
+    return (diff_time < TIME_STEP || _dead);
 }
 
 const float EnergyBall::getPositionX() {
@@ -46,7 +50,13 @@ b2Body *EnergyBall::getBody() const {
 }
 
 void EnergyBall::collideWith(Collidable *other) {
-
+    auto c_name = other->getClassName();
+    if (c_name == ROCK_BLOCK || c_name == ACID || c_name == BUTTON ||
+        c_name == ROCK || c_name == ENERGY_RECEIVER || c_name == CHELL ||
+        c_name == PIN_TOOL)
+        _dead = true;
+    else if (c_name == ENERGY_TRANSMITTER && _lifetime != 0)
+        _dead = true;    // Verifico que no colisiona cuando se crea la bola
 }
 
 void EnergyBall::endCollitionWith(Collidable *other) {

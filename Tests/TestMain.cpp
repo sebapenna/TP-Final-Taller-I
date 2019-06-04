@@ -9,6 +9,8 @@
 #include "TestYamlParser.h"
 #include "TestGate.h"
 #include "TestEnergyBallAndEnergyTransmitter.h"
+#include "TestEnergyBallAndEnergyReceiver.h"
+#include "TestEnergyBall.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestWorld );
@@ -18,6 +20,8 @@ CPPUNIT_TEST_SUITE_REGISTRATION( TestButton );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyReceiver );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestGate );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBallAndEnergyTransmitter );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBallAndEnergyReceiver );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBall );
 
 using CppUnit::TestFactoryRegistry;
 

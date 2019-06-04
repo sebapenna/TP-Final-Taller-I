@@ -17,6 +17,8 @@ public:
 
     const std::string getClassName() override;
 
+    void teletransport(float x, float y);
+
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;

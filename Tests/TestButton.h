@@ -16,6 +16,10 @@ CPPUNIT_TEST_SUITE(TestButton);
         CPPUNIT_TEST( testActivateMoreThanOneButton );
         CPPUNIT_TEST( testActivateAndDeactivate );
         CPPUNIT_TEST( testActivateDeactivateAndReactivate );
+        CPPUNIT_TEST( testActivateCollitionWithRock );
+        CPPUNIT_TEST( testDeactivateEndContactWithRock );
+        CPPUNIT_TEST( testActivateContactWithChell );
+        CPPUNIT_TEST( testActivateAndDeactivateContactWithChell );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -113,5 +117,78 @@ public:
         CPPUNIT_ASSERT(button2->isActivated());
         cout << "OK";
     }
+
+    void testActivateCollitionWithRock() {
+        cout << endl << "TEST activar tras contacto con roca: ";
+        // Hago que roca caiga sobre el boton
+        float rock_x = button1_x;
+        float rock_y = button1_y + BUTTON_HALF_HEIGHT + ROCK_HALF_HEIGHT + 2;
+        world->createRock(rock_x, rock_y);
+        CPPUNIT_ASSERT(!button1->isActivated());
+        for (int i = 0; i < STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(button1->isActivated());
+        auto rock = world->getRocks().at(0);
+        float diff_x = abs(button1_x - rock->getPositionX());
+        CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x); // Verifico posicion de la roca
+        cout << "OK";
+    }
+
+    void testDeactivateEndContactWithRock() {
+        cout << endl << "TEST activar tras contacto con roca y descativar al "
+                        "finalizar: ";
+        // Hago que roca caiga sobre el boton
+        float rock_x = button1_x;
+        float rock_y = button1_y + BUTTON_HALF_HEIGHT + ROCK_HALF_HEIGHT + 2;
+        world->createRock(rock_x, rock_y);
+        for (int i = 0; i < STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(button1->isActivated());
+        auto rock = world->getRocks().at(0);
+        rock->teletransport(rock_x + 50, rock_y);   // Saco roca del boton
+        for (int i = 0; i < STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(!button1->isActivated());
+        cout << "OK";
+    }
+
+    void testActivateContactWithChell() {
+        cout << endl << "TEST activar tras contacto con chell: ";
+        float chell_x = button1_x;
+        float chell_y = button1_y + BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT + 2;
+        world->createChell(chell_x, chell_y, 0);
+        CPPUNIT_ASSERT(!button1->isActivated());
+        for (int i = 0; i < STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(button1->isActivated());
+        auto chell = world->getChell(0);
+        float diff_x = abs(button1_x - chell->getPositionX());
+        CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x); // Verifico posicion de la roca
+        cout << "OK";
+    }
+
+    void testActivateAndDeactivateContactWithChell() {
+        cout << endl << "TEST activar tras contacto con chell y desactivar "
+                        "al finalizar: ";
+        float chell_x = button1_x - BUTTON_HALF_WIDTH - CHELL_HALF_WIDTH - 2;
+        float chell_y = button1_y + BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT + 2;
+        world->createChell(chell_x, chell_y, 0);
+        auto chell = world->getChell(0);
+        chell->move_right(); // Muevo chell para que pase por boton
+        bool button_act = false;
+        CPPUNIT_ASSERT(!button1->isActivated());
+        for (int i = 0; i < 200; i++) {
+            world->step();
+            if (button1->isActivated())
+                button_act = true;
+        }
+        CPPUNIT_ASSERT(button_act);    // Boton se activo en algun momento
+        CPPUNIT_ASSERT(!button1->isActivated());    // Finalizo el contacto
+        CPPUNIT_ASSERT_GREATER(button1_x, chell->getPositionX()); // Paso la roca
+        cout << "OK";
+    }
+
+    // todo: test donde se desactive al desaparecer la roca
 };
+
 #endif //PORTAL_TESTBUTTON_H

@@ -1,5 +1,5 @@
-#ifndef TP_FINAL_RECEPTOR_ENERGIA_H
-#define TP_FINAL_RECEPTOR_ENERGIA_H
+#ifndef PORTAL_RECEPTOR_ENERGIA_H
+#define PORTAL_RECEPTOR_ENERGIA_H
 
 #include <src/Collidable.h>
 #include <src/constants.h>
@@ -26,4 +26,4 @@ private:
 };
 
 
-#endif //TP_FINAL_RECEPTOR_ENERGIA_H
+#endif //PORTAL_RECEPTOR_ENERGIA_H

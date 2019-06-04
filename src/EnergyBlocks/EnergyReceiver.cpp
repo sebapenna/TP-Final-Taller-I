@@ -21,16 +21,8 @@ const std::string EnergyReceiver::getClassName() {
 }
 
 void EnergyReceiver::collideWith(Collidable *other) {
-    if (other->getClassName() == ENERGY_BALL) {
+    if (other->getClassName() == ENERGY_BALL)
         this->activate();   // Se activa receptor
-        auto energy_ball  = (EnergyBall*) other;
-        // Elimino EnergyBall
-    } else if (other->getClassName() == PORTAL) {
-        // Elimino Portal
-    } else if (other->getClassName() == PIN_TOOL) {
-        // Elimino PinTool
-    }
-    // Resto de colisiones no tienen efecto
 }
 
 void EnergyReceiver::endCollitionWith(Collidable *other) {

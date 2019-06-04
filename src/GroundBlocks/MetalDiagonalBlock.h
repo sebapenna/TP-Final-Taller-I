@@ -6,10 +6,12 @@
 
 class MetalDiagonalBlock: public Collidable {
 private:
-    uint8_t _orientation;
+    const uint8_t _orientation;
 
 public:
     explicit MetalDiagonalBlock(uint8_t orientation);
+
+    const uint8_t getOrientation() const;
 
     const std::string getClassName() override;
 
