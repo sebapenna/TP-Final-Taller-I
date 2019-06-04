@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/BlockViewRock.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Camera.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/Camera.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/ChellAnimationView.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/ChellAnimationView.cpp.o"
+  "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/EventCaptured.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/EventCaptured.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Renderer.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/Renderer.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/SDLException.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/SDLException.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Sprite.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/Sprite.cpp.o"
@@ -17,6 +18,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/View.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/View.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/Window.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/Window.cpp.o"
   "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/WorldView.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/WorldView.cpp.o"
+  "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/thread.cpp" "/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir/thread.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

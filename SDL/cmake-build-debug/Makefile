@@ -271,6 +271,33 @@ ChellAnimationView.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ChellAnimationView.cpp.s
 .PHONY : ChellAnimationView.cpp.s
 
+EventCaptured.o: EventCaptured.cpp.o
+
+.PHONY : EventCaptured.o
+
+# target to build an object file
+EventCaptured.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/EventCaptured.cpp.o
+.PHONY : EventCaptured.cpp.o
+
+EventCaptured.i: EventCaptured.cpp.i
+
+.PHONY : EventCaptured.i
+
+# target to preprocess a source file
+EventCaptured.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/EventCaptured.cpp.i
+.PHONY : EventCaptured.cpp.i
+
+EventCaptured.s: EventCaptured.cpp.s
+
+.PHONY : EventCaptured.s
+
+# target to generate assembly for a file
+EventCaptured.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/EventCaptured.cpp.s
+.PHONY : EventCaptured.cpp.s
+
 Renderer.o: Renderer.cpp.o
 
 .PHONY : Renderer.o
@@ -514,6 +541,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/sdl-hello.dir/build.make CMakeFiles/sdl-hello.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+thread.o: thread.cpp.o
+
+.PHONY : thread.o
+
+# target to build an object file
+thread.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/thread.cpp.o
+.PHONY : thread.cpp.o
+
+thread.i: thread.cpp.i
+
+.PHONY : thread.i
+
+# target to preprocess a source file
+thread.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/thread.cpp.i
+.PHONY : thread.cpp.i
+
+thread.s: thread.cpp.s
+
+.PHONY : thread.s
+
+# target to generate assembly for a file
+thread.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/thread.cpp.s
+.PHONY : thread.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -539,6 +593,9 @@ help:
 	@echo "... ChellAnimationView.o"
 	@echo "... ChellAnimationView.i"
 	@echo "... ChellAnimationView.s"
+	@echo "... EventCaptured.o"
+	@echo "... EventCaptured.i"
+	@echo "... EventCaptured.s"
 	@echo "... Renderer.o"
 	@echo "... Renderer.i"
 	@echo "... Renderer.s"
@@ -566,6 +623,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... thread.o"
+	@echo "... thread.i"
+	@echo "... thread.s"
 .PHONY : help
 
 

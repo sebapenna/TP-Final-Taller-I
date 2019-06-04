@@ -19,11 +19,6 @@ int main(int argc, char** argv){
         Window window(title, 1000, 1000, SDL_WINDOW_SHOWN);
         Renderer renderer(window);
 
-        //Sprite sprite(file,renderer);
-        //sprite.setSourceRect(0,0,200,200);
-        //sprite.setDestRect(0,0,200,200);
-        //sprite.draw();
-
         // Chell resting idle
         // AnimatedSprite sprite("chell.png", renderer, 122, 222, 1, 2080, 7, 7, 0, 0, 122, 222, 1, 0);
 
@@ -39,12 +34,6 @@ int main(int argc, char** argv){
         // Chell dying
         //AnimatedSprite sprite("chell.png", renderer, 199, 274, 1, 8340, 12 , 72, 0, 0, 199, 273, 1, 1);
 
-        /*while (i<5000) {
-            renderer.clearRender();
-            sprite.drawMovingSprite();
-            i++;
-            renderer.render();
-        }*/
         SDL_Event e;
         TextureFactory factory;
         factory.init(renderer);
@@ -90,18 +79,6 @@ int main(int argc, char** argv){
                         case SDLK_a:
                             chell->moveToTheLeft(10);
                             break;
-                        case SDLK_UP:
-                            world.moveCameraUp();
-                            break;
-                        case SDLK_LEFT:
-                            world.moveCameraLeft();
-                            break;
-                        case SDLK_RIGHT:
-                            world.moveCameraRight();
-                            break;
-                        case SDLK_DOWN:
-                            world.moveCameraDown();
-                            break;
                         default:
                             break;
                     }
@@ -110,10 +87,6 @@ int main(int argc, char** argv){
             world.draw();
             renderer.render();
         }
-
-        //renderer.fill(0x00, 0xFF, 0xFF, 0xFF);
-        //renderer.render();
-        SDL_Delay(5000);
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
         return 1;

@@ -12,6 +12,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/sdldemo.dir/Camera.cpp.o"
   "CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o"
   "CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o"
+  "CMakeFiles/sdldemo.dir/thread.cpp.o"
+  "CMakeFiles/sdldemo.dir/EventCaptured.cpp.o"
   "libsdldemo.pdb"
   "libsdldemo.a"
 )
