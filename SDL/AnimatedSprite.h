@@ -27,14 +27,13 @@ private:
 
 
 public:
-    AnimatedSprite(const std::string &filename, Renderer &renderer,
+    AnimatedSprite(SDL_Texture* texture, Renderer &renderer,
                    int width, int height,
                    int startX, int startY,
-                   int totalColumns, int amountSprites, int finalX, int finalY,
-                   int finalWidth, int finalHeight, int offSetX, int offSetY);
+                   int totalColumns, int amountSprites, int offSetX, int offSetY);
     void moveNextSprite();
-    void drawMovingSprite();
-    void drawMovingSprite(double angle, SDL_RendererFlip flip);
+    void drawMovingSprite(Camera& camera, SDL_Rect* dstRect);
+    void drawMovingSprite(Camera& camera, SDL_Rect* dstRect, SDL_RendererFlip flip);
     void setTimePerSprite(Uint32 t);
     void reset();
 };

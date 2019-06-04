@@ -1,0 +1,4 @@
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdldemo.dir
+/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles/sdl-hello.dir

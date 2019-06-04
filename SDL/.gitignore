@@ -3,5 +3,6 @@
 libsdldemo.a
 sdl-hello
 cmake_install.cmake
+cmake-build-debug
 CMakeCache.txt
 *.cbp
