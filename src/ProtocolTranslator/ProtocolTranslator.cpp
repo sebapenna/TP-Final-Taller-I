@@ -120,43 +120,35 @@ ProtocolDTO *ProtocolTranslator::translate(std::vector<int> data) {
 }
 
 ProtocolDTO *ProtocolTranslator::moveLeft(std::vector<int> data) {
-    auto dto = new MoveLeftDTO();
-    return (ProtocolDTO*) dto;
+    return (ProtocolDTO*) new MoveLeftDTO();
 }
 
 ProtocolDTO *ProtocolTranslator::moveRight(std::vector<int> data) {
-    auto dto = new MoveRightDTO();
-    return (ProtocolDTO*) dto;
+    return (ProtocolDTO*) new MoveRightDTO();
 }
 
 ProtocolDTO *ProtocolTranslator::stop(std::vector<int> data) {
-    auto dto = new StopDTO();
-    return (ProtocolDTO*) dto;
+    return (ProtocolDTO*) new StopDTO();
 }
 
 ProtocolDTO *ProtocolTranslator::jump(std::vector<int> data) {
-    auto dto = new JumpDTO();
-    return (ProtocolDTO*) dto;
+    return (ProtocolDTO*) new JumpDTO();
 }
 
 ProtocolDTO *ProtocolTranslator::portal(std::vector<int> data) {
-    auto dto = new PortalDTO(data.at(1), data.at(2), data.at(3));
-    return (ProtocolDTO*) dto;
+    return (ProtocolDTO*) new PortalDTO(data.at(1), data.at(2), data.at(3));
 }
 
 ProtocolDTO *ProtocolTranslator::pinTool(std::vector<int> data) {
-    auto dto = new PinToolDTO(data.at(1), data.at(2));
-    return (ProtocolDTO*) dto;
+    return (ProtocolDTO*) new PinToolDTO(data.at(1), data.at(2));
 }
 
 ProtocolDTO *ProtocolTranslator::liftRock(std::vector<int> data) {
-    auto dto = new LiftRockDTO(data.at(1));
-    return (ProtocolDTO*) dto;
+    return (ProtocolDTO*) new LiftRockDTO(data.at(1));
 }
 
 ProtocolDTO *ProtocolTranslator::dropRock(std::vector<int> data) {
-    auto dto = new DropRockDTO();
-    return (ProtocolDTO*) dto;
+    return (ProtocolDTO*) new DropRockDTO();
 }
 
 //

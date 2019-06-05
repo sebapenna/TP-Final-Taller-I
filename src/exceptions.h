@@ -13,10 +13,35 @@ struct BlockCantCreatePortalException : public exception {
 };
 
 struct ChellNotOnGroundException : public exception {
-    const char * what() const throw() override {
+    const char *what() const throw() override {
         return "Chell no se encuentra sobre una superficie donde saltar.";
     }
 };
+
+struct CantConnectException : public exception {
+    const char * what() const throw() override {
+        return "No se pudo conectar el socket.\n";
+    }
+};
+
+struct FileOpenException : public exception {
+    const char * what() const throw() override {
+        return "No se pudo abrir el archivo.\n";
+    }
+};
+
+struct FailedSendException : public exception {
+    const char * what() const throw() override {
+        return "No se pudo enviar la informacion a traves del socket.\n";
+    }
+};
+
+struct FailedRecvException : public exception {
+    const char * what() const throw() override {
+        return "No se pudo recibir la informacion a traves del socket.\n";
+    }
+};
+
 
 
 
