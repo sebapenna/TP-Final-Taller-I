@@ -4,7 +4,7 @@
 
 #include "BlockViewRock.h"
 
-BlockViewRock::BlockViewRock(SDL_Texture *texture, Renderer &renderer) : block(texture, renderer) {
+BlockViewRock::BlockViewRock(SDL_Texture *texture, Renderer &renderer, int x, int y) : View(x, y), block(texture, renderer) {
     block.setSourceRect(1,23,128,128);
 }
 

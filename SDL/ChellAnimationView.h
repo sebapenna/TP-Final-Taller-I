@@ -10,7 +10,7 @@
 #include "View.h"
 
 
-class ChellAnimationView : public View{
+class ChellAnimationView : public View {
     enum State {standing, runningLeft, runningRight, firing};
 private:
     AnimatedSprite runningRightChell;
@@ -18,13 +18,12 @@ private:
     AnimatedSprite firingChell;
     State state;
 public:
-    ChellAnimationView(SDL_Texture* texture, Renderer& renderer);
+    ChellAnimationView(SDL_Texture* texture, Renderer& renderer, int x=0, int y=0);
     void draw(Camera& camera);
     void moveToTheLeft(int x);
     void moveToTheRight(int x);
     void stand();
     void fire();
-
 };
 
 

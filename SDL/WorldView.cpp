@@ -20,22 +20,6 @@ void WorldView::draw() {
     }
 }
 
-void WorldView::moveCameraLeft() {
-    this->camera.moveCameraLeft();
-}
-
-void WorldView::moveCameraRight() {
-    this->camera.moveCameraRight();
-}
-
-void WorldView::moveCameraUp() {
-    this->camera.moveCameraUp();
-}
-
-void WorldView::moveCameraDown() {
-    this->camera.moveCameraDown();
-}
-
 void WorldView::addView(View* view) {
     views.push_back(view);
 }

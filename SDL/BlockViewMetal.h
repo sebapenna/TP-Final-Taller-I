@@ -12,7 +12,7 @@ class BlockViewMetal : public View{
 private:
     Sprite block;
 public:
-    BlockViewMetal(SDL_Texture* texture, Renderer& renderer);
+    BlockViewMetal(SDL_Texture* texture, Renderer& renderer, int x = 0, int y = 0);
     void draw(Camera& camera);
 };
 
