@@ -10,5 +10,5 @@ void Portal::collideWith(Collidable *other) {
 }
 
 const std::string Portal::getClassName() {
-    return PORTAL;
+    return PORTAL_RAY;
 }

@@ -11,6 +11,10 @@ float Rock::getPositionY() {
     return _body->GetPosition().y;
 }
 
+float Rock::getVelocityY() {
+    return _body->GetLinearVelocity().y;
+}
+
 void Rock::teletransport(float x, float y) {
     b2Vec2 new_pos(x,y);
     _body->SetTransform(new_pos, 0);

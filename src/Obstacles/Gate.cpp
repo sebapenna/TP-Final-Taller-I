@@ -13,6 +13,8 @@ void Gate::addEnergyReceiverNeeded(EnergyReceiver *e_receiver) {
 }
 
 void Gate::updateState() {
+    if (_buttons_needed.empty() && _energy_reveivers_needed.empty())
+        return; // Compuerta no tiene forma de abrir
     for (auto &it : _buttons_needed)
         if (!it->isActivated()) {
             _open = false;
@@ -26,12 +28,12 @@ void Gate::updateState() {
     _open = true;   // Estaban todos activos
 }
 
-void Gate::collideWith(Collidable *other) {
-
-}
-
 const std::string Gate::getClassName() {
     return GATE;
+}
+
+void Gate::collideWith(Collidable *other) {
+
 }
 
 void Gate::endCollitionWith(Collidable *other) {

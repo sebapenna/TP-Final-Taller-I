@@ -53,10 +53,11 @@ void EnergyBall::collideWith(Collidable *other) {
     auto c_name = other->getClassName();
     if (c_name == ROCK_BLOCK || c_name == ACID || c_name == BUTTON ||
         c_name == ROCK || c_name == ENERGY_RECEIVER || c_name == CHELL ||
-        c_name == PIN_TOOL)
+        c_name == PIN_TOOL) {
         _dead = true;
-    else if (c_name == ENERGY_TRANSMITTER && _lifetime != 0)
+    } else if (c_name == ENERGY_TRANSMITTER && _lifetime != 0) {
         _dead = true;    // Verifico que no colisiona cuando se crea la bola
+    }
 }
 
 void EnergyBall::endCollitionWith(Collidable *other) {

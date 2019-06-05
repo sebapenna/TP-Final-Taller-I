@@ -106,15 +106,31 @@
 #define METAL_DIAGONAL_BLOCK "MetalDiagonalBlock"
 #define ROCK_BLOCK "RockBlock"
 #define BUTTON "Button"
-#define GATE "Button"
+#define GATE "Gate"
 #define ROCK "Rock"
 #define ACID    "Acid"
 #define ENERGY_BARRIER "EnergyBarrier"
 #define CHELL   "Chell"
 #define ENERGY_BALL "EnergyBall"
+#define PORTAL_RAY  "PortalRay"
 #define PORTAL  "Portal"
+#define PIN_TOOL_RAY    "PinToolRay"
 #define PIN_TOOL    "PinTool"
 #define CAKE    "Cake"
+
+/* Protocolo */
+#define BLUE_PORTAL    0
+#define ORANGE_PORTAL  1
+
+#define PROTOCOL_MOVE_LEFT   0
+#define PROTOCOL_MOVE_RIGHT   1
+#define PROTOCOL_JUMP   2
+#define PROTOCOL_STOP   3
+#define PROTOCOL_PORTAL 4
+#define PROTOCOL_PIN_TOOL   5
+#define PROTOCOL_LIFT_ROCK  6
+#define PROTOCOL_DROP_ROCK  7
+
 
 /* Path YAML */
 //#ifdef DEBUG_MODE

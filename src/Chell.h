@@ -10,7 +10,7 @@ private:
     const unsigned int _id;
     uint8 _move_state;
     uint8 _jump_state;
-    bool _jump;
+    bool _jump, _dead;
 
     // Evita volver a aplicar un impulso en el mismo sentido
     bool movementAlreadyApplied();
@@ -26,6 +26,8 @@ public:
 
     float getPositionY();
 
+    b2Body *getBody() const;
+
     void move_left();
 
     void move_right();
@@ -38,6 +40,8 @@ public:
 
     // Metodo a llamar para que se aplique el movimiento seteado previamente
     void move();
+
+    bool isDead();
 
     const std::string getClassName() override;
 

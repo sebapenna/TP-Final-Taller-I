@@ -15,6 +15,8 @@ public:
 
     float getPositionY();
 
+    float getVelocityY();
+
     const std::string getClassName() override;
 
     void teletransport(float x, float y);

@@ -17,7 +17,8 @@ private:
     b2World *_world;
     const size_t _width;
     const size_t _height;
-    std::map<size_t, Chell*> _chells;    //todo: ->vector y flagDead en chell
+    std::vector<Chell*> _chells;    //todo: ->vector y flagDead en chell
+//    std::map<size_t, Chell*> _chells;    //todo: ->vector y flagDead en chell
     std::vector<Rock*> _rocks; //todo: ->vector y flagDead
     std::map<size_t, Button*> _buttons; //todo: ->vector
     std::map<size_t, Gate*> _gates; //todo: ->vector

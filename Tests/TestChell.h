@@ -35,6 +35,9 @@ CPPUNIT_TEST_SUITE( TestChell );
         CPPUNIT_TEST( testMoveLeftCollideWithDiagonalBlock );
         CPPUNIT_TEST( testMoveRightAndFallOverDiagonalBlock );
         CPPUNIT_TEST( testMoveLeftAndFallOverDiagonalBlock );
+        CPPUNIT_TEST( testContactWithFallingRock );
+        CPPUNIT_TEST( testContactWithRockInItsWay );
+        CPPUNIT_TEST( testContactWithAcid );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -460,6 +463,50 @@ public:
         }
         float diff_y = chell->getPositionY() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
+        cout << "OK";
+    }
+
+    void testContactWithFallingRock() {
+        cout << endl << "TEST morir al caerle roca encima: ";
+        float rock_x = chell_init_x;
+        float rock_y = chell_init_y + CHELL_HALF_HEIGHT + ROCK_HALF_HEIGHT + 1;
+        // Creo roca sobre chell
+        world->createRock(rock_x, rock_y);
+        auto n_bodies = world->getWorld()->GetBodyCount();
+        for (int i = 1; i < STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(chell->isDead());
+        CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
+        cout << "OK";
+    }
+
+    void testContactWithRockInItsWay() {
+        cout << endl << "TEST chocar con roca en su camino y no morir: ";
+        float rock_x = chell_init_x + CHELL_HALF_WIDTH + ROCK_HALF_WIDTH + 1;
+        float rock_y = chell_init_y;
+        world->createRock(rock_x, rock_y);
+        auto n_bodies = world->getWorld()->GetBodyCount();
+        for (int i = 1; i < 2 * STEP_ITERATIONS; i++)
+            world->step();
+        auto rock = world->getRocks().at(0);
+        // Verifico roca frena a chell
+        CPPUNIT_ASSERT_LESS(rock->getPositionX(), chell->getPositionX());
+        CPPUNIT_ASSERT(!chell->isDead());
+        CPPUNIT_ASSERT_EQUAL(n_bodies, world->getWorld()->GetBodyCount());
+        cout << "OK";
+    }
+
+    void testContactWithAcid() {
+        cout << endl << "TEST morir tras contacto con acido: ";
+        float acid_x = chell_init_x + CHELL_HALF_WIDTH + ACID_HALF_WIDTH + 1;
+        float acid_y = ACID_HALF_HEIGHT;
+        world->createAcid(acid_x, acid_y);
+        auto n_bodies = world->getWorld()->GetBodyCount();
+        chell->move_right();    // Avanzo chell para que choque con acido
+        for (int i = 1; i < 2 * STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(chell->isDead());
+        CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }
 

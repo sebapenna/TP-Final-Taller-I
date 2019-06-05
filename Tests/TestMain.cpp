@@ -11,8 +11,10 @@
 #include "TestEnergyBallAndEnergyTransmitter.h"
 #include "TestEnergyBallAndEnergyReceiver.h"
 #include "TestEnergyBall.h"
+#include "TestProtocolTranslator.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestProtocolTranslator );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestWorld );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestChell );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestRock );

@@ -1,12 +1,14 @@
 #include "Chell.h"
 #include <src/constants.h>
 #include <src/exceptions.h>
+#include <src/Obstacles/Rock.h>
 
 Chell::Chell(unsigned int id, b2Body *body) : _id(id){
     _body = body;
     _move_state = MOVE_STOP;
     _jump_state = ON_GROUND;
     _jump = false;
+    _dead = false;
 }
 
 float Chell::getPositionX() {
@@ -106,13 +108,31 @@ void Chell::move() {
     updateJumpState();
 }
 
-void Chell::collideWith(Collidable *other) {
-}
-
 const std::string Chell::getClassName() {
     return CHELL;
 }
 
+void Chell::collideWith(Collidable *other) {
+    auto cname = other->getClassName();
+    if (cname == ROCK ) {
+        auto rock = (Rock*) other;
+        float head_pos = this->getPositionY() + CHELL_HALF_HEIGHT;
+        // Verifico esta por encima de chell y cayendo
+        if (rock->getPositionY() > head_pos && rock->getVelocityY() != 0)
+            _dead = true;
+    } else if (cname == ACID){
+        _dead = true;
+    }
+}
+
 void Chell::endCollitionWith(Collidable *other) {
 
+}
+
+bool Chell::isDead() {
+    return _dead;
+}
+
+b2Body *Chell::getBody() const {
+    return _body;
 }

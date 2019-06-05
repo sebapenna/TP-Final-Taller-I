@@ -65,17 +65,24 @@ b2World *World::getWorld() const {
 
 /************************ Step ************************/
 void World::step() {
+    // todo: ELIMINAR TODOS LOS PUNTEROS DE CADA CLASE (destroy)
+    // TODO: EN VECTOR PONER nullptr?
     _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
     // Orden de acciones: primero las que su estado afectan a otros
     for (auto &energy_transmitter : _energy_transmitters)
         if (energy_transmitter->releaseEnergyBall()) {
             this->createEnergyBall(energy_transmitter);
         }
-    for (auto &energy_ball : _energy_balls) {
+    for (int i = 0; i < _energy_balls.size(); ++i) {
+        auto energy_ball = _energy_balls[i];
         energy_ball->updateLifetime();
-        if (energy_ball->isDead())
+        if (energy_ball->isDead()) {
             _world->DestroyBody(energy_ball->getBody());
+        }
     }
+//    aux = energy_ball;
+//    vec[i] = nullptr
+//            delete aux
     // Lo elimino del vector
     _energy_balls.erase(remove_if(_energy_balls.begin(), _energy_balls.end(),
             [](EnergyBall* e) { return e->isDead(); }),
@@ -86,8 +93,15 @@ void World::step() {
         energy_receiver.second->updateState();
     for (auto &gate : _gates)
         gate.second->updateState();
-    for (auto & chell : _chells)
-        chell.second->move();
+    for (auto & chell : _chells) {
+        if (!chell->isDead()) // todo: eliminar chell del vector/map
+            chell->move();
+        else
+            _world->DestroyBody(chell->getBody());
+    }
+    _chells.erase(remove_if(_chells.begin(), _chells.end(),
+                                  [](Chell* e) { return e->isDead(); }),
+                        _chells.end());
 }
 
 /************************ Create Bodies ************************/
@@ -193,14 +207,16 @@ void World::createMetalDiagonalBlock(const float &width, const float &height,
 }
 
 void World::createRock(const float &x, const float &y) {
-    auto body = createDynamicBox(x, y, ROCK_HALF_WIDTH, ROCK_HALF_HEIGHT, ROCK_DENSITY);
+    auto body = createDynamicBox(x, y, ROCK_HALF_WIDTH, ROCK_HALF_HEIGHT,
+            ROCK_DENSITY);
     auto *rock = new Rock(body);
     body->SetUserData(rock);
     _rocks.push_back(rock);
 }
 
 void World::createAcid(const float &x, const float &y) {
-    auto body = createStaticBox(x, y, ACID_HALF_WIDTH, ACID_HALF_HEIGHT, ACID_FRICTION);
+    auto body = createStaticBox(x, y, ACID_HALF_WIDTH, ACID_HALF_HEIGHT,
+            ACID_FRICTION);
     body->SetUserData(new Acid());   // Suficiente que sea una macro
 }
 
@@ -215,7 +231,8 @@ void World::createButton(const size_t &id, const float &x, const float &y) {
 void World::createGate(const size_t &id, const float &x, const float &y,
                        const std::vector<size_t>& buttons_needed,
                        const std::vector<size_t>& energy_receiver_needed) {
-    auto body = createStaticBox(x, y, GATE_HALF_WIDTH, GATE_HALF_HEIGHT, GATE_FRICTION);
+    auto body = createStaticBox(x, y, GATE_HALF_WIDTH, GATE_HALF_HEIGHT,
+            GATE_FRICTION);
     auto *gate = new Gate();
     for (auto &button_id : buttons_needed)
         gate->addButtonNeeded(_buttons.at(button_id));
@@ -227,8 +244,8 @@ void World::createGate(const size_t &id, const float &x, const float &y,
 
 void World::createEnergyReceiver(const size_t &id, const float &x,
                                  const float &y) {
-    auto body = createStaticBox(x, y, ENRG_RECV_HALF_WIDTH, ENRG_RECV_HALF_HEIGHT,
-            ENRG_RECV_FRICTION);
+    auto body = createStaticBox(x, y, ENRG_RECV_HALF_WIDTH,
+            ENRG_RECV_HALF_HEIGHT, ENRG_RECV_FRICTION);
     auto *e_recv = new EnergyReceiver();
     body->SetUserData(e_recv);
     _energy_receivers.insert({id, e_recv});
@@ -236,8 +253,8 @@ void World::createEnergyReceiver(const size_t &id, const float &x,
 
 void World::createEnergyTransmitter(const float &x, const float &y,
                                     const uint8_t &direction) {
-    auto body = createStaticBox(x, y, ENRG_TRANSM_HALF_WIDTH, ENRG_TRANSM_HALF_HEIGHT,
-                                ENRG_TRANSM_FRICTION);
+    auto body = createStaticBox(x, y, ENRG_TRANSM_HALF_WIDTH,
+            ENRG_TRANSM_HALF_HEIGHT, ENRG_TRANSM_FRICTION);
     auto *e_transm = new EnergyTransmitter(body, direction);
     body->SetUserData(e_transm);
     _energy_transmitters.push_back(e_transm);
@@ -292,7 +309,7 @@ void World::createChell(const float &x, const float &y, size_t id) {
             CHELL_DENSITY);
     auto *chell = new Chell(id, body);
     body->SetUserData(chell);
-    _chells.insert({id, chell});
+    _chells.push_back(chell);
 }
 
 void World::createEnergyBarrier(const float &x, const float &y,

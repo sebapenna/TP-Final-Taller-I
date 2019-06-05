@@ -14,6 +14,9 @@ public:
 
     void EndContact(b2Contact *contact) override;
 
+    // PreSolve se va a encargar de todos aquellos contactos que requieran
+    // alguna accion (ignorar el contacto, por ej) antes de que se realize la
+    // colision
     void PreSolve(b2Contact *contact, const b2Manifold *oldManifold) override;
 };
 
