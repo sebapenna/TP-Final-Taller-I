@@ -48,11 +48,11 @@ void Chell::updateJumpState() {
     switch (_jump_state) {
         case ON_GROUND:
             if (vel_y > DELTA_Y_VEL)
-                _jump_state = JUMPING;
+                _jump_state = JUMPED;
             else if (vel_y < 0)  // Cuerpo cayo de una superficie
                 _jump_state = FALLING;
             break;
-        case JUMPING:
+        case JUMPED:
             if (vel_y <= 0) // Empieza a caer
                 _jump_state = FALLING;
             break;

@@ -1,5 +1,4 @@
 #include "LiftRockDTO.h"
-#include <src/constants.h>
 
 LiftRockDTO::LiftRockDTO(const int &rock_id) : _rock_id(rock_id) { }
 

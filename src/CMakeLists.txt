@@ -28,7 +28,7 @@ add_library(portal-src
         Obstacles/Acid.cpp
         Obstacles/EnergyBarrier.cpp
         PinTool.cpp
-        )
+        protocol_macros.h)
 
 target_link_libraries(portal-src Box2D yaml-parser protocol-translator
         resources)

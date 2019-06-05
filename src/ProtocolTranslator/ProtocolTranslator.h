@@ -27,7 +27,7 @@ private:
 public:
     static std::vector<int> translate(const ProtocolDTO *dto);
 
-    static ProtocolDTO* translate(std::vector<int> data);
+    static ProtocolDTO* translate(const std::vector<int> &data);
 };
 
 

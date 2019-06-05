@@ -1,12 +1,11 @@
 #include "PinToolDTO.h"
-#include <src/constants.h>
 
 PinToolDTO::PinToolDTO(const int &x, const int &y) : _x(x), _y(y) { }
 
 PinToolDTO::~PinToolDTO() = default;
 
 int PinToolDTO::getClassId() const {
-    return PROTOCOL_PIN_TOOL;
+    return PROTOCOL_SHOOT_PIN_TOOL;
 }
 
 const int PinToolDTO::getX() const {

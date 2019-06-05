@@ -1,5 +1,4 @@
 #include "PortalDTO.h"
-#include <src/constants.h>
 
 PortalDTO::PortalDTO(const int &color, const int &x, const int &y) :
 _color(color), _x(x), _y(y) { }
@@ -7,7 +6,7 @@ _color(color), _x(x), _y(y) { }
 PortalDTO::~PortalDTO() = default;
 
 int PortalDTO::getClassId() const {
-    return PROTOCOL_PORTAL;
+    return PROTOCOL_SHOOT_PORTAL;
 }
 
 int PortalDTO::getColor() const {

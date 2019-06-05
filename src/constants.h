@@ -20,12 +20,12 @@
 #define O_SO    (uint8_t) 3 /* Suroeste */
 
 /* Direcciones */
-#define O_N  (uint8_t) 6    /* Norte */
-#define O_S   (uint8_t) 7 /* Sur */
-#define O_O (uint8_t) 8 /* Oeste */
-#define O_E (uint8_t) 9 /* Este */
-#define O_V (uint8_t) 10 /* Vertical */
-#define O_H (uint8_t) 11 /* Horizontal */
+#define O_N  (uint8_t) 4    /* Norte */
+#define O_S   (uint8_t) 5 /* Sur */
+#define O_E (uint8_t) 6 /* Este */
+#define O_O (uint8_t) 7 /* Oeste */
+#define O_V (uint8_t) 8 /* Vertical */
+#define O_H (uint8_t) 9 /* Horizontal */
 
 /* Box2D */
 #define GRAVITY_X   0.0f
@@ -40,9 +40,9 @@
 #define MOVE_LEFT   (uint8) 0
 #define MOVE_RIGHT  (uint8) 1
 #define MOVE_STOP   (uint8) 2
-#define JUMPING (uint8) 0
-#define FALLING (uint8)  1
-#define ON_GROUND (uint8)   2
+#define JUMPED (uint8) 0
+#define ON_GROUND (uint8)   1
+#define FALLING (uint8)  2
 #define DELTA_Y_VEL 0.001    // Error de velocidad por caida de cuerpos al suelo
 #define DELTA_POS   (float) 0.02    // Error posicion (x e y)
 
@@ -117,34 +117,6 @@
 #define PIN_TOOL_RAY    "PinToolRay"
 #define PIN_TOOL    "PinTool"
 #define CAKE    "Cake"
-
-/* Protocolo */
-#define BLUE_PORTAL    0
-#define ORANGE_PORTAL  1
-
-#define PROTOCOL_MOVE_LEFT   0
-#define PROTOCOL_MOVE_RIGHT   1
-#define PROTOCOL_JUMP   2
-#define PROTOCOL_STOP   3
-#define PROTOCOL_PORTAL 4
-#define PROTOCOL_PIN_TOOL   5
-#define PROTOCOL_LIFT_ROCK  6
-#define PROTOCOL_DROP_ROCK  7
-#define ROCK_BLOCK_DATA 8
-#define METAL_BLOCK_DATA    9
-#define METAL_DIAGONAL_BLOCK_DATA   10
-#define ENERGY_TRANSMITTER_DATA 11
-#define ENERGY_RECEIVER_DATA    12
-#define ACID_DATA   13
-#define BUTTON_DATA 14
-#define GATE_DATA   15
-#define ENERGY_BARRIER_DATA 16
-#define ROCK_DATA   17
-#define ENERGY_BALL_DATA    18
-#define PORTAL_DATA 19
-#define PIN_TOOL_DATA   20
-#define CHELL_DATA  21
-
 
 /* Path YAML */
 //#ifdef DEBUG_MODE

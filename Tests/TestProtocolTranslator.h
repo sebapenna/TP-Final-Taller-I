@@ -81,7 +81,7 @@ public:
         cout << endl << "TEST traducir PortalDTO a datos: ";
         auto p_dto = new PortalDTO(BLUE_PORTAL, -10, 50);
         auto msg_vec = ProtocolTranslator::translate(p_dto);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_PORTAL, msg_vec.at(0));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PORTAL, msg_vec.at(0));
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, msg_vec.at(1));
         CPPUNIT_ASSERT_EQUAL(-10, msg_vec.at(2));
         CPPUNIT_ASSERT_EQUAL(50, msg_vec.at(3));
@@ -93,7 +93,7 @@ public:
         cout << endl << "TEST traducir PinToolDTO a datos: ";
         auto p_dto = new PinToolDTO(-10, 50);
         auto msg_vec = ProtocolTranslator::translate(p_dto);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_PIN_TOOL, msg_vec.at(0));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PIN_TOOL, msg_vec.at(0));
         CPPUNIT_ASSERT_EQUAL(-10, msg_vec.at(1));
         CPPUNIT_ASSERT_EQUAL(50, msg_vec.at(2));
         delete p_dto;
@@ -158,12 +158,12 @@ public:
     void testTranslatePortalData() {
         cout << endl << "TEST traducir datos Portal a DTO: ";
         vector<int> v;
-        v.push_back(PROTOCOL_PORTAL);
+        v.push_back(PROTOCOL_SHOOT_PORTAL);
         v.push_back(ORANGE_PORTAL); // color
         v.push_back(50);    // x
         v.push_back(-5);    // y
         auto dto = (PortalDTO*) ProtocolTranslator::translate(v);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_PORTAL, dto->getClassId());
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PORTAL, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL(ORANGE_PORTAL, dto->getColor());
         CPPUNIT_ASSERT_EQUAL(50, dto->getX());
         CPPUNIT_ASSERT_EQUAL(-5, dto->getY());
@@ -173,11 +173,11 @@ public:
     void testTranslatePinToolData() {
         cout << endl << "TEST traducir datos PinTool a DTO: ";
         vector<int> v;
-        v.push_back(PROTOCOL_PIN_TOOL);
+        v.push_back(PROTOCOL_SHOOT_PIN_TOOL);
         v.push_back(-10);    // x
         v.push_back(5);    // y
         auto dto = (PinToolDTO*) ProtocolTranslator::translate(v);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_PIN_TOOL, dto->getClassId());
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PIN_TOOL, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL(-10, dto->getX());
         CPPUNIT_ASSERT_EQUAL(5, dto->getY());
         cout << "OK";

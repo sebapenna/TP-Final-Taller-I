@@ -1,5 +1,4 @@
 #include "MoveRightDTO.h"
-#include <src/constants.h>
 
 MoveRightDTO::~MoveRightDTO() = default;
 

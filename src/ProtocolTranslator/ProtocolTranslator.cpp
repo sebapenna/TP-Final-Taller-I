@@ -7,7 +7,6 @@
 #include "StopDTO.h"
 #include "JumpDTO.h"
 #include "DropRockDTO.h"
-#include <src/constants.h>
 #include <vector>
 
 using std::vector;
@@ -23,9 +22,9 @@ vector<int> ProtocolTranslator::translate(const ProtocolDTO *dto) {
             return move(jump(dto));
         case PROTOCOL_STOP:
             return move(stop(dto));
-        case PROTOCOL_PORTAL:
+        case PROTOCOL_SHOOT_PORTAL:
             return move(portal(dto));
-        case PROTOCOL_PIN_TOOL:
+        case PROTOCOL_SHOOT_PIN_TOOL:
             return move(pinTool(dto));
         case PROTOCOL_LIFT_ROCK:
             return move(liftRock(dto));
@@ -64,7 +63,7 @@ std::vector<int> ProtocolTranslator::stop(const ProtocolDTO *dto) {
 std::vector<int> ProtocolTranslator::portal(const ProtocolDTO *dto) {
     auto p_dto = (PortalDTO*) dto;
     vector<int> v;
-    v.push_back(PROTOCOL_PORTAL);
+    v.push_back(PROTOCOL_SHOOT_PORTAL);
     v.push_back(p_dto->getColor());
     v.push_back(p_dto->getX());
     v.push_back(p_dto->getY());
@@ -74,7 +73,7 @@ std::vector<int> ProtocolTranslator::portal(const ProtocolDTO *dto) {
 std::vector<int> ProtocolTranslator::pinTool(const ProtocolDTO *dto) {
     auto p_dto = (PinToolDTO*) dto;
     vector<int> v;
-    v.push_back(PROTOCOL_PIN_TOOL);
+    v.push_back(PROTOCOL_SHOOT_PIN_TOOL);
     v.push_back(p_dto->getX());
     v.push_back(p_dto->getY());
     return move(v);
@@ -94,7 +93,7 @@ std::vector<int> ProtocolTranslator::dropRock(const ProtocolDTO *dto) {
     return move(v);
 }
 
-ProtocolDTO *ProtocolTranslator::translate(std::vector<int> data) {
+ProtocolDTO *ProtocolTranslator::translate(const std::vector<int> &data) {
     int command = data.at(0);
     switch (command) {
         case PROTOCOL_MOVE_LEFT:
@@ -105,9 +104,9 @@ ProtocolDTO *ProtocolTranslator::translate(std::vector<int> data) {
             return jump(data);
         case PROTOCOL_STOP:
             return stop(data);
-        case PROTOCOL_PORTAL:
+        case PROTOCOL_SHOOT_PORTAL:
             return portal(data);
-        case PROTOCOL_PIN_TOOL:
+        case PROTOCOL_SHOOT_PIN_TOOL:
             return pinTool(data);
         case PROTOCOL_LIFT_ROCK:
             return liftRock(data);
