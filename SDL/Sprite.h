@@ -10,6 +10,7 @@
 #include <string>
 #include "Renderer.h"
 #include "Camera.h"
+class Camera;
 
 class Sprite {
 private:

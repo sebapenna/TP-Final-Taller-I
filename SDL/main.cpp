@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <exception>
+#include <caca++.h>
 #include "Window.h"
 #include "Renderer.h"
 #include "Sprite.h"
@@ -11,9 +12,22 @@
 #include "WorldView.h"
 #include "BlockViewMetal.h"
 #include "BlockViewRock.h"
+#include "socket.h"
+#include <queue>
 
 int main(int argc, char** argv){
-    // Iniciar socketprotocol
+    /* Iniciar socketprotocol
+    Socket socket;
+    socket.connect("localhost", "8080");
+    char listMsg[] = {8};
+    socket.sendMessage(listMsg, 1);
+    int listLen = 0;
+    socket.recvMessage((char*)&listLen, 4);
+    std::vector<char> list(listLen);
+    socket.recvMessage(list.data(), listLen);
+    std::string listString = list.data();
+    std::cout << listString << std::endl;*/
+    
     try {
         std::string title("hello world");
         Window window(title, 1000, 1000, SDL_WINDOW_SHOWN);
@@ -40,7 +54,7 @@ int main(int argc, char** argv){
         std::string chell_file_name("chell");
         ChellAnimationView* chell = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
         chell->setDestRect(200,200,201,220);
-        Camera camera(1000, 1000, chell->getDst());
+        Camera camera(1000, 1000, chell->getPosition());
         WorldView world(camera);
         ChellAnimationView* chell2 = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
         chell2->setDestRect(-200,-100,201,220);
@@ -50,6 +64,7 @@ int main(int argc, char** argv){
         world.addChell(chell);
         world.addChell(chell2);
         world.addChell(chell3);
+        std::queue<Event*> eventQueue;
 
         std::string block_file_name("block");
         for (int startX = -2000; startX<7000; startX+=128) {
@@ -74,10 +89,10 @@ int main(int argc, char** argv){
                 } else if (e.type == SDL_KEYDOWN) {
                     switch (e.key.keysym.sym) {
                         case SDLK_d:
-                            chell->moveToTheRight(10);
+                            //eventQueue.push(new EventMoveRight());
                             break;
                         case SDLK_a:
-                            chell->moveToTheLeft(10);
+                            //eventQueue.push(new EventMoveLeft());
                             break;
                         default:
                             break;

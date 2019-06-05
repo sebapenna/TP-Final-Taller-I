@@ -1,1 +1,0 @@
-/usr/bin/c++   -std=c++11 -g  -rdynamic CMakeFiles/sdl-hello.dir/main.cpp.o  -o sdl-hello libsdldemo.a -lSDL2 -lSDL2_image 
