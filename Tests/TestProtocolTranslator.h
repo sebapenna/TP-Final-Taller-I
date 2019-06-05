@@ -13,6 +13,7 @@
 #include <src/ProtocolTranslator/PinToolDTO.h>
 #include <src/ProtocolTranslator/LiftRockDTO.h>
 #include <src/ProtocolTranslator/DropRockDTO.h>
+#include <vector>
 
 using std::cout;
 using std::endl;
@@ -28,6 +29,14 @@ CPPUNIT_TEST_SUITE( TestProtocolTranslator );
     CPPUNIT_TEST(testTranslatePinToolDTO);
     CPPUNIT_TEST(testTranslateLiftRockDTO);
     CPPUNIT_TEST(testTranslateDropRockDTO);
+    CPPUNIT_TEST(testTranslateMoveLeftData);
+    CPPUNIT_TEST(testTranslateMoveRightData);
+    CPPUNIT_TEST(testTranslateJumpData);
+    CPPUNIT_TEST(testTranslateStopData);
+    CPPUNIT_TEST(testTranslatePortalData);
+    CPPUNIT_TEST(testTranslatePinToolData);
+    CPPUNIT_TEST(testTranslateLiftRockData);
+    CPPUNIT_TEST(testTranslateDropRockData);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -107,6 +116,90 @@ public:
         auto msg_vec = ProtocolTranslator::translate(dto);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_DROP_ROCK, msg_vec.at(0));
         delete dto;
+        cout << "OK";
+    }
+
+    void testTranslateMoveLeftData() {
+        cout << endl << "TEST traducir datos MoveLeft a DTO: ";
+        vector<int> v;
+        v.push_back(PROTOCOL_MOVE_LEFT);
+        auto dto = ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_LEFT, dto->getClassId());
+        cout << "OK";
+    }
+
+    void testTranslateMoveRightData() {
+        cout << endl << "TEST traducir datos MoveRight a DTO: ";
+        vector<int> v;
+        v.push_back(PROTOCOL_MOVE_RIGHT);
+        auto dto = ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_RIGHT, dto->getClassId());
+        cout << "OK";
+    }
+
+    void testTranslateStopData() {
+        cout << endl << "TEST traducir datos Stop a DTO: ";
+        vector<int> v;
+        v.push_back(PROTOCOL_STOP);
+        auto dto = ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_STOP, dto->getClassId());
+        cout << "OK";
+    }
+
+    void testTranslateJumpData() {
+        cout << endl << "TEST traducir datos Jump a DTO: ";
+        vector<int> v;
+        v.push_back(PROTOCOL_JUMP);
+        auto dto = ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_JUMP, dto->getClassId());
+        cout << "OK";
+    }
+
+    void testTranslatePortalData() {
+        cout << endl << "TEST traducir datos Portal a DTO: ";
+        vector<int> v;
+        v.push_back(PROTOCOL_PORTAL);
+        v.push_back(ORANGE_PORTAL); // color
+        v.push_back(50);    // x
+        v.push_back(-5);    // y
+        auto dto = (PortalDTO*) ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_PORTAL, dto->getClassId());
+        CPPUNIT_ASSERT_EQUAL(ORANGE_PORTAL, dto->getColor());
+        CPPUNIT_ASSERT_EQUAL(50, dto->getX());
+        CPPUNIT_ASSERT_EQUAL(-5, dto->getY());
+        cout << "OK";
+    }
+
+    void testTranslatePinToolData() {
+        cout << endl << "TEST traducir datos PinTool a DTO: ";
+        vector<int> v;
+        v.push_back(PROTOCOL_PIN_TOOL);
+        v.push_back(-10);    // x
+        v.push_back(5);    // y
+        auto dto = (PinToolDTO*) ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_PIN_TOOL, dto->getClassId());
+        CPPUNIT_ASSERT_EQUAL(-10, dto->getX());
+        CPPUNIT_ASSERT_EQUAL(5, dto->getY());
+        cout << "OK";
+    }
+
+    void testTranslateLiftRockData() {
+        cout << endl << "TEST traducir datos LiftRock a DTO: ";
+        vector<int> v;
+        v.push_back(PROTOCOL_LIFT_ROCK);
+        v.push_back(2);    // y
+        auto dto = (LiftRockDTO*) ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_LIFT_ROCK, dto->getClassId());
+        CPPUNIT_ASSERT_EQUAL(2, dto->getRockId());
+        cout << "OK";
+    }
+
+    void testTranslateDropRockData() {
+        cout << endl << "TEST traducir datos DropRock a DTO: ";
+        vector<int> v;
+        v.push_back(PROTOCOL_DROP_ROCK);
+        auto dto = ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_DROP_ROCK, dto->getClassId());
         cout << "OK";
     }
 };

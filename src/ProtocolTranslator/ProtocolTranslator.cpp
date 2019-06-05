@@ -2,6 +2,11 @@
 #include "PortalDTO.h"
 #include "PinToolDTO.h"
 #include "LiftRockDTO.h"
+#include "MoveLeftDTO.h"
+#include "MoveRightDTO.h"
+#include "StopDTO.h"
+#include "JumpDTO.h"
+#include "DropRockDTO.h"
 #include <src/constants.h>
 #include <vector>
 
@@ -87,6 +92,71 @@ std::vector<int> ProtocolTranslator::dropRock(const ProtocolDTO *dto) {
     vector<int> v;
     v.push_back(PROTOCOL_DROP_ROCK);
     return move(v);
+}
+
+ProtocolDTO *ProtocolTranslator::translate(std::vector<int> data) {
+    int command = data.at(0);
+    switch (command) {
+        case PROTOCOL_MOVE_LEFT:
+            return moveLeft(data);
+        case PROTOCOL_MOVE_RIGHT:
+            return moveRight(data);
+        case PROTOCOL_JUMP:
+            return jump(data);
+        case PROTOCOL_STOP:
+            return stop(data);
+        case PROTOCOL_PORTAL:
+            return portal(data);
+        case PROTOCOL_PIN_TOOL:
+            return pinTool(data);
+        case PROTOCOL_LIFT_ROCK:
+            return liftRock(data);
+        case PROTOCOL_DROP_ROCK:
+            return dropRock(data);
+        default:
+            // Este caso no existe
+            break;
+    }
+}
+
+ProtocolDTO *ProtocolTranslator::moveLeft(std::vector<int> data) {
+    auto dto = new MoveLeftDTO();
+    return (ProtocolDTO*) dto;
+}
+
+ProtocolDTO *ProtocolTranslator::moveRight(std::vector<int> data) {
+    auto dto = new MoveRightDTO();
+    return (ProtocolDTO*) dto;
+}
+
+ProtocolDTO *ProtocolTranslator::stop(std::vector<int> data) {
+    auto dto = new StopDTO();
+    return (ProtocolDTO*) dto;
+}
+
+ProtocolDTO *ProtocolTranslator::jump(std::vector<int> data) {
+    auto dto = new JumpDTO();
+    return (ProtocolDTO*) dto;
+}
+
+ProtocolDTO *ProtocolTranslator::portal(std::vector<int> data) {
+    auto dto = new PortalDTO(data.at(1), data.at(2), data.at(3));
+    return (ProtocolDTO*) dto;
+}
+
+ProtocolDTO *ProtocolTranslator::pinTool(std::vector<int> data) {
+    auto dto = new PinToolDTO(data.at(1), data.at(2));
+    return (ProtocolDTO*) dto;
+}
+
+ProtocolDTO *ProtocolTranslator::liftRock(std::vector<int> data) {
+    auto dto = new LiftRockDTO(data.at(1));
+    return (ProtocolDTO*) dto;
+}
+
+ProtocolDTO *ProtocolTranslator::dropRock(std::vector<int> data) {
+    auto dto = new DropRockDTO();
+    return (ProtocolDTO*) dto;
 }
 
 //
