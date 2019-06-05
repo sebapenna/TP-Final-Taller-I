@@ -71,7 +71,7 @@ CMAKE_BINARY_DIR = /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cm
 CMakeFiles/sdldemo.dir/all:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/depend
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16 "Built target sdldemo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles --progress-num=3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18 "Built target sdldemo"
 .PHONY : CMakeFiles/sdldemo.dir/all
 
 # Include target in all.
@@ -81,7 +81,7 @@ all: CMakeFiles/sdldemo.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/sdldemo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles 14
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles 16
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/sdldemo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/sdldemo.dir/rule
@@ -118,7 +118,7 @@ all: CMakeFiles/sdl-hello.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/sdl-hello.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles 16
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles 18
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/sdl-hello.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/sdl-hello.dir/rule
