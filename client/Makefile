@@ -48,10 +48,10 @@ RM = /snap/clion/73/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL
+CMAKE_SOURCE_DIR = /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL
+CMAKE_BINARY_DIR = /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/client
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,8 +69,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
-	/snap/clion/73/bin/cmake/linux/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/snap/clion/73/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/CMakeFiles /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/client/CMakeFiles /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/client/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/SDL/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jonathanmedina/Desktop/TPFINAL/TP-Final-Taller-I/client/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -136,221 +136,234 @@ sdl-hello/fast:
 	$(MAKE) -f CMakeFiles/sdl-hello.dir/build.make CMakeFiles/sdl-hello.dir/build
 .PHONY : sdl-hello/fast
 
-AnimatedSprite.o: AnimatedSprite.cpp.o
+#=============================================================================
+# Target rules for targets named resources
 
-.PHONY : AnimatedSprite.o
+# Build rule for target.
+resources: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 resources
+.PHONY : resources
 
-# target to build an object file
-AnimatedSprite.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.o
-.PHONY : AnimatedSprite.cpp.o
+# fast build rule for target.
+resources/fast:
+	$(MAKE) -f common/CMakeFiles/resources.dir/build.make common/CMakeFiles/resources.dir/build
+.PHONY : resources/fast
 
-AnimatedSprite.i: AnimatedSprite.cpp.i
+ComponentsSDL/AnimatedSprite.o: ComponentsSDL/AnimatedSprite.cpp.o
 
-.PHONY : AnimatedSprite.i
-
-# target to preprocess a source file
-AnimatedSprite.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.i
-.PHONY : AnimatedSprite.cpp.i
-
-AnimatedSprite.s: AnimatedSprite.cpp.s
-
-.PHONY : AnimatedSprite.s
-
-# target to generate assembly for a file
-AnimatedSprite.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.s
-.PHONY : AnimatedSprite.cpp.s
-
-Camera.o: Camera.cpp.o
-
-.PHONY : Camera.o
+.PHONY : ComponentsSDL/AnimatedSprite.o
 
 # target to build an object file
-Camera.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Camera.cpp.o
-.PHONY : Camera.cpp.o
+ComponentsSDL/AnimatedSprite.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/AnimatedSprite.cpp.o
+.PHONY : ComponentsSDL/AnimatedSprite.cpp.o
 
-Camera.i: Camera.cpp.i
+ComponentsSDL/AnimatedSprite.i: ComponentsSDL/AnimatedSprite.cpp.i
 
-.PHONY : Camera.i
+.PHONY : ComponentsSDL/AnimatedSprite.i
 
 # target to preprocess a source file
-Camera.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Camera.cpp.i
-.PHONY : Camera.cpp.i
+ComponentsSDL/AnimatedSprite.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/AnimatedSprite.cpp.i
+.PHONY : ComponentsSDL/AnimatedSprite.cpp.i
 
-Camera.s: Camera.cpp.s
+ComponentsSDL/AnimatedSprite.s: ComponentsSDL/AnimatedSprite.cpp.s
 
-.PHONY : Camera.s
+.PHONY : ComponentsSDL/AnimatedSprite.s
 
 # target to generate assembly for a file
-Camera.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Camera.cpp.s
-.PHONY : Camera.cpp.s
+ComponentsSDL/AnimatedSprite.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/AnimatedSprite.cpp.s
+.PHONY : ComponentsSDL/AnimatedSprite.cpp.s
 
-EventCaptured.o: EventCaptured.cpp.o
+ComponentsSDL/Camera.o: ComponentsSDL/Camera.cpp.o
 
-.PHONY : EventCaptured.o
+.PHONY : ComponentsSDL/Camera.o
 
 # target to build an object file
-EventCaptured.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/EventCaptured.cpp.o
-.PHONY : EventCaptured.cpp.o
+ComponentsSDL/Camera.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Camera.cpp.o
+.PHONY : ComponentsSDL/Camera.cpp.o
 
-EventCaptured.i: EventCaptured.cpp.i
+ComponentsSDL/Camera.i: ComponentsSDL/Camera.cpp.i
 
-.PHONY : EventCaptured.i
+.PHONY : ComponentsSDL/Camera.i
 
 # target to preprocess a source file
-EventCaptured.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/EventCaptured.cpp.i
-.PHONY : EventCaptured.cpp.i
+ComponentsSDL/Camera.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Camera.cpp.i
+.PHONY : ComponentsSDL/Camera.cpp.i
 
-EventCaptured.s: EventCaptured.cpp.s
+ComponentsSDL/Camera.s: ComponentsSDL/Camera.cpp.s
 
-.PHONY : EventCaptured.s
+.PHONY : ComponentsSDL/Camera.s
 
 # target to generate assembly for a file
-EventCaptured.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/EventCaptured.cpp.s
-.PHONY : EventCaptured.cpp.s
+ComponentsSDL/Camera.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Camera.cpp.s
+.PHONY : ComponentsSDL/Camera.cpp.s
 
-Position.o: Position.cpp.o
+ComponentsSDL/Position.o: ComponentsSDL/Position.cpp.o
 
-.PHONY : Position.o
+.PHONY : ComponentsSDL/Position.o
 
 # target to build an object file
-Position.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Position.cpp.o
-.PHONY : Position.cpp.o
+ComponentsSDL/Position.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Position.cpp.o
+.PHONY : ComponentsSDL/Position.cpp.o
 
-Position.i: Position.cpp.i
+ComponentsSDL/Position.i: ComponentsSDL/Position.cpp.i
 
-.PHONY : Position.i
+.PHONY : ComponentsSDL/Position.i
 
 # target to preprocess a source file
-Position.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Position.cpp.i
-.PHONY : Position.cpp.i
+ComponentsSDL/Position.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Position.cpp.i
+.PHONY : ComponentsSDL/Position.cpp.i
 
-Position.s: Position.cpp.s
+ComponentsSDL/Position.s: ComponentsSDL/Position.cpp.s
 
-.PHONY : Position.s
+.PHONY : ComponentsSDL/Position.s
 
 # target to generate assembly for a file
-Position.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Position.cpp.s
-.PHONY : Position.cpp.s
+ComponentsSDL/Position.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Position.cpp.s
+.PHONY : ComponentsSDL/Position.cpp.s
 
-Renderer.o: Renderer.cpp.o
+ComponentsSDL/Renderer.o: ComponentsSDL/Renderer.cpp.o
 
-.PHONY : Renderer.o
+.PHONY : ComponentsSDL/Renderer.o
 
 # target to build an object file
-Renderer.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Renderer.cpp.o
-.PHONY : Renderer.cpp.o
+ComponentsSDL/Renderer.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Renderer.cpp.o
+.PHONY : ComponentsSDL/Renderer.cpp.o
 
-Renderer.i: Renderer.cpp.i
+ComponentsSDL/Renderer.i: ComponentsSDL/Renderer.cpp.i
 
-.PHONY : Renderer.i
+.PHONY : ComponentsSDL/Renderer.i
 
 # target to preprocess a source file
-Renderer.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Renderer.cpp.i
-.PHONY : Renderer.cpp.i
+ComponentsSDL/Renderer.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Renderer.cpp.i
+.PHONY : ComponentsSDL/Renderer.cpp.i
 
-Renderer.s: Renderer.cpp.s
+ComponentsSDL/Renderer.s: ComponentsSDL/Renderer.cpp.s
 
-.PHONY : Renderer.s
+.PHONY : ComponentsSDL/Renderer.s
 
 # target to generate assembly for a file
-Renderer.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Renderer.cpp.s
-.PHONY : Renderer.cpp.s
+ComponentsSDL/Renderer.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Renderer.cpp.s
+.PHONY : ComponentsSDL/Renderer.cpp.s
 
-SDLException.o: SDLException.cpp.o
+ComponentsSDL/SDLException.o: ComponentsSDL/SDLException.cpp.o
 
-.PHONY : SDLException.o
+.PHONY : ComponentsSDL/SDLException.o
 
 # target to build an object file
-SDLException.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SDLException.cpp.o
-.PHONY : SDLException.cpp.o
+ComponentsSDL/SDLException.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/SDLException.cpp.o
+.PHONY : ComponentsSDL/SDLException.cpp.o
 
-SDLException.i: SDLException.cpp.i
+ComponentsSDL/SDLException.i: ComponentsSDL/SDLException.cpp.i
 
-.PHONY : SDLException.i
+.PHONY : ComponentsSDL/SDLException.i
 
 # target to preprocess a source file
-SDLException.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SDLException.cpp.i
-.PHONY : SDLException.cpp.i
+ComponentsSDL/SDLException.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/SDLException.cpp.i
+.PHONY : ComponentsSDL/SDLException.cpp.i
 
-SDLException.s: SDLException.cpp.s
+ComponentsSDL/SDLException.s: ComponentsSDL/SDLException.cpp.s
 
-.PHONY : SDLException.s
+.PHONY : ComponentsSDL/SDLException.s
 
 # target to generate assembly for a file
-SDLException.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SDLException.cpp.s
-.PHONY : SDLException.cpp.s
+ComponentsSDL/SDLException.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/SDLException.cpp.s
+.PHONY : ComponentsSDL/SDLException.cpp.s
 
-Sprite.o: Sprite.cpp.o
+ComponentsSDL/Sprite.o: ComponentsSDL/Sprite.cpp.o
 
-.PHONY : Sprite.o
+.PHONY : ComponentsSDL/Sprite.o
 
 # target to build an object file
-Sprite.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Sprite.cpp.o
-.PHONY : Sprite.cpp.o
+ComponentsSDL/Sprite.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Sprite.cpp.o
+.PHONY : ComponentsSDL/Sprite.cpp.o
 
-Sprite.i: Sprite.cpp.i
+ComponentsSDL/Sprite.i: ComponentsSDL/Sprite.cpp.i
 
-.PHONY : Sprite.i
+.PHONY : ComponentsSDL/Sprite.i
 
 # target to preprocess a source file
-Sprite.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Sprite.cpp.i
-.PHONY : Sprite.cpp.i
+ComponentsSDL/Sprite.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Sprite.cpp.i
+.PHONY : ComponentsSDL/Sprite.cpp.i
 
-Sprite.s: Sprite.cpp.s
+ComponentsSDL/Sprite.s: ComponentsSDL/Sprite.cpp.s
 
-.PHONY : Sprite.s
+.PHONY : ComponentsSDL/Sprite.s
 
 # target to generate assembly for a file
-Sprite.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Sprite.cpp.s
-.PHONY : Sprite.cpp.s
+ComponentsSDL/Sprite.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Sprite.cpp.s
+.PHONY : ComponentsSDL/Sprite.cpp.s
 
-SpriteFactory.o: SpriteFactory.cpp.o
+ComponentsSDL/Window.o: ComponentsSDL/Window.cpp.o
 
-.PHONY : SpriteFactory.o
+.PHONY : ComponentsSDL/Window.o
 
 # target to build an object file
-SpriteFactory.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SpriteFactory.cpp.o
-.PHONY : SpriteFactory.cpp.o
+ComponentsSDL/Window.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Window.cpp.o
+.PHONY : ComponentsSDL/Window.cpp.o
 
-SpriteFactory.i: SpriteFactory.cpp.i
+ComponentsSDL/Window.i: ComponentsSDL/Window.cpp.i
 
-.PHONY : SpriteFactory.i
+.PHONY : ComponentsSDL/Window.i
 
 # target to preprocess a source file
-SpriteFactory.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SpriteFactory.cpp.i
-.PHONY : SpriteFactory.cpp.i
+ComponentsSDL/Window.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Window.cpp.i
+.PHONY : ComponentsSDL/Window.cpp.i
 
-SpriteFactory.s: SpriteFactory.cpp.s
+ComponentsSDL/Window.s: ComponentsSDL/Window.cpp.s
 
-.PHONY : SpriteFactory.s
+.PHONY : ComponentsSDL/Window.s
 
 # target to generate assembly for a file
-SpriteFactory.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SpriteFactory.cpp.s
-.PHONY : SpriteFactory.cpp.s
+ComponentsSDL/Window.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Window.cpp.s
+.PHONY : ComponentsSDL/Window.cpp.s
+
+SDL_Runner.o: SDL_Runner.cpp.o
+
+.PHONY : SDL_Runner.o
+
+# target to build an object file
+SDL_Runner.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SDL_Runner.cpp.o
+.PHONY : SDL_Runner.cpp.o
+
+SDL_Runner.i: SDL_Runner.cpp.i
+
+.PHONY : SDL_Runner.i
+
+# target to preprocess a source file
+SDL_Runner.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SDL_Runner.cpp.i
+.PHONY : SDL_Runner.cpp.i
+
+SDL_Runner.s: SDL_Runner.cpp.s
+
+.PHONY : SDL_Runner.s
+
+# target to generate assembly for a file
+SDL_Runner.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/SDL_Runner.cpp.s
+.PHONY : SDL_Runner.cpp.s
 
 TextureFactory.o: TextureFactory.cpp.o
 
@@ -487,33 +500,6 @@ View/View.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/View.cpp.s
 .PHONY : View/View.cpp.s
 
-Window.o: Window.cpp.o
-
-.PHONY : Window.o
-
-# target to build an object file
-Window.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Window.cpp.o
-.PHONY : Window.cpp.o
-
-Window.i: Window.cpp.i
-
-.PHONY : Window.i
-
-# target to preprocess a source file
-Window.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Window.cpp.i
-.PHONY : Window.cpp.i
-
-Window.s: Window.cpp.s
-
-.PHONY : Window.s
-
-# target to generate assembly for a file
-Window.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Window.cpp.s
-.PHONY : Window.cpp.s
-
 WorldView.o: WorldView.cpp.o
 
 .PHONY : WorldView.o
@@ -540,6 +526,87 @@ WorldView.s: WorldView.cpp.s
 WorldView.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/WorldView.cpp.s
 .PHONY : WorldView.cpp.s
+
+common/ProtectedBlockingQueue.o: common/ProtectedBlockingQueue.cpp.o
+
+.PHONY : common/ProtectedBlockingQueue.o
+
+# target to build an object file
+common/ProtectedBlockingQueue.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/ProtectedBlockingQueue.cpp.o
+.PHONY : common/ProtectedBlockingQueue.cpp.o
+
+common/ProtectedBlockingQueue.i: common/ProtectedBlockingQueue.cpp.i
+
+.PHONY : common/ProtectedBlockingQueue.i
+
+# target to preprocess a source file
+common/ProtectedBlockingQueue.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/ProtectedBlockingQueue.cpp.i
+.PHONY : common/ProtectedBlockingQueue.cpp.i
+
+common/ProtectedBlockingQueue.s: common/ProtectedBlockingQueue.cpp.s
+
+.PHONY : common/ProtectedBlockingQueue.s
+
+# target to generate assembly for a file
+common/ProtectedBlockingQueue.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/ProtectedBlockingQueue.cpp.s
+.PHONY : common/ProtectedBlockingQueue.cpp.s
+
+common/SafeQueue.o: common/SafeQueue.cpp.o
+
+.PHONY : common/SafeQueue.o
+
+# target to build an object file
+common/SafeQueue.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/SafeQueue.cpp.o
+.PHONY : common/SafeQueue.cpp.o
+
+common/SafeQueue.i: common/SafeQueue.cpp.i
+
+.PHONY : common/SafeQueue.i
+
+# target to preprocess a source file
+common/SafeQueue.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/SafeQueue.cpp.i
+.PHONY : common/SafeQueue.cpp.i
+
+common/SafeQueue.s: common/SafeQueue.cpp.s
+
+.PHONY : common/SafeQueue.s
+
+# target to generate assembly for a file
+common/SafeQueue.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/SafeQueue.cpp.s
+.PHONY : common/SafeQueue.cpp.s
+
+common/thread.o: common/thread.cpp.o
+
+.PHONY : common/thread.o
+
+# target to build an object file
+common/thread.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/thread.cpp.o
+.PHONY : common/thread.cpp.o
+
+common/thread.i: common/thread.cpp.i
+
+.PHONY : common/thread.i
+
+# target to preprocess a source file
+common/thread.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/thread.cpp.i
+.PHONY : common/thread.cpp.i
+
+common/thread.s: common/thread.cpp.s
+
+.PHONY : common/thread.s
+
+# target to generate assembly for a file
+common/thread.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/thread.cpp.s
+.PHONY : common/thread.cpp.s
 
 main.o: main.cpp.o
 
@@ -568,33 +635,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/sdl-hello.dir/build.make CMakeFiles/sdl-hello.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-thread.o: thread.cpp.o
-
-.PHONY : thread.o
-
-# target to build an object file
-thread.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/thread.cpp.o
-.PHONY : thread.cpp.o
-
-thread.i: thread.cpp.i
-
-.PHONY : thread.i
-
-# target to preprocess a source file
-thread.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/thread.cpp.i
-.PHONY : thread.cpp.i
-
-thread.s: thread.cpp.s
-
-.PHONY : thread.s
-
-# target to generate assembly for a file
-thread.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/thread.cpp.s
-.PHONY : thread.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -605,30 +645,31 @@ help:
 	@echo "... edit_cache"
 	@echo "... sdldemo"
 	@echo "... sdl-hello"
-	@echo "... AnimatedSprite.o"
-	@echo "... AnimatedSprite.i"
-	@echo "... AnimatedSprite.s"
-	@echo "... Camera.o"
-	@echo "... Camera.i"
-	@echo "... Camera.s"
-	@echo "... EventCaptured.o"
-	@echo "... EventCaptured.i"
-	@echo "... EventCaptured.s"
-	@echo "... Position.o"
-	@echo "... Position.i"
-	@echo "... Position.s"
-	@echo "... Renderer.o"
-	@echo "... Renderer.i"
-	@echo "... Renderer.s"
-	@echo "... SDLException.o"
-	@echo "... SDLException.i"
-	@echo "... SDLException.s"
-	@echo "... Sprite.o"
-	@echo "... Sprite.i"
-	@echo "... Sprite.s"
-	@echo "... SpriteFactory.o"
-	@echo "... SpriteFactory.i"
-	@echo "... SpriteFactory.s"
+	@echo "... resources"
+	@echo "... ComponentsSDL/AnimatedSprite.o"
+	@echo "... ComponentsSDL/AnimatedSprite.i"
+	@echo "... ComponentsSDL/AnimatedSprite.s"
+	@echo "... ComponentsSDL/Camera.o"
+	@echo "... ComponentsSDL/Camera.i"
+	@echo "... ComponentsSDL/Camera.s"
+	@echo "... ComponentsSDL/Position.o"
+	@echo "... ComponentsSDL/Position.i"
+	@echo "... ComponentsSDL/Position.s"
+	@echo "... ComponentsSDL/Renderer.o"
+	@echo "... ComponentsSDL/Renderer.i"
+	@echo "... ComponentsSDL/Renderer.s"
+	@echo "... ComponentsSDL/SDLException.o"
+	@echo "... ComponentsSDL/SDLException.i"
+	@echo "... ComponentsSDL/SDLException.s"
+	@echo "... ComponentsSDL/Sprite.o"
+	@echo "... ComponentsSDL/Sprite.i"
+	@echo "... ComponentsSDL/Sprite.s"
+	@echo "... ComponentsSDL/Window.o"
+	@echo "... ComponentsSDL/Window.i"
+	@echo "... ComponentsSDL/Window.s"
+	@echo "... SDL_Runner.o"
+	@echo "... SDL_Runner.i"
+	@echo "... SDL_Runner.s"
 	@echo "... TextureFactory.o"
 	@echo "... TextureFactory.i"
 	@echo "... TextureFactory.s"
@@ -644,18 +685,21 @@ help:
 	@echo "... View/View.o"
 	@echo "... View/View.i"
 	@echo "... View/View.s"
-	@echo "... Window.o"
-	@echo "... Window.i"
-	@echo "... Window.s"
 	@echo "... WorldView.o"
 	@echo "... WorldView.i"
 	@echo "... WorldView.s"
+	@echo "... common/ProtectedBlockingQueue.o"
+	@echo "... common/ProtectedBlockingQueue.i"
+	@echo "... common/ProtectedBlockingQueue.s"
+	@echo "... common/SafeQueue.o"
+	@echo "... common/SafeQueue.i"
+	@echo "... common/SafeQueue.s"
+	@echo "... common/thread.o"
+	@echo "... common/thread.i"
+	@echo "... common/thread.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... thread.o"
-	@echo "... thread.i"
-	@echo "... thread.s"
 .PHONY : help
 
 

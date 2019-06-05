@@ -33,7 +33,7 @@ public:
 	Thread& operator=(Thread&& other);
 
 	// This will tell whenever a thread ended its tasks
-    virtual bool is_done() = 0;
+    // virtual bool is_done() = 0;
 
 private:
 	std::thread thread;

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libresources.a  CMakeFiles/resources.dir/ProtectedBlockingQueue.cpp.o CMakeFiles/resources.dir/Socket.cpp.o CMakeFiles/resources.dir/SafeQueue.cpp.o CMakeFiles/resources.dir/thread.cpp.o
+/usr/bin/ranlib libresources.a

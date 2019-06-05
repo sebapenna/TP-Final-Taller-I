@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL_image.h>
 #include "TextureFactory.h"
-#include "SDLException.h"
+#include "ComponentsSDL/SDLException.h"
 
 TextureFactory::TextureFactory() : textures(textures) {
     IMG_Init(IMG_INIT_PNG);

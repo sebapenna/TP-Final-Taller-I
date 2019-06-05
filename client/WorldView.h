@@ -6,7 +6,7 @@
 #define SDL_WORLDVIEW_H
 
 
-#include "Camera.h"
+#include "ComponentsSDL/Camera.h"
 #include "View/ChellAnimationView.h"
 #include <vector>
 

@@ -2,7 +2,7 @@
 #define SDL_CAMERA_H
 
 #include <SDL2/SDL_rect.h>
-#include "View/View.h"
+#include "../View/View.h"
 #include "Renderer.h"
 #include "Position.h"
 

@@ -7,8 +7,8 @@
 
 
 #include <SDL2/SDL_rect.h>
-#include "../Camera.h"
-#include "../Position.h"
+#include "../ComponentsSDL/Camera.h"
+#include "../ComponentsSDL/Position.h"
 
 class Camera;
 

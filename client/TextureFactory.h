@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include <SDL2/SDL_system.h>
-#include "Renderer.h"
+#include "ComponentsSDL/Renderer.h"
 
 class TextureFactory {
 public:

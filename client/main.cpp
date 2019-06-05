@@ -2,16 +2,17 @@
 #include <iostream>
 #include <string>
 #include <exception>
-#include "Window.h"
-#include "Renderer.h"
-#include "Sprite.h"
-#include "AnimatedSprite.h"
+#include "ComponentsSDL/Window.h"
+#include "ComponentsSDL/Renderer.h"
 #include "View/ChellAnimationView.h"
 #include "TextureFactory.h"
 #include "WorldView.h"
 #include "View/BlockViewMetal.h"
 #include "View/BlockViewRock.h"
 #include <queue>
+#include "common/SafeQueue.h"
+#include "common/ProtectedBlockingQueue.h"
+#include "SDL_Runner.h"
 
 int main(int argc, char** argv){
     /* Iniciar socketprotocol
@@ -28,8 +29,8 @@ int main(int argc, char** argv){
     
     try {
         std::string title("hello world");
-        Window window(title, 1000, 1000, SDL_WINDOW_SHOWN);
-        Renderer renderer(window);
+        // Window window(title, 1000, 1000, SDL_WINDOW_SHOWN);
+        // Renderer renderer(window);
 
         // Chell turning around
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
@@ -40,10 +41,9 @@ int main(int argc, char** argv){
         // Chell dying
         //AnimatedSprite sprite("chell.png", renderer, 199, 274, 1, 8340, 12 , 72, 0, 0, 199, 273, 1, 1);
 
-        SDL_Event e;
-        TextureFactory factory;
-        factory.init(renderer);
-        std::string chell_file_name("chell");
+        // TextureFactory factory;
+        // factory.init(renderer);
+        /*std::string chell_file_name("chell");
         ChellAnimationView* chell = new ChellAnimationView(factory.getTextureByName(chell_file_name),renderer);
         chell->setDestRect(200,200,201,220);
         Camera camera(1000, 1000, chell->getPosition());
@@ -55,9 +55,9 @@ int main(int argc, char** argv){
 
         world.addChell(chell);
         world.addChell(chell2);
-        world.addChell(chell3);
+        world.addChell(chell3);*/
 
-        
+        /*
         std::string block_file_name("block");
         for (int startX = -2000; startX<7000; startX+=128) {
             for (int startY = -2000; startY<7000; startY+=128) {
@@ -68,17 +68,21 @@ int main(int argc, char** argv){
             View* block = new BlockViewMetal(factory.getTextureByName(block_file_name),renderer);
             block->setDestRect(startX, 400, 128,128);
             world.addView(block);
-        }
-        /*BlockingQueue queueBlockingQueue();
-        SafeQueue safeQueue();
+        }*/
+        SafeQueue safeQueue;
+        ProtectedBlockingQueue blockingQueue;
+        SDL_Runner sdlRunner(title, safeQueue);
+        sdlRunner.start();
+        /*
         SDL_Runner sdlRunner(safeQueue);
         sdlRunner.start();
         ServerFicticio server(queueBlockingQueue, safeQueue);
         server.start();
         FactoryGeneratorEventsUser eventCatcher();
         */
+        SDL_Event e;
         while (true) {
-            renderer.clearRender();
+            //renderer.clearRender();
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
                     return 0;
@@ -101,8 +105,8 @@ int main(int argc, char** argv){
                     }
                 }
             }
-            world.draw();
-            renderer.render();
+            //world.draw();
+            //renderer.render();
         }
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;

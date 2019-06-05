@@ -4,25 +4,29 @@ project(sdl)
 
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+add_subdirectory(common)
 add_library(sdldemo
-  Renderer.cpp
-        SDLException.cpp
-  Window.cpp
-        Sprite.cpp
-        Sprite.h
-        AnimatedSprite.cpp
-        AnimatedSprite.h
+        ComponentsSDL/Renderer.cpp
+        ComponentsSDL/SDLException.cpp
+        ComponentsSDL/Window.cpp
+        ComponentsSDL/Sprite.cpp
+        ComponentsSDL/Sprite.h
+        ComponentsSDL/AnimatedSprite.cpp
+        ComponentsSDL/AnimatedSprite.h
         View/ChellAnimationView.cpp
         View/ChellAnimationView.h TextureFactory.cpp TextureFactory.h
-        SpriteFactory.cpp SpriteFactory.h WorldView.cpp
+        WorldView.cpp
         WorldView.h View/View.cpp
-        View/View.h Camera.cpp
-        Camera.h View/BlockViewMetal.cpp
+        View/View.h ComponentsSDL/Camera.cpp
+        ComponentsSDL/Camera.h View/BlockViewMetal.cpp
         View/BlockViewMetal.h View/BlockViewRock.cpp
-        View/BlockViewRock.h thread.cpp thread.h
-        EventCaptured.cpp EventCaptured.h Position.cpp
-        Position.h
-        )
+        View/BlockViewRock.h common/thread.cpp common/thread.h
+        ComponentsSDL/Position.cpp
+        ComponentsSDL/Position.h
+        common/ProtectedBlockingQueue.cpp common/ProtectedBlockingQueue.h
+        common/SafeQueue.cpp common/SafeQueue.h
+        SDL_Runner.cpp SDL_Runner.h)
+
 
 
 # Agrego la carpeta con los headers autogenerados a los includes
@@ -35,6 +39,6 @@ add_executable (sdl-hello
 
 
 
-target_link_libraries(sdl-hello sdldemo SDL2 SDL2_image)
+target_link_libraries(sdl-hello sdldemo SDL2 SDL2_image pthread)
 
 #install(FILES assets/cat.gif DESTINATION ${CMAKE_BINARY_DIR})

@@ -6,7 +6,7 @@
 #define SDL_CHELLANIMATIONVIEW_H
 
 
-#include "../AnimatedSprite.h"
+#include "../ComponentsSDL/AnimatedSprite.h"
 #include "View.h"
 
 
