@@ -1,13 +1,13 @@
-#include "ProtectedQueue.h"
+#include "SafeQueue.h"
 #include <thread>
 #include <string>
 
-void ProtectedBlockingQueue::push(void *new_data) {
+void SafeQueue::push(void *new_data) {
     std::lock_guard<std::mutex> lock(_m);
     this->_queue.push(std::move(new_data));
 }
 
-void * ProtectedBlockingQueue::getTopAndPop() {
+void * SafeQueue::getTopAndPop() {
     std::unique_lock<std::mutex> lock(_m);
     void* aux = nullptr;
     if (!this->_queue.empty()) {

@@ -7,7 +7,7 @@
 // Monitor de la cola, responsable de agregar los elementos e
 // interpretar los mismos controlando los posibles threads a traves de
 // condition variable
-class ProtectedBlockingQueue {
+class SafeQueue {
     std::queue<void*> _queue;
     std::mutex _m;
 
