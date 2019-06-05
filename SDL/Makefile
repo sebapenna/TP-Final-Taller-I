@@ -69,8 +69,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/snap/clion/73/bin/cmake/linux/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/snap/clion/73/bin/cmake/linux/bin/ccmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -163,60 +163,6 @@ AnimatedSprite.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/AnimatedSprite.cpp.s
 .PHONY : AnimatedSprite.cpp.s
 
-BlockViewMetal.o: BlockViewMetal.cpp.o
-
-.PHONY : BlockViewMetal.o
-
-# target to build an object file
-BlockViewMetal.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.o
-.PHONY : BlockViewMetal.cpp.o
-
-BlockViewMetal.i: BlockViewMetal.cpp.i
-
-.PHONY : BlockViewMetal.i
-
-# target to preprocess a source file
-BlockViewMetal.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.i
-.PHONY : BlockViewMetal.cpp.i
-
-BlockViewMetal.s: BlockViewMetal.cpp.s
-
-.PHONY : BlockViewMetal.s
-
-# target to generate assembly for a file
-BlockViewMetal.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewMetal.cpp.s
-.PHONY : BlockViewMetal.cpp.s
-
-BlockViewRock.o: BlockViewRock.cpp.o
-
-.PHONY : BlockViewRock.o
-
-# target to build an object file
-BlockViewRock.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewRock.cpp.o
-.PHONY : BlockViewRock.cpp.o
-
-BlockViewRock.i: BlockViewRock.cpp.i
-
-.PHONY : BlockViewRock.i
-
-# target to preprocess a source file
-BlockViewRock.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewRock.cpp.i
-.PHONY : BlockViewRock.cpp.i
-
-BlockViewRock.s: BlockViewRock.cpp.s
-
-.PHONY : BlockViewRock.s
-
-# target to generate assembly for a file
-BlockViewRock.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/BlockViewRock.cpp.s
-.PHONY : BlockViewRock.cpp.s
-
 Camera.o: Camera.cpp.o
 
 .PHONY : Camera.o
@@ -243,33 +189,6 @@ Camera.s: Camera.cpp.s
 Camera.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/Camera.cpp.s
 .PHONY : Camera.cpp.s
-
-ChellAnimationView.o: ChellAnimationView.cpp.o
-
-.PHONY : ChellAnimationView.o
-
-# target to build an object file
-ChellAnimationView.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ChellAnimationView.cpp.o
-.PHONY : ChellAnimationView.cpp.o
-
-ChellAnimationView.i: ChellAnimationView.cpp.i
-
-.PHONY : ChellAnimationView.i
-
-# target to preprocess a source file
-ChellAnimationView.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ChellAnimationView.cpp.i
-.PHONY : ChellAnimationView.cpp.i
-
-ChellAnimationView.s: ChellAnimationView.cpp.s
-
-.PHONY : ChellAnimationView.s
-
-# target to generate assembly for a file
-ChellAnimationView.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ChellAnimationView.cpp.s
-.PHONY : ChellAnimationView.cpp.s
 
 EventCaptured.o: EventCaptured.cpp.o
 
@@ -460,32 +379,113 @@ TextureFactory.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/TextureFactory.cpp.s
 .PHONY : TextureFactory.cpp.s
 
-View.o: View.cpp.o
+View/BlockViewMetal.o: View/BlockViewMetal.cpp.o
 
-.PHONY : View.o
+.PHONY : View/BlockViewMetal.o
 
 # target to build an object file
-View.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View.cpp.o
-.PHONY : View.cpp.o
+View/BlockViewMetal.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/BlockViewMetal.cpp.o
+.PHONY : View/BlockViewMetal.cpp.o
 
-View.i: View.cpp.i
+View/BlockViewMetal.i: View/BlockViewMetal.cpp.i
 
-.PHONY : View.i
+.PHONY : View/BlockViewMetal.i
 
 # target to preprocess a source file
-View.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View.cpp.i
-.PHONY : View.cpp.i
+View/BlockViewMetal.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/BlockViewMetal.cpp.i
+.PHONY : View/BlockViewMetal.cpp.i
 
-View.s: View.cpp.s
+View/BlockViewMetal.s: View/BlockViewMetal.cpp.s
 
-.PHONY : View.s
+.PHONY : View/BlockViewMetal.s
 
 # target to generate assembly for a file
-View.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View.cpp.s
-.PHONY : View.cpp.s
+View/BlockViewMetal.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/BlockViewMetal.cpp.s
+.PHONY : View/BlockViewMetal.cpp.s
+
+View/BlockViewRock.o: View/BlockViewRock.cpp.o
+
+.PHONY : View/BlockViewRock.o
+
+# target to build an object file
+View/BlockViewRock.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/BlockViewRock.cpp.o
+.PHONY : View/BlockViewRock.cpp.o
+
+View/BlockViewRock.i: View/BlockViewRock.cpp.i
+
+.PHONY : View/BlockViewRock.i
+
+# target to preprocess a source file
+View/BlockViewRock.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/BlockViewRock.cpp.i
+.PHONY : View/BlockViewRock.cpp.i
+
+View/BlockViewRock.s: View/BlockViewRock.cpp.s
+
+.PHONY : View/BlockViewRock.s
+
+# target to generate assembly for a file
+View/BlockViewRock.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/BlockViewRock.cpp.s
+.PHONY : View/BlockViewRock.cpp.s
+
+View/ChellAnimationView.o: View/ChellAnimationView.cpp.o
+
+.PHONY : View/ChellAnimationView.o
+
+# target to build an object file
+View/ChellAnimationView.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/ChellAnimationView.cpp.o
+.PHONY : View/ChellAnimationView.cpp.o
+
+View/ChellAnimationView.i: View/ChellAnimationView.cpp.i
+
+.PHONY : View/ChellAnimationView.i
+
+# target to preprocess a source file
+View/ChellAnimationView.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/ChellAnimationView.cpp.i
+.PHONY : View/ChellAnimationView.cpp.i
+
+View/ChellAnimationView.s: View/ChellAnimationView.cpp.s
+
+.PHONY : View/ChellAnimationView.s
+
+# target to generate assembly for a file
+View/ChellAnimationView.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/ChellAnimationView.cpp.s
+.PHONY : View/ChellAnimationView.cpp.s
+
+View/View.o: View/View.cpp.o
+
+.PHONY : View/View.o
+
+# target to build an object file
+View/View.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/View.cpp.o
+.PHONY : View/View.cpp.o
+
+View/View.i: View/View.cpp.i
+
+.PHONY : View/View.i
+
+# target to preprocess a source file
+View/View.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/View.cpp.i
+.PHONY : View/View.cpp.i
+
+View/View.s: View/View.cpp.s
+
+.PHONY : View/View.s
+
+# target to generate assembly for a file
+View/View.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/View/View.cpp.s
+.PHONY : View/View.cpp.s
 
 Window.o: Window.cpp.o
 
@@ -541,87 +541,6 @@ WorldView.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/WorldView.cpp.s
 .PHONY : WorldView.cpp.s
 
-errorbind.o: errorbind.cpp.o
-
-.PHONY : errorbind.o
-
-# target to build an object file
-errorbind.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorbind.cpp.o
-.PHONY : errorbind.cpp.o
-
-errorbind.i: errorbind.cpp.i
-
-.PHONY : errorbind.i
-
-# target to preprocess a source file
-errorbind.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorbind.cpp.i
-.PHONY : errorbind.cpp.i
-
-errorbind.s: errorbind.cpp.s
-
-.PHONY : errorbind.s
-
-# target to generate assembly for a file
-errorbind.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorbind.cpp.s
-.PHONY : errorbind.cpp.s
-
-errorcreate.o: errorcreate.cpp.o
-
-.PHONY : errorcreate.o
-
-# target to build an object file
-errorcreate.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorcreate.cpp.o
-.PHONY : errorcreate.cpp.o
-
-errorcreate.i: errorcreate.cpp.i
-
-.PHONY : errorcreate.i
-
-# target to preprocess a source file
-errorcreate.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorcreate.cpp.i
-.PHONY : errorcreate.cpp.i
-
-errorcreate.s: errorcreate.cpp.s
-
-.PHONY : errorcreate.s
-
-# target to generate assembly for a file
-errorcreate.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorcreate.cpp.s
-.PHONY : errorcreate.cpp.s
-
-errorlisten.o: errorlisten.cpp.o
-
-.PHONY : errorlisten.o
-
-# target to build an object file
-errorlisten.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorlisten.cpp.o
-.PHONY : errorlisten.cpp.o
-
-errorlisten.i: errorlisten.cpp.i
-
-.PHONY : errorlisten.i
-
-# target to preprocess a source file
-errorlisten.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorlisten.cpp.i
-.PHONY : errorlisten.cpp.i
-
-errorlisten.s: errorlisten.cpp.s
-
-.PHONY : errorlisten.s
-
-# target to generate assembly for a file
-errorlisten.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/errorlisten.cpp.s
-.PHONY : errorlisten.cpp.s
-
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -648,33 +567,6 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) -f CMakeFiles/sdl-hello.dir/build.make CMakeFiles/sdl-hello.dir/main.cpp.s
 .PHONY : main.cpp.s
-
-socket.o: socket.cpp.o
-
-.PHONY : socket.o
-
-# target to build an object file
-socket.cpp.o:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/socket.cpp.o
-.PHONY : socket.cpp.o
-
-socket.i: socket.cpp.i
-
-.PHONY : socket.i
-
-# target to preprocess a source file
-socket.cpp.i:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/socket.cpp.i
-.PHONY : socket.cpp.i
-
-socket.s: socket.cpp.s
-
-.PHONY : socket.s
-
-# target to generate assembly for a file
-socket.cpp.s:
-	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/socket.cpp.s
-.PHONY : socket.cpp.s
 
 thread.o: thread.cpp.o
 
@@ -716,18 +608,9 @@ help:
 	@echo "... AnimatedSprite.o"
 	@echo "... AnimatedSprite.i"
 	@echo "... AnimatedSprite.s"
-	@echo "... BlockViewMetal.o"
-	@echo "... BlockViewMetal.i"
-	@echo "... BlockViewMetal.s"
-	@echo "... BlockViewRock.o"
-	@echo "... BlockViewRock.i"
-	@echo "... BlockViewRock.s"
 	@echo "... Camera.o"
 	@echo "... Camera.i"
 	@echo "... Camera.s"
-	@echo "... ChellAnimationView.o"
-	@echo "... ChellAnimationView.i"
-	@echo "... ChellAnimationView.s"
 	@echo "... EventCaptured.o"
 	@echo "... EventCaptured.i"
 	@echo "... EventCaptured.s"
@@ -749,30 +632,27 @@ help:
 	@echo "... TextureFactory.o"
 	@echo "... TextureFactory.i"
 	@echo "... TextureFactory.s"
-	@echo "... View.o"
-	@echo "... View.i"
-	@echo "... View.s"
+	@echo "... View/BlockViewMetal.o"
+	@echo "... View/BlockViewMetal.i"
+	@echo "... View/BlockViewMetal.s"
+	@echo "... View/BlockViewRock.o"
+	@echo "... View/BlockViewRock.i"
+	@echo "... View/BlockViewRock.s"
+	@echo "... View/ChellAnimationView.o"
+	@echo "... View/ChellAnimationView.i"
+	@echo "... View/ChellAnimationView.s"
+	@echo "... View/View.o"
+	@echo "... View/View.i"
+	@echo "... View/View.s"
 	@echo "... Window.o"
 	@echo "... Window.i"
 	@echo "... Window.s"
 	@echo "... WorldView.o"
 	@echo "... WorldView.i"
 	@echo "... WorldView.s"
-	@echo "... errorbind.o"
-	@echo "... errorbind.i"
-	@echo "... errorbind.s"
-	@echo "... errorcreate.o"
-	@echo "... errorcreate.i"
-	@echo "... errorcreate.s"
-	@echo "... errorlisten.o"
-	@echo "... errorlisten.i"
-	@echo "... errorlisten.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... socket.o"
-	@echo "... socket.i"
-	@echo "... socket.s"
 	@echo "... thread.o"
 	@echo "... thread.i"
 	@echo "... thread.s"

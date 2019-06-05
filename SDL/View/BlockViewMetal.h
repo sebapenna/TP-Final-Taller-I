@@ -6,7 +6,7 @@
 #define SDL_BLOCKVIEWMETAL_H
 
 
-#include "Sprite.h"
+#include "../Sprite.h"
 
 class BlockViewMetal : public View{
 private:

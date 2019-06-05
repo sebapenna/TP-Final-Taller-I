@@ -12,18 +12,17 @@ add_library(sdldemo
         Sprite.h
         AnimatedSprite.cpp
         AnimatedSprite.h
-        ChellAnimationView.cpp
-        ChellAnimationView.h TextureFactory.cpp TextureFactory.h
+        View/ChellAnimationView.cpp
+        View/ChellAnimationView.h TextureFactory.cpp TextureFactory.h
         SpriteFactory.cpp SpriteFactory.h WorldView.cpp
-        WorldView.h View.cpp
-        View.h Camera.cpp
-        Camera.h BlockViewMetal.cpp
-        BlockViewMetal.h BlockViewRock.cpp
-        BlockViewRock.h thread.cpp thread.h
+        WorldView.h View/View.cpp
+        View/View.h Camera.cpp
+        Camera.h View/BlockViewMetal.cpp
+        View/BlockViewMetal.h View/BlockViewRock.cpp
+        View/BlockViewRock.h thread.cpp thread.h
         EventCaptured.cpp EventCaptured.h Position.cpp
-        Position.h socket.cpp socket.h errorbind.cpp
-        errorbind.h errorcreate.cpp
-        errorcreate.h errorlisten.cpp errorlisten.h)
+        Position.h
+        )
 
 
 # Agrego la carpeta con los headers autogenerados a los includes

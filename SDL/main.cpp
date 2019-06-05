@@ -2,17 +2,15 @@
 #include <iostream>
 #include <string>
 #include <exception>
-#include <caca++.h>
 #include "Window.h"
 #include "Renderer.h"
 #include "Sprite.h"
 #include "AnimatedSprite.h"
-#include "ChellAnimationView.h"
+#include "View/ChellAnimationView.h"
 #include "TextureFactory.h"
 #include "WorldView.h"
-#include "BlockViewMetal.h"
-#include "BlockViewRock.h"
-#include "socket.h"
+#include "View/BlockViewMetal.h"
+#include "View/BlockViewRock.h"
 #include <queue>
 
 int main(int argc, char** argv){
@@ -32,12 +30,6 @@ int main(int argc, char** argv){
         std::string title("hello world");
         Window window(title, 1000, 1000, SDL_WINDOW_SHOWN);
         Renderer renderer(window);
-
-        // Chell resting idle
-        // AnimatedSprite sprite("chell.png", renderer, 122, 222, 1, 2080, 7, 7, 0, 0, 122, 222, 1, 0);
-
-        // Chell running
-        // AnimatedSprite sprite("chell.png", renderer, 201, 220, 1, 3983, 12, 12, 0, 0, 201, 220, 1, 0);
 
         // Chell turning around
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
@@ -64,8 +56,8 @@ int main(int argc, char** argv){
         world.addChell(chell);
         world.addChell(chell2);
         world.addChell(chell3);
-        std::queue<Event*> eventQueue;
 
+        
         std::string block_file_name("block");
         for (int startX = -2000; startX<7000; startX+=128) {
             for (int startY = -2000; startY<7000; startY+=128) {
@@ -77,6 +69,14 @@ int main(int argc, char** argv){
             block->setDestRect(startX, 400, 128,128);
             world.addView(block);
         }
+        /*BlockingQueue queueBlockingQueue();
+        SafeQueue safeQueue();
+        SDL_Runner sdlRunner(safeQueue);
+        sdlRunner.start();
+        ServerFicticio server(queueBlockingQueue, safeQueue);
+        server.start();
+        FactoryGeneratorEventsUser eventCatcher();
+        */
         while (true) {
             renderer.clearRender();
             while (SDL_PollEvent(&e)) {
@@ -89,11 +89,13 @@ int main(int argc, char** argv){
                 } else if (e.type == SDL_KEYDOWN) {
                     switch (e.key.keysym.sym) {
                         case SDLK_d:
-                            //eventQueue.push(new EventMoveRight());
+                            //eventCatcher.moveRight();
                             break;
                         case SDLK_a:
-                            //eventQueue.push(new EventMoveLeft());
+                            //eventCatcher.moveLeft();
                             break;
+                        case SDLK_w:
+                            //eventCatcher.jump();
                         default:
                             break;
                     }

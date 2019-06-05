@@ -6,3 +6,7 @@ sdl-hello
 /cmake-build-debug
 CMakeCache.txt
 *.cbp
+Makefile
+minimal.log
+minimal.supp
+

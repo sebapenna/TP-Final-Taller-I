@@ -6,7 +6,7 @@
 #define SDL_BLOCKVIEWROCK_H
 
 
-#include "Sprite.h"
+#include "../Sprite.h"
 
 class BlockViewRock : public View{
 private:

@@ -7,7 +7,7 @@
 
 
 #include "Camera.h"
-#include "ChellAnimationView.h"
+#include "View/ChellAnimationView.h"
 #include <vector>
 
 class WorldView {
