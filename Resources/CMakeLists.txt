@@ -4,6 +4,6 @@ project(Portal)
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 add_library(resources
-        ProtectedQueue.cpp
+        ProtectedBlockingQueue.cpp
         Socket.cpp
-        AcceptSocket.cpp)
+        AcceptSocket.cpp ProtectedQueue.cpp ProtectedQueue.h)
