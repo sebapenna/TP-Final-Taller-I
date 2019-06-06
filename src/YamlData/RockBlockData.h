@@ -3,22 +3,22 @@
 
 class RockBlockData {
 private:
-    float _width;
-    float _height;
-    float _x;
-    float _y;
+    const float _width;
+    const float _height;
+    const float _x;
+    const float _y;
 
 public:
     RockBlockData(const float& width, const float& height, const float& x,
             const float& y);
 
-    float getWidth() const;
+    const float getWidth() const;
 
-    float getHeight() const;
+    const float getHeight() const;
 
-    float getX() const;
+    const float getX() const;
 
-    float getY() const;
+    const float getY() const;
 };
 
 

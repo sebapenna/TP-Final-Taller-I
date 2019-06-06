@@ -5,9 +5,9 @@
 
 class GateData {
 private:
-    size_t _id;
-    float _x;
-    float _y;
+    const size_t _id;
+    const float _x;
+    const float _y;
     std::vector<size_t> _buttons_needed; // id de los botones necesarios
     std::vector<size_t> _energy_receivers_needed; // id receptores energia
 
@@ -18,11 +18,11 @@ public:
 
     void addEnergyReceiverNeeded(const size_t& id);
 
-    size_t getId() const;
+    const size_t getId() const;
 
-    float getX() const;
+    const float getX() const;
 
-    float getY() const;
+    const float getY() const;
 
     const std::vector<size_t> &getButtonsNeeded() const;
 

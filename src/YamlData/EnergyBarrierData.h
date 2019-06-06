@@ -6,18 +6,18 @@
 
 class EnergyBarrierData {
 private:
-    float _x;
-    float _y;
+    const float _x;
+    const float _y;
     uint8_t _orientation;
 
 public:
     EnergyBarrierData(const float& x, const float& y, const std::string& o);
 
-    float getX() const;
+    const float getX() const;
 
-    float getY() const;
+    const float getY() const;
 
-    uint8_t getOrientation() const;
+    const uint8_t getOrientation() const;
 
 };
 

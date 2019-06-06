@@ -15,14 +15,14 @@ EnergyTransmitterData::EnergyTransmitterData(const float &x, const float &y,
         _direction = O_O;
 }
 
-float EnergyTransmitterData::getX() const {
+const float EnergyTransmitterData::getX() const {
     return _x;
 }
 
-float EnergyTransmitterData::getY() const {
+const float EnergyTransmitterData::getY() const {
     return _y;
 }
 
-uint8_t EnergyTransmitterData::getDirection() const {
+const uint8_t EnergyTransmitterData::getDirection() const {
     return _direction;
 }

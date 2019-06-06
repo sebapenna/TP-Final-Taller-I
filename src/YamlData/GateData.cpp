@@ -11,15 +11,15 @@ void GateData::addEnergyReceiverNeeded(const size_t &id) {
     _energy_receivers_needed.push_back(id);
 }
 
-size_t GateData::getId() const {
+const size_t GateData::getId() const {
     return _id;
 }
 
-float GateData::getX() const {
+const float GateData::getX() const {
     return _x;
 }
 
-float GateData::getY() const {
+const float GateData::getY() const {
     return _y;
 }
 

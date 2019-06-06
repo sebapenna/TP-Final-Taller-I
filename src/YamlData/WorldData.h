@@ -5,15 +5,15 @@
 
 class WorldData {
 private:
-    size_t _height;
-    size_t _width;
+    const size_t _height;
+    const size_t _width;
 
 public:
     WorldData(const size_t &height, const size_t &width);
 
-    size_t getHeight() const;
+    const size_t getHeight() const;
 
-    size_t getWidth() const;
+    const size_t getWidth() const;
 };
 
 

@@ -9,14 +9,14 @@ EnergyBarrierData::EnergyBarrierData(const float &x, const float &y,
         _orientation = O_H;
 }
 
-float EnergyBarrierData::getX() const {
+const float EnergyBarrierData::getX() const {
     return _x;
 }
 
-float EnergyBarrierData::getY() const {
+const float EnergyBarrierData::getY() const {
     return _y;
 }
 
-uint8_t EnergyBarrierData::getOrientation() const {
+const uint8_t EnergyBarrierData::getOrientation() const {
     return _orientation;
 }
