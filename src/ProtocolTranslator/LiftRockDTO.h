@@ -17,5 +17,4 @@ public:
     const int16_t getRockId() const;
 };
 
-
 #endif //PORTAL_LIFTROCKDTO_H

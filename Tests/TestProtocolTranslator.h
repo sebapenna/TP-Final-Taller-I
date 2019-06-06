@@ -14,6 +14,7 @@
 #include <src/ProtocolTranslator/LiftRockDTO.h>
 #include <src/ProtocolTranslator/DropRockDTO.h>
 #include <vector>
+#include <src/ProtocolTranslator/PlayerChellIdDTO.h>
 
 using std::cout;
 using std::endl;
@@ -37,6 +38,8 @@ CPPUNIT_TEST_SUITE( TestProtocolTranslator );
         CPPUNIT_TEST(testTranslateLiftRockData);
         CPPUNIT_TEST(testTranslateDropRockDTO);
         CPPUNIT_TEST(testTranslateDropRockData);
+        CPPUNIT_TEST(testTranslatePlayerChellIdDTO);
+        CPPUNIT_TEST(testTranslatePlayerChellIdData);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -49,7 +52,7 @@ public:
         cout << endl << "TEST traducir MoveLeftDTO a datos: ";
         auto ml_dto = new MoveLeftDTO();
         int vec_size = ProtocolTranslator::translate(ml_dto, output);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_LEFT, output.at(0));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_LEFT, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
         delete ml_dto;
         cout << "OK";
@@ -61,7 +64,6 @@ public:
         v.push_back(PROTOCOL_MOVE_LEFT);
         auto dto = ProtocolTranslator::translate(v);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_LEFT, dto->getClassId());
-
         cout << "OK";
     }
 
@@ -69,7 +71,7 @@ public:
         cout << endl << "TEST traducir MoveRightDTO a datos: ";
         auto mr_dto = new MoveRightDTO();
         int vec_size = ProtocolTranslator::translate(mr_dto, output);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_RIGHT, output.at(0));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_RIGHT, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
         delete mr_dto;
         cout << "OK";
@@ -88,7 +90,7 @@ public:
         cout << endl << "TEST traducir JumpDTO a datos: ";
         auto *j_dto = new JumpDTO();
         auto vec_size = ProtocolTranslator::translate(j_dto, output);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_JUMP, output.at(0));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_JUMP, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
         delete j_dto;
         cout << "OK";
@@ -107,7 +109,7 @@ public:
         cout << endl << "TEST traducir StopDTO a datos: ";
         auto s_dto = new StopDTO();
         int vec_size = ProtocolTranslator::translate(s_dto, output);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_STOP, output.at(0));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_STOP, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
         delete s_dto;
         cout << "OK";
@@ -126,10 +128,10 @@ public:
         cout << endl << "TEST traducir ShootPortalDTO a datos: ";
         auto p_dto = new ShootPortalDTO(BLUE_PORTAL, -10, 50);
         int vec_size = ProtocolTranslator::translate(p_dto, output);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PORTAL, output.at(0));
-        CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, output.at(1));
-        CPPUNIT_ASSERT_EQUAL((int16_t) -10, output.at(2));
-        CPPUNIT_ASSERT_EQUAL((int16_t) 50, output.at(3));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PORTAL, output.at(PROTOCOL_ID_POS));
+        CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, output.at(SHOOT_PORTAL_COLOR_POS));
+        CPPUNIT_ASSERT_EQUAL((int16_t) -10, output.at(SHOOT_PORTAL_X_POS));
+        CPPUNIT_ASSERT_EQUAL((int16_t) 50, output.at(SHOOT_PORTAL_Y_POS));
         CPPUNIT_ASSERT_EQUAL(4, vec_size);
         delete p_dto;
         cout << "OK";
@@ -154,9 +156,9 @@ public:
         cout << endl << "TEST traducir ShootPinToolDTO a datos: ";
         auto p_dto = new ShootPinToolDTO(-10, 50);
         int vec_size = ProtocolTranslator::translate(p_dto, output);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PIN_TOOL, output.at(0));
-        CPPUNIT_ASSERT_EQUAL((int16_t ) -10, output.at(1));
-        CPPUNIT_ASSERT_EQUAL((int16_t) 50, output.at(2));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PIN_TOOL, output[PROTOCOL_ID_POS]);
+        CPPUNIT_ASSERT_EQUAL((int16_t ) -10, output.at(SHOOT_PT_X_POS));
+        CPPUNIT_ASSERT_EQUAL((int16_t) 50, output.at(SHOOT_PT_Y_POS));
         CPPUNIT_ASSERT_EQUAL(3, vec_size);
         delete p_dto;
         cout << "OK";
@@ -179,8 +181,8 @@ public:
         cout << endl << "TEST traducir LiftRockDTO a datos: ";
         auto dto = new LiftRockDTO(2);
         int vec_size = ProtocolTranslator::translate(dto, output);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_LIFT_ROCK, output.at(0));
-        CPPUNIT_ASSERT_EQUAL((int16_t)2, output.at(1));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_LIFT_ROCK, output.at(PROTOCOL_ID_POS));
+        CPPUNIT_ASSERT_EQUAL((int16_t)2, output.at(LIFT_ROCK_ID_POS));
         CPPUNIT_ASSERT_EQUAL(2, vec_size);
         delete dto;
         cout << "OK";
@@ -201,7 +203,7 @@ public:
         cout << endl << "TEST traducir DropRockDTO a datos: ";
         auto dto = new DropRockDTO();
         int vec_size = ProtocolTranslator::translate(dto, output);
-        CPPUNIT_ASSERT_EQUAL(PROTOCOL_DROP_ROCK, output.at(0));
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_DROP_ROCK, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
         delete dto;
         cout << "OK";
@@ -215,6 +217,28 @@ public:
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_DROP_ROCK, dto->getClassId());
         delete dto;
         cout << "OK";
+    }
+
+    void testTranslatePlayerChellIdDTO() {
+        cout << endl << "TEST traducir PlayerChellId a datos: ";
+        auto dto = new PlayerChellIdDTO(2);
+        int vec_size = ProtocolTranslator::translate(dto, output);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_PLAYER_CHELL_ID, output[PROTOCOL_ID_POS]);
+        CPPUNIT_ASSERT_EQUAL((int16_t) 2, output.at(PLAYER_CHELL_ID_POS));
+        CPPUNIT_ASSERT_EQUAL(2, vec_size);
+        delete dto;
+        cout << "OK";
+    }
+
+    void testTranslatePlayerChellIdData() {
+        cout << endl << "TEST traducir datos PlayerChellId a DTO: ";
+        vector<int16_t> v;
+        v.push_back(PROTOCOL_PLAYER_CHELL_ID);
+        v.push_back(1);
+        auto dto = (PlayerChellIdDTO*) ProtocolTranslator::translate(v);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_PLAYER_CHELL_ID, dto->getClassId());
+        CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getChellId());
+        delete dto;        cout << "OK";
     }
 };
     

@@ -7,6 +7,7 @@
 #include "StopDTO.h"
 #include "JumpDTO.h"
 #include "DropRockDTO.h"
+#include "PlayerChellIdDTO.h"
 #include <vector>
 
 using std::vector;
@@ -35,11 +36,20 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t>
             break;
         case PROTOCOL_DROP_ROCK:
             break;  // No tiene mas datos a agregar
+        case PROTOCOL_PLAYER_CHELL_ID:
+            playerChellId(dto, output);
+            break;
         default:    // Comando no existente en el protocolo
             output.clear(); // Elimino ID incorrecto
             return -1;
     }
     return output.size();
+}
+
+void ProtocolTranslator::playerChellId(const ProtocolDTO *dto,
+                                       vector<int16_t> &output) {
+    auto p_dto = (PlayerChellIdDTO*) dto;
+    output.push_back(p_dto->getChellId());
 }
 
 void ProtocolTranslator::shootPortal(const ProtocolDTO *dto,
@@ -75,16 +85,17 @@ ProtocolDTO *ProtocolTranslator::translate(const vector<int16_t> &input) {
         case PROTOCOL_STOP:
             return stop(input);
         case PROTOCOL_SHOOT_PORTAL:
-            return portal(input);
+            return shootPortal(input);
         case PROTOCOL_SHOOT_PIN_TOOL:
-            return pinTool(input);
+            return shootPinTool(input);
         case PROTOCOL_LIFT_ROCK:
             return liftRock(input);
         case PROTOCOL_DROP_ROCK:
             return dropRock(input);
-        default:
-            // Este caso no existe
-            break;
+        case PROTOCOL_PLAYER_CHELL_ID:
+            return playerChellId(input);
+        default:    // Comando no existente en el protocolo
+            return nullptr;
     }
 }
 
@@ -104,20 +115,27 @@ ProtocolDTO *ProtocolTranslator::jump(const vector<int16_t> &input) {
     return (ProtocolDTO*) new JumpDTO();
 }
 
-ProtocolDTO *ProtocolTranslator::portal(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new ShootPortalDTO(input.at(1), input.at(2), input.at(3));
+ProtocolDTO *ProtocolTranslator::shootPortal(const vector<int16_t> &input) {
+    return (ProtocolDTO*) new ShootPortalDTO(input[SHOOT_PORTAL_COLOR_POS],
+            input[SHOOT_PORTAL_X_POS], input[SHOOT_PORTAL_Y_POS]);
 }
 
-ProtocolDTO *ProtocolTranslator::pinTool(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new ShootPinToolDTO(input.at(1), input.at(2));
+ProtocolDTO *ProtocolTranslator::shootPinTool(const vector<int16_t> &input) {
+    return (ProtocolDTO*) new ShootPinToolDTO(input.at(SHOOT_PT_X_POS),
+            input.at(SHOOT_PT_Y_POS));
 }
 
 ProtocolDTO *ProtocolTranslator::liftRock(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new LiftRockDTO(input.at(1));
+    return (ProtocolDTO*) new LiftRockDTO(input.at(LIFT_ROCK_ID_POS));
 }
 
 ProtocolDTO *ProtocolTranslator::dropRock(const vector<int16_t> &input) {
     return (ProtocolDTO*) new DropRockDTO();
+}
+
+ProtocolDTO * ProtocolTranslator::playerChellId(const std::vector<int16_t>
+        &input) {
+    return (ProtocolDTO*) new PlayerChellIdDTO(input.at(PLAYER_CHELL_ID_POS));
 }
 
 //

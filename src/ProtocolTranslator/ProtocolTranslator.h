@@ -11,15 +11,18 @@ private:
     static void shootPinTool(const ProtocolDTO *dto,
             std::vector<int16_t> &output);
     static void liftRock(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void playerChellId(const ProtocolDTO *dto,
+            std::vector<int16_t> &output);
 
     static ProtocolDTO* moveLeft(const std::vector<int16_t> &input);
     static ProtocolDTO* moveRight(const std::vector<int16_t> &input);
     static ProtocolDTO* jump(const std::vector<int16_t> &input);
     static ProtocolDTO* stop(const std::vector<int16_t> &input);
-    static ProtocolDTO* portal(const std::vector<int16_t> &input);
-    static ProtocolDTO* pinTool(const std::vector<int16_t> &input);
+    static ProtocolDTO* shootPortal(const std::vector<int16_t> &input);
+    static ProtocolDTO* shootPinTool(const std::vector<int16_t> &input);
     static ProtocolDTO* liftRock(const std::vector<int16_t> &input);
     static ProtocolDTO* dropRock(const std::vector<int16_t> &input);
+    static ProtocolDTO* playerChellId(const std::vector<int16_t> &input);
 
 public:
     // PRE: output debe ser un vector vacio para almacenar correctamente los

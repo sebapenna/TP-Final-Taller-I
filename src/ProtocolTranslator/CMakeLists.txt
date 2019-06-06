@@ -5,4 +5,4 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_library(protocol-translator
         ProtocolTranslator.cpp
-        ProtocolDTO.h MoveLeftDTO.cpp MoveLeftDTO.h MoveRightDTO.cpp MoveRightDTO.h JumpDTO.cpp JumpDTO.h StopDTO.cpp StopDTO.h ShootPortalDTO.cpp ShootPortalDTO.h ShootPinToolDTO.cpp ShootPinToolDTO.h LiftRockDTO.cpp LiftRockDTO.h DropRockDTO.cpp DropRockDTO.h)
+        ProtocolDTO.h MoveLeftDTO.cpp MoveLeftDTO.h MoveRightDTO.cpp MoveRightDTO.h JumpDTO.cpp JumpDTO.h StopDTO.cpp StopDTO.h ShootPortalDTO.cpp ShootPortalDTO.h ShootPinToolDTO.cpp ShootPinToolDTO.h LiftRockDTO.cpp LiftRockDTO.h DropRockDTO.cpp DropRockDTO.h PlayerChellIdDTO.cpp PlayerChellIdDTO.h)
