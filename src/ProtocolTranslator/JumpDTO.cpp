@@ -2,6 +2,6 @@
 
 JumpDTO::~JumpDTO() = default;
 
-int JumpDTO::getClassId() const {
+int16_t JumpDTO::getClassId() const {
     return PROTOCOL_JUMP;
 }

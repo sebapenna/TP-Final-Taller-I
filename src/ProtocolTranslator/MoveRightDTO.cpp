@@ -2,6 +2,6 @@
 
 MoveRightDTO::~MoveRightDTO() = default;
 
-int MoveRightDTO::getClassId() const {
+int16_t MoveRightDTO::getClassId() const {
     return PROTOCOL_MOVE_RIGHT;
 }

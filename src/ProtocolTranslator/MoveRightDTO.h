@@ -5,7 +5,7 @@
 
 class MoveRightDTO: public ProtocolDTO {
 public:
-    int getClassId() const override;
+    int16_t getClassId() const override;
 
     ~MoveRightDTO() override;
 };

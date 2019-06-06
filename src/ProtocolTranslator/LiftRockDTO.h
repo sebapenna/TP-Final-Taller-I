@@ -5,16 +5,16 @@
 
 class LiftRockDTO: public ProtocolDTO {
 private:
-    const int _rock_id;
+    const int16_t _rock_id;
 
 public:
-    explicit LiftRockDTO(const int& rock_id);
+    explicit LiftRockDTO(const int16_t &rock_id);
 
     ~LiftRockDTO() override;
 
-    int getClassId() const override;
+    int16_t getClassId() const override;
 
-    const int getRockId() const;
+    const int16_t getRockId() const;
 };
 
 

@@ -6,28 +6,35 @@
 
 class ProtocolTranslator {
 private:
-    static std::vector<int> moveLeft(const ProtocolDTO *dto);
-    static std::vector<int> moveRight(const ProtocolDTO *dto);
-    static std::vector<int> jump(const ProtocolDTO *dto);
-    static std::vector<int> stop(const ProtocolDTO *dto);
-    static std::vector<int> portal(const ProtocolDTO *dto);
-    static std::vector<int> pinTool(const ProtocolDTO *dto);
-    static std::vector<int> liftRock(const ProtocolDTO *dto);
-    static std::vector<int> dropRock(const ProtocolDTO *dto);
+    static void shootPortal(const ProtocolDTO *dto,
+            std::vector<int16_t> &output);
+    static void shootPinTool(const ProtocolDTO *dto,
+            std::vector<int16_t> &output);
+    static void liftRock(const ProtocolDTO *dto, std::vector<int16_t> &output);
 
-    static ProtocolDTO* moveLeft(std::vector<int> data);
-    static ProtocolDTO* moveRight(std::vector<int> data);
-    static ProtocolDTO* jump(std::vector<int> data);
-    static ProtocolDTO* stop(std::vector<int> data);
-    static ProtocolDTO* portal(std::vector<int> data);
-    static ProtocolDTO* pinTool(std::vector<int> data);
-    static ProtocolDTO* liftRock(std::vector<int> data);
-    static ProtocolDTO* dropRock(std::vector<int> data);
+    static ProtocolDTO* moveLeft(const std::vector<int16_t> &input);
+    static ProtocolDTO* moveRight(const std::vector<int16_t> &input);
+    static ProtocolDTO* jump(const std::vector<int16_t> &input);
+    static ProtocolDTO* stop(const std::vector<int16_t> &input);
+    static ProtocolDTO* portal(const std::vector<int16_t> &input);
+    static ProtocolDTO* pinTool(const std::vector<int16_t> &input);
+    static ProtocolDTO* liftRock(const std::vector<int16_t> &input);
+    static ProtocolDTO* dropRock(const std::vector<int16_t> &input);
 
 public:
-    static std::vector<int> translate(const ProtocolDTO *dto);
+    // PRE: output debe ser un vector vacio para almacenar correctamente los
+    // datos contenidos en el dto y luego poder ser procesados correctamente.
+    // POST: output contiene todos los datos contenidos en el dto, en el
+    // orden establecido por el protocolo.
+    // Retorna la cantidad de elementos agregados al vector, -1 en caso de error
+    static int translate(const ProtocolDTO *dto, std::vector<int16_t> &output);
 
-    static ProtocolDTO* translate(const std::vector<int> &data);
+    // PRE: input debe contener todos los datos del dto que corresponda, en
+    // el orden establecido por le protocolo.
+    // POST: se creo el DTO que haya sido correspondiente con todos sus datos
+    // Retorna un ProtocolDTO* conteniendo toda la informacion brindada en
+    // input, nullptr en caso de error.
+    static ProtocolDTO* translate(const std::vector<int16_t> &input);
 };
 
 

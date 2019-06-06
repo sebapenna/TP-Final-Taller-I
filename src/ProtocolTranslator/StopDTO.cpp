@@ -1,6 +1,6 @@
 #include "StopDTO.h"
 
-int StopDTO::getClassId() const {
+int16_t StopDTO::getClassId() const {
     return PROTOCOL_STOP;
 }
 

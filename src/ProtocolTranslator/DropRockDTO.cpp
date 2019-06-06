@@ -3,6 +3,6 @@
 
 DropRockDTO::~DropRockDTO() = default;
 
-int DropRockDTO::getClassId() const {
+int16_t DropRockDTO::getClassId() const {
     return PROTOCOL_DROP_ROCK;
 }

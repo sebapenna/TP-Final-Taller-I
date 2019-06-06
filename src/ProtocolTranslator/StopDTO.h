@@ -7,7 +7,7 @@ class StopDTO: public ProtocolDTO {
 public:
     ~StopDTO() override;
 
-    int getClassId() const override;
+    int16_t getClassId() const override;
 };
 
 
