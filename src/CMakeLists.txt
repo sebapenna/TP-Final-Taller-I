@@ -5,7 +5,6 @@ SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 include_directories(..)
 add_subdirectory(YamlData)
-add_subdirectory(ProtocolTranslator)
 
 add_library(portal-src
         Chell.cpp
@@ -28,7 +27,6 @@ add_library(portal-src
         Obstacles/Acid.cpp
         Obstacles/EnergyBarrier.cpp
         PinTool.cpp
-        protocol_macros.h)
+        )
 
-target_link_libraries(portal-src Box2D yaml-parser protocol-translator
-        resources)
+target_link_libraries(portal-src common-src Box2D yaml-parser)

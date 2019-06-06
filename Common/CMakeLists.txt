@@ -3,9 +3,14 @@ project(Portal)
 
 SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
 
-add_library(resources
+add_subdirectory(ProtocolTranslator)
+
+add_library(common-src
         ProtectedBlockingQueue.cpp
         Socket.cpp
         AcceptSocket.cpp
         SafeQueue.cpp
+        Thread.cpp
         )
+
+target_link_libraries(common-src protocol-translator)

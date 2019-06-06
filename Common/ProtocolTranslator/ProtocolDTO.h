@@ -2,7 +2,7 @@
 #define PORTAL_PROTOCOLDTO_H
 
 #include <cstdint>
-#include <src/protocol_macros.h>
+#include <Common/ProtocolTranslator/protocol_macros.h>
 
 class ProtocolDTO {
 public:

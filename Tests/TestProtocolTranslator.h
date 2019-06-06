@@ -2,19 +2,19 @@
 #define PORTAL_TESTPROTOCOLTRANSLATOR_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include <src/ProtocolTranslator/ProtocolTranslator.h>
+#include <Common/ProtocolTranslator/ProtocolTranslator.h>
+#include <Common/ProtocolTranslator/MoveLeftDTO.h>
+#include <Common/ProtocolTranslator/MoveRightDTO.h>
+#include <Common/ProtocolTranslator/JumpDTO.h>
+#include <Common/ProtocolTranslator/StopDTO.h>
+#include <Common/ProtocolTranslator/ShootPortalDTO.h>
+#include <Common/ProtocolTranslator/ShootPinToolDTO.h>
+#include <Common/ProtocolTranslator/LiftRockDTO.h>
+#include <Common/ProtocolTranslator/DropRockDTO.h>
+#include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
 #include "../src/constants.h"
 #include <string>
-#include <src/ProtocolTranslator/MoveLeftDTO.h>
-#include <src/ProtocolTranslator/MoveRightDTO.h>
-#include <src/ProtocolTranslator/JumpDTO.h>
-#include <src/ProtocolTranslator/StopDTO.h>
-#include <src/ProtocolTranslator/ShootPortalDTO.h>
-#include <src/ProtocolTranslator/ShootPinToolDTO.h>
-#include <src/ProtocolTranslator/LiftRockDTO.h>
-#include <src/ProtocolTranslator/DropRockDTO.h>
 #include <vector>
-#include <src/ProtocolTranslator/PlayerChellIdDTO.h>
 
 using std::cout;
 using std::endl;

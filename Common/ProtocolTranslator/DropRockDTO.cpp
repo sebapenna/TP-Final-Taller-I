@@ -1,5 +1,5 @@
 #include "DropRockDTO.h"
-#include <src/protocol_macros.h>
+#include <Common/ProtocolTranslator/protocol_macros.h>
 
 DropRockDTO::~DropRockDTO() = default;
 

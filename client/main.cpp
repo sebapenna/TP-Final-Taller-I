@@ -10,13 +10,13 @@
 #include "View/BlockViewMetal.h"
 #include "View/BlockViewRock.h"
 #include <queue>
-#include "common/SafeQueue.h"
-#include "common/ProtectedBlockingQueue.h"
 #include "SDL_Runner.h"
 #include "FakeServer.h"
-#include "common/ProtocolTranslator/ProtocolTranslator.h"
-#include "common/ProtocolTranslator/MoveLeftDTO.h"
-#include "common/ProtocolTranslator/MoveRightDTO.h"
+#include <Common/SafeQueue.h>
+#include <Common/ProtectedBlockingQueue.h>
+#include <Common/ProtocolTranslator/ProtocolTranslator.h>
+#include <Common/ProtocolTranslator/MoveLeftDTO.h>
+#include <Common/ProtocolTranslator/MoveRightDTO.h>
 
 int main(int argc, char** argv){
     /* Iniciar socketprotocol

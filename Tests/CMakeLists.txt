@@ -12,6 +12,9 @@ add_executable(tests
         TestButton.h
         TestGate.h
         TestEnergyReceiver.h
-        TestEnergyBallAndEnergyTransmitter.h TestEnergyBallAndEnergyReceiver.h TestEnergyBall.h TestProtocolTranslator.h)
+        TestEnergyBallAndEnergyTransmitter.h
+        TestEnergyBallAndEnergyReceiver.h
+        TestEnergyBall.h
+        TestProtocolTranslator.h)
 
-target_link_libraries(tests cppunit portal-src)
+target_link_libraries(tests cppunit portal-src common-src)
