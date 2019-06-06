@@ -8,14 +8,15 @@
 
 #include "ComponentsSDL/Camera.h"
 #include "View/ChellAnimationView.h"
+#include "common/ProtocolTranslator/FakeChellNewPosition.h"
 #include <vector>
+#include <map>
 
 class WorldView {
 private:
     Camera& camera;
     std::vector<View*> views;
-    std::vector<ChellAnimationView*> chells;
-
+    std::map<int, ChellAnimationView*> chells;
 public:
     WorldView(Camera& camera);
     void moveCameraLeft();
@@ -24,7 +25,7 @@ public:
     void moveCameraDown();
     void draw();
     void addView(View* view);
-    void addChell(ChellAnimationView* chell);
+    void addChell(ChellAnimationView* chell, Position& position);
 };
 
 

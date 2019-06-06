@@ -149,6 +149,19 @@ resources/fast:
 	$(MAKE) -f common/CMakeFiles/resources.dir/build.make common/CMakeFiles/resources.dir/build
 .PHONY : resources/fast
 
+#=============================================================================
+# Target rules for targets named protocol-translator
+
+# Build rule for target.
+protocol-translator: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 protocol-translator
+.PHONY : protocol-translator
+
+# fast build rule for target.
+protocol-translator/fast:
+	$(MAKE) -f common/ProtocolTranslator/CMakeFiles/protocol-translator.dir/build.make common/ProtocolTranslator/CMakeFiles/protocol-translator.dir/build
+.PHONY : protocol-translator/fast
+
 ComponentsSDL/AnimatedSprite.o: ComponentsSDL/AnimatedSprite.cpp.o
 
 .PHONY : ComponentsSDL/AnimatedSprite.o
@@ -337,6 +350,33 @@ ComponentsSDL/Window.s: ComponentsSDL/Window.cpp.s
 ComponentsSDL/Window.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/ComponentsSDL/Window.cpp.s
 .PHONY : ComponentsSDL/Window.cpp.s
+
+FakeServer.o: FakeServer.cpp.o
+
+.PHONY : FakeServer.o
+
+# target to build an object file
+FakeServer.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/FakeServer.cpp.o
+.PHONY : FakeServer.cpp.o
+
+FakeServer.i: FakeServer.cpp.i
+
+.PHONY : FakeServer.i
+
+# target to preprocess a source file
+FakeServer.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/FakeServer.cpp.i
+.PHONY : FakeServer.cpp.i
+
+FakeServer.s: FakeServer.cpp.s
+
+.PHONY : FakeServer.s
+
+# target to generate assembly for a file
+FakeServer.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/FakeServer.cpp.s
+.PHONY : FakeServer.cpp.s
 
 SDL_Runner.o: SDL_Runner.cpp.o
 
@@ -554,6 +594,33 @@ common/ProtectedBlockingQueue.cpp.s:
 	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/ProtectedBlockingQueue.cpp.s
 .PHONY : common/ProtectedBlockingQueue.cpp.s
 
+common/ProtocolTranslator/FakeChellNewPosition.o: common/ProtocolTranslator/FakeChellNewPosition.cpp.o
+
+.PHONY : common/ProtocolTranslator/FakeChellNewPosition.o
+
+# target to build an object file
+common/ProtocolTranslator/FakeChellNewPosition.cpp.o:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/ProtocolTranslator/FakeChellNewPosition.cpp.o
+.PHONY : common/ProtocolTranslator/FakeChellNewPosition.cpp.o
+
+common/ProtocolTranslator/FakeChellNewPosition.i: common/ProtocolTranslator/FakeChellNewPosition.cpp.i
+
+.PHONY : common/ProtocolTranslator/FakeChellNewPosition.i
+
+# target to preprocess a source file
+common/ProtocolTranslator/FakeChellNewPosition.cpp.i:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/ProtocolTranslator/FakeChellNewPosition.cpp.i
+.PHONY : common/ProtocolTranslator/FakeChellNewPosition.cpp.i
+
+common/ProtocolTranslator/FakeChellNewPosition.s: common/ProtocolTranslator/FakeChellNewPosition.cpp.s
+
+.PHONY : common/ProtocolTranslator/FakeChellNewPosition.s
+
+# target to generate assembly for a file
+common/ProtocolTranslator/FakeChellNewPosition.cpp.s:
+	$(MAKE) -f CMakeFiles/sdldemo.dir/build.make CMakeFiles/sdldemo.dir/common/ProtocolTranslator/FakeChellNewPosition.cpp.s
+.PHONY : common/ProtocolTranslator/FakeChellNewPosition.cpp.s
+
 common/SafeQueue.o: common/SafeQueue.cpp.o
 
 .PHONY : common/SafeQueue.o
@@ -646,6 +713,7 @@ help:
 	@echo "... sdldemo"
 	@echo "... sdl-hello"
 	@echo "... resources"
+	@echo "... protocol-translator"
 	@echo "... ComponentsSDL/AnimatedSprite.o"
 	@echo "... ComponentsSDL/AnimatedSprite.i"
 	@echo "... ComponentsSDL/AnimatedSprite.s"
@@ -667,6 +735,9 @@ help:
 	@echo "... ComponentsSDL/Window.o"
 	@echo "... ComponentsSDL/Window.i"
 	@echo "... ComponentsSDL/Window.s"
+	@echo "... FakeServer.o"
+	@echo "... FakeServer.i"
+	@echo "... FakeServer.s"
 	@echo "... SDL_Runner.o"
 	@echo "... SDL_Runner.i"
 	@echo "... SDL_Runner.s"
@@ -691,6 +762,9 @@ help:
 	@echo "... common/ProtectedBlockingQueue.o"
 	@echo "... common/ProtectedBlockingQueue.i"
 	@echo "... common/ProtectedBlockingQueue.s"
+	@echo "... common/ProtocolTranslator/FakeChellNewPosition.o"
+	@echo "... common/ProtocolTranslator/FakeChellNewPosition.i"
+	@echo "... common/ProtocolTranslator/FakeChellNewPosition.s"
 	@echo "... common/SafeQueue.o"
 	@echo "... common/SafeQueue.i"
 	@echo "... common/SafeQueue.s"

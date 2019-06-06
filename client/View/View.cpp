@@ -24,3 +24,10 @@ View::View(int x, int y) : position(x, y) {
 Position &View::getPosition() {
     return position;
 }
+
+void View::setPosition(Position &position) {
+    dstSrc.x = position.getX();
+    dstSrc.y = position.getY();
+    this->position.set(position.getX() + dstSrc.w/2, position.getY()+ dstSrc.h/2);
+    //this->position = position;
+}

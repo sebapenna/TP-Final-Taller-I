@@ -20,6 +20,7 @@ public:
     View(int x, int y);
     SDL_Rect* getDst();
     void setDestRect(int x, int y, int w, int h);
+    void setPosition(Position& position);
     virtual void draw(Camera& camera) = 0;
     Position& getPosition();
 };

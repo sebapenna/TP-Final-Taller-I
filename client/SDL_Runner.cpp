@@ -16,19 +16,22 @@ SDL_Runner::SDL_Runner(std::string& title, SafeQueue &safeQueue) : safeQueue(saf
 
 void SDL_Runner::run() {
     std::string chell_file_name("chell");
-    ChellAnimationView* chell = new ChellAnimationView(textureFactory.getTextureByName(chell_file_name),renderer);
-    chell->setDestRect(200,200,201,220);
+    ChellAnimationView* chell = new ChellAnimationView(1, textureFactory.getTextureByName(chell_file_name),renderer);
+    Position chellPos(200,200);
+    //chell->setDestRect(200,200,201,220);
     Camera camera(1000, 1000, chell->getPosition());
     WorldView world(camera);
-    ChellAnimationView* chell2 = new ChellAnimationView(textureFactory.getTextureByName(chell_file_name),renderer);
-    chell2->setDestRect(-200,-100,201,220);
-    ChellAnimationView* chell3 = new ChellAnimationView(textureFactory.getTextureByName(chell_file_name),renderer);
-    chell3->setDestRect(100,-100,201,220);
 
-    world.addChell(chell);
-    world.addChell(chell2);
-    world.addChell(chell3);
+    //ChellAnimationView* chell2 = new ChellAnimationView(2, textureFactory.getTextureByName(chell_file_name),renderer);
+    //Position chell2Pos(-200,-100);
+    //chell2->setDestRect(-200,-100,201,220);
+    //ChellAnimationView* chell3 = new ChellAnimationView(3, textureFactory.getTextureByName(chell_file_name),renderer);
+    //Position chell3Pos(100,-100);
+    //chell3->setDestRect(100,-100,201,220);
 
+    world.addChell(chell, chellPos);
+    //world.addChell(chell2, chell2Pos);
+    //world.addChell(chell3, chell3Pos);
 
     std::string block_file_name("block");
     for (int startX = -2000; startX<7000; startX+=128) {
@@ -44,6 +47,13 @@ void SDL_Runner::run() {
 
     while (connected) {
         renderer.clearRender();
+        FakeChellNewPosition* newChell = (FakeChellNewPosition*) safeQueue.getTopAndPop();
+        if (newChell) {
+            ChellAnimationView* chell2 = new ChellAnimationView(newChell->getClassId(), textureFactory.getTextureByName(chell_file_name),renderer);
+            Position chell2Pos(newChell->getX(),newChell->getY());
+            chell2->setDestRect(newChell->getX(),newChell->getY(),201,220);
+            world.addChell(chell2, chell2Pos);
+        }
         world.draw();
         renderer.render();
     }

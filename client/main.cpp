@@ -13,6 +13,10 @@
 #include "common/SafeQueue.h"
 #include "common/ProtectedBlockingQueue.h"
 #include "SDL_Runner.h"
+#include "FakeServer.h"
+#include "common/ProtocolTranslator/ProtocolTranslator.h"
+#include "common/ProtocolTranslator/MoveLeftDTO.h"
+#include "common/ProtocolTranslator/MoveRightDTO.h"
 
 int main(int argc, char** argv){
     /* Iniciar socketprotocol
@@ -73,6 +77,8 @@ int main(int argc, char** argv){
         ProtectedBlockingQueue blockingQueue;
         SDL_Runner sdlRunner(title, safeQueue);
         sdlRunner.start();
+        FakeServer server(blockingQueue, safeQueue);
+        server.start();
         /*
         SDL_Runner sdlRunner(safeQueue);
         sdlRunner.start();
@@ -93,10 +99,10 @@ int main(int argc, char** argv){
                 } else if (e.type == SDL_KEYDOWN) {
                     switch (e.key.keysym.sym) {
                         case SDLK_d:
-                            //eventCatcher.moveRight();
+                            blockingQueue.push((void*) new MoveLeftDTO());
                             break;
                         case SDLK_a:
-                            //eventCatcher.moveLeft();
+                            blockingQueue.push((void*) new MoveRightDTO());
                             break;
                         case SDLK_w:
                             //eventCatcher.jump();

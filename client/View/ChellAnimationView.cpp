@@ -4,7 +4,7 @@
 
 #include "ChellAnimationView.h"
 
-ChellAnimationView::ChellAnimationView(SDL_Texture* texture, Renderer& renderer, int x, int y) :
+ChellAnimationView::ChellAnimationView(int id, SDL_Texture* texture, Renderer& renderer, int x, int y) : id(id),
 View(x, y),
 runningRightChell(texture, renderer, 201, 220, 1, 3983, 12, 12, 1, 0),
 standStillChell(texture, renderer, 122, 222, 1, 2080, 7, 7, 1, 0),
@@ -41,4 +41,8 @@ void ChellAnimationView::stand() {
 
 void ChellAnimationView::fire() {
     this->state = State::firing;
+}
+
+int ChellAnimationView::getId() const {
+    return id;
 }

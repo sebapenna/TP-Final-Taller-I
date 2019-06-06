@@ -5,6 +5,7 @@ project(sdl)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 add_subdirectory(common)
+add_subdirectory(common/ProtocolTranslator)
 add_library(sdldemo
         ComponentsSDL/Renderer.cpp
         ComponentsSDL/SDLException.cpp
@@ -25,7 +26,7 @@ add_library(sdldemo
         ComponentsSDL/Position.h
         common/ProtectedBlockingQueue.cpp common/ProtectedBlockingQueue.h
         common/SafeQueue.cpp common/SafeQueue.h
-        SDL_Runner.cpp SDL_Runner.h)
+        SDL_Runner.cpp SDL_Runner.h FakeServer.cpp FakeServer.h common/ProtocolTranslator/FakeChellNewPosition.cpp common/ProtocolTranslator/FakeChellNewPosition.h)
 
 
 
@@ -39,6 +40,6 @@ add_executable (sdl-hello
 
 
 
-target_link_libraries(sdl-hello sdldemo SDL2 SDL2_image pthread)
+target_link_libraries(sdl-hello protocol-translator sdldemo SDL2 SDL2_image pthread)
 
 #install(FILES assets/cat.gif DESTINATION ${CMAKE_BINARY_DIR})
