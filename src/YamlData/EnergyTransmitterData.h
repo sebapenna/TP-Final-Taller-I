@@ -4,19 +4,19 @@
 
 class EnergyTransmitterData {
 private:
-    float _x;
-    float _y;
+    const float _x;
+    const float _y;
     uint8_t _direction;
 
 public:
     EnergyTransmitterData(const float &x, const float &y,
                           const std::string &direction);
 
-    float getX() const;
+    const float getX() const;
 
-    float getY() const;
+    const float getY() const;
 
-    uint8_t getDirection() const;
+    const uint8_t getDirection() const;
 };
 
 

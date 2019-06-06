@@ -15,22 +15,22 @@ MetalDiagonalBlockData::MetalDiagonalBlockData(const float &width,
         _orientation = O_SE;
 }
 
-float MetalDiagonalBlockData::getWidth() const {
+const float MetalDiagonalBlockData::getWidth() const {
     return _width;
 }
 
-float MetalDiagonalBlockData::getHeight() const {
+const float MetalDiagonalBlockData::getHeight() const {
     return _height;
 }
 
-float MetalDiagonalBlockData::getX() const {
+const float MetalDiagonalBlockData::getX() const {
     return _x;
 }
 
-float MetalDiagonalBlockData::getY() const {
+const float MetalDiagonalBlockData::getY() const {
     return _y;
 }
 
-uint8_t MetalDiagonalBlockData::getOrientation() const {
+const uint8_t MetalDiagonalBlockData::getOrientation() const {
     return _orientation;
 }

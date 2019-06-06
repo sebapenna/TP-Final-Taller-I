@@ -5,25 +5,25 @@
 
 class MetalDiagonalBlockData {
 private:
-    float _width;
-    float _height;
+    const float _width;
+    const float _height;
     float _x;
-    float _y;
+    const float _y;
     uint8_t _orientation;
 
 public:
     MetalDiagonalBlockData(const float& width, const float& height,
             const float& x, const float& y, const std::string& orientation);
 
-    float getWidth() const;
+    const float getWidth() const;
 
-    float getHeight() const;
+    const float getHeight() const;
 
-    float getX() const;
+    const float getX() const;
 
-    float getY() const;
+    const float getY() const;
 
-    uint8_t getOrientation() const;
+    const uint8_t getOrientation() const;
 };
 
 
