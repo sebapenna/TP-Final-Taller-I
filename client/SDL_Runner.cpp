@@ -30,7 +30,7 @@ void SDL_Runner::run() {
     //Position chell3Pos(100,-100);
     //chell3->setDestRect(100,-100,201,220);
 
-    world.addChell(chell, chellPos);
+    world.addChell(chell, chellPos, State::standing);
     //world.addChell(chell2, chell2Pos);
     //world.addChell(chell3, chell3Pos);
 
@@ -52,8 +52,8 @@ void SDL_Runner::run() {
         if (newChell) {
             ChellAnimationView* chell2 = new ChellAnimationView(newChell->getId(), textureFactory.getTextureByName(chell_file_name),renderer);
             Position chell2Pos(newChell->getX(),newChell->getY());
-            chell2->setDestRect(newChell->getX(),newChell->getY(),201,220);
-            world.addChell(chell2, chell2Pos);
+            chell2->setDestRect(newChell->getX(),newChell->getY(), 201, 220);
+            world.addChell(chell2, chell2Pos, State::runningRight);
         }
         world.draw();
         renderer.render();

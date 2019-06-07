@@ -24,13 +24,15 @@ void WorldView::addView(View* view) {
     views.push_back(view);
 }
 
-void WorldView::addChell(ChellAnimationView* chell, Position& position) {
+void WorldView::addChell(ChellAnimationView* chell, Position& position, State state) {
     if (chells.count(chell->getId())) {
         ChellAnimationView* chellView = chells[chell->getId()];
         chellView->setPosition(position);
+        chellView->setState(state);
     } else {
         chells[chell->getId()] = chell;
         chell->setDestRect(position.getX(), position.getY(), 201, 220 );
+        chell->setState(state);
     }
 
 }
