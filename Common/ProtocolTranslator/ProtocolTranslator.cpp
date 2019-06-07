@@ -27,13 +27,15 @@
 #include "EnergyReceiverActivateDTO.h"
 #include "GateStateDTO.h"
 #include <vector>
+#include <iostream>
 
 using std::vector;
 using std::move;
+using std::shared_ptr;
+using std::make_shared;
 
 /********************* DTO a Vector ************************/
-int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t>
-        &output) {
+int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &output) {
     output.push_back(dto->getClassId());    // Siempre primer valor es el ID
     switch (dto->getClassId()) {
         case PROTOCOL_MOVE_LEFT:
@@ -120,96 +122,125 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t>
 }
 
 /********************* Vector a DTO ************************/
-ProtocolDTO *ProtocolTranslator::translate(const vector<int16_t> &input) {
+shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &input) {
     int command = input.at(0);
     switch (command) {
         case PROTOCOL_MOVE_LEFT:
-            return moveLeft(input);
+            return make_shared<MoveLeftDTO>();
+
         case PROTOCOL_MOVE_RIGHT:
-            return moveRight(input);
+            return make_shared<MoveRightDTO>();
+
         case PROTOCOL_JUMP:
-            return jump(input);
+            return make_shared<JumpDTO>();
+
         case PROTOCOL_STOP:
-            return stop(input);
+            return make_shared<StopDTO>();
+
         case PROTOCOL_SHOOT_PORTAL:
-            return shootPortal(input);
+            return make_shared<ShootPortalDTO>(input[SHOOT_PORTAL_COLOUR_POS],
+                                               input[SHOOT_PORTAL_X_POS], input[SHOOT_PORTAL_Y_POS]);
+
         case PROTOCOL_SHOOT_PIN_TOOL:
-            return shootPinTool(input);
+            return make_shared<ShootPinToolDTO>(input[SHOOT_PT_X_POS], input[SHOOT_PT_Y_POS]);
+
         case PROTOCOL_LIFT_ROCK:
-            return liftRock(input);
+            return make_shared<LiftRockDTO>(input[LIFT_ROCK_ID_POS]);
+
         case PROTOCOL_DROP_ROCK:
-            return dropRock(input);
+            return make_shared<DropRockDTO>();
+
         case PROTOCOL_PLAYER_CHELL_ID:
-            return playerChellId(input);
+            return make_shared<PlayerChellIdDTO>(input[PLAYER_CHELL_ID_POS]);
+
         case PROTOCOL_ROCK_BLOCK_DATA:
-            return rockBlockData(input);
+            return make_shared<RockBlockDTO>(input[ROCK_BLOCK_X_POS], input[ROCK_BLOCK_Y_POS],
+                    input[ROCK_BLOCK_WIDTH_POS], input[ROCK_BLOCK_HEIGHT_POS]);
+
         case PROTOCOL_METAL_BLOCK_DATA:
-            return metalBlockData(input);
+            return make_shared<MetalBlockDTO>(input[METAL_BLOCK_X_POS], input[METAL_BLOCK_Y_POS],
+                    input[METAL_BLOCK_WIDTH_POS], input[METAL_BLOCK_HEIGHT_POS]);
+
         case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA:
-            return metalDiagonalBlockData(input);
+            return make_shared<MetalDiagonalBlockDTO>(input[METAL_DIAG_BLOCK_X_POS],
+                    input[METAL_DIAG_BLOCK_Y_POS], input[METAL_DIAG_BLOCK_SIDE_LEN_POS],
+                    input[METAL_DIAG_BLOCK_ORIENT_POS]);
         case PROTOCOL_ENERGY_TRANSMITTER_DATA:
-            return energyTransmitterData(input);
+
+            return make_shared<EnergyTransmitterDTO>(input[ENRG_TRANSM_ID_POS],
+                    input[ENRG_TRANSM_X_POS], input[ENRG_TRANSM_Y_POS],
+                    input[ENRG_TRANSM_SIDE_LEN_POS], input[ENRG_TRANSM_DIRECTION_POS]);
         case PROTOCOL_ENERGY_RECEIVER_DATA:
-            return energyReceiverData(input);
+
+            return make_shared<EnergyReceiverDTO>(input[ENRG_RECVR_ID_POS], input[ENRG_RECVR_X_POS],
+                    input[ENRG_RECVR_Y_POS], input[ENRG_RECVR_SIDE_LEN_POS]);
         case PROTOCOL_ACID_DATA:
-            return acidData(input);
+
+            return make_shared<AcidDTO>(input[ACID_X_POS], input[ACID_Y_POS], input[ACID_WIDTH_POS],
+                    input[ACID_HEIGHT_POS]);
         case PROTOCOL_BUTTON_DATA:
-            return buttonData(input);
+
+            return make_shared<ButtonDTO>(input[BUTTON_ID_POS], input[BUTTON_X_POS],
+                    input[BUTTON_Y_POS], input[BUTTON_WIDTH_POS], input[BUTTON_HEIGHT_POS]);
         case PROTOCOL_GATE_DATA:
-            return gateData(input);
+
+            return make_shared<GateDTO>(input[GATE_ID_POS], input[GATE_X_POS],
+                    input[GATE_Y_POS], input[GATE_WIDTH_POS], input[GATE_HEIGHT_POS]);
+
         case PROTOCOL_ENERGY_BARRIER_DATA:
-            return energyBarrierData(input);
+            return make_shared<EnergyBarrierDTO>(input[ENRG_BARRIER_X_POS],
+                    input[ENRG_BARRIER_Y_POS], input[ENRG_BARRIER_WIDTH_POS],
+                    input[ENRG_BARRIER_HEIGHT_POS]);
+
         case PROTOCOL_ROCK_DATA:
-            return rockData(input);
+            return make_shared<RockDTO>(input[ROCK_ID_POS], input[ROCK_X_POS], input[ROCK_Y_POS],
+                               input[ROCK_SIDE_LEN_POS], input[ROCK_DELETE_STATE_POS]);
+
         case PROTOCOL_ENERGY_BALL_DATA:
-            return energyBallData(input);
+            return make_shared<EnergyBallDTO>(input[ENRG_BALL_ID_POS], input[ENRG_BALL_X_POS],
+                    input[ENRG_BALL_Y_POS], input[ENRG_BALL_RADIUS_POS],
+                    input[ENRG_BALL_DELETE_STATE_POS]);
+
         case PROTOCOL_PORTAL_DATA:
-            return portalData(input);
+            return make_shared<PortalDTO>(input[PORTAL_ID_POS], input[PORTAL_X_POS],
+                    input[PORTAL_Y_POS], input[PORTAL_WIDTH_POS], input[PORTAL_HEIGHT_POS],
+                    input[PORTAL_COLOUR_POS], input[PORTAL_DELETE_STATE_POS]);
+
         case PROTOCOL_PIN_TOOL_DATA:
-            return pinToolData(input);
+            return make_shared<PinToolDTO>(input[PIN_TOOL_ID_POS], input[PIN_TOOL_X_POS],
+                    input[PIN_TOOL_Y_POS], input[PIN_TOOL_WIDTH_POS], input[PIN_TOOL_HEIGHT_POS],
+                    input[PIN_TOOL_DELETE_STATE_POS]);
+
         case PROTOCOL_CHELL_DATA:
-            return chellData(input);
+            return make_shared<ChellDTO>(input[CHELL_ID_POS], input[CHELL_X_POS],
+                    input[CHELL_Y_POS], input[CHELL_WIDTH_POS], input[CHELL_HEIGHT_POS],
+                    input[CHELL_DIRECTION_POS], input[CHELL_TILTED_POS], input[CHELL_MOVING_POS],
+                    input[CHELL_JUMPING_POS], input[CHELL_SHOOTING_POS],
+                    input[CHELL_CARRYING_ROCK_POS], input[CHELL_DELETE_STATE_POS]);
+
         case PROTOCOL_BUTTON_CHANGE_STATE:
-            return buttonState(input);
+            return make_shared<ButtonStateDTO>(input[BUTTON_CHANGE_ID_POS],
+                    input[BUTTON_CHANGE_STATE_POS]);
+
         case PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE:
-            return energyTransmitterActivate(input);
+            return make_shared<EnergyTransmitterActivateDTO>(input[ENRG_TRANSM_ACTV_ID_POS]);
+
         case PROTOCOL_ENERGY_RECEIVER_ACTIVATE:
-            return energyReceiverActivate(input);
+            return make_shared<EnergyReceiverActivateDTO>(input[ENRG_RECVR_ACTV_ID_POS]);
+
         case PROTOCOL_GATE_CHANGE_STATE:
-            return gateState(input);
+            return make_shared<GateStateDTO>(input[GATE_CHANGE_ID_POS],
+                    input[GATE_CHANGE_STATE_POS]);
+
         default:    // Comando no existente en el protocolo
             return nullptr;
     }
 }
 
 
-ProtocolDTO *ProtocolTranslator::moveLeft(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new MoveLeftDTO();
-}
-
-ProtocolDTO *ProtocolTranslator::moveRight(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new MoveRightDTO();
-}
-
-ProtocolDTO *ProtocolTranslator::stop(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new StopDTO();
-}
-
-ProtocolDTO *ProtocolTranslator::jump(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new JumpDTO();
-}
-
-ProtocolDTO *ProtocolTranslator::dropRock(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new DropRockDTO();
-}
-
 void ProtocolTranslator::playerChellId(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (PlayerChellIdDTO*) dto;
     output.push_back(p_dto->getChellId());
-}
-
-ProtocolDTO * ProtocolTranslator::playerChellId(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new PlayerChellIdDTO(input.at(PLAYER_CHELL_ID_POS));
 }
 
 void ProtocolTranslator::shootPortal(const ProtocolDTO *dto, vector<int16_t> &output) {
@@ -219,29 +250,15 @@ void ProtocolTranslator::shootPortal(const ProtocolDTO *dto, vector<int16_t> &ou
     output.push_back(p_dto->getY());
 }
 
-ProtocolDTO *ProtocolTranslator::shootPortal(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new ShootPortalDTO(input[SHOOT_PORTAL_COLOUR_POS],
-                                             input[SHOOT_PORTAL_X_POS], input[SHOOT_PORTAL_Y_POS]);
-}
-
 void ProtocolTranslator::shootPinTool(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (ShootPinToolDTO*) dto;
     output.push_back(p_dto->getX());
     output.push_back(p_dto->getY());
 }
 
-ProtocolDTO *ProtocolTranslator::shootPinTool(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new ShootPinToolDTO(input.at(SHOOT_PT_X_POS),
-                                              input.at(SHOOT_PT_Y_POS));
-}
-
 void ProtocolTranslator::liftRock(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (LiftRockDTO*) dto;
     output.push_back(p_dto->getRockId());
-}
-
-ProtocolDTO *ProtocolTranslator::liftRock(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new LiftRockDTO(input.at(LIFT_ROCK_ID_POS));
 }
 
 void ProtocolTranslator::rockBlockData(const ProtocolDTO *dto, vector<int16_t> &output) {
@@ -252,11 +269,6 @@ void ProtocolTranslator::rockBlockData(const ProtocolDTO *dto, vector<int16_t> &
     output.push_back(p_dto->getHeight());
 }
 
-ProtocolDTO *ProtocolTranslator::rockBlockData(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new RockBlockDTO(input[ROCK_BLOCK_X_POS],
-            input[ROCK_BLOCK_Y_POS], input[ROCK_BLOCK_WIDTH_POS], input[ROCK_BLOCK_HEIGHT_POS]);
-}
-
 void ProtocolTranslator::metalBlockData(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (MetalBlockDTO*) dto;
     output.push_back(p_dto->getX());
@@ -265,23 +277,12 @@ void ProtocolTranslator::metalBlockData(const ProtocolDTO *dto, vector<int16_t> 
     output.push_back(p_dto->getHeight());
 }
 
-ProtocolDTO *ProtocolTranslator::metalBlockData(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new MetalBlockDTO(input[METAL_BLOCK_X_POS],
-            input[METAL_BLOCK_Y_POS], input[METAL_BLOCK_WIDTH_POS], input[METAL_BLOCK_HEIGHT_POS]);
-}
-
 void ProtocolTranslator::metalDiagonalBlockData(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (MetalDiagonalBlockDTO*) dto;
     output.push_back(p_dto->getX());
     output.push_back(p_dto->getY());
     output.push_back(p_dto->getSideLength());
     output.push_back(p_dto->getOrientation());
-}
-
-ProtocolDTO *ProtocolTranslator::metalDiagonalBlockData(const vector<int16_t> &input) {
-    return (ProtocolDTO*) new MetalDiagonalBlockDTO(input[METAL_DIAG_BLOCK_X_POS],
-            input[METAL_DIAG_BLOCK_Y_POS], input[METAL_DIAG_BLOCK_SIDE_LEN_POS],
-            input[METAL_DIAG_BLOCK_ORIENT_POS]);
 }
 
 void ProtocolTranslator::energyTransmitterData(const ProtocolDTO *dto, vector<int16_t> &output) {
@@ -293,23 +294,12 @@ void ProtocolTranslator::energyTransmitterData(const ProtocolDTO *dto, vector<in
     output.push_back(p_dto->getDirection());
 }
 
-ProtocolDTO *ProtocolTranslator::energyTransmitterData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new EnergyTransmitterDTO(input[ENRG_TRANSM_ID_POS],
-            input[ENRG_TRANSM_X_POS], input[ENRG_TRANSM_Y_POS], input[ENRG_TRANSM_SIDE_LEN_POS],
-            input[ENRG_TRANSM_DIRECTION_POS]);
-}
-
 void ProtocolTranslator::energyReceiverData(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (EnergyReceiverDTO*) dto;
     output.push_back(p_dto->getId());
     output.push_back(p_dto->getX());
     output.push_back(p_dto->getY());
     output.push_back(p_dto->getSideLength());
-}
-
-ProtocolDTO *ProtocolTranslator::energyReceiverData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new EnergyReceiverDTO(input[ENRG_RECVR_ID_POS], input[ENRG_RECVR_X_POS],
-            input[ENRG_RECVR_Y_POS], input[ENRG_RECVR_SIDE_LEN_POS]);
 }
 
 void ProtocolTranslator::acidData(const ProtocolDTO *dto, std::vector<int16_t> &output) {
@@ -321,11 +311,6 @@ void ProtocolTranslator::acidData(const ProtocolDTO *dto, std::vector<int16_t> &
 }
 
 
-ProtocolDTO *ProtocolTranslator::acidData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new AcidDTO(input[ACID_X_POS], input[ACID_Y_POS], input[ACID_WIDTH_POS],
-                                      input[ACID_HEIGHT_POS]);
-}
-
 void ProtocolTranslator::buttonData(const ProtocolDTO *dto, std::vector<int16_t> &output) {
     auto p_dto = (ButtonDTO*) dto;
     output.push_back(p_dto->getId());
@@ -333,11 +318,6 @@ void ProtocolTranslator::buttonData(const ProtocolDTO *dto, std::vector<int16_t>
     output.push_back(p_dto->getY());
     output.push_back(p_dto->getWidth());
     output.push_back(p_dto->getHeight());
-}
-
-ProtocolDTO *ProtocolTranslator::buttonData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new ButtonDTO(input[BUTTON_ID_POS], input[BUTTON_X_POS],
-            input[BUTTON_Y_POS], input[BUTTON_WIDTH_POS], input[BUTTON_HEIGHT_POS]);
 }
 
 void ProtocolTranslator::gateData(const ProtocolDTO *dto, std::vector<int16_t> &output) {
@@ -349,22 +329,12 @@ void ProtocolTranslator::gateData(const ProtocolDTO *dto, std::vector<int16_t> &
     output.push_back(p_dto->getHeight());
 }
 
-ProtocolDTO *ProtocolTranslator::gateData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new GateDTO(input[GATE_ID_POS], input[GATE_X_POS],
-                                        input[GATE_Y_POS], input[GATE_WIDTH_POS], input[GATE_HEIGHT_POS]);}
-
 void ProtocolTranslator::energyBarrierData(const ProtocolDTO *dto, std::vector<int16_t> &output) {
     auto p_dto = (EnergyBarrierDTO*) dto;
     output.push_back(p_dto->getX());
     output.push_back(p_dto->getY());
     output.push_back(p_dto->getWidth());
     output.push_back(p_dto->getHeight());
-}
-
-ProtocolDTO *ProtocolTranslator::energyBarrierData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new EnergyBarrierDTO(input[ENRG_BARRIER_X_POS],
-            input[ENRG_BARRIER_Y_POS], input[ENRG_BARRIER_WIDTH_POS],
-            input[ENRG_BARRIER_HEIGHT_POS]);
 }
 
 void ProtocolTranslator::rockData(const ProtocolDTO *dto, std::vector<int16_t> &output) {
@@ -376,11 +346,6 @@ void ProtocolTranslator::rockData(const ProtocolDTO *dto, std::vector<int16_t> &
     output.push_back(p_dto->getDeleteState());
 }
 
-ProtocolDTO *ProtocolTranslator::rockData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new RockDTO(input[ROCK_ID_POS], input[ROCK_X_POS], input[ROCK_Y_POS],
-            input[ROCK_SIDE_LEN_POS], input[ROCK_DELETE_STATE_POS]);
-}
-
 void ProtocolTranslator::energyBallData(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (EnergyBallDTO*) dto;
     output.push_back(p_dto->getId());
@@ -390,10 +355,6 @@ void ProtocolTranslator::energyBallData(const ProtocolDTO *dto, vector<int16_t> 
     output.push_back(p_dto->getDeleteState());
 }
 
-ProtocolDTO *ProtocolTranslator::energyBallData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new EnergyBallDTO(input[ENRG_BALL_ID_POS], input[ENRG_BALL_X_POS],
-            input[ENRG_BALL_Y_POS], input[ENRG_BALL_RADIUS_POS], input[ENRG_BALL_DELETE_STATE_POS]);
-}
 
 void ProtocolTranslator::portalData(const ProtocolDTO *dto, std::vector<int16_t> &output) {
     auto p_dto = (PortalDTO*) dto;
@@ -406,12 +367,6 @@ void ProtocolTranslator::portalData(const ProtocolDTO *dto, std::vector<int16_t>
     output.push_back(p_dto->getDeleteState());
 }
 
-ProtocolDTO *ProtocolTranslator::portalData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new PortalDTO(input[PORTAL_ID_POS], input[PORTAL_X_POS],
-            input[PORTAL_Y_POS], input[PORTAL_WIDTH_POS], input[PORTAL_HEIGHT_POS],
-            input[PORTAL_COLOUR_POS], input[PORTAL_DELETE_STATE_POS]);
-}
-
 void ProtocolTranslator::pinToolData(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (PinToolDTO*) dto;
     output.push_back(p_dto->getId());
@@ -420,12 +375,6 @@ void ProtocolTranslator::pinToolData(const ProtocolDTO *dto, vector<int16_t> &ou
     output.push_back(p_dto->getWidth());
     output.push_back(p_dto->getHeight());
     output.push_back(p_dto->getDeleteState());
-}
-
-ProtocolDTO *ProtocolTranslator::pinToolData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new PinToolDTO(input[PIN_TOOL_ID_POS], input[PIN_TOOL_X_POS],
-            input[PIN_TOOL_Y_POS], input[PIN_TOOL_WIDTH_POS], input[PIN_TOOL_HEIGHT_POS],
-            input[PIN_TOOL_DELETE_STATE_POS]);
 }
 
 void ProtocolTranslator::chellData(const ProtocolDTO *dto, vector<int16_t> &output) {
@@ -444,23 +393,10 @@ void ProtocolTranslator::chellData(const ProtocolDTO *dto, vector<int16_t> &outp
     output.push_back(p_dto->getDeleteState());
 }
 
-ProtocolDTO *ProtocolTranslator::chellData(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new ChellDTO(input[CHELL_ID_POS], input[CHELL_X_POS],
-            input[CHELL_Y_POS], input[CHELL_WIDTH_POS], input[CHELL_HEIGHT_POS],
-            input[CHELL_DIRECTION_POS], input[CHELL_TILTED_POS], input[CHELL_MOVING_POS],
-            input[CHELL_JUMPING_POS], input[CHELL_SHOOTING_POS], input[CHELL_CARRYING_ROCK_POS],
-            input[CHELL_DELETE_STATE_POS]);
-}
-
 void ProtocolTranslator::buttonState(const ProtocolDTO *dto, std::vector<int16_t> &output) {
     auto p_dto = (ButtonStateDTO*) dto;
     output.push_back(p_dto->getId());
     output.push_back(p_dto->getState());
-}
-
-ProtocolDTO *ProtocolTranslator::buttonState(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new ButtonStateDTO(input[BUTTON_CHANGE_ID_POS],
-            input[BUTTON_CHANGE_STATE_POS]);
 }
 
 void ProtocolTranslator::energyTransmitterActivate(const ProtocolDTO *dto,
@@ -469,17 +405,9 @@ void ProtocolTranslator::energyTransmitterActivate(const ProtocolDTO *dto,
     output.push_back(p_dto->getId());
 }
 
-ProtocolDTO *ProtocolTranslator::energyTransmitterActivate(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new EnergyTransmitterActivateDTO(input[ENRG_TRANSM_ACTV_ID_POS]);
-}
-
 void ProtocolTranslator::energyReceiverActivate(const ProtocolDTO *dto, vector<int16_t> &output) {
     auto p_dto = (EnergyReceiverActivateDTO*) dto;
     output.push_back(p_dto->getId());
-}
-
-ProtocolDTO *ProtocolTranslator::energyReceiverActivate(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new EnergyReceiverActivateDTO(input[ENRG_RECVR_ACTV_ID_POS]);
 }
 
 void ProtocolTranslator::gateState(const ProtocolDTO *dto, std::vector<int16_t> &output) {
@@ -487,15 +415,3 @@ void ProtocolTranslator::gateState(const ProtocolDTO *dto, std::vector<int16_t> 
     output.push_back(p_dto->getId());
     output.push_back(p_dto->getState());
 }
-
-ProtocolDTO *ProtocolTranslator::gateState(const std::vector<int16_t> &input) {
-    return (ProtocolDTO*) new GateStateDTO(input[GATE_CHANGE_ID_POS],
-                                             input[GATE_CHANGE_STATE_POS]);
-}
-
-
-
-//
-//shared_ptr<Dto*> ProtocolTranslator::process(vector<char> &msg) {
-//
-//}

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include <cppunit/extensions/HelperMacros.h>
 #include <Common/ProtocolTranslator/ProtocolTranslator.h>
 #include <Common/ProtocolTranslator/MoveLeftDTO.h>
@@ -36,6 +37,7 @@
 using std::cout;
 using std::endl;
 using std::vector;
+using std::shared_ptr;
 
 class TestProtocolTranslator : public CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE( TestProtocolTranslator );
@@ -102,11 +104,10 @@ public:
     void testTranslateMoveLeftDTO() {
         cout << endl << endl << "TEST PROTOCOL TRANSLATOR";
         cout << endl << "TEST traducir MoveLeftDTO a datos: ";
-        auto ml_dto = new MoveLeftDTO();
-        int vec_size = ProtocolTranslator::translate(ml_dto, output);
+        shared_ptr<ProtocolDTO> pdto(new MoveLeftDTO());
+        int vec_size = ProtocolTranslator::translate(pdto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_LEFT, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
-        delete ml_dto;
         cout << "OK";
     }
 
@@ -114,18 +115,17 @@ public:
         cout << endl << "TEST traducir datos MoveLeft a DTO: ";
         vector<int16_t> v;
         v.push_back(PROTOCOL_MOVE_LEFT);
-        auto dto = ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (MoveLeftDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_LEFT, dto->getClassId());
         cout << "OK";
     }
-
     void testTranslateMoveRightDTO() {
         cout << endl << "TEST traducir MoveRightDTO a datos: ";
-        auto mr_dto = new MoveRightDTO();
-        int vec_size = ProtocolTranslator::translate(mr_dto, output);
+        shared_ptr<ProtocolDTO> pdto(new MoveRightDTO());
+        int vec_size = ProtocolTranslator::translate(pdto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_RIGHT, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
-        delete mr_dto;
         cout << "OK";
     }
 
@@ -133,18 +133,18 @@ public:
         cout << endl << "TEST traducir datos MoveRight a DTO: ";
         vector<int16_t> v;
         v.push_back(PROTOCOL_MOVE_RIGHT);
-        auto dto = ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (MoveRightDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_RIGHT, dto->getClassId());
         cout << "OK";
     }
 
     void testTranslateJumpDTO() {
         cout << endl << "TEST traducir JumpDTO a datos: ";
-        auto *j_dto = new JumpDTO();
-        auto vec_size = ProtocolTranslator::translate(j_dto, output);
+        shared_ptr<ProtocolDTO> pdto(new JumpDTO());
+        auto vec_size = ProtocolTranslator::translate(pdto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_JUMP, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
-        delete j_dto;
         cout << "OK";
     }
 
@@ -152,18 +152,18 @@ public:
         cout << endl << "TEST traducir datos Jump a DTO: ";
         vector<int16_t> v;
         v.push_back(PROTOCOL_JUMP);
-        auto dto = ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (JumpDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_JUMP, dto->getClassId());
         cout << "OK";
     }
 
     void testTranslateStopDTO() {
         cout << endl << "TEST traducir StopDTO a datos: ";
-        auto s_dto = new StopDTO();
-        int vec_size = ProtocolTranslator::translate(s_dto, output);
+        shared_ptr<ProtocolDTO> s_dto(new StopDTO());
+        int vec_size = ProtocolTranslator::translate(s_dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_STOP, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
-        delete s_dto;
         cout << "OK";
     }
 
@@ -171,21 +171,21 @@ public:
         cout << endl << "TEST traducir datos Stop a DTO: ";
         vector<int16_t> v;
         v.push_back(PROTOCOL_STOP);
-        auto dto = ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_STOP, dto->getClassId());
         cout << "OK";
     }
 
     void testTranslateShootPortalDTO() {
         cout << endl << "TEST traducir ShootPortalDTO a datos: ";
-        auto p_dto = new ShootPortalDTO(BLUE_PORTAL, -10, 50);
-        int vec_size = ProtocolTranslator::translate(p_dto, output);
+        shared_ptr<ProtocolDTO> p_dto(new ShootPortalDTO(BLUE_PORTAL, -10, 50));
+        int vec_size = ProtocolTranslator::translate(p_dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PORTAL, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, output.at(SHOOT_PORTAL_COLOUR_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -10, output.at(SHOOT_PORTAL_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 50, output.at(SHOOT_PORTAL_Y_POS));
         CPPUNIT_ASSERT_EQUAL(4, vec_size);
-        delete p_dto;
         cout << "OK";
     }
 
@@ -196,7 +196,8 @@ public:
         v.push_back(ORANGE_PORTAL); // color
         v.push_back(50);    // x
         v.push_back(-5);    // y
-        auto dto = (ShootPortalDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (ShootPortalDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PORTAL, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL(ORANGE_PORTAL, dto->getColor());
         CPPUNIT_ASSERT_EQUAL((int16_t) 50, dto->getX());
@@ -206,13 +207,12 @@ public:
 
     void testTranslateShootPinToolDTO() {
         cout << endl << "TEST traducir ShootPinToolDTO a datos: ";
-        auto p_dto = new ShootPinToolDTO(-10, 50);
-        int vec_size = ProtocolTranslator::translate(p_dto, output);
+        shared_ptr<ProtocolDTO> p_dto(new ShootPinToolDTO(-10, 50));
+        int vec_size = ProtocolTranslator::translate(p_dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PIN_TOOL, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t ) -10, output.at(SHOOT_PT_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 50, output.at(SHOOT_PT_Y_POS));
         CPPUNIT_ASSERT_EQUAL(3, vec_size);
-        delete p_dto;
         cout << "OK";
     }
 
@@ -222,7 +222,8 @@ public:
         v.push_back(PROTOCOL_SHOOT_PIN_TOOL);
         v.push_back(-10);    // x
         v.push_back(5);    // y
-        auto dto = (ShootPinToolDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (ShootPinToolDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_SHOOT_PIN_TOOL, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t)-10, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t)5, dto->getY());
@@ -231,12 +232,11 @@ public:
 
     void testTranslateLiftRockDTO() {
         cout << endl << "TEST traducir LiftRockDTO a datos: ";
-        auto dto = new LiftRockDTO(2);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO>  dto(new LiftRockDTO(2));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_LIFT_ROCK, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t)2, output.at(LIFT_ROCK_ID_POS));
         CPPUNIT_ASSERT_EQUAL(2, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -245,7 +245,8 @@ public:
         vector<int16_t> v;
         v.push_back(PROTOCOL_LIFT_ROCK);
         v.push_back(2);    // y
-        auto dto = (LiftRockDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (LiftRockDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_LIFT_ROCK, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getRockId());
         cout << "OK";
@@ -253,11 +254,10 @@ public:
 
     void testTranslateDropRockDTO() {
         cout << endl << "TEST traducir DropRockDTO a datos: ";
-        auto dto = new DropRockDTO();
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO>  dto(new DropRockDTO());
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_DROP_ROCK, output.at(PROTOCOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(1, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -265,20 +265,19 @@ public:
         cout << endl << "TEST traducir datos DropRock a DTO: ";
         vector<int16_t> v;
         v.push_back(PROTOCOL_DROP_ROCK);
-        auto dto = ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (RockDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_DROP_ROCK, dto->getClassId());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslatePlayerChellIdDTO() {
         cout << endl << "TEST traducir PlayerChellIdDTO a datos: ";
-        auto dto = new PlayerChellIdDTO(2);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO>  dto(new PlayerChellIdDTO(2));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_PLAYER_CHELL_ID, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, output.at(PLAYER_CHELL_ID_POS));
         CPPUNIT_ASSERT_EQUAL(2, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -287,24 +286,23 @@ public:
         vector<int16_t> v;
         v.push_back(PROTOCOL_PLAYER_CHELL_ID);
         v.push_back(1);
-        auto dto = (PlayerChellIdDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (PlayerChellIdDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_PLAYER_CHELL_ID, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getChellId());
-        delete dto;        
         cout << "OK";
     }
 
     void testTranslateRockBlockDTO() {
         cout << endl << "TEST traducir RockBlockDTO a datos: ";
-        auto dto = new RockBlockDTO(-2, 0, 10, 20);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new RockBlockDTO(-2, 0, 10, 20));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ROCK_BLOCK_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(ROCK_BLOCK_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(ROCK_BLOCK_Y_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, output.at(ROCK_BLOCK_WIDTH_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 20, output.at(ROCK_BLOCK_HEIGHT_POS));
         CPPUNIT_ASSERT_EQUAL(5, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -316,27 +314,26 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(2);
-        auto dto = (RockBlockDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (RockBlockDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ROCK_BLOCK_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getHeight());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateMetalBlockDTO() {
         cout << endl << "TEST traducir MetalBlockDTO a datos: ";
-        auto dto = new MetalBlockDTO(-2, 0, 10, 20);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new MetalBlockDTO(-2, 0, 10, 20));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_METAL_BLOCK_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(METAL_BLOCK_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(METAL_BLOCK_Y_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, output.at(METAL_BLOCK_WIDTH_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 20, output.at(METAL_BLOCK_HEIGHT_POS));
         CPPUNIT_ASSERT_EQUAL(5, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -348,27 +345,26 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(2);
-        auto dto = (MetalBlockDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (MetalBlockDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_METAL_BLOCK_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getHeight());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateMetalDiagonalBlockDTO() {
         cout << endl << "TEST traducir MetalDiagonalBlockDTO a datos: ";
-        auto dto = new MetalDiagonalBlockDTO(-2, 0, 4, O_NO);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new MetalDiagonalBlockDTO(-2, 0, 4, O_NO));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_METAL_DIAGONAL_BLOCK_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(METAL_DIAG_BLOCK_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(METAL_DIAG_BLOCK_Y_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(METAL_DIAG_BLOCK_SIDE_LEN_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) O_NO, output.at(METAL_DIAG_BLOCK_ORIENT_POS));
         CPPUNIT_ASSERT_EQUAL(5, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -380,20 +376,20 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(O_NE);
-        auto dto = (MetalDiagonalBlockDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (MetalDiagonalBlockDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_METAL_DIAGONAL_BLOCK_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL((int16_t) O_NE, dto->getOrientation());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateEnergyTransmitterDTO() {
         cout << endl << "TEST traducir EnergyTransmitterDTO a datos: ";
-        auto dto = new EnergyTransmitterDTO(0, -2, 0, 4, O_E);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new EnergyTransmitterDTO(0, -2, 0, 4, O_E));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_TRANSMITTER_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(ENRG_TRANSM_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(ENRG_TRANSM_X_POS));
@@ -401,7 +397,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(ENRG_TRANSM_SIDE_LEN_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) O_E, output.at(ENRG_TRANSM_DIRECTION_POS));
         CPPUNIT_ASSERT_EQUAL(6, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -414,28 +409,27 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(O_NE);
-        auto dto = (EnergyTransmitterDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (EnergyTransmitterDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_TRANSMITTER_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL((int16_t) O_NE, dto->getDirection());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateEnergyReceiverDTO() {
         cout << endl << "TEST traducir EnergyReceiverDTO a datos: ";
-        auto dto = new EnergyReceiverDTO(0, -2, 0, 4);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new EnergyReceiverDTO(0, -2, 0, 4));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_RECEIVER_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(ENRG_RECVR_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(ENRG_RECVR_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(ENRG_RECVR_Y_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(ENRG_RECVR_SIDE_LEN_POS));
         CPPUNIT_ASSERT_EQUAL(5, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -447,27 +441,26 @@ public:
         v.push_back(5);
         v.push_back(10);
         v.push_back(4);
-        auto dto = (EnergyReceiverDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (EnergyReceiverDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_RECEIVER_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getSideLength());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateAcidDTO() {
         cout << endl << "TEST traducir AcidDTO a datos: ";
-        auto dto = new AcidDTO(-2, 0, 2, 3);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new AcidDTO(-2, 0, 2, 3));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(ACID_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(ACID_Y_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, output.at(ACID_WIDTH_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 3, output.at(ACID_HEIGHT_POS));
         CPPUNIT_ASSERT_EQUAL(5, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -479,20 +472,20 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(2);
-        auto dto = (AcidDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (AcidDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getHeight());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateButtonDTO() {
         cout << endl << "TEST traducir ButtonDTO a datos: ";
-        auto dto = new ButtonDTO(0, -2, 0, 2, 3);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new ButtonDTO(0, -2, 0, 2, 3));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BUTTON_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(BUTTON_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(BUTTON_X_POS));
@@ -500,7 +493,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, output.at(BUTTON_WIDTH_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 3, output.at(BUTTON_HEIGHT_POS));
         CPPUNIT_ASSERT_EQUAL(6, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -513,21 +505,21 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(2);
-        auto dto = (ButtonDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (ButtonDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BUTTON_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getHeight());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateGateDTO() {
         cout << endl << "TEST traducir GateDTO a datos: ";
-        auto dto = new GateDTO(0, -2, 0, 2, 3);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new GateDTO(0, -2, 0, 2, 3));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_GATE_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(GATE_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(GATE_X_POS));
@@ -535,7 +527,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, output.at(GATE_WIDTH_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 3, output.at(GATE_HEIGHT_POS));
         CPPUNIT_ASSERT_EQUAL(6, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -548,28 +539,27 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(2);
-        auto dto = (GateDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (GateDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_GATE_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getHeight());
-        delete dto;
         cout << "OK";
     }
     
     void testTranslateEnergyBarrierDTO() {
         cout << endl << "TEST traducir EnergyBarrierDTO a datos: ";
-        auto dto = new EnergyBarrierDTO(-2, 0, 10, 20);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new EnergyBarrierDTO(-2, 0, 10, 20));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_BARRIER_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(ENRG_BARRIER_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(ENRG_BARRIER_Y_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, output.at(ENRG_BARRIER_WIDTH_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 20, output.at(ENRG_BARRIER_HEIGHT_POS));
         CPPUNIT_ASSERT_EQUAL(5, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -581,20 +571,20 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(2);
-        auto dto = (EnergyBarrierDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (EnergyBarrierDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_BARRIER_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getHeight());
-        delete dto;
         cout << "OK";
     }
     
     void testTranslateRockDTO() {
         cout << endl << "TEST traducir RockDTO a datos: ";
-        auto dto = new RockDTO(10, -2, 0, 10, DELETE);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new RockDTO(10, -2, 0, 10, DELETE));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ROCK_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, output.at(ROCK_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(ROCK_X_POS));
@@ -602,7 +592,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, output.at(ROCK_SIDE_LEN_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) DELETE, output.at(ROCK_DELETE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(6, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -615,21 +604,21 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(DONT_DELETE);
-        auto dto = (RockDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (RockDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ROCK_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 8, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL(DONT_DELETE, dto->getDeleteState());
-        delete dto;
         cout << "OK";
     }
     
     void testTranslateEnergyBallDTO() {
         cout << endl << "TEST traducir EnergyBallDTO a datos: ";
-        auto dto = new EnergyBallDTO(10, -2, 0, 4, DELETE);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new EnergyBallDTO(10, -2, 0, 4, DELETE));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_BALL_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, output.at(ENRG_BALL_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(ENRG_BALL_X_POS));
@@ -637,7 +626,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(ENRG_BALL_RADIUS_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) DELETE, output.at(ENRG_BALL_DELETE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(6, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -650,21 +638,21 @@ public:
         v.push_back(10);
         v.push_back(4);
         v.push_back(DONT_DELETE);
-        auto dto = (EnergyBallDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (EnergyBallDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_BALL_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 8, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, dto->getRadius());
         CPPUNIT_ASSERT_EQUAL(DONT_DELETE, dto->getDeleteState());
-        delete dto;
         cout << "OK";
     }
     
     void testTranslatePortalDTO() {
         cout << endl << "TEST traducir PortalDTO a datos: ";
-        auto dto = new PortalDTO(4, -2, 0, 4, 5, ORANGE_PORTAL, DELETE);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new PortalDTO(4, -2, 0, 4, 5, ORANGE_PORTAL, DELETE));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_PORTAL_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(PORTAL_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(PORTAL_X_POS));
@@ -674,7 +662,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) ORANGE_PORTAL, output.at(PORTAL_COLOUR_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) DELETE, output.at(PORTAL_DELETE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(8, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -689,7 +676,8 @@ public:
         v.push_back(3);
         v.push_back(BLUE_PORTAL);
         v.push_back(DONT_DELETE);
-        auto dto = (PortalDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (PortalDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_PORTAL_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 8, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
@@ -698,14 +686,13 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 3, dto->getHeight());
         CPPUNIT_ASSERT_EQUAL((int16_t) BLUE_PORTAL, dto->getColour());
         CPPUNIT_ASSERT_EQUAL(DONT_DELETE, dto->getDeleteState());
-        delete dto;
         cout << "OK";
     }
     
     void testTranslatePinToolDTO() {
         cout << endl << "TEST traducir PinToolDTO a datos: ";
-        auto dto = new PinToolDTO(4, -2, 0, 4, 5, DELETE);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new PinToolDTO(4, -2, 0, 4, 5, DELETE));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_PIN_TOOL_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(PIN_TOOL_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(PIN_TOOL_X_POS));
@@ -714,7 +701,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, output.at(PIN_TOOL_HEIGHT_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) DELETE, output.at(PIN_TOOL_DELETE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(7, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -728,7 +714,8 @@ public:
         v.push_back(2);
         v.push_back(3);
         v.push_back(DONT_DELETE);
-        auto dto = (PinToolDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (PinToolDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_PIN_TOOL_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 8, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
@@ -736,15 +723,14 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) 3, dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(DONT_DELETE, dto->getDeleteState());
-        delete dto;
         cout << "OK";
     }
     
     void testTranslateChellDTO() {
         cout << endl << "TEST traducir ChellDTO a datos: ";
-        auto dto = new ChellDTO(4, -2, 0, 4, 5, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING,
-                NOT_SHOOTING, NOT_CARRYING, DONT_DELETE);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new ChellDTO(4, -2, 0, 4, 5, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING,
+                NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_CHELL_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(CHELL_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(CHELL_X_POS));
@@ -759,7 +745,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) NOT_CARRYING, output.at(CHELL_CARRYING_ROCK_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) DONT_DELETE, output.at(CHELL_DELETE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(13, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -779,7 +764,8 @@ public:
         v.push_back(SHOOTING);
         v.push_back(CARRYING);
         v.push_back(DELETE);
-        auto dto = (ChellDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (ChellDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_CHELL_DATA, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
@@ -793,19 +779,17 @@ public:
         CPPUNIT_ASSERT_EQUAL(SHOOTING, dto->getShooting());
         CPPUNIT_ASSERT_EQUAL(CARRYING, dto->getCarryingRock());
         CPPUNIT_ASSERT_EQUAL(DELETE, dto->getDeleteState());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateButtonStateDTO() {
         cout << endl << "TEST traducir ButtonStateDTO a datos: ";
-        auto dto = new ButtonStateDTO(4, PRESSED);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new ButtonStateDTO(4, PRESSED));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BUTTON_CHANGE_STATE, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(BUTTON_CHANGE_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) PRESSED, output.at(BUTTON_CHANGE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(3, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -815,22 +799,21 @@ public:
         v.push_back(PROTOCOL_BUTTON_CHANGE_STATE);
         v.push_back(2);
         v.push_back(NOT_PRESSED);
-        auto dto = (ButtonStateDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (ButtonStateDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BUTTON_CHANGE_STATE, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) NOT_PRESSED, dto->getState());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateEnergyTransmitterActivateDTO() {
         cout << endl << "TEST traducir EnergyTransmitterActivateDTO a datos: ";
-        auto dto = new EnergyTransmitterActivateDTO(4);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new EnergyTransmitterActivateDTO(4));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(ENRG_TRANSM_ACTV_ID_POS));
         CPPUNIT_ASSERT_EQUAL(2, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -839,21 +822,20 @@ public:
         vector<int16_t> v;
         v.push_back(PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE);
         v.push_back(2);
-        auto dto = (EnergyTransmitterActivateDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (EnergyTransmitterActivateDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getId());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateEnergyReceiverActivateDTO() {
         cout << endl << "TEST traducir EnergyReceiverActivateDTO a datos: ";
-        auto dto = new EnergyReceiverActivateDTO(4);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new EnergyReceiverActivateDTO(4));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_RECEIVER_ACTIVATE, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(ENRG_RECVR_ACTV_ID_POS));
         CPPUNIT_ASSERT_EQUAL(2, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -862,22 +844,21 @@ public:
         vector<int16_t> v;
         v.push_back(PROTOCOL_ENERGY_RECEIVER_ACTIVATE);
         v.push_back(2);
-        auto dto = (EnergyReceiverActivateDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (EnergyReceiverActivateDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_RECEIVER_ACTIVATE, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getId());
-        delete dto;
         cout << "OK";
     }
 
     void testTranslateGateStateDTO() {
         cout << endl << "TEST traducir GateStateDTO a datos: ";
-        auto dto = new GateStateDTO(4, OPEN);
-        int vec_size = ProtocolTranslator::translate(dto, output);
+        shared_ptr<ProtocolDTO> dto(new GateStateDTO(4, OPEN));
+        int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_GATE_CHANGE_STATE, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(GATE_CHANGE_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) OPEN, output.at(GATE_CHANGE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(3, vec_size);
-        delete dto;
         cout << "OK";
     }
 
@@ -887,11 +868,11 @@ public:
         v.push_back(PROTOCOL_GATE_CHANGE_STATE);
         v.push_back(2);
         v.push_back(CLOSED);
-        auto dto = (GateStateDTO*) ProtocolTranslator::translate(v);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (GateStateDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_GATE_CHANGE_STATE, dto->getClassId());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) CLOSED, dto->getState());
-        delete dto;
         cout << "OK";
     }
 };

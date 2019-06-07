@@ -11,6 +11,6 @@ add_library(common-src
         AcceptSocket.cpp
         SafeQueue.cpp
         Thread.cpp
-        )
+        Protocol.cpp Protocol.h)
 
 target_link_libraries(common-src protocol-translator)

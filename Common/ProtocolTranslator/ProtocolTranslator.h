@@ -3,6 +3,7 @@
 
 #include "ProtocolDTO.h"
 #include <vector>
+#include <memory>
 
 class ProtocolTranslator {
 private:
@@ -29,34 +30,6 @@ private:
     static void energyReceiverActivate(const ProtocolDTO *dto, std::vector<int16_t> &output);
     static void gateState(const ProtocolDTO *dto, std::vector<int16_t> &output);
 
-    static ProtocolDTO* moveLeft(const std::vector<int16_t> &input);
-    static ProtocolDTO* moveRight(const std::vector<int16_t> &input);
-    static ProtocolDTO* jump(const std::vector<int16_t> &input);
-    static ProtocolDTO* stop(const std::vector<int16_t> &input);
-    static ProtocolDTO* shootPortal(const std::vector<int16_t> &input);
-    static ProtocolDTO* shootPinTool(const std::vector<int16_t> &input);
-    static ProtocolDTO* liftRock(const std::vector<int16_t> &input);
-    static ProtocolDTO* dropRock(const std::vector<int16_t> &input);
-    static ProtocolDTO* playerChellId(const std::vector<int16_t> &input);
-    static ProtocolDTO* rockBlockData(const std::vector<int16_t> &input);
-    static ProtocolDTO* metalBlockData(const std::vector<int16_t> &input);
-    static ProtocolDTO* metalDiagonalBlockData(const std::vector<int16_t> &input);
-    static ProtocolDTO* energyTransmitterData(const std::vector<int16_t> &input);
-    static ProtocolDTO* energyReceiverData(const std::vector<int16_t> &input);
-    static ProtocolDTO* acidData(const std::vector<int16_t> &input);
-    static ProtocolDTO* buttonData(const std::vector<int16_t> &input);
-    static ProtocolDTO* gateData(const std::vector<int16_t> &input);
-    static ProtocolDTO* energyBarrierData(const std::vector<int16_t> &input);
-    static ProtocolDTO* rockData(const std::vector<int16_t> &input);
-    static ProtocolDTO* energyBallData(const std::vector<int16_t> &input);
-    static ProtocolDTO* portalData(const std::vector<int16_t> &input);
-    static ProtocolDTO* pinToolData(const std::vector<int16_t> &input);
-    static ProtocolDTO* chellData(const std::vector<int16_t> &input);
-    static ProtocolDTO* buttonState(const std::vector<int16_t> &input);
-    static ProtocolDTO* energyTransmitterActivate(const std::vector<int16_t> &input);
-    static ProtocolDTO* energyReceiverActivate(const std::vector<int16_t> &input);
-    static ProtocolDTO* gateState(const std::vector<int16_t> &input);
-
 public:
     // PRE: output debe ser un vector vacio para almacenar correctamente los
     // datos contenidos en el dto y luego poder ser procesados correctamente.
@@ -71,7 +44,7 @@ public:
     // Retorna un ProtocolDTO* conteniendo toda la informacion brindada en
     // input, nullptr en caso de error. Usuario es el encargado de liberar
     // memoria del puntero
-    static ProtocolDTO* translate(const std::vector<int16_t> &input);
+    static std::shared_ptr<ProtocolDTO> translate(const std::vector<int16_t> &input);
 };
 
 
