@@ -9,9 +9,8 @@
 #include "../ComponentsSDL/AnimatedSprite.h"
 #include "View.h"
 
-
+enum State {standing, runningLeft, runningRight, firing};
 class ChellAnimationView : public View {
-    enum State {standing, runningLeft, runningRight, firing};
 private:
     int id;
     AnimatedSprite runningRightChell;
@@ -22,10 +21,7 @@ public:
     ChellAnimationView(int id, SDL_Texture* texture, Renderer& renderer, int x=0, int y=0);
     int getId() const;
     void draw(Camera& camera);
-    void moveToTheLeft(int x);
-    void moveToTheRight(int x);
-    void stand();
-    void fire();
+    void setState(State state);
 };
 
 

@@ -24,7 +24,7 @@ public:
     void moveCameraDown();
     void draw();
     void addView(View* view);
-    void addChell(ChellAnimationView* chell, Position& position);
+    void addChell(ChellAnimationView* chell, Position& position, State state);
 };
 
 

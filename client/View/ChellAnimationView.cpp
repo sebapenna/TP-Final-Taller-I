@@ -22,26 +22,10 @@ void ChellAnimationView::draw(Camera& camera) {
         firingChell.drawMovingSprite(camera, this->getDst());
     }
 }
-
-void ChellAnimationView::moveToTheLeft(int x) {
-    SDL_Rect* nueva_pos = this->getDst();
-    this->setDestRect(nueva_pos->x - x, nueva_pos->y, nueva_pos->w, nueva_pos->h);
-    this->state = runningLeft;
+void ChellAnimationView::setState(State state) {
+    this->state = state;
 }
 
-void ChellAnimationView::moveToTheRight(int x) {
-    SDL_Rect* nueva_pos = this->getDst();
-    this->setDestRect(nueva_pos->x + x, nueva_pos->y, nueva_pos->w, nueva_pos->h);
-    this->state = runningRight;
-}
-
-void ChellAnimationView::stand() {
-    this->state = State::standing;
-}
-
-void ChellAnimationView::fire() {
-    this->state = State::firing;
-}
 
 int ChellAnimationView::getId() const {
     return id;
