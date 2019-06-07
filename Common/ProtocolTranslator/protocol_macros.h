@@ -4,14 +4,39 @@
 /* Protocolo */
 #define PROTOCOL_ID_POS 0 // Posicion del ID de la clase en todos los mensajes
 
+#define NORTH_EAST  (int16_t)   0
+#define NORTH_WEST  (int16_t)   1
+#define SOUTH_EAST  (int16_t)   2
+#define SOUTH_WEST  (int16_t)   3
+#define NORTH  (int16_t)   4
+#define SOUTH  (int16_t)   5
+#define EAST  (int16_t)   6
+#define WEST    (int16_t)   7
+#define NOT_TILTED  (int16_t)   8   // Chell no inclinado
+
+#define CLOSED   (int16_t)   0
+#define OPEN    (int16_t)   1
+
+#define NOT_PRESSED (int16_t)   0
+#define PRESSED   (int16_t)   1
+
 #define BLUE_PORTAL (int16_t) 0
 #define ORANGE_PORTAL  (int16_t) 1
 
 #define DONT_DELETE (int16_t) 0
 #define DELETE  (int16_t) 1
 
-#define JUMPING   (int16_t) 0
-#define NOT_JUMPING   (int16_t) 1
+#define NOT_JUMPING   (int16_t) 0
+#define JUMPING   (int16_t) 1
+
+#define NOT_MOVING  (int16_t)   0
+#define MOVING  (int16_t)   1
+
+#define NOT_SHOOTING    (int16_t)   0
+#define SHOOTING    (int16_t)   1
+
+#define NOT_CARRYING   (int16_t)    0
+#define CARRYING    (int16_t)   1
 
 #define PROTOCOL_MOVE_LEFT   (int16_t) 0
 
@@ -22,7 +47,7 @@
 #define PROTOCOL_STOP   (int16_t) 3
 
 #define PROTOCOL_SHOOT_PORTAL (int16_t) 4
-#define SHOOT_PORTAL_COLOR_POS 1
+#define SHOOT_PORTAL_COLOUR_POS 1
 #define SHOOT_PORTAL_X_POS 2
 #define SHOOT_PORTAL_Y_POS 3
 
@@ -112,8 +137,8 @@
 #define PORTAL_Y_POS   3
 #define PORTAL_WIDTH_POS   4
 #define PORTAL_HEIGHT_POS   5
-#define PORTAL_DELETE_STATE_POS   6
-#define PORTAL_COLOR_POS   7
+#define PORTAL_COLOUR_POS   6
+#define PORTAL_DELETE_STATE_POS   7
 
 #define PROTOCOL_PIN_TOOL_DATA   (int16_t) 20
 #define PIN_TOOL_ID_POS   1
@@ -127,22 +152,25 @@
 #define CHELL_ID_POS   1
 #define CHELL_X_POS   2
 #define CHELL_Y_POS   3
-#define CHELL_DIRECTION_POS   4
-#define CHELL_TILTED_POS   5
-#define CHELL_JUMPING_POS   6
-#define CHELL_SHOOTING_POS   7
-#define CHELL_CARRYING_ROCK_POS   8
-#define CHELL_DELETE_STATE_POS   9
+#define CHELL_WIDTH_POS   4
+#define CHELL_HEIGHT_POS   5
+#define CHELL_DIRECTION_POS   6
+#define CHELL_TILTED_POS   7
+#define CHELL_MOVING_POS   8
+#define CHELL_JUMPING_POS  9
+#define CHELL_SHOOTING_POS  10
+#define CHELL_CARRYING_ROCK_POS   11
+#define CHELL_DELETE_STATE_POS   12
 
 #define PROTOCOL_BUTTON_CHANGE_STATE   (int16_t) 22
 #define BUTTON_CHANGE_ID_POS    1
 #define BUTTON_CHANGE_STATE_POS    2
 
 #define PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE    (int16_t) 23
-#define ENRG_TRANSM_ACTV_POS    1
+#define ENRG_TRANSM_ACTV_ID_POS    1
 
 #define PROTOCOL_ENERGY_RECEIVER_ACTIVATE    (int16_t) 24
-#define ENRG_RECVR_ACTV_POS    1
+#define ENRG_RECVR_ACTV_ID_POS    1
 
 #define PROTOCOL_GATE_CHANGE_STATE  (int16_t) 25
 #define GATE_CHANGE_ID_POS    1

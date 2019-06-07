@@ -2,7 +2,7 @@
 #define TP_FINAL_CONSTANTES_H
 
 #include <cstdint>
-
+#include <Common/ProtocolTranslator/protocol_macros.h>
 
 /*
  *  IMPORTANTE
@@ -14,18 +14,18 @@
 // todo: CONFIGURACIONES A UN YAML
 
 /* Orientaciones cara diagonal bloque metal diagonal */
-#define O_NE    (uint8_t) 0 /* Noreste*/
-#define O_NO    (uint8_t) 1 /* Noroeste*/
-#define O_SE    (uint8_t) 2 /* Sureste */
-#define O_SO    (uint8_t) 3 /* Suroeste */
+#define O_NE    (uint8_t) NORTH_EAST
+#define O_NO    (uint8_t) NORTH_WEST
+#define O_SE    (uint8_t) SOUTH_EAST
+#define O_SO    (uint8_t) SOUTH_WEST
 
 /* Direcciones */
-#define O_N  (uint8_t) 4    /* Norte */
-#define O_S   (uint8_t) 5 /* Sur */
-#define O_E (uint8_t) 6 /* Este */
-#define O_O (uint8_t) 7 /* Oeste */
-#define O_V (uint8_t) 8 /* Vertical */
-#define O_H (uint8_t) 9 /* Horizontal */
+#define O_N  (uint8_t) NORTH
+#define O_S   (uint8_t) SOUTH
+#define O_E (uint8_t) EAST
+#define O_O (uint8_t) WEST
+#define O_V (uint8_t) 8
+#define O_H (uint8_t) 9
 
 /* Box2D */
 #define GRAVITY_X   0.0f
@@ -66,8 +66,8 @@
 #define BUTTON_HALF_HEIGHT  0.5
 #define BUTTON_FRICTION    0
 
-#define ACTIVATED (uint8_t) 0
-#define NOT_ACTIVATED   (uint8_t) 1
+#define NOT_ACTIVATED   (uint8_t) 0
+#define ACTIVATED (uint8_t) 1
 
 /* Configuracion Gate */
 #define GATE_HALF_WIDTH  2

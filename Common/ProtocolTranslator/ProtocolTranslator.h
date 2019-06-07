@@ -20,6 +20,14 @@ private:
     static void gateData(const ProtocolDTO *dto, std::vector<int16_t> &output);
     static void energyBarrierData(const ProtocolDTO *dto, std::vector<int16_t> &output);
     static void rockData(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void energyBallData(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void portalData(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void pinToolData(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void chellData(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void buttonState(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void energyTransmitterActivate(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void energyReceiverActivate(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void gateState(const ProtocolDTO *dto, std::vector<int16_t> &output);
 
     static ProtocolDTO* moveLeft(const std::vector<int16_t> &input);
     static ProtocolDTO* moveRight(const std::vector<int16_t> &input);
@@ -40,6 +48,14 @@ private:
     static ProtocolDTO* gateData(const std::vector<int16_t> &input);
     static ProtocolDTO* energyBarrierData(const std::vector<int16_t> &input);
     static ProtocolDTO* rockData(const std::vector<int16_t> &input);
+    static ProtocolDTO* energyBallData(const std::vector<int16_t> &input);
+    static ProtocolDTO* portalData(const std::vector<int16_t> &input);
+    static ProtocolDTO* pinToolData(const std::vector<int16_t> &input);
+    static ProtocolDTO* chellData(const std::vector<int16_t> &input);
+    static ProtocolDTO* buttonState(const std::vector<int16_t> &input);
+    static ProtocolDTO* energyTransmitterActivate(const std::vector<int16_t> &input);
+    static ProtocolDTO* energyReceiverActivate(const std::vector<int16_t> &input);
+    static ProtocolDTO* gateState(const std::vector<int16_t> &input);
 
 public:
     // PRE: output debe ser un vector vacio para almacenar correctamente los
