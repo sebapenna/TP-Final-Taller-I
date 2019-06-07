@@ -207,7 +207,7 @@ void World::createMetalDiagonalBlock(const float &width, const float &height,
 }
 
 void World::createRock(const float &x, const float &y) {
-    auto body = createDynamicBox(x, y, ROCK_HALF_WIDTH, ROCK_HALF_HEIGHT,
+    auto body = createDynamicBox(x, y, ROCK_HALF_LEN, ROCK_HALF_LEN,
             ROCK_DENSITY);
     auto *rock = new Rock(body);
     body->SetUserData(rock);
@@ -242,10 +242,8 @@ void World::createGate(const size_t &id, const float &x, const float &y,
     _gates.insert({id, gate});
 }
 
-void World::createEnergyReceiver(const size_t &id, const float &x,
-                                 const float &y) {
-    auto body = createStaticBox(x, y, ENRG_RECV_HALF_WIDTH,
-            ENRG_RECV_HALF_HEIGHT, ENRG_RECV_FRICTION);
+void World::createEnergyReceiver(const size_t &id, const float &x, const float &y) {
+    auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_FRICTION);
     auto *e_recv = new EnergyReceiver();
     body->SetUserData(e_recv);
     _energy_receivers.insert({id, e_recv});
@@ -253,8 +251,8 @@ void World::createEnergyReceiver(const size_t &id, const float &x,
 
 void World::createEnergyTransmitter(const float &x, const float &y,
                                     const uint8_t &direction) {
-    auto body = createStaticBox(x, y, ENRG_TRANSM_HALF_WIDTH,
-            ENRG_TRANSM_HALF_HEIGHT, ENRG_TRANSM_FRICTION);
+    auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN,
+                                ENRG_BLOCK_FRICTION);
     auto *e_transm = new EnergyTransmitter(body, direction);
     body->SetUserData(e_transm);
     _energy_transmitters.push_back(e_transm);
@@ -265,18 +263,19 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
     float x = source_body->GetPosition().x;
     float y = source_body->GetPosition().y;
     // Sumo delta para evitar posible colision con el transmisor
+    float dist_to_ball_center = ENRG_BLOCK_HALF_LEN + ENRG_BALL_RADIUS + DELTA_POS;
     switch (energy_transm->getDirection()) {
         case O_N:
-            y += (ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS + DELTA_POS);
+            y += dist_to_ball_center;
             break;
         case O_S:
-            y -= (ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS + DELTA_POS);
+            y -= dist_to_ball_center;
             break;
         case O_E:
-            x += (ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS + DELTA_POS);
+            x += dist_to_ball_center;
             break;
         case O_O:
-            x -= (ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS + DELTA_POS);
+            x -= dist_to_ball_center;
             break;
         default:    // No existe este caso
             break;

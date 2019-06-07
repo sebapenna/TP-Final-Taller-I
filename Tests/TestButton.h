@@ -52,7 +52,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((size_t) 2, button_vector.size());
         CPPUNIT_ASSERT(!button1->isActivated());
         CPPUNIT_ASSERT(!button2->isActivated());
-        CPPUNIT_ASSERT_EQUAL((size_t) 2, button_vector.size());
         cout << "OK";
     }
 
@@ -122,7 +121,8 @@ public:
         cout << endl << "TEST activar tras contacto con roca: ";
         // Hago que roca caiga sobre el boton
         float rock_x = button1_x;
-        float rock_y = button1_y + BUTTON_HALF_HEIGHT + ROCK_HALF_HEIGHT + 2;
+        float dist_to_rock = BUTTON_HALF_HEIGHT + ROCK_HALF_LEN;
+        float rock_y = button1_y + dist_to_rock + 2;
         world->createRock(rock_x, rock_y);
         CPPUNIT_ASSERT(!button1->isActivated());
         for (int i = 0; i < STEP_ITERATIONS; i++)
@@ -139,7 +139,8 @@ public:
                         "finalizar: ";
         // Hago que roca caiga sobre el boton
         float rock_x = button1_x;
-        float rock_y = button1_y + BUTTON_HALF_HEIGHT + ROCK_HALF_HEIGHT + 2;
+        float dist_to_rock = BUTTON_HALF_HEIGHT + ROCK_HALF_LEN;
+        float rock_y = button1_y + dist_to_rock + 2;
         world->createRock(rock_x, rock_y);
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
@@ -155,7 +156,8 @@ public:
     void testActivateContactWithChell() {
         cout << endl << "TEST activar tras contacto con chell: ";
         float chell_x = button1_x;
-        float chell_y = button1_y + BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT + 2;
+        float dist_to_chell = BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT;
+        float chell_y = button1_y + dist_to_chell + 2;
         world->createChell(chell_x, chell_y, 0);
         CPPUNIT_ASSERT(!button1->isActivated());
         for (int i = 0; i < STEP_ITERATIONS; i++)
@@ -170,8 +172,10 @@ public:
     void testActivateAndDeactivateContactWithChell() {
         cout << endl << "TEST activar tras contacto con chell y desactivar "
                         "al finalizar: ";
-        float chell_x = button1_x - BUTTON_HALF_WIDTH - CHELL_HALF_WIDTH - 2;
-        float chell_y = button1_y + BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT + 2;
+        float dist_to_chell_y = BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT;
+        float dist_to_chell_x = BUTTON_HALF_HEIGHT + CHELL_HALF_WIDTH;
+        float chell_x = button1_x - dist_to_chell_x - 2;
+        float chell_y = button1_y + dist_to_chell_y + 2;
         world->createChell(chell_x, chell_y, 0);
         auto chell = world->getChell(0);
         chell->move_right(); // Muevo chell para que pase por boton
@@ -187,8 +191,6 @@ public:
         CPPUNIT_ASSERT_GREATER(button1_x, chell->getPositionX()); // Paso la roca
         cout << "OK";
     }
-
-    // todo: test donde se desactive al desaparecer la roca
 };
 
 #endif //PORTAL_TESTBUTTON_H

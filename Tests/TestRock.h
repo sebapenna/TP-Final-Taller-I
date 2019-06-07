@@ -55,7 +55,7 @@ public:
         cout << endl << "TEST cae con gravedad: ";
         for (int i = 0; i < 200; i++)
             world->step();
-        float y_diff = rock2->getPositionY() - ROCK_HALF_HEIGHT;
+        float y_diff = rock2->getPositionY() - ROCK_HALF_LEN;
         float x_diff = rock2->getPositionX() - rock2_x;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, x_diff);
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, y_diff);

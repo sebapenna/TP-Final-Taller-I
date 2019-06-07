@@ -469,7 +469,7 @@ public:
     void testContactWithFallingRock() {
         cout << endl << "TEST morir al caerle roca encima: ";
         float rock_x = chell_init_x;
-        float rock_y = chell_init_y + CHELL_HALF_HEIGHT + ROCK_HALF_HEIGHT + 1;
+        float rock_y = chell_init_y + CHELL_HALF_HEIGHT + ROCK_HALF_LEN + 1;
         // Creo roca sobre chell
         world->createRock(rock_x, rock_y);
         auto n_bodies = world->getWorld()->GetBodyCount();
@@ -482,7 +482,7 @@ public:
 
     void testContactWithRockInItsWay() {
         cout << endl << "TEST chocar con roca en su camino y no morir: ";
-        float rock_x = chell_init_x + CHELL_HALF_WIDTH + ROCK_HALF_WIDTH + 1;
+        float rock_x = chell_init_x + CHELL_HALF_WIDTH + ROCK_HALF_LEN + 1;
         float rock_y = chell_init_y;
         world->createRock(rock_x, rock_y);
         auto n_bodies = world->getWorld()->GetBodyCount();

@@ -52,8 +52,7 @@
 #define CHELL_DENSITY   1
 
 /* Coniguracion Rock */
-#define ROCK_HALF_WIDTH  2
-#define ROCK_HALF_HEIGHT  2
+#define ROCK_HALF_LEN  2    // Largo de medio lado de la roca (cuerpo cuadrado)
 #define ROCK_DENSITY    1
 
 /* Coniguracion Acid */
@@ -74,16 +73,10 @@
 #define GATE_HALF_HEIGHT  4
 #define GATE_FRICTION    0
 
-/* Configuracion Energy Receiver */
-#define ENRG_RECV_HALF_WIDTH  2
-#define ENRG_RECV_HALF_HEIGHT  2
-#define ENRG_RECV_FRICTION    0
-
-/* Configuracion Energy Transmitter */
-#define ENRG_TRANSM_HALF_WIDTH  2
-#define ENRG_TRANSM_HALF_HEIGHT  2
-#define ENRG_TRANSM_FRICTION    0
-#define TIME_TO_RELEASE 10
+/* Configuracion Energy Receiver y Energy Transmitter */
+#define ENRG_BLOCK_HALF_LEN  2 // Largo de medio lado del recvr/transmitter (cuerpos cuadrados)
+#define ENRG_BLOCK_FRICTION    0
+#define TIME_TO_RELEASE 10  // Tiempo tras que libera bola energia el transmisor
 
 /* Configuracion Energy Ball */
 #define ENRG_BALL_RADIUS    2

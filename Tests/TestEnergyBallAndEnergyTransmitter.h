@@ -29,7 +29,9 @@ CPPUNIT_TEST_SUITE(TestEnergyBallAndEnergyTransmitter);
 private:
     World *world;
     size_t width = 100, height = 200;
-    float e_transm_x = 0, e_transm_y = 2;
+    float e_transm_x = 0, e_transm_y = ENRG_BLOCK_HALF_LEN;
+    // Calculo distancia entre centro de transmisor y bola energia (suponiendolos pegados)
+    const float dist_transm_to_enrgball = ENRG_BLOCK_HALF_LEN + ENRG_BALL_RADIUS;
 
 public:
     void setUp() {
@@ -41,9 +43,18 @@ public:
         delete world;
     }
 
+    void releaseEnergyBall() {
+        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+            for (int i = 0; i < STEP_ITERATIONS; ++i)
+                world->step();
+        for (int i = 0; i < STEP_ITERATIONS; ++i)
+            world->step(); // Step donde se crea EnergyBall
+    }
+
     void testCreateNorth() {
         cout << endl << endl << "TEST ENERGY BALL AND ENERGY TRANSMITTER";
         cout << endl << "TEST crear correctamente en direccion Norte: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i) {
@@ -53,17 +64,20 @@ public:
             }
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
+
+        float new_y = e_transm_y + dist_transm_to_enrgball;
         auto vec = world->getEnergyBalls();
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         auto energy_ball = vec[0];
+
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getPositionX());
-        float new_y = e_transm_y + ENRG_TRANSM_HALF_HEIGHT + ENRG_BALL_RADIUS;
         CPPUNIT_ASSERT_GREATEREQUAL(new_y, energy_ball->getPositionY());
         cout << "OK";
     }
 
     void testCreateSouth() {
         cout << endl << "TEST crear correctamente en direccion Sur: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i) {
@@ -73,17 +87,20 @@ public:
             }
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
+
+        float new_y = e_transm_y - dist_transm_to_enrgball;
         auto vec = world->getEnergyBalls();
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         auto energy_ball = vec[0];
+
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getPositionX());
-        float new_y = e_transm_y - ENRG_TRANSM_HALF_HEIGHT - ENRG_BALL_RADIUS;
         CPPUNIT_ASSERT_LESSEQUAL(new_y, energy_ball->getPositionY());
         cout << "OK";
     }
 
     void testCreateEast() {
         cout << endl << "TEST crear correctamente en direccion Este: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i) {
@@ -93,17 +110,20 @@ public:
             }
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
+
+        float new_x = e_transm_x + dist_transm_to_enrgball;
         auto vec = world->getEnergyBalls();
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         auto energy_ball = vec[0];
+
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getPositionY());
-        float new_x = e_transm_x + ENRG_TRANSM_HALF_WIDTH + ENRG_BALL_RADIUS;
         CPPUNIT_ASSERT_GREATEREQUAL(new_x, energy_ball->getPositionX());
         cout << "OK";
     }
 
     void testCreateWest() {
         cout << endl << "TEST crear correctamente en direccion Oeste: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i) {
@@ -113,28 +133,29 @@ public:
             }
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
+
+        float new_x = e_transm_x - dist_transm_to_enrgball;
         auto vec = world->getEnergyBalls();
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         auto energy_ball = vec[0];
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
         CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getPositionY());
-        float new_x = e_transm_x - ENRG_TRANSM_HALF_WIDTH - ENRG_BALL_RADIUS;
         CPPUNIT_ASSERT_LESSEQUAL(new_x, energy_ball->getPositionX());
         cout << "OK";
     }
 
     void testCreateMoreThanOne() {
         cout << endl << "TEST crear mas de una bola de energia: ";
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
+
         size_t total_balls = 0;
         bool ball_removed = false;
+
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
         for (int k = 0; k < 2; ++k) {
             for (int j = 1; j < TIME_TO_RELEASE; ++j) {
-                for (int i = 0; i < STEP_ITERATIONS; ++i) {
+                for (int i = 0; i < STEP_ITERATIONS; ++i)
                     world->step();
-                }
                 if (total_balls > 0 && world->getEnergyBalls().empty())
-                    // Se elimino una bola por el tiempo transcurrido
-                    ball_removed = true;
+                    ball_removed = true; // Se elimino una bola por el tiempo transcurrido
             }
             for (int i = 0; i < STEP_ITERATIONS; ++i)
                 world->step(); // Step donde se crea EnergyBall
@@ -142,6 +163,7 @@ public:
             if (vec_size == 1)
                 ++total_balls;
         }
+
         CPPUNIT_ASSERT_EQUAL((size_t) 2, total_balls);
         CPPUNIT_ASSERT(ball_removed);
         cout << "OK";
@@ -149,43 +171,33 @@ public:
 
     void testMovesNorth() {
         cout << endl << "TEST moverse en direccion Norte: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        releaseEnergyBall();
+
+        auto energy_ball = world->getEnergyBalls().at(0);
         float previous_pos_y = energy_ball->getPositionY();
         float previous_pos_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step();
-        CPPUNIT_ASSERT_GREATER(previous_pos_y, energy_ball->getPositionY());
+            world->step();  // Permito avanzar a la bola de energia
+
+            CPPUNIT_ASSERT_GREATER(previous_pos_y, energy_ball->getPositionY());
         CPPUNIT_ASSERT_EQUAL(previous_pos_x, energy_ball->getPositionX());
         cout << "OK";
     }
 
     void testMovesSouth() {
         cout << endl << "TEST moverse en direccion Sur: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        releaseEnergyBall();
+
+        auto energy_ball = world->getEnergyBalls().at(0);
         float previous_pos_y = energy_ball->getPositionY();
         float previous_pos_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step();
+            world->step(); // Permito avanzar a la bola de energia
+
         CPPUNIT_ASSERT_LESS(previous_pos_y, energy_ball->getPositionY());
         CPPUNIT_ASSERT_EQUAL(previous_pos_x, energy_ball->getPositionX());
         cout << "OK";
@@ -193,20 +205,15 @@ public:
 
     void testMovesEast() {
         cout << endl << "TEST moverse en direccion Este: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        releaseEnergyBall();
+
+        auto energy_ball = world->getEnergyBalls().at(0);
         float previous_pos_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step();
+            world->step(); // Permito avanzar a la bola de energia
+
         float diff_y = energy_ball->getPositionY() - e_transm_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         CPPUNIT_ASSERT_GREATER(previous_pos_x, energy_ball->getPositionX());
@@ -215,20 +222,15 @@ public:
 
     void testMovesWest() {
         cout << endl << "TEST moverse en direccion Oeste: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        releaseEnergyBall();
+
+        auto energy_ball = world->getEnergyBalls().at(0);
         float previous_pos_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step();
+            world->step();  // Permito avanzar a la bola de energia
+
         float diff_y = energy_ball->getPositionY() - e_transm_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         CPPUNIT_ASSERT_LESS(previous_pos_x, energy_ball->getPositionX());
@@ -237,17 +239,11 @@ public:
 
     void testMovesNorthWithFixedSpeed() {
         cout << endl << "TEST moverse en direccion Norte con velocidad cte.: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        releaseEnergyBall();
+
+        auto energy_ball = world->getEnergyBalls().at(0);
         float y_step = 0;
         float init_y = energy_ball->getPositionY();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
@@ -262,17 +258,11 @@ public:
 
     void testMovesSouthWithFixedSpeed() {
         cout << endl << "TEST moverse en direccion Sur con velocidad cte.: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        releaseEnergyBall();
+
+        auto energy_ball = world->getEnergyBalls().at(0);
         float y_step = 0;
         float init_y = energy_ball->getPositionY();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
@@ -287,17 +277,11 @@ public:
 
     void testMovesEastWithFixedSpeed() {
         cout << endl << "TEST moverse en direccion Este con velocidad cte.: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        releaseEnergyBall();
+
+        auto energy_ball = world->getEnergyBalls().at(0);
         float x_step = 0;
         float init_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
@@ -312,17 +296,11 @@ public:
 
     void testMovesWestWithFixedSpeed() {
         cout << endl << "TEST moverse en direccion Oeste con velocidad cte.: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        releaseEnergyBall();
+
+        auto energy_ball = world->getEnergyBalls().at(0);
         float x_step = 0;
         float init_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
@@ -337,15 +315,10 @@ public:
 
     void testDiesAfterLifetimeReached() {
         cout << endl << "TEST muere despues de cierto tiempo: ";
+
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i) {
-                world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
-            }
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
-            world->step(); // Step donde se crea EnergyBall
+        releaseEnergyBall();
+
         size_t n_energy_balls = world->getEnergyBalls().size();
         int n_bodies = world->getWorld()->GetBodyCount();
         int iterations = ENERGY_BALL_MAX_LIFETIME / TIME_STEP;
