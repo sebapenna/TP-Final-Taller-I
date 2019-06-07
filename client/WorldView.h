@@ -8,7 +8,6 @@
 
 #include "ComponentsSDL/Camera.h"
 #include "View/ChellAnimationView.h"
-#include "common/ProtocolTranslator/FakeChellNewPosition.h"
 #include <vector>
 #include <map>
 

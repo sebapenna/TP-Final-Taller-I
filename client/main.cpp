@@ -12,11 +12,9 @@
 #include <queue>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
-#include <Common/SafeQueue.h>
-#include <Common/ProtectedBlockingQueue.h>
-#include <Common/ProtocolTranslator/ProtocolTranslator.h>
-#include <Common/ProtocolTranslator/MoveLeftDTO.h>
-#include <Common/ProtocolTranslator/MoveRightDTO.h>
+#include "../Common/ProtocolTranslator/MoveLeftDTO.h"
+#include "../Common/ProtocolTranslator/MoveRightDTO.h"
+
 
 int main(int argc, char** argv){
     /* Iniciar socketprotocol
@@ -79,6 +77,7 @@ int main(int argc, char** argv){
         sdlRunner.start();
         FakeServer server(blockingQueue, safeQueue);
         server.start();
+        safeQueue.push((void*) new int());
         /*
         SDL_Runner sdlRunner(safeQueue);
         sdlRunner.start();

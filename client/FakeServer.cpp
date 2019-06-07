@@ -3,9 +3,9 @@
 //
 
 #include "FakeServer.h"
-#include "common/ProtocolTranslator/ProtocolDTO.h"
-#include "common/ProtocolTranslator/FakeChellNewPosition.h"
-
+#include "../Common/ProtocolTranslator/ProtocolDTO.h"
+#include "FakeChellNewPosition.h"
+#include "../Common/SafeQueue.h"
 
 FakeServer::FakeServer(ProtectedBlockingQueue &blockingQueue, SafeQueue &safeQueue) : blockingQueue(blockingQueue), safeQueue(safeQueue) {
 

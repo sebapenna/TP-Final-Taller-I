@@ -9,6 +9,7 @@
 #include "WorldView.h"
 #include "View/BlockViewRock.h"
 #include "View/BlockViewMetal.h"
+#include "FakeChellNewPosition.h"
 
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue &safeQueue) : safeQueue(safeQueue), connected(true), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
     textureFactory.init(renderer);
@@ -49,7 +50,7 @@ void SDL_Runner::run() {
         renderer.clearRender();
         FakeChellNewPosition* newChell = (FakeChellNewPosition*) safeQueue.getTopAndPop();
         if (newChell) {
-            ChellAnimationView* chell2 = new ChellAnimationView(newChell->getClassId(), textureFactory.getTextureByName(chell_file_name),renderer);
+            ChellAnimationView* chell2 = new ChellAnimationView(newChell->getId(), textureFactory.getTextureByName(chell_file_name),renderer);
             Position chell2Pos(newChell->getX(),newChell->getY());
             chell2->setDestRect(newChell->getX(),newChell->getY(),201,220);
             world.addChell(chell2, chell2Pos);

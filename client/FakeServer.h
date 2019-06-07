@@ -6,9 +6,9 @@
 #define SDL_FAKESERVER_H
 
 
-#include "common/ProtectedBlockingQueue.h"
-#include "common/SafeQueue.h"
-#include "common/thread.h"
+#include "../Common/Thread.h"
+#include "../Common/ProtectedBlockingQueue.h"
+#include "../Common/SafeQueue.h"
 
 class FakeServer : public Thread {
     ProtectedBlockingQueue& blockingQueue;

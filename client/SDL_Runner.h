@@ -6,10 +6,10 @@
 #define SDL_SDL_RUNNER_H
 
 
-#include "common/thread.h"
-#include "common/SafeQueue.h"
 #include "ComponentsSDL/Renderer.h"
 #include "TextureFactory.h"
+#include "../Common/SafeQueue.h"
+#include "../Common/Thread.h"
 
 class SDL_Runner : public Thread{
     SafeQueue& safeQueue;
