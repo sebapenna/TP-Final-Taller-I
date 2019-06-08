@@ -2,6 +2,7 @@
 // Created by jonathanmedina on 05/06/19.
 //
 
+#include <Common/ProtocolTranslator/ChellDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -9,7 +10,6 @@
 #include "WorldView.h"
 #include "View/BlockViewRock.h"
 #include "View/BlockViewMetal.h"
-#include "FakeChellNewPosition.h"
 
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue &safeQueue) : safeQueue(safeQueue), connected(true), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
     textureFactory.init(renderer);
@@ -17,22 +17,9 @@ SDL_Runner::SDL_Runner(std::string& title, SafeQueue &safeQueue) : safeQueue(saf
 
 void SDL_Runner::run() {
     std::string chell_file_name("chell");
-    ChellAnimationView* chell = new ChellAnimationView(1, textureFactory.getTextureByName(chell_file_name),renderer);
-    Position chellPos(200,200);
-    //chell->setDestRect(200,200,201,220);
-    Camera camera(1000, 1000, chell->getPosition());
-    WorldView world(camera);
 
-    //ChellAnimationView* chell2 = new ChellAnimationView(2, textureFactory.getTextureByName(chell_file_name),renderer);
-    //Position chell2Pos(-200,-100);
-    //chell2->setDestRect(-200,-100,201,220);
-    //ChellAnimationView* chell3 = new ChellAnimationView(3, textureFactory.getTextureByName(chell_file_name),renderer);
-    //Position chell3Pos(100,-100);
-    //chell3->setDestRect(100,-100,201,220);
+    WorldView world;
 
-    world.addChell(chell, chellPos, State::standing);
-    //world.addChell(chell2, chell2Pos);
-    //world.addChell(chell3, chell3Pos);
 
     std::string block_file_name("block");
     for (int startX = -2000; startX<7000; startX+=128) {
@@ -46,14 +33,29 @@ void SDL_Runner::run() {
         world.addView(block);
     }
 
+    auto chell = new ChellAnimationView(1, textureFactory.getTextureByName(chell_file_name),renderer);
+    Position chellPos(200,200);
+    Camera camera(1000, 1000, chell->getPosition());
+    world.addChell(chell, chellPos);
+    world.setChellState(1, State::standing);
+    world.setCamara(camera);
     while (connected) {
         renderer.clearRender();
-        FakeChellNewPosition* newChell = (FakeChellNewPosition*) safeQueue.getTopAndPop();
+        auto newChell = (ChellDTO*) safeQueue.getTopAndPop();
         if (newChell) {
-            ChellAnimationView* chell2 = new ChellAnimationView(newChell->getId(), textureFactory.getTextureByName(chell_file_name),renderer);
+            auto chell2 = new ChellAnimationView(newChell->getId(), textureFactory.getTextureByName(chell_file_name),renderer);
             Position chell2Pos(newChell->getX(),newChell->getY());
-            chell2->setDestRect(newChell->getX(),newChell->getY(), 201, 220);
-            world.addChell(chell2, chell2Pos, State::runningRight);
+            chell2->setDestRect(newChell->getX(),newChell->getY(), newChell->getWidth(), newChell->getHeight());
+            world.addChell(chell2, chell2Pos);
+            if (newChell->getMoving()) {
+                if (newChell->getDirection() == WEST) {
+                    world.setChellState(newChell->getId(), State::runningLeft);
+                } else {
+                    world.setChellState(newChell->getId(), State::runningRight);
+                }
+            } else {
+                world.setChellState(newChell->getId(), State::standing);
+            }
         }
         world.draw();
         renderer.render();

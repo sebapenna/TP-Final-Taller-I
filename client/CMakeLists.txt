@@ -30,7 +30,7 @@ add_library(sdldemo
         SDL_Runner.h
         FakeServer.cpp
         FakeServer.h
-        FakeChellNewPosition.cpp FakeChellNewPosition.h)
+        )
 
 
 
