@@ -10,6 +10,7 @@ private:
     b2Body *_body;
     float _lifetime = 0;
     bool _dead = false;
+    bool _kill = false; // Booleano para indicar si es step en que eliminar energy ball
 
 public:
     EnergyBall(b2Body *body, uint8_t direction);
@@ -29,6 +30,10 @@ public:
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
+
+    bool kill() const;
+
+    void killed();
 };
 
 

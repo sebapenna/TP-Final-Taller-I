@@ -204,7 +204,7 @@ public:
         cout << endl << "TEST saltar sobre una superficie: ";
         bool jumped = false;
         chell->jump();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped = true;
@@ -216,7 +216,7 @@ public:
     void testJumpOnAir() {
         cout << endl << "TEST no es posible saltar en el aire: ";
         chell->jump();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             world->step();
             try {
                 chell->jump();
@@ -231,7 +231,7 @@ public:
         cout << endl << "TEST saltar, caer y volver a saltar: ";
         bool jumped1 = false, jumped2 = false;
         chell->jump();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped1 = true;
@@ -239,7 +239,7 @@ public:
         float diff_y = chell->getPositionY() - chell_init_y;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
         chell->jump();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
                 jumped2 = true;
@@ -255,7 +255,7 @@ public:
         cout << endl << "TEST saltar y moverse a la derecha en el aire: ";
         bool jumped = false, moved_on_air = false;
         chell->jump();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
                 if (!jumped)
@@ -277,7 +277,7 @@ public:
         cout << endl << "TEST saltar y moverse a la izquierda en el aire: ";
         bool jumped = false, moved_on_air = false;
         chell->jump();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
                 if (!jumped)
@@ -299,7 +299,7 @@ public:
         cout << endl << "TEST moverse a la derecha y saltar ";
         bool jumped = false, jumped_after_moving = false;
         chell->move_right();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             world->step();
             if (chell->getPositionX() > chell_init_x) {
                 if (!jumped) {
@@ -320,7 +320,7 @@ public:
         cout << endl << "TEST moverse a la izquierda y saltar ";
         bool jumped = false, jumped_after_moving = false;
         chell->move_left();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 200; i++) {
             world->step();
             if (chell->getPositionX() < chell_init_x) {
                 if (!jumped) {
@@ -362,14 +362,14 @@ public:
         float b_y = chell_init_y + CHELL_HALF_HEIGHT + b_height;
         chell->jump();
         float max_height = 0;
-        for (int i = 0; i < 10000; ++i) {   // Jump with no roof
+        for (int i = 0; i < 200; ++i) {   // Jump with no roof
             world->step();
             if (chell->getPositionY() > max_height)
                 max_height = chell->getPositionY();
         }
         world->createRockBlock(b_width, b_height, b_x, b_y);
         chell->jump();
-        for (int i = 0; i < 10000; ++i) {   // Jump with roof
+        for (int i = 0; i < 200; ++i) {   // Jump with roof
             world->step();
             CPPUNIT_ASSERT_LESS(max_height, chell->getPositionY());
         }
@@ -384,7 +384,7 @@ public:
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NO);
         chell->move_right();
         bool y_increased = false;
-        for (int i = 1; i < 2000; i++) {
+        for (int i = 1; i < 200; i++) {
             world->step();
             CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->getPositionX());
             if ((chell->getPositionY() - DELTA_POS) > chell_init_y)
@@ -404,7 +404,7 @@ public:
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NE);
         chell->move_left();
         bool y_increased = false;
-        for (int i = 1; i < 2000; i++) {
+        for (int i = 1; i < 200; i++) {
             world->step();
             CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->getPositionX());
             if ((chell->getPositionY() - DELTA_POS) > chell_init_y)
@@ -475,7 +475,7 @@ public:
         auto n_bodies = world->getWorld()->GetBodyCount();
         for (int i = 1; i < STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT(chell->isDead());
+        CPPUNIT_ASSERT(chell->isDead()); // Se elimino chell
         CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }

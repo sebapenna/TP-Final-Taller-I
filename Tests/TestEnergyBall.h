@@ -239,9 +239,10 @@ public:
         for (int i = 0; i < STEP_ITERATIONS; ++i) {
             world->step();
             // Verifico que una bola paso a la otra
-            if ((e_ball_1->getPositionX() > e_ball_2->getPositionX())
-                && (n_bodies == world->getWorld()->GetBodyCount()))
-                balls_ignored = true;
+            // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
+            if ((n_bodies == world->getWorld()->GetBodyCount()) &&
+            (e_ball_1->getPositionX() > e_ball_2->getPositionX()))
+                    balls_ignored = true;
         }
 
         CPPUNIT_ASSERT(balls_ignored);
@@ -263,8 +264,9 @@ public:
         for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
             world->step();
             // Verifico que bola paso la barrera
-            if ((e_ball->getPositionX() > barrier_x)
-                && (n_bodies == world->getWorld()->GetBodyCount()))
+            // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
+            if ((n_bodies == world->getWorld()->GetBodyCount()) &&
+            (e_ball->getPositionX() > barrier_x))
                 barrier_ignored = true;
         }
 
@@ -293,8 +295,9 @@ public:
         for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
             world->step();
             // Verifico que bola paso la compuerta
-            if ((e_ball->getPositionX() > gate_x)
-                && (n_bodies == world->getWorld()->GetBodyCount()))
+            // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
+            if ((n_bodies == world->getWorld()->GetBodyCount()) &&
+            (e_ball->getPositionX() > gate_x))
                 gate_ignored = true;
         }
 

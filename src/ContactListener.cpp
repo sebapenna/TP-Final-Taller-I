@@ -9,10 +9,14 @@ ContactListener::ContactListener(b2World *world) {
 }
 
 void ContactListener::BeginContact(b2Contact *contact) {
-    auto coll1 = (Collidable*) contact->GetFixtureA()->GetBody()->GetUserData();
-    auto coll2 = (Collidable*) contact->GetFixtureB()->GetBody()->GetUserData();
-    coll1->collideWith(coll2);
-    coll2->collideWith(coll1);
+    auto fix1 = contact->GetFixtureA();
+    auto fix2 = contact->GetFixtureB();
+    if (fix1 && fix2) {
+        auto coll1 = (Collidable*) contact->GetFixtureA()->GetBody()->GetUserData();
+        auto coll2 = (Collidable*) contact->GetFixtureB()->GetBody()->GetUserData();
+        coll1->collideWith(coll2);
+        coll2->collideWith(coll1);
+    }
 }
 
 void ContactListener::EndContact(b2Contact *contact) {

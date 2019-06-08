@@ -9,25 +9,38 @@
 #include "EnergyBlocks/EnergyReceiver.h"
 #include "EnergyBlocks/EnergyTransmitter.h"
 #include "EnergyBall.h"
+#include "ContactListener.h"
 #include <vector>
 #include <map>
+#include <src/GroundBlocks/RockBlock.h>
+#include <src/Obstacles/Acid.h>
+#include <src/GroundBlocks/MetalDiagonalBlock.h>
+#include <src/GroundBlocks/MetalBlock.h>
+#include <src/Obstacles/EnergyBarrier.h>
 
 class World {
 private:
     b2World *_world;
     const size_t _width;
     const size_t _height;
-    std::vector<Chell*> _chells;    //todo: ->vector y flagDead en chell
-//    std::map<size_t, Chell*> _chells;    //todo: ->vector y flagDead en chell
+    std::vector<Chell*> _chells;    //todo: flagDead en chell
     std::vector<Rock*> _rocks; //todo: ->vector y flagDead
-    std::map<size_t, Button*> _buttons; //todo: ->vector
-    std::map<size_t, Gate*> _gates; //todo: ->vector
-    std::map<size_t, EnergyReceiver*> _energy_receivers; //todo: ->vector
+    std::vector<Button*> _buttons;
+    std::vector<Gate*> _gates;
+    std::vector<EnergyReceiver*> _energy_receivers;
     std::vector<EnergyTransmitter*> _energy_transmitters;
     std::vector<EnergyBall*> _energy_balls;
     // _portals ?
     // _pin_tools ?
     // todo: YAML::Node _config => configuracion de constants.h
+
+    /* Atributos para evitar leaks */
+    ContactListener* _contact_listener; // Referencia para evitar leak
+    std::vector<RockBlock*> _rock_blocks;
+    std::vector<Acid*> _acids;
+    std::vector<MetalDiagonalBlock*> _metal_diagonal_blocks;
+    std::vector<MetalBlock*> _metal_blocks;
+    std::vector<EnergyBarrier*> _energy_barriers;
 
     // box_width y box_height seran los valores que se usaran en setAsBox
     b2Body *createStaticBox(const float &x, const float &y,
@@ -56,11 +69,11 @@ public:
 
     const std::vector<Rock *> &getRocks() const;
 
-    const std::map<size_t, Button *> &getButtons() const;
+    const std::vector<Button *> &getButtons() const;
 
-    const std::map<size_t, Gate *> &getGates() const;
+    const std::vector<Gate *> &getGates() const;
 
-    const std::map<size_t, EnergyReceiver *> &getEnergyReceivers() const;
+    const std::vector<EnergyReceiver *> &getEnergyReceivers() const;
 
     const std::vector<EnergyBall *> &getEnergyBalls() const;
 

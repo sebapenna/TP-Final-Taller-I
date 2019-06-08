@@ -8,17 +8,44 @@
 #include <src/constants.h>
 #include <yaml-cpp/yaml.h>
 #include <algorithm>
+#include <memory>
+#include <iostream>
 #include "World.h"
 
 using std::remove_if;
+using std::vector;
 
 World::World(size_t width, size_t height) : _width(width), _height(height) {
     b2Vec2 gravity(GRAVITY_X, GRAVITY_Y);
     _world = new b2World(gravity);
-    _world->SetContactListener(new ContactListener(_world));
+    _contact_listener = new ContactListener(_world);
+    _world->SetContactListener(_contact_listener);
 }
 
 World::~World() {
+    for (auto &ptr : _chells)
+        delete ptr;
+    for (auto &ptr : _rock_blocks)
+        delete ptr;
+    for (auto &ptr : _buttons)
+        delete ptr;
+    for (auto &ptr : _gates)
+        delete ptr;
+    for (auto &ptr : _acids)
+        delete ptr;
+    for (auto &ptr : _energy_transmitters)
+        delete ptr;
+    for (auto &ptr : _energy_receivers)
+        delete ptr;
+    for (auto &ptr : _energy_balls)
+        delete ptr;
+    for (auto &ptr : _rocks)
+        delete ptr;
+    for (auto &ptr : _metal_diagonal_blocks)
+        delete ptr;
+    for (auto &ptr : _energy_barriers)
+        delete ptr;
+    delete _contact_listener;
     delete _world;
 }
 
@@ -41,16 +68,16 @@ const std::vector<Rock *> &World::getRocks() const {
     return _rocks;
 }
 
-const std::map<size_t, Button *> &World::getButtons() const {
+const vector<Button *> &World::getButtons() const {
     return _buttons;
 }
 
 
-const std::map<size_t, Gate *> &World::getGates() const {
+const vector<Gate *> &World::getGates() const {
     return _gates;
 }
 
-const std::map<size_t, EnergyReceiver *> &World::getEnergyReceivers() const {
+const vector<EnergyReceiver *> &World::getEnergyReceivers() const {
     return _energy_receivers;
 }
 
@@ -70,39 +97,41 @@ void World::step() {
     _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
     // Orden de acciones: primero las que su estado afectan a otros
     for (auto &energy_transmitter : _energy_transmitters)
-        if (energy_transmitter->releaseEnergyBall()) {
+        if (energy_transmitter->releaseEnergyBall())
             this->createEnergyBall(energy_transmitter);
-        }
-    for (int i = 0; i < _energy_balls.size(); ++i) {
-        auto energy_ball = _energy_balls[i];
-        energy_ball->updateLifetime();
-        if (energy_ball->isDead()) {
+
+    for (auto energy_ball : _energy_balls) {
+        if (!energy_ball->isDead())
+            energy_ball->updateLifetime();
+        if (energy_ball->kill()) {  // Compruebo si debo eliminar, updateLifetime lo podria setear
             _world->DestroyBody(energy_ball->getBody());
+            energy_ball->killed();
+//            delete energy_ball;
         }
     }
-//    aux = energy_ball;
-//    vec[i] = nullptr
-//            delete aux
-    // Lo elimino del vector
     _energy_balls.erase(remove_if(_energy_balls.begin(), _energy_balls.end(),
-            [](EnergyBall* e) { return e->isDead(); }),
-                    _energy_balls.end());
+            [](EnergyBall* e) {
+        if (e->isDead()) {
+                delete e;
+                return true;
+            } else { return false; }}), _energy_balls.end());
+
     for (auto &button : _buttons)
-        button.second->updateState();
+        button->updateState();
     for (auto &energy_receiver : _energy_receivers)
-        energy_receiver.second->updateState();
+        energy_receiver->updateState();
     for (auto &gate : _gates)
-        gate.second->updateState();
-    for (auto & chell : _chells) {
-        if (!chell->isDead()) // todo: eliminar chell del vector/map
+        gate->updateState();
+    for (auto &chell : _chells) {
+        if (!chell->isDead()) {
             chell->move();
-        else
+        } else if (chell->kill()) {   // Verifico si ya elimine bodys
             _world->DestroyBody(chell->getBody());
+            chell->killed();    // Notifico a chell que ya fue eliminada
+        }   // todo: REMOVE_IF COMO CON ENERGY_BALLS
     }
-    _chells.erase(remove_if(_chells.begin(), _chells.end(),
-                                  [](Chell* e) { return e->isDead(); }),
-                        _chells.end());
 }
+
 
 /************************ Create Bodies ************************/
 b2Body *World::createStaticBox(const float &x, const float &y,
@@ -149,13 +178,17 @@ b2Body *World::createDynamicBox(const float &x, const float &y,
 void World::createRockBlock(const float &width, const float &height,
         const float &x, const float &y) {
     auto body = createStaticBox(x, y, width / 2, height / 2, BLOCK_FRICTION);
-    body->SetUserData(new RockBlock());
+    auto rock_block = new RockBlock();
+    body->SetUserData(rock_block);
+    _rock_blocks.push_back(rock_block);
 }
 
 void World::createMetalBlock(const float &width, const float &height,
         const float &x, const float &y) {
     auto body = createStaticBox(x, y , width/2, height/2, BLOCK_FRICTION);
-    body->SetUserData(new MetalBlock());
+    auto metal_block = new MetalBlock();
+    body->SetUserData(metal_block);
+    _metal_blocks.push_back(metal_block);
 }
 
 void World::createMetalDiagonalBlock(const float &width, const float &height,
@@ -203,7 +236,9 @@ void World::createMetalDiagonalBlock(const float &width, const float &height,
 
     body->CreateFixture(&fixture);
 
-    body->SetUserData(new MetalDiagonalBlock(orientation));
+    auto met_diag_block = new MetalDiagonalBlock(orientation);
+    body->SetUserData(met_diag_block);
+    _metal_diagonal_blocks.push_back(met_diag_block);
 }
 
 void World::createRock(const float &x, const float &y) {
@@ -217,7 +252,9 @@ void World::createRock(const float &x, const float &y) {
 void World::createAcid(const float &x, const float &y) {
     auto body = createStaticBox(x, y, ACID_HALF_WIDTH, ACID_HALF_HEIGHT,
             ACID_FRICTION);
-    body->SetUserData(new Acid());   // Suficiente que sea una macro
+    auto acid = new Acid();
+    body->SetUserData(acid);   // Suficiente que sea una macro
+    _acids.push_back(acid);
 }
 
 void World::createButton(const size_t &id, const float &x, const float &y) {
@@ -225,7 +262,7 @@ void World::createButton(const size_t &id, const float &x, const float &y) {
            BUTTON_FRICTION);
    auto *button = new Button();
    body->SetUserData(button);
-   _buttons.insert({id, button});
+   _buttons.push_back(button);
 }
 
 void World::createGate(const size_t &id, const float &x, const float &y,
@@ -239,14 +276,14 @@ void World::createGate(const size_t &id, const float &x, const float &y,
     for (auto &e_rec_id : energy_receiver_needed)
         gate->addEnergyReceiverNeeded(_energy_receivers.at(e_rec_id));
     body->SetUserData(gate);
-    _gates.insert({id, gate});
+    _gates.push_back(gate);
 }
 
 void World::createEnergyReceiver(const size_t &id, const float &x, const float &y) {
     auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_FRICTION);
-    auto *e_recv = new EnergyReceiver();
+    auto e_recv = new EnergyReceiver();
     body->SetUserData(e_recv);
-    _energy_receivers.insert({id, e_recv});
+    _energy_receivers.push_back(e_recv);
 }
 
 void World::createEnergyTransmitter(const float &x, const float &y,
@@ -306,7 +343,7 @@ void World::createChell(const float &x, const float &y, size_t id) {
 //    todo: restitution necesaria ? => puede hacer sdl
     auto body = createDynamicBox(x, y, CHELL_HALF_WIDTH, CHELL_HALF_HEIGHT,
             CHELL_DENSITY);
-    auto *chell = new Chell(id, body);
+    auto chell = new Chell(id, body);
     body->SetUserData(chell);
     _chells.push_back(chell);
 }
@@ -327,7 +364,9 @@ void World::createEnergyBarrier(const float &x, const float &y,
             break;
     }
     auto body = createStaticBox(x, y , width, height, 0);   // Friction = 0
-    body->SetUserData(new EnergyBarrier());
+    auto e_barrier = new EnergyBarrier();
+    body->SetUserData(e_barrier);
+    _energy_barriers.push_back(e_barrier);
 }
 
 
