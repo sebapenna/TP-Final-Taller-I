@@ -14,6 +14,7 @@
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/MoveLeftDTO.h"
 #include "../Common/ProtocolTranslator/MoveRightDTO.h"
+#include "../Common/SafeQueue.h"
 
 
 int main(int argc, char** argv){
@@ -71,13 +72,14 @@ int main(int argc, char** argv){
             block->setDestRect(startX, 400, 128,128);
             world.addView(block);
         }*/
-        SafeQueue safeQueue;
         ProtectedBlockingQueue blockingQueue;
+        SafeQueue safeQueue;
+        safeQueue.push((void*) new int());
+        safeQueue.getTopAndPop();
         SDL_Runner sdlRunner(title, safeQueue);
         sdlRunner.start();
         FakeServer server(blockingQueue, safeQueue);
         server.start();
-        safeQueue.push((void*) new int());
         /*
         SDL_Runner sdlRunner(safeQueue);
         sdlRunner.start();

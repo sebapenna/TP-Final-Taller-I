@@ -3,6 +3,8 @@
 //
 
 #include <Common/ProtocolTranslator/ChellDTO.h>
+#include <iostream>
+#include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -17,9 +19,7 @@ SDL_Runner::SDL_Runner(std::string& title, SafeQueue &safeQueue) : safeQueue(saf
 
 void SDL_Runner::run() {
     std::string chell_file_name("chell");
-
     WorldView world;
-
 
     std::string block_file_name("block");
     for (int startX = -2000; startX<7000; startX+=128) {
@@ -33,28 +33,29 @@ void SDL_Runner::run() {
         world.addView(block);
     }
 
-    auto chell = new ChellAnimationView(1, textureFactory.getTextureByName(chell_file_name),renderer);
-    Position chellPos(200,200);
-    Camera camera(1000, 1000, chell->getPosition());
-    world.addChell(chell, chellPos);
-    world.setChellState(1, State::standing);
-    world.setCamara(camera);
     while (connected) {
         renderer.clearRender();
-        auto newChell = (ChellDTO*) safeQueue.getTopAndPop();
-        if (newChell) {
-            auto chell2 = new ChellAnimationView(newChell->getId(), textureFactory.getTextureByName(chell_file_name),renderer);
-            Position chell2Pos(newChell->getX(),newChell->getY());
-            chell2->setDestRect(newChell->getX(),newChell->getY(), newChell->getWidth(), newChell->getHeight());
-            world.addChell(chell2, chell2Pos);
-            if (newChell->getMoving()) {
-                if (newChell->getDirection() == WEST) {
-                    world.setChellState(newChell->getId(), State::runningLeft);
+        auto newItem = (ProtocolDTO*) safeQueue.getTopAndPop();
+        if (newItem) {
+            if (newItem->getClassId() == PROTOCOL_CHELL_DATA) {
+                auto newChell = (ChellDTO *) newItem;
+                auto chell2 = new ChellAnimationView(newChell->getId(),
+                                                     textureFactory.getTextureByName(chell_file_name), renderer);
+                Position chell2Pos(newChell->getX(), newChell->getY());
+                chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
+                world.addChell(chell2, chell2Pos);
+                if (newChell->getMoving()) {
+                    if (newChell->getDirection() == WEST) {
+                        world.setChellState(newChell->getId(), State::runningLeft);
+                    } else {
+                        world.setChellState(newChell->getId(), State::runningRight);
+                    }
                 } else {
-                    world.setChellState(newChell->getId(), State::runningRight);
+                    world.setChellState(newChell->getId(), State::standing);
                 }
-            } else {
-                world.setChellState(newChell->getId(), State::standing);
+            } else if (newItem->getClassId() == PROTOCOL_PLAYER_CHELL_ID) {
+                auto chellId = (PlayerChellIdDTO*) newItem;
+                world.setCamara(chellId->getChellId(), 1000, 1000);
             }
         }
         world.draw();

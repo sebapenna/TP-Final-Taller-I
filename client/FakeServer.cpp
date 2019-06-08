@@ -4,6 +4,7 @@
 
 #include <Common/ProtocolTranslator/ChellDTO.h>
 #include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
+#include <Common/ProtocolTranslator/MoveRightDTO.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 
@@ -15,8 +16,8 @@ FakeServer::FakeServer(ProtectedBlockingQueue &blockingQueue, SafeQueue &safeQue
 
 void FakeServer::run() {
     int x=200;
-    safeQueue.push((void *) new PlayerChellIdDTO(1));
     safeQueue.push((void *) new ChellDTO(1, x, 200, 201, 220, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+    safeQueue.push((void *) new PlayerChellIdDTO(1));
     safeQueue.push((void *) new ChellDTO(2, -200, -100, 201, 220, 0, 0, 1, 0, 0, 0, 0));
     safeQueue.push((void *) new ChellDTO(3, 100, -100, 201, 220,0 ,0 ,1, 0, 0, 0, 0));
     while (true) {

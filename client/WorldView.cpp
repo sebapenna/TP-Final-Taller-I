@@ -6,6 +6,13 @@
 
 WorldView::WorldView() : camera(nullptr){}
 
+WorldView::~WorldView() {
+    if (camera) {
+        delete camera;
+    }
+}
+
+
 void WorldView::draw() {
     if (camera == nullptr) return;
     for(auto const& view: views) {
@@ -39,6 +46,7 @@ void WorldView::setChellState(int16_t id, State state) {
     chell->setState(state);
 }
 
-void WorldView::setCamara(Camera& camera) {
-    this->camera = &camera;
+void WorldView::setCamara(int16_t id, int w, int h) {
+    ChellAnimationView* chellView = chells[id];
+    this->camera = new Camera(w, h, chellView->getPosition());
 }

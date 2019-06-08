@@ -6,6 +6,7 @@
 #define SDL_SDL_RUNNER_H
 
 
+#include <Common/ProtectedBlockingQueue.h>
 #include "ComponentsSDL/Renderer.h"
 #include "TextureFactory.h"
 #include "../Common/SafeQueue.h"
