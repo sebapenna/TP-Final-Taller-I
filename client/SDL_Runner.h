@@ -6,6 +6,7 @@
 #define SDL_SDL_RUNNER_H
 
 
+#include <Common/ProtectedBlockingQueue.h>
 #include "ComponentsSDL/Renderer.h"
 #include "TextureFactory.h"
 #include "../Common/SafeQueue.h"
@@ -17,6 +18,7 @@ class SDL_Runner : public Thread{
     Window window;
     Renderer renderer;
     TextureFactory textureFactory;
+    int16_t myChellId;
 
 public:
     SDL_Runner(std::string& title, SafeQueue& safeQueue);

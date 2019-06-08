@@ -18,7 +18,8 @@ private:
     Camera* camera;
 public:
     WorldView();
-    void setCamara(Camera& camera);
+    ~WorldView();
+    void setCamara(int16_t id, int w, int h);
     void draw();
     void addView(View* view);
     void addChell(ChellAnimationView* chell, Position& position);

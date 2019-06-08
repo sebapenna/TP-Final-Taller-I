@@ -9,6 +9,7 @@
 #include "Sprite.h"
 #define DEFAULT_TIME_PER_SPRITE 4
 
+enum AnimationState {onRepeat, oneTime};
 class AnimatedSprite : public Sprite{
 private:
     int width;
@@ -24,13 +25,14 @@ private:
     int currentSprite;
     int i; // The offset for the images
     int j;
+    AnimationState animationState;
 
 
 public:
     AnimatedSprite(SDL_Texture* texture, Renderer &renderer,
                    int width, int height,
                    int startX, int startY,
-                   int totalColumns, int amountSprites, int offSetX, int offSetY);
+                   int totalColumns, int amountSprites, int offSetX, int offSetY, AnimationState animationState);
     void moveNextSprite();
     void drawMovingSprite(Camera& camera, SDL_Rect* dstRect);
     void drawMovingSprite(Camera& camera, SDL_Rect* dstRect, SDL_RendererFlip flip);
