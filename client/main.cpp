@@ -64,9 +64,9 @@ int main(int argc, char** argv){
                         case SDLK_w:
                             blockingQueue.push((void*) new JumpDTO());
                             break;
-                        default:
-                            blockingQueue.push((void*) new StopDTO());
                     }
+                } else if (e.type == SDL_KEYUP) {
+                    blockingQueue.push((void*) new StopDTO());
                 }
             }
         }
