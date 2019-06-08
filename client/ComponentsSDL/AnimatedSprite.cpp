@@ -10,12 +10,15 @@
 AnimatedSprite::AnimatedSprite(SDL_Texture* texture, Renderer &renderer,
                                int width, int height,
                                int startX, int startY,
-                               int totalColumns, int amountSprites, int offSetX, int offSetY) :
+                               int totalColumns, int amountSprites,
+                               int offSetX, int offSetY, AnimationState animationState) :
         Sprite(texture, renderer),
         width(width), height(height),
         startX(startX), startY(startY),
         totalColumns(totalColumns), amountSprites(amountSprites), offSetX(offSetX), offSetY(offSetY),
-        currentSprite(1), i(0), j(0), currentTime(1), timePerSprite(DEFAULT_TIME_PER_SPRITE) {
+        currentSprite(1), i(0), j(0),
+        animationState(animationState),
+        currentTime(1), timePerSprite(DEFAULT_TIME_PER_SPRITE) {
     this->setSourceRect(startX, startY, width, height);
 }
 
@@ -26,11 +29,12 @@ void AnimatedSprite::moveNextSprite() {
         return;
     }
     currentTime++;
-    if(amountSprites == currentSprite) { // Reset
+    if((amountSprites == currentSprite) && (animationState == AnimationState::onRepeat)) { // Reset
         i = 0;
         j = 0;
         currentSprite = 1;
-    } else {
+    } else if (((amountSprites != currentSprite) && (animationState == AnimationState::oneTime)
+    || (animationState == AnimationState::onRepeat))) {
         if (totalColumns-1 == i) {
             i = 0;
             j++;
