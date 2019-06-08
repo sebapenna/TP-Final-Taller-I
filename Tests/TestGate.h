@@ -2,9 +2,9 @@
 #define PORTAL_TESTGATE_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include "src/World.h"
-#include "src/constants.h"
-#include "src/exceptions.h"
+#include "Server/World.h"
+#include "Server/constants.h"
+#include <Common/exceptions.h>
 
 using std::cout;
 using std::endl;

@@ -17,6 +17,6 @@ add_subdirectory(Box2D)
 add_subdirectory(Yaml)
 include_directories(Yaml/include)   # Habilita la carpeta include de Yaml
 add_subdirectory(Common)
-add_subdirectory(src)
+add_subdirectory(Server)
 add_subdirectory(Tests)
 add_subdirectory(client)
