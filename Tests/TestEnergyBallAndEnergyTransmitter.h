@@ -163,7 +163,6 @@ public:
             if (vec_size == 1)
                 ++total_balls;
         }
-
         CPPUNIT_ASSERT_EQUAL((size_t) 2, total_balls);
         CPPUNIT_ASSERT(ball_removed);
         cout << "OK";
@@ -322,9 +321,8 @@ public:
         size_t n_energy_balls = world->getEnergyBalls().size();
         int n_bodies = world->getWorld()->GetBodyCount();
         int iterations = ENERGY_BALL_MAX_LIFETIME / TIME_STEP;
-        for (int i = 0; i < iterations; ++i) {
+        for (int i = 0; i < iterations; ++i)
             world->step(); // Step donde se crea EnergyBall
-        }
         // Testeo que se haya eliminado de vector y world de Box2D
         CPPUNIT_ASSERT_LESS(n_energy_balls, world->getEnergyBalls().size());
         CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());

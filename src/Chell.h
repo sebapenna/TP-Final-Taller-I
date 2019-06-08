@@ -11,6 +11,7 @@ private:
     uint8 _move_state;
     uint8 _jump_state;
     bool _jump, _dead;
+    bool _kill; // Booleano para indicar si es step en que eliminar chell
 
     // Evita volver a aplicar un impulso en el mismo sentido
     bool movementAlreadyApplied();
@@ -27,6 +28,11 @@ public:
     float getPositionY();
 
     b2Body *getBody() const;
+
+    bool kill() const;
+
+    // Llamar una vez que se realizo accion necesaria para eliminar chell de world
+    void killed();
 
     void move_left();
 

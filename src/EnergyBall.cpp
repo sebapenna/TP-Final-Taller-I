@@ -26,11 +26,15 @@ EnergyBall::EnergyBall(b2Body *body, uint8_t direction) {
 
 void EnergyBall::updateLifetime() {
     _lifetime += TIME_STEP;
+    float diff_time = ENERGY_BALL_MAX_LIFETIME - _lifetime;
+    if (diff_time < TIME_STEP) {
+        _dead = true;
+        _kill = true;   // Indico que se debe eliminar
+    }
 }
 
 bool EnergyBall::isDead() {
-    float diff_time = ENERGY_BALL_MAX_LIFETIME - _lifetime;
-    return (diff_time < TIME_STEP || _dead);
+    return _dead;
 }
 
 const float EnergyBall::getPositionX() {
@@ -54,12 +58,24 @@ void EnergyBall::collideWith(Collidable *other) {
     if (c_name == ROCK_BLOCK || c_name == ACID || c_name == BUTTON ||
         c_name == ROCK || c_name == ENERGY_RECEIVER || c_name == CHELL ||
         c_name == PIN_TOOL) {
+        if (!_dead)
+            _kill = true;   // Debo eliminar energy ball
         _dead = true;
     } else if (c_name == ENERGY_TRANSMITTER && _lifetime != 0) {
+        if (!_dead)
+            _kill = true;   // Debo eliminar energy ball
         _dead = true;    // Verifico que no colisiona cuando se crea la bola
     }
 }
 
 void EnergyBall::endCollitionWith(Collidable *other) {
 
+}
+
+bool EnergyBall::kill() const {
+    return _kill;
+}
+
+void EnergyBall::killed() {
+    _kill = false;
 }

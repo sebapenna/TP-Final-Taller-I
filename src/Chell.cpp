@@ -9,6 +9,7 @@ Chell::Chell(unsigned int id, b2Body *body) : _id(id){
     _jump_state = ON_GROUND;
     _jump = false;
     _dead = false;
+    _kill = false;
 }
 
 float Chell::getPositionX() {
@@ -118,9 +119,14 @@ void Chell::collideWith(Collidable *other) {
         auto rock = (Rock*) other;
         float head_pos = this->getPositionY() + CHELL_HALF_HEIGHT;
         // Verifico esta por encima de chell y cayendo
-        if (rock->getPositionY() > head_pos && rock->getVelocityY() != 0)
+        if (rock->getPositionY() > head_pos && rock->getVelocityY() != 0) {
+            if (!_dead)
+                _kill = true;
             _dead = true;
-    } else if (cname == ACID){
+        }
+    } else if (cname == ACID) {
+        if (!_dead)
+            _kill = true;
         _dead = true;
     }
 }
@@ -135,4 +141,12 @@ bool Chell::isDead() {
 
 b2Body *Chell::getBody() const {
     return _body;
+}
+
+bool Chell::kill() const {
+    return _kill;
+}
+
+void Chell::killed() {
+    _kill = false;
 }
