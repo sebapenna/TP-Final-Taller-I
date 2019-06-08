@@ -8,11 +8,11 @@
 
 #include "../ComponentsSDL/Sprite.h"
 
-class BlockViewRock : public View{
+class BlockRockView : public View{
 private:
     Sprite block;
 public:
-    BlockViewRock(SDL_Texture* texture, Renderer& renderer, int  x = 0, int y = 0);
+    BlockRockView(SDL_Texture* texture, Renderer& renderer, int  x = 0, int y = 0);
     void draw(Camera& camera);
 };
 

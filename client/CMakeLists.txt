@@ -20,17 +20,17 @@ add_library(sdldemo
         WorldView.h View/View.cpp
         View/View.h ComponentsSDL/Camera.cpp
         ComponentsSDL/Camera.h
-        View/BlockViewMetal.cpp
-        View/BlockViewMetal.h
-        View/BlockViewRock.cpp
-        View/BlockViewRock.h
+        View/BlockMetalView.cpp
+        View/BlockMetalView.h
+        View/BlockRockView.cpp
+        View/BlockRockView.h
         ComponentsSDL/Position.cpp
         ComponentsSDL/Position.h
         SDL_Runner.cpp
         SDL_Runner.h
         FakeServer.cpp
         FakeServer.h
-        )
+        View/DiagonalBlockMetalView.cpp View/DiagonalBlockMetalView.h)
 
 
 
@@ -44,6 +44,6 @@ add_executable (sdl-hello
 
 
 
-target_link_libraries(sdl-hello common-src sdldemo SDL2 SDL2_image pthread)
+target_link_libraries(sdl-hello sdldemo common-src SDL2 SDL2_image pthread)
 
-#install(FILES assets/cat.gif DESTINATION ${CMAKE_BINARY_DIR})
+install(FILES block.png bullet.png gates.png chell.png acidAndButtons.png DESTINATION ${CMAKE_BINARY_DIR})

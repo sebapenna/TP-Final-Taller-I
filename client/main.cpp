@@ -7,8 +7,8 @@
 #include "View/ChellAnimationView.h"
 #include "TextureFactory.h"
 #include "WorldView.h"
-#include "View/BlockViewMetal.h"
-#include "View/BlockViewRock.h"
+#include "client/View/BlockMetalView.h"
+#include "client/View/BlockRockView.h"
 #include <queue>
 #include <Common/ProtocolTranslator/JumpDTO.h>
 #include <Common/ProtocolTranslator/StopDTO.h>
@@ -38,13 +38,8 @@ int main(int argc, char** argv){
         // Chell turning around
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
 
-        // Chell dying
-        //AnimatedSprite sprite("chell.png", renderer, 199, 274, 1, 8340, 12 , 72, 0, 0, 199, 273, 1, 1);
-
         ProtectedBlockingQueue blockingQueue;
         SafeQueue safeQueue;
-        safeQueue.push((void*) new int());
-        safeQueue.getTopAndPop();
         SDL_Runner sdlRunner(title, safeQueue);
         sdlRunner.start();
         FakeServer server(blockingQueue, safeQueue);
