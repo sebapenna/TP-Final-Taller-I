@@ -39,79 +39,106 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &outpu
     output.push_back(dto->getClassId());    // Siempre primer valor es el ID
     switch (dto->getClassId()) {
         case PROTOCOL_MOVE_LEFT:
+            output.push_back(MOVE_LEFT_ARGS);
             break;  // No tiene mas datos a agregar
         case PROTOCOL_MOVE_RIGHT:
+            output.push_back(MOVE_RIGHT_ARGS);
             break;  // No tiene mas datos a agregar
         case PROTOCOL_JUMP:
+            output.push_back(JUMP_ARGS);
             break;  // No tiene mas datos a agregar
         case PROTOCOL_STOP:
+            output.push_back(STOP_ARGS);
             break;  // No tiene mas datos a agregar
         case PROTOCOL_SHOOT_PORTAL:
+            output.push_back(SHOOT_PORTAL_ARGS);
             shootPortal(dto, output);
             break;
         case PROTOCOL_SHOOT_PIN_TOOL:
+            output.push_back(SHOOT_PT_ARGS);
             shootPinTool(dto, output);
             break;
         case PROTOCOL_LIFT_ROCK:
+            output.push_back(LIFT_ROCK_ARGS);
             liftRock(dto, output);
             break;
         case PROTOCOL_DROP_ROCK:
+            output.push_back(DROP_ROCK_ARGS);
             break;  // No tiene mas datos a agregar
         case PROTOCOL_PLAYER_CHELL_ID:
+            output.push_back(PLAYER_CHELL_ID_ARGS);
             playerChellId(dto, output);
             break;
         case PROTOCOL_ROCK_BLOCK_DATA:
+            output.push_back(ROCK_BLOCK_ARGS);
             rockBlockData(dto, output);
             break;
         case PROTOCOL_METAL_BLOCK_DATA:
+            output.push_back(METAL_BLOCK_ARGS);
             metalBlockData(dto, output);
             break;
         case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA:
+            output.push_back(METAL_DIAG_BLOCK_ARGS);
             metalDiagonalBlockData(dto, output);
             break;
         case PROTOCOL_ENERGY_TRANSMITTER_DATA:
+            output.push_back(ENRG_TRANSM_ARGS);
             energyTransmitterData(dto, output);
             break;
         case PROTOCOL_ENERGY_RECEIVER_DATA:
+            output.push_back(ENRG_RECVR_ARGS);
             energyReceiverData(dto, output);
             break;
         case PROTOCOL_ACID_DATA:
+            output.push_back(ACID_ARGS);
             acidData(dto ,output);
             break;
         case PROTOCOL_BUTTON_DATA:
+            output.push_back(BUTTON_ARGS);
             buttonData(dto, output);
             break;
         case PROTOCOL_GATE_DATA:
+            output.push_back(GATE_ARGS);
             gateData(dto, output);
             break;
         case PROTOCOL_ENERGY_BARRIER_DATA:
+            output.push_back(ENRG_BARRIER_ARGS);
             energyBarrierData(dto, output);
             break;
         case PROTOCOL_ROCK_DATA:
+            output.push_back(ROCK_ARGS);
             rockData(dto, output);
             break;
         case PROTOCOL_ENERGY_BALL_DATA:
+            output.push_back(ENRG_BALL_ARGS);
             energyBallData(dto, output);
             break;
         case PROTOCOL_PORTAL_DATA:
+            output.push_back(PORTAL_ARGS);
             portalData(dto, output);
             break;
         case PROTOCOL_PIN_TOOL_DATA:
+            output.push_back(PIN_TOOL_ARGS);
             pinToolData(dto, output);
             break;
         case PROTOCOL_CHELL_DATA:
+            output.push_back(CHELL_ARGS);
             chellData(dto ,output);
             break;
         case PROTOCOL_BUTTON_CHANGE_STATE:
+            output.push_back(BUTTON_CHANGE_ARGS);
             buttonState(dto, output);
             break;
         case PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE:
+            output.push_back(ENRG_TRANSM_ACTV_ARGS);
             energyTransmitterActivate(dto, output);
             break;
         case PROTOCOL_ENERGY_RECEIVER_ACTIVATE:
+            output.push_back(ENRG_RECVR_ACTV_ARGS);
             energyReceiverActivate(dto, output);
             break;
         case PROTOCOL_GATE_CHANGE_STATE:
+            output.push_back(GATE_CHANGE_ARGS);
             gateState(dto, output);
             break;
         default:    // Comando no existente en el protocolo
@@ -139,7 +166,7 @@ shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &inp
 
         case PROTOCOL_SHOOT_PORTAL:
             return make_shared<ShootPortalDTO>(input[SHOOT_PORTAL_COLOUR_POS],
-                                               input[SHOOT_PORTAL_X_POS], input[SHOOT_PORTAL_Y_POS]);
+                    input[SHOOT_PORTAL_X_POS], input[SHOOT_PORTAL_Y_POS]);
 
         case PROTOCOL_SHOOT_PIN_TOOL:
             return make_shared<ShootPinToolDTO>(input[SHOOT_PT_X_POS], input[SHOOT_PT_Y_POS]);
