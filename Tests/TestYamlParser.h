@@ -2,8 +2,8 @@
 #define PORTAL_TESTYAMLPARSER_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include "../src/YamlData/YamlParser.h"
-#include "../src/constants.h"
+#include "../Server/YamlData/YamlParser.h"
+#include "../Server/constants.h"
 #include <string>
 
 using std::cout;
@@ -34,9 +34,7 @@ private:
 
 public:
     void setUp() {
-        std::string filename(YAML_TEST_PATH);
-        filename.append("test.yaml");
-        parser = new YamlParser(filename);
+        parser = new YamlParser("test.yaml");
     }
 
     void tearDown() {
