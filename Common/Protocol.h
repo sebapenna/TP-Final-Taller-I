@@ -14,11 +14,9 @@ private:
     Socket _socket;
 
 public:
-    Protocol(const std::string& host, const std::string& port);
+    Protocol(const std::string& ip, const std::string& port);
 
     explicit Protocol(Socket &&other);
-
-    Protocol() = default;
 
     // Envia un DTO
     void operator<<(const ProtocolDTO &dto);

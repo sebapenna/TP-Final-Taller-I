@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "MoveRightDTO.h"
 
 MoveRightDTO::~MoveRightDTO() = default;

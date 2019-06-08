@@ -30,3 +30,13 @@ add_library(portal-src
         )
 
 target_link_libraries(portal-src common-src Box2D yaml-parser)
+
+add_executable(server
+        ServerTest.cpp)
+
+target_link_libraries(server portal-src)
+
+add_executable(client
+        ClientTest.cpp)
+
+target_link_libraries(client portal-src)

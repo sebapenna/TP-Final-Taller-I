@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "RockBlockDTO.h"
 
 RockBlockDTO::RockBlockDTO(const int16_t &x, const int16_t &y,

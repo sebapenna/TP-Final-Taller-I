@@ -42,6 +42,19 @@ struct FailedRecvException : public exception {
     }
 };
 
+struct WrongArgumentException : public exception {
+    const char * what() const throw() override {
+        return "Error: argumentos invalidos.\n";
+    }
+};
+
+struct UnknownException : public exception {
+    const char * what() const throw() override {
+        return "Error desconocido.\n";
+    }
+};
+
+
 
 
 

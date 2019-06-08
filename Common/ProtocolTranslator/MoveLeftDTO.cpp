@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "MoveLeftDTO.h"
 
 MoveLeftDTO::~MoveLeftDTO() = default;

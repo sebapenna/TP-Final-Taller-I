@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "PinToolDTO.h"
 
 PinToolDTO::PinToolDTO(const int16_t &id, const int16_t &x, const int16_t &y, const int16_t &width,

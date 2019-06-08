@@ -375,33 +375,6 @@ ComponentsSDL/Window.cpp.s:
 	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ComponentsSDL/Window.cpp.s
 .PHONY : ComponentsSDL/Window.cpp.s
 
-FakeChellNewPosition.o: FakeChellNewPosition.cpp.o
-
-.PHONY : FakeChellNewPosition.o
-
-# target to build an object file
-FakeChellNewPosition.cpp.o:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/FakeChellNewPosition.cpp.o
-.PHONY : FakeChellNewPosition.cpp.o
-
-FakeChellNewPosition.i: FakeChellNewPosition.cpp.i
-
-.PHONY : FakeChellNewPosition.i
-
-# target to preprocess a source file
-FakeChellNewPosition.cpp.i:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/FakeChellNewPosition.cpp.i
-.PHONY : FakeChellNewPosition.cpp.i
-
-FakeChellNewPosition.s: FakeChellNewPosition.cpp.s
-
-.PHONY : FakeChellNewPosition.s
-
-# target to generate assembly for a file
-FakeChellNewPosition.cpp.s:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/FakeChellNewPosition.cpp.s
-.PHONY : FakeChellNewPosition.cpp.s
-
 FakeServer.o: FakeServer.cpp.o
 
 .PHONY : FakeServer.o
@@ -680,9 +653,6 @@ help:
 	@echo "... ComponentsSDL/Window.o"
 	@echo "... ComponentsSDL/Window.i"
 	@echo "... ComponentsSDL/Window.s"
-	@echo "... FakeChellNewPosition.o"
-	@echo "... FakeChellNewPosition.i"
-	@echo "... FakeChellNewPosition.s"
 	@echo "... FakeServer.o"
 	@echo "... FakeServer.i"
 	@echo "... FakeServer.s"

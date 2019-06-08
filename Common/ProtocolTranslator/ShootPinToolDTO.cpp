@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "ShootPinToolDTO.h"
 
 ShootPinToolDTO::ShootPinToolDTO(const int16_t &x, const int16_t &y) : _x(x), _y(y) { }

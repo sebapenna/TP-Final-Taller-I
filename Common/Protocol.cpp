@@ -38,7 +38,6 @@ void Protocol::operator<<(const ProtocolDTO &dto) {
 }
 
 void Protocol::operator>>(std::shared_ptr<ProtocolDTO>& ptr) {
-    delete ptr.get(); // Elimino posibles datos de dto
     vector<int16_t> data_vector;
     int16_t command = 0, n_data_to_recv = 0;
     *this >> command;

@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "ShootPortalDTO.h"
 
 ShootPortalDTO::ShootPortalDTO(const int16_t &color, const int16_t &x,

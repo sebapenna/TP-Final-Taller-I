@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "EnergyBarrierDTO.h"
 
 EnergyBarrierDTO::EnergyBarrierDTO(const int16_t &x, const int16_t &y,

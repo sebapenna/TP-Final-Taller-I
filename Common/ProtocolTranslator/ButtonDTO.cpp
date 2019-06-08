@@ -1,4 +1,5 @@
 #include "ButtonDTO.h"
+#include <Common/ProtocolTranslator/protocol_macros.h>
 
 ButtonDTO::ButtonDTO(const int16_t& id, const int16_t &x, const int16_t &y, const int16_t &width,
         const int16_t &height) : _id(id), _x(x), _y(y), _width(width), _height(height) { }

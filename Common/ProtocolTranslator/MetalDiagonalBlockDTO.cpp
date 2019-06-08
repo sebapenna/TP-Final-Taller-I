@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "MetalDiagonalBlockDTO.h"
 
 MetalDiagonalBlockDTO::MetalDiagonalBlockDTO(const int16_t &x, const int16_t &y,

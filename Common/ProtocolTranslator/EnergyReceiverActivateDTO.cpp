@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "EnergyReceiverActivateDTO.h"
 
 EnergyReceiverActivateDTO::EnergyReceiverActivateDTO(const int16_t &id) : _id(id) { }

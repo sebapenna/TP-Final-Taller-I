@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "ProtocolTranslator.h"
 #include "ShootPortalDTO.h"
 #include "ShootPinToolDTO.h"

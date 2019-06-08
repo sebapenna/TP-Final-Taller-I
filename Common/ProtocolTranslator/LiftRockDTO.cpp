@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "LiftRockDTO.h"
 
 LiftRockDTO::LiftRockDTO(const int16_t &rock_id) : _rock_id(rock_id) { }

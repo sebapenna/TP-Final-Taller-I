@@ -22,29 +22,24 @@ World::World(size_t width, size_t height) : _width(width), _height(height) {
     _world->SetContactListener(_contact_listener);
 }
 
+template<class T>
+void deletePointerVector(vector<T> &v) {
+    for (auto &ptr : v)
+        delete ptr;
+}
+
 World::~World() {
-    for (auto &ptr : _chells)
-        delete ptr;
-    for (auto &ptr : _rock_blocks)
-        delete ptr;
-    for (auto &ptr : _buttons)
-        delete ptr;
-    for (auto &ptr : _gates)
-        delete ptr;
-    for (auto &ptr : _acids)
-        delete ptr;
-    for (auto &ptr : _energy_transmitters)
-        delete ptr;
-    for (auto &ptr : _energy_receivers)
-        delete ptr;
-    for (auto &ptr : _energy_balls)
-        delete ptr;
-    for (auto &ptr : _rocks)
-        delete ptr;
-    for (auto &ptr : _metal_diagonal_blocks)
-        delete ptr;
-    for (auto &ptr : _energy_barriers)
-        delete ptr;
+    deletePointerVector<Chell*>(_chells);
+    deletePointerVector<RockBlock*>(_rock_blocks);
+    deletePointerVector<Button*>(_buttons);
+    deletePointerVector<Gate*>(_gates);
+    deletePointerVector<Acid*>(_acids);
+    deletePointerVector<EnergyTransmitter*>(_energy_transmitters);
+    deletePointerVector<EnergyReceiver*>(_energy_receivers);
+    deletePointerVector<EnergyBall*>(_energy_balls);
+    deletePointerVector<Rock*>(_rocks);
+    deletePointerVector<MetalDiagonalBlock*>(_metal_diagonal_blocks);
+    deletePointerVector<EnergyBarrier*>(_energy_barriers);
     delete _contact_listener;
     delete _world;
 }

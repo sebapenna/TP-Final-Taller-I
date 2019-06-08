@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "GateStateDTO.h"
 
 GateStateDTO::GateStateDTO(const int16_t &id, const int16_t &state) : _id(id), _state(state) { }

@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "EnergyTransmitterDTO.h"
 
 EnergyTransmitterDTO::EnergyTransmitterDTO(const int16_t &id,  const int16_t &x, const int16_t &y,

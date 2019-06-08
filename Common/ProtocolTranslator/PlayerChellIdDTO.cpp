@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "PlayerChellIdDTO.h"
 
 PlayerChellIdDTO::PlayerChellIdDTO(const int16_t &id) : _chell_id(id){ }

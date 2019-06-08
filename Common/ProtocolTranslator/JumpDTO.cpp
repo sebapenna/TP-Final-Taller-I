@@ -1,3 +1,4 @@
+#include <Common/ProtocolTranslator/protocol_macros.h>
 #include "JumpDTO.h"
 
 JumpDTO::~JumpDTO() = default;

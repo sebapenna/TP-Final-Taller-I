@@ -1,4 +1,5 @@
 #include "AcidDTO.h"
+#include <Common/ProtocolTranslator/protocol_macros.h>
 
 AcidDTO::AcidDTO(const int16_t &x, const int16_t &y, const int16_t &width, const int16_t &height) :
 _x(x), _y(y), _width(width), _height(height) { }
