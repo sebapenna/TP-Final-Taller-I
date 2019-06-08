@@ -53,9 +53,13 @@ void SDL_Runner::run() {
                 } else {
                     world.setChellState(newChell->getId(), State::standing);
                 }
+                if (newChell->getJumping()) {
+                    world.setChellState(newChell->getId(), State::flying);
+                }
             } else if (newItem->getClassId() == PROTOCOL_PLAYER_CHELL_ID) {
                 auto chellId = (PlayerChellIdDTO*) newItem;
                 world.setCamara(chellId->getChellId(), 1000, 1000);
+                this->myChellId = chellId->getChellId();
             }
         }
         world.draw();

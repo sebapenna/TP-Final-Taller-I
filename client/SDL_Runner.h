@@ -18,6 +18,7 @@ class SDL_Runner : public Thread{
     Window window;
     Renderer renderer;
     TextureFactory textureFactory;
+    int16_t myChellId;
 
 public:
     SDL_Runner(std::string& title, SafeQueue& safeQueue);
