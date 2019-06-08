@@ -25,9 +25,11 @@ void FakeServer::run() {
         if (protocolDTO->getClassId() == PROTOCOL_MOVE_LEFT) {
             x-=10;
             safeQueue.push((void *) new ChellDTO(1,x,200, 201, 220, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
-        } else if (protocolDTO->getClassId() == PROTOCOL_MOVE_RIGHT){
+        } else if (protocolDTO->getClassId() == PROTOCOL_MOVE_RIGHT) {
             x+=10;
             safeQueue.push((void *) new ChellDTO(1,x,200, 201, 220, EAST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+        } else if (protocolDTO->getClassId() == PROTOCOL_STOP) {
+            safeQueue.push((void *) new ChellDTO(1,x,200, 201, 220, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
         }
     }
 }

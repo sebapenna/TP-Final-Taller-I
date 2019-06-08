@@ -7,8 +7,8 @@
 #include "View/ChellAnimationView.h"
 #include "TextureFactory.h"
 #include "WorldView.h"
-#include "View/BlockViewMetal.h"
-#include "View/BlockViewRock.h"
+#include "client/View/BlockMetalView.h"
+#include "client/View/BlockRockView.h"
 #include <queue>
 #include <Common/ProtocolTranslator/JumpDTO.h>
 #include <Common/ProtocolTranslator/StopDTO.h>
@@ -40,8 +40,6 @@ int main(int argc, char** argv){
 
         ProtectedBlockingQueue blockingQueue;
         SafeQueue safeQueue;
-        safeQueue.push((void*) new int());
-        safeQueue.getTopAndPop();
         SDL_Runner sdlRunner(title, safeQueue);
         sdlRunner.start();
         FakeServer server(blockingQueue, safeQueue);
