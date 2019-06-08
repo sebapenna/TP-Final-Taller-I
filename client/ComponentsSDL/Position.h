@@ -15,8 +15,8 @@ public:
     Position(int x, int y);
     int getX() const;
     int getY() const;
-
     void set(int x, int y);
+
 };
 
 

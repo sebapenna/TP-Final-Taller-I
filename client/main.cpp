@@ -98,10 +98,10 @@ int main(int argc, char** argv){
                 } else if (e.type == SDL_KEYDOWN) {
                     switch (e.key.keysym.sym) {
                         case SDLK_d:
-                            blockingQueue.push((void*) new MoveLeftDTO());
+                            blockingQueue.push((void*) new MoveRightDTO());
                             break;
                         case SDLK_a:
-                            blockingQueue.push((void*) new MoveRightDTO());
+                            blockingQueue.push((void*) new MoveLeftDTO());
                             break;
                         case SDLK_w:
                             //eventCatcher.jump();
@@ -117,5 +117,4 @@ int main(int argc, char** argv){
         std::cout << e.what() << std::endl;
         return 1;
     }
-    return 0;
 }

@@ -13,18 +13,16 @@
 
 class WorldView {
 private:
-    Camera& camera;
     std::vector<View*> views;
     std::map<int, ChellAnimationView*> chells;
+    Camera* camera;
 public:
-    WorldView(Camera& camera);
-    void moveCameraLeft();
-    void moveCameraRight();
-    void moveCameraUp();
-    void moveCameraDown();
+    WorldView();
+    void setCamara(Camera& camera);
     void draw();
     void addView(View* view);
-    void addChell(ChellAnimationView* chell, Position& position, State state);
+    void addChell(ChellAnimationView* chell, Position& position);
+    void setChellState(int16_t id, State state);
 };
 
 

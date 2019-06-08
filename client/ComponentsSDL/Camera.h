@@ -11,7 +11,7 @@ private:
     Position& position;
     int w;
     int h;
-    //SDL_Rect* chell_pos;
+
 public:
     Camera(int w, int h, Position& position);
     void draw(SDL_Texture* texture, SDL_Rect* srcRect,SDL_Rect* dstRect, Renderer& renderer, SDL_RendererFlip flip=SDL_FLIP_NONE);
