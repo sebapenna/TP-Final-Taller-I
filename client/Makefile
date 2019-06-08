@@ -456,59 +456,59 @@ TextureFactory.cpp.s:
 	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/TextureFactory.cpp.s
 .PHONY : TextureFactory.cpp.s
 
-View/BlockViewMetal.o: View/BlockViewMetal.cpp.o
+View/BlockMetalView.o: View/BlockMetalView.cpp.o
 
-.PHONY : View/BlockViewMetal.o
-
-# target to build an object file
-View/BlockViewMetal.cpp.o:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockViewMetal.cpp.o
-.PHONY : View/BlockViewMetal.cpp.o
-
-View/BlockViewMetal.i: View/BlockViewMetal.cpp.i
-
-.PHONY : View/BlockViewMetal.i
-
-# target to preprocess a source file
-View/BlockViewMetal.cpp.i:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockViewMetal.cpp.i
-.PHONY : View/BlockViewMetal.cpp.i
-
-View/BlockViewMetal.s: View/BlockViewMetal.cpp.s
-
-.PHONY : View/BlockViewMetal.s
-
-# target to generate assembly for a file
-View/BlockViewMetal.cpp.s:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockViewMetal.cpp.s
-.PHONY : View/BlockViewMetal.cpp.s
-
-View/BlockViewRock.o: View/BlockViewRock.cpp.o
-
-.PHONY : View/BlockViewRock.o
+.PHONY : View/BlockMetalView.o
 
 # target to build an object file
-View/BlockViewRock.cpp.o:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockViewRock.cpp.o
-.PHONY : View/BlockViewRock.cpp.o
+View/BlockMetalView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockMetalView.cpp.o
+.PHONY : View/BlockMetalView.cpp.o
 
-View/BlockViewRock.i: View/BlockViewRock.cpp.i
+View/BlockMetalView.i: View/BlockMetalView.cpp.i
 
-.PHONY : View/BlockViewRock.i
+.PHONY : View/BlockMetalView.i
 
 # target to preprocess a source file
-View/BlockViewRock.cpp.i:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockViewRock.cpp.i
-.PHONY : View/BlockViewRock.cpp.i
+View/BlockMetalView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockMetalView.cpp.i
+.PHONY : View/BlockMetalView.cpp.i
 
-View/BlockViewRock.s: View/BlockViewRock.cpp.s
+View/BlockMetalView.s: View/BlockMetalView.cpp.s
 
-.PHONY : View/BlockViewRock.s
+.PHONY : View/BlockMetalView.s
 
 # target to generate assembly for a file
-View/BlockViewRock.cpp.s:
-	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockViewRock.cpp.s
-.PHONY : View/BlockViewRock.cpp.s
+View/BlockMetalView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockMetalView.cpp.s
+.PHONY : View/BlockMetalView.cpp.s
+
+View/BlockRockView.o: View/BlockRockView.cpp.o
+
+.PHONY : View/BlockRockView.o
+
+# target to build an object file
+View/BlockRockView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockRockView.cpp.o
+.PHONY : View/BlockRockView.cpp.o
+
+View/BlockRockView.i: View/BlockRockView.cpp.i
+
+.PHONY : View/BlockRockView.i
+
+# target to preprocess a source file
+View/BlockRockView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockRockView.cpp.i
+.PHONY : View/BlockRockView.cpp.i
+
+View/BlockRockView.s: View/BlockRockView.cpp.s
+
+.PHONY : View/BlockRockView.s
+
+# target to generate assembly for a file
+View/BlockRockView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockRockView.cpp.s
+.PHONY : View/BlockRockView.cpp.s
 
 View/ChellAnimationView.o: View/ChellAnimationView.cpp.o
 
@@ -536,6 +536,33 @@ View/ChellAnimationView.s: View/ChellAnimationView.cpp.s
 View/ChellAnimationView.cpp.s:
 	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/ChellAnimationView.cpp.s
 .PHONY : View/ChellAnimationView.cpp.s
+
+View/DiagonalBlockMetalView.o: View/DiagonalBlockMetalView.cpp.o
+
+.PHONY : View/DiagonalBlockMetalView.o
+
+# target to build an object file
+View/DiagonalBlockMetalView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/DiagonalBlockMetalView.cpp.o
+.PHONY : View/DiagonalBlockMetalView.cpp.o
+
+View/DiagonalBlockMetalView.i: View/DiagonalBlockMetalView.cpp.i
+
+.PHONY : View/DiagonalBlockMetalView.i
+
+# target to preprocess a source file
+View/DiagonalBlockMetalView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/DiagonalBlockMetalView.cpp.i
+.PHONY : View/DiagonalBlockMetalView.cpp.i
+
+View/DiagonalBlockMetalView.s: View/DiagonalBlockMetalView.cpp.s
+
+.PHONY : View/DiagonalBlockMetalView.s
+
+# target to generate assembly for a file
+View/DiagonalBlockMetalView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/DiagonalBlockMetalView.cpp.s
+.PHONY : View/DiagonalBlockMetalView.cpp.s
 
 View/View.o: View/View.cpp.o
 
@@ -662,15 +689,18 @@ help:
 	@echo "... TextureFactory.o"
 	@echo "... TextureFactory.i"
 	@echo "... TextureFactory.s"
-	@echo "... View/BlockViewMetal.o"
-	@echo "... View/BlockViewMetal.i"
-	@echo "... View/BlockViewMetal.s"
-	@echo "... View/BlockViewRock.o"
-	@echo "... View/BlockViewRock.i"
-	@echo "... View/BlockViewRock.s"
+	@echo "... View/BlockMetalView.o"
+	@echo "... View/BlockMetalView.i"
+	@echo "... View/BlockMetalView.s"
+	@echo "... View/BlockRockView.o"
+	@echo "... View/BlockRockView.i"
+	@echo "... View/BlockRockView.s"
 	@echo "... View/ChellAnimationView.o"
 	@echo "... View/ChellAnimationView.i"
 	@echo "... View/ChellAnimationView.s"
+	@echo "... View/DiagonalBlockMetalView.o"
+	@echo "... View/DiagonalBlockMetalView.i"
+	@echo "... View/DiagonalBlockMetalView.s"
 	@echo "... View/View.o"
 	@echo "... View/View.i"
 	@echo "... View/View.s"
