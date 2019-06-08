@@ -45,6 +45,7 @@ int main(int argc, char** argv){
         FakeServer server(blockingQueue, safeQueue);
         server.start();
         SDL_Event e;
+
         while (true) {
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
