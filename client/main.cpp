@@ -38,9 +38,6 @@ int main(int argc, char** argv){
         // Chell turning around
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
 
-        // Chell dying
-        //AnimatedSprite sprite("chell.png", renderer, 199, 274, 1, 8340, 12 , 72, 0, 0, 199, 273, 1, 1);
-
         ProtectedBlockingQueue blockingQueue;
         SafeQueue safeQueue;
         safeQueue.push((void*) new int());
