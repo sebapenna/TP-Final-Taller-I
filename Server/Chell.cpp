@@ -4,7 +4,7 @@
 #include <Server/Obstacles/Rock.h>
 #include <Server/GroundBlocks/MetalDiagonalBlock.h>
 
-Chell::Chell(unsigned int id, b2Body *body) : _id(id){
+Chell::Chell(const size_t &id, b2Body *body) : _id(id){
     _body = body;
     _move_state = MOVE_STOP;
     _jump_state = ON_GROUND;
@@ -16,7 +16,7 @@ Chell::Chell(unsigned int id, b2Body *body) : _id(id){
     _previous_y = _body->GetPosition().y;
 }
 
-const unsigned int Chell::getId() const {
+const size_t Chell::getId() const {
     return _id;
 }
 
@@ -55,7 +55,7 @@ void Chell::jump() {
         throw ChellNotOnGroundException();
 }
 
-void Chell::stop_movement() {
+void Chell::stopMovement() {
     _move_state = MOVE_STOP;
 }
 
@@ -70,7 +70,7 @@ void Chell::updateJumpState() {
         case ON_GROUND:
             if (vel_y > DELTA_Y_VEL)
                 _jump_state = JUMPED;
-            else if (vel_y < 0)  // Cuerpo cayo de una superficie
+            else if (vel_y < 0 && abs(vel_y) > DELTA_Y_VEL)  // Cuerpo cayo de una superficie
                 _jump_state = FALLING;
             break;
         case JUMPED:
@@ -168,7 +168,10 @@ bool Chell::actedDuringStep() {
         _previously_dead = _dead;   // Chell murio en ultimo step
         return true;
     }
-    if (_previous_x != _body->GetPosition().x || _previous_y != _body->GetPosition().y) {
+    // Calculo diferencia para evitar detectar cambio de posicion menor a delta
+    float diff_x = abs(_previous_x - _body->GetPosition().x);
+    float diff_y = abs(_previous_y - _body->GetPosition().y);
+    if (diff_x > DELTA_POS || diff_y > DELTA_POS) {
         _previous_x = _body->GetPosition().x;
         _previous_y = _body->GetPosition().y;
         return true;
@@ -192,5 +195,23 @@ bool Chell::isShooting() {
         return true;
     }
     return false;
+}
+
+bool Chell::isJumping() {
+    return _jump_state != ON_GROUND;
+}
+
+bool Chell::isMoving() {
+    return (_body->GetLinearVelocity().x != 0);
+}
+
+uint8_t Chell::movementDirection() {
+    if (_body->GetLinearVelocity().x < 0)
+        return O_O;
+    return O_E;
+}
+
+bool Chell::isCarryingRock() {
+    return _carrying_rock;
 }
 

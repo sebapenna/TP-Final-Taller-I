@@ -3,6 +3,8 @@
 #include <Server/Portal.h>
 #include <Server/PinTool.h>
 
+EnergyReceiver::EnergyReceiver(const size_t &id) : _id(id) { }
+
 void EnergyReceiver::activate() {
     _state = ACTIVATED;
 }
@@ -35,4 +37,8 @@ bool EnergyReceiver::actedDuringStep() {
         return true;
     }
     return false;
+}
+
+const size_t EnergyReceiver::getId() const {
+    return _id;
 }

@@ -4,6 +4,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include "Server/World.h"
 #include "Server/constants.h"
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -14,6 +15,7 @@ CPPUNIT_TEST_SUITE(TestEnergyBallAndEnergyReceiver);
     CPPUNIT_TEST(testActivateWhenContactFromRight);
     CPPUNIT_TEST(testActivateWhenContactFromSouth);
     CPPUNIT_TEST(testActivateWhenContactFromNorth);
+    CPPUNIT_TEST(testTransmitterAddedToUpdateVectorAfterReceivingBall);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -33,7 +35,7 @@ public:
         delete world;
     }
 
-    void createEnergyBall() {
+    void releaseEnergyBall() {
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i)
                 world->step();
@@ -47,9 +49,9 @@ public:
 
         float e_rec_x = e_transm_x + dist_between_energy_blocks + 5;    // X centro receptor
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        world->createEnergyReceiver(0, e_rec_x, e_transm_y);
+        world->createEnergyReceiver(e_rec_x, e_transm_y);
 
-        createEnergyBall();
+        releaseEnergyBall();
 
         auto e_recv = world->getEnergyReceiver(0);
         CPPUNIT_ASSERT(!e_recv->isActivated());
@@ -76,9 +78,9 @@ public:
 
         float e_rec_x = e_transm_x - dist_between_energy_blocks - 5; // X centro receptor
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
-        world->createEnergyReceiver(0, e_rec_x, e_transm_y);
+        world->createEnergyReceiver(e_rec_x, e_transm_y);
 
-        createEnergyBall();
+        releaseEnergyBall();
 
         auto e_recv = world->getEnergyReceiver(0);
         CPPUNIT_ASSERT(!e_recv->isActivated());
@@ -105,9 +107,9 @@ public:
 
         float e_rec_y = e_transm_y + dist_between_energy_blocks + 5;
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
-        world->createEnergyReceiver(0, e_transm_x, e_rec_y);
+        world->createEnergyReceiver(e_transm_x, e_rec_y);
 
-        createEnergyBall();
+        releaseEnergyBall();
 
         auto e_recv = world->getEnergyReceiver(0);
         CPPUNIT_ASSERT(!e_recv->isActivated());
@@ -133,9 +135,9 @@ public:
 
         float e_rec_y = e_transm_y - dist_between_energy_blocks - 5; // y centro receptor
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
-        world->createEnergyReceiver(0, e_transm_x, e_rec_y);
+        world->createEnergyReceiver(e_transm_x, e_rec_y);
 
-        createEnergyBall();
+        releaseEnergyBall();
 
         auto e_recv = world->getEnergyReceiver(0);
         CPPUNIT_ASSERT(!e_recv->isActivated());
@@ -153,6 +155,21 @@ public:
 
         CPPUNIT_ASSERT(e_ball_erased);
         CPPUNIT_ASSERT(e_recv->isActivated());
+        cout << "OK";
+    }
+
+    void testTransmitterAddedToUpdateVectorAfterReceivingBall() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "recibir bola energia: ";
+        world->createEnergyReceiver(0, 10);
+        auto e_recv = world->getEnergyReceiver(0);
+        e_recv->activate();
+        world->step();
+        auto updated_transm = (EnergyReceiver*) world->getObjectsToUpdate().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
+        // Verifico es transmisor correcto
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, updated_transm->getId());
+        CPPUNIT_ASSERT_EQUAL((std::string) ENERGY_RECEIVER, updated_transm->getClassName());
         cout << "OK";
     }
 };

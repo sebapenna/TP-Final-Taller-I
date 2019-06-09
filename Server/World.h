@@ -17,7 +17,6 @@
 #include <Server/Obstacles/EnergyBarrier.h>
 #include <vector>
 #include <map>
-#include <list>
 
 class World {
 private:
@@ -38,7 +37,7 @@ private:
     // Vector para llevar registro de objetos que modificaron su estado/posicion durante step
     std::vector<Collidable*> _objects_to_update;
     // Lista con id e identificador de la clase para los objetos que tendran que ser eliminados
-    std::list<std::pair<unsigned int ,std::string>> _objects_to_delete;
+    std::vector<std::pair<size_t ,std::string>> _objects_to_delete;
 
     /* Atributos para evitar leaks */
     ContactListener* _contact_listener;
@@ -71,6 +70,8 @@ public:
 
     ~World();
 
+    // Se envarga de vacia las estructuras de elementos actualizados/eliminados antes de realizar
+    // el step.
     void step();
 
     size_t getWidth() const;
@@ -88,6 +89,12 @@ public:
     EnergyReceiver *getEnergyReceiver(const size_t& id);
     EnergyBall *getEnergyBall(const size_t& id);
 
+    const std::vector<Collidable *> &getObjectsToUpdate() const;
+    // Vector donde cada elemento sera una tupla con los datos <id, classId> de los elementos a
+    // eliminar
+    const std::vector<std::pair<size_t, std::string>> &getObjectsToDelete() const;
+
+    // Se debe crear en orden de id creciente
     void createChell(const float &x, const float &y, size_t id);
 
     /* WIDT Y HEIGHT ES DE EL TOTAL DEL CUERPO */
@@ -106,13 +113,15 @@ public:
 
     void createAcid(const float& x, const float& y);
 
-    void createButton(const size_t& id, const float& x, const float& y);
+    // Se debe crear en orden de id creciente
+    void createButton(const float &x, const float &y);
 
     void createGate(const size_t& id, const float& x, const float& y,
             const std::vector<size_t>& buttons_needed,
             const std::vector<size_t>& energy_receiver_needed);
 
-    void createEnergyReceiver(const size_t& id, const float& x, const float& y);
+    // Se debe crear en orden de id creciente
+    void createEnergyReceiver(const float &x, const float &y);
 
     void createEnergyTransmitter(const float &x, const float &y, const uint8_t &direction);
 

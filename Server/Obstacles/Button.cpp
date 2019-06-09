@@ -1,6 +1,8 @@
 #include <Server/Collidable.h>
 #include "Button.h"
 
+Button::Button(const size_t &id) : _id(id){ }
+
 void Button::activate() {
     _state = ACTIVATED;
 }
@@ -22,6 +24,10 @@ void Button::updateState() {
             _activated = false;
             break;
     }
+}
+
+size_t Button::getId() const {
+    return _id;
 }
 
 const std::string Button::getClassName() {

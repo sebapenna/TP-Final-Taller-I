@@ -16,6 +16,8 @@ CPPUNIT_TEST_SUITE(TestGate);
         CPPUNIT_TEST(testClose);
         CPPUNIT_TEST(testOpenMoreThanOne);
         CPPUNIT_TEST(testCloseMoreThanOne);
+        CPPUNIT_TEST(testGateAddedToUpdateVectorAfterOpening);
+        CPPUNIT_TEST(testGateAddedToUpdateVectorAfterClosing);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -36,12 +38,12 @@ public:
     void setUp() {
         world = new World(width, height);
         world->createRockBlock(100, 4, 0, -2); // Piso
-        world->createButton(0, button1_x, button1_y);
-        world->createButton(1, button2_x, button2_y);
+        world->createButton(button1_x, button1_y);
+        world->createButton(button2_x, button2_y);
         button1 = world->getButton(0);
         button2 = world->getButton(1);
-        world->createEnergyReceiver(0, e_recvr1_x, e_recvr1_y);
-        world->createEnergyReceiver(1, e_recvr2_x, e_recvr2_y);
+        world->createEnergyReceiver(e_recvr1_x, e_recvr1_y);
+        world->createEnergyReceiver(e_recvr2_x, e_recvr2_y);
         e_recvr1 = world->getEnergyReceiver(0);
         e_recvr2 = world->getEnergyReceiver(1);
         world->createGate(0, gate1_x, gate1_y, {0, 1}, {1});
@@ -141,6 +143,55 @@ public:
             world->step();
         CPPUNIT_ASSERT(!gate1->isOpen());
         CPPUNIT_ASSERT(!gate2->isOpen());
+        cout << "OK";
+    }
+
+    void testGateAddedToUpdateVectorAfterOpening() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "abrir: ";
+        button1->activate();
+        button2->activate();
+        e_recvr1->activate();
+        e_recvr2->activate();
+        world->step();
+        // Se actualizan botones, receivers y gates
+        CPPUNIT_ASSERT_EQUAL((size_t) 6, world->getObjectsToUpdate().size());
+        auto updated_vec = world->getObjectsToUpdate();
+        size_t id = 0;
+        for (auto &updated : updated_vec) {
+            if (updated->getClassName() == GATE){
+                auto updated_gate = (Gate*) updated;
+                CPPUNIT_ASSERT_EQUAL(id, updated_gate->getId());
+                CPPUNIT_ASSERT(updated_gate->isOpen());
+                ++id;
+            }
+        }
+        cout << "OK";
+    }
+
+    void testGateAddedToUpdateVectorAfterClosing() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "abrir: ";
+        button1->activate();
+        button2->activate();
+        e_recvr1->activate();
+        e_recvr2->activate();
+        world->step();
+        button1->deactivate();
+        button2->deactivate();
+        world->step();
+        // Se actualizan botones y gates
+        CPPUNIT_ASSERT_EQUAL((size_t) 4, world->getObjectsToUpdate().size());
+        auto updated_vec = world->getObjectsToUpdate();
+        size_t id = 0;
+        for (auto &updated : updated_vec) {
+            if (updated->getClassName() == GATE){
+                auto updated_gate = (Gate*) updated;
+                CPPUNIT_ASSERT_EQUAL(id, updated_gate->getId());
+                CPPUNIT_ASSERT(!updated_gate->isOpen());
+                ++id;
+            }
+        }
         cout << "OK";
     }
 };

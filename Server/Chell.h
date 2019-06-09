@@ -6,7 +6,7 @@
 
 class Chell: public Collidable {
 private:
-    const unsigned int _id;
+    const size_t _id;
     b2Body *_body;
     uint8 _move_state;
     uint8 _jump_state;
@@ -25,15 +25,20 @@ private:
     int calculateXImpulse();
 
 public:
-    Chell(unsigned int id, b2Body *body);
+    Chell(const size_t &id, b2Body *body);
 
-    const unsigned int getId() const;
+    const size_t getId() const;
 
     float getPositionX();
 
     float getPositionY();
 
+    // Indica la orientacion de chell.
+    // WEST: inclinado hacia izquierda
+    // EAST: inclinado hacia derecha
+    // NOT_TILTED: derechp
     int16_t tilt() const;
+
 
     b2Body *getBody() const;
 
@@ -43,7 +48,8 @@ public:
 
     void jump();
 
-    void stop_movement();
+    // En la simulacion del step el cuerpo avanzara en un primer step por el impulso ya adquirido
+    void stopMovement();
 
     void teletransport(float x, float y);
 
@@ -67,6 +73,17 @@ public:
     // perdura en el tiempo.
     bool isShooting();
     // todo: buscar alternativa a como esta hecho shooting
+
+    bool isJumping();
+
+    bool isCarryingRock();
+
+    bool isMoving();
+
+    // Indica en que direccion se esta moviendo
+    // PRE: haber utilizado isMoving para verificar que se este moviendo (por default enviara O_E
+    // aunque no se este moviendo)
+    uint8_t movementDirection();
 };
 
 

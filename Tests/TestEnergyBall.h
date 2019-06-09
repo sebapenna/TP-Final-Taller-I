@@ -4,6 +4,7 @@
 #include <cppunit/extensions/HelperMacros.h>
 #include "Server/World.h"
 #include "Server/constants.h"
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -20,6 +21,8 @@ CPPUNIT_TEST_SUITE(TestEnergyBall);
         CPPUNIT_TEST(testContactWithEnergyBarrier);
         CPPUNIT_TEST(testContactWithOpenGate);
         CPPUNIT_TEST(testContactWithClosedGate);
+        CPPUNIT_TEST(testAddedToUpdateVectorAfterMoving);
+        CPPUNIT_TEST(testAddedToDeleteVectorAfterDead);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -110,7 +113,7 @@ public:
         float button_y = energy_ball->getPositionY() - ENRG_BALL_RADIUS - BUTTON_HALF_HEIGHT - 1;
 
         // Creo boton donde colisionar la bola
-        world->createButton(0, button_x, button_y);
+        world->createButton(button_x, button_y);
         int n_bodies = world->getWorld()->GetBodyCount();
 
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
@@ -137,7 +140,7 @@ public:
         float rock_x = energy_ball->getPositionX();
         float rock_y = energy_ball->getPositionY() - ENRG_BALL_RADIUS - ROCK_HALF_LEN - 1;
 
-        // Creo boton donde colisionar la bola
+        // Creo roca donde colisionar la bola
         world->createRock(rock_x, rock_y);
         int n_bodies = world->getWorld()->GetBodyCount();
 
@@ -274,7 +277,7 @@ public:
         releaseEnergyBall();
         auto e_ball = world->getEnergyBall(0); // Bola de transm1
 
-        world->createButton(0, 100, 100); // Boton para abrir gate
+        world->createButton(100, 100); // Boton para abrir gate
         auto button  = world->getButton(0);
         button->activate(); // Activo boton
 
@@ -306,7 +309,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
         releaseEnergyBall();
         auto e_ball = world->getEnergyBall(0); // Bola de transm1
-        world->createButton(0, 100, 100); // Boton para abrir gate
+        world->createButton(100, 100); // Boton para abrir gate
 
         float gate_x = e_ball->getPositionX() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
         float gate_y = GATE_HALF_HEIGHT;
@@ -318,6 +321,54 @@ public:
 
         CPPUNIT_ASSERT(!gate->isOpen());
         CPPUNIT_ASSERT_LESS(gate_x, e_ball->getPositionX());
+        cout << "OK";
+    }
+
+    void testAddedToUpdateVectorAfterMoving () {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "movimiento: ";
+
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+        releaseEnergyBall();
+        world->step();
+        // EnergyBall ahora se esta moviendo
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
+        // Verifico no se lo agrego a vector de elementos a eliminar
+        CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+        // Verifico energ ball correcta
+        auto update_e_ball = (EnergyBall*) world->getObjectsToUpdate().at(0);
+        CPPUNIT_ASSERT_EQUAL(e_transm_y, update_e_ball->getPositionY());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, update_e_ball->getId());
+        cout << "OK";
+    }
+
+    void testAddedToDeleteVectorAfterDead () {
+        cout << endl << "TEST verificar que se agrega a vector de objetos a eliminar luego de "
+                        "morir: ";
+
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+        releaseEnergyBall();
+        auto energy_ball = world->getEnergyBall(0);
+        float rock_x = energy_ball->getPositionX() + ENRG_BALL_RADIUS + ROCK_HALF_LEN + 1;
+        float rock_y = energy_ball->getPositionY();
+        world->createRockBlock(100, 4, 0, -2); // Superficie donde apoyar roca
+        // Creo roca donde colisionar la bola
+        world->createRock(rock_x, rock_y);
+
+        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+            world->step();
+            if (world->getObjectsToDelete().size() == 1) {  // Se elimino bola energia
+                // Verifico no se lo agrego a vector de elementos a actualizar
+                CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+                // Verifico energy ball correcta (id y classId)
+                std::pair<size_t, std::string> delete_ball_data = world->getObjectsToDelete().at(0);
+                CPPUNIT_ASSERT_EQUAL((size_t) 0, delete_ball_data.first);
+                CPPUNIT_ASSERT_EQUAL((std::string) ENERGY_BALL, delete_ball_data.second);
+            }
+        }
+        CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
         cout << "OK";
     }
 };

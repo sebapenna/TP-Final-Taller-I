@@ -1,8 +1,8 @@
 #include "EnergyTransmitter.h"
 #include <Server/constants.h>
 
-EnergyTransmitter::EnergyTransmitter(b2Body *body, uint8_t direction) :
-_body(body), _direction(direction) { }
+EnergyTransmitter::EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction) :
+_body(body), _direction(direction), _id(id) { }
 
 bool EnergyTransmitter::releaseEnergyBall() {
     _time_elapsed += TIME_STEP;
@@ -40,4 +40,8 @@ bool EnergyTransmitter::actedDuringStep() {
         return true;
     }
     return false;
+}
+
+size_t EnergyTransmitter::getId() const {
+    return _id;
 }

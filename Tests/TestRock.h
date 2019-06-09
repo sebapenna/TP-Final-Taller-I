@@ -5,6 +5,7 @@
 #include "Server/World.h"
 #include "../Server/constants.h"
 #include <Common/exceptions.h>
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -15,6 +16,9 @@ CPPUNIT_TEST_SUITE(TestRock);
         CPPUNIT_TEST( testFallsWithGravity );
         CPPUNIT_TEST( testRemainsStillOnGround );
         CPPUNIT_TEST( testContactWithBarrier );
+        CPPUNIT_TEST( testContactWithEnergyBall );
+        CPPUNIT_TEST( testAddedToUpdateVectorAfterMoving );
+        CPPUNIT_TEST( testAddedToDeleteVectorAfterDead );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -47,8 +51,10 @@ public:
         CPPUNIT_ASSERT_EQUAL(init_n_bodies, world->getWorld()->GetBodyCount());
         CPPUNIT_ASSERT_EQUAL(rock1_x, rock1->getPositionX());
         CPPUNIT_ASSERT_EQUAL(rock1_y, rock1->getPositionY());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, rock1->getId());
         CPPUNIT_ASSERT_EQUAL(rock2_x, rock2->getPositionX());
         CPPUNIT_ASSERT_EQUAL(rock2_y, rock2->getPositionY());
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, rock2->getId());
         cout << "OK";
     }
 
@@ -86,5 +92,77 @@ public:
         CPPUNIT_ASSERT_EQUAL((Rock*)nullptr, world->getRock(0));
         cout << "OK";
     }
+
+    void testContactWithEnergyBall() {
+        cout << endl << "TEST quedar en lugar ante contacto con energy ball: ";
+
+        float e_transm_x = rock1_x - ENRG_BALL_RADIUS - ROCK_HALF_LEN - 1;
+        float e_transm_y = rock1_y ;
+
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+            for (int i = 0; i < STEP_ITERATIONS; ++i)
+                world->step();
+        for (int i = 0; i < STEP_ITERATIONS; ++i)
+            world->step(); // Step donde se crea EnergyBall
+
+        float pre_contact_pos_y = rock1->getPositionY();
+        float pre_contact_pos_x = rock1->getPositionX();
+
+        int n_bodies = world->getWorld()->GetBodyCount();
+        float time_elapsed = 0; // Contabilizo tiempo vida bola energia
+        bool ball_deleted = false;
+        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+            time_elapsed += TIME_STEP;
+            world->step();
+            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
+                world->getWorld()->GetBodyCount() < n_bodies)
+                ball_deleted = true;    // Bola colisiono con pared
+        }
+        CPPUNIT_ASSERT_EQUAL(pre_contact_pos_x, rock1->getPositionX());
+        float diff_y = pre_contact_pos_y - rock1->getPositionY();
+        CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
+        CPPUNIT_ASSERT(ball_deleted);
+        cout << "OK";
+    }
+
+    void testAddedToUpdateVectorAfterMoving() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "movimiento: ";
+        CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+        for (int i = 0; i < 5; i++)
+            world->step();  // Realizo varias iteraciones para que cuerpo acelere con gravedad
+        // Roca 2 esta cayendo por gravedad, verifico se agrego elemento a vector y que no se
+        // agrego la roca 1 (quieta)
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
+        // Verifico no se lo agrego a vector de elementos a eliminar
+        CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+        // Verifico roca correcta
+        auto update_rock = (Rock*) world->getObjectsToUpdate().at(0);
+        CPPUNIT_ASSERT_EQUAL(rock2_x, update_rock->getPositionX());
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, update_rock->getId());
+        cout << "OK";
+    }
+
+    void testAddedToDeleteVectorAfterDead() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos a eliminar luego de "
+                        "morir: ";
+        CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+        float barrier_x = 10, barrier_y = BARRIER_HALF_LENGTH;
+        world->createEnergyBarrier(barrier_x, barrier_y, O_V);
+        rock2->teletransport(barrier_x, barrier_y); // Coloco sobre la barrera
+        world->step();
+        // Roca 2 debe ser eliminada
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToDelete().size());
+        // Verifico no se lo agrego a vector de elementos a actualizar
+        CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+        // Verifico roca correcta (id y classId)
+        std::pair<size_t, std::string> delete_rock_data = world->getObjectsToDelete().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, delete_rock_data.first);
+        CPPUNIT_ASSERT_EQUAL((std::string) ROCK, delete_rock_data.second);
+        cout << "OK";
+    }
+
+    // todo: TESTS CON CHELL MOVIENDOLO
 };
 #endif //PORTAL_TESTROCK_H

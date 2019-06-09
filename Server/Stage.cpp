@@ -101,14 +101,14 @@ Stage::Stage(const std::string &config_file) {
         _world->createAcid(it.getX(), it.getY());
 
     for (auto &it : buttons_vector)
-        _world->createButton(it.getId(), it.getX(), it.getY());
+        _world->createButton(it.getX(), it.getY());
 
     for (auto &it : gates_vector)
         _world->createGate(it.getId(), it.getX(), it.getY(),
                 it.getButtonsNeeded(), it.getEnergyReceiversNeeded());
 
     for (auto &it : e_receiver_vector)
-        _world->createEnergyReceiver(it.getId(), it.getX(), it.getY());
+        _world->createEnergyReceiver(it.getX(), it.getY());
 
     for (auto &it : e_transm_vector)
         _world->createEnergyTransmitter(it.getX(), it.getY(),

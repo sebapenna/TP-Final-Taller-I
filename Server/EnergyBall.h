@@ -8,16 +8,19 @@
 class EnergyBall: public Collidable {
 private:
     b2Body *_body;
+    size_t _id;
     float _lifetime = 0;
     float _previous_x, _previous_y;
     bool _dead = false, _previously_dead = false;
 
 public:
-    EnergyBall(b2Body *body, uint8_t direction);
+    EnergyBall(const size_t &id, b2Body *body, uint8_t direction);
 
     void updateLifetime();
 
     bool isDead();
+
+    size_t getId() const;
 
     b2Body *getBody() const;
 

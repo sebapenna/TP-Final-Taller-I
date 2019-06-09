@@ -1,7 +1,13 @@
 #include "Gate.h"
 
+Gate::Gate(const size_t &id) :_id(id){ }
+
 bool Gate::isOpen() {
     return _open;
+}
+
+const size_t Gate::getId() const {
+    return _id;
 }
 
 void Gate::addButtonNeeded(Button *button) {

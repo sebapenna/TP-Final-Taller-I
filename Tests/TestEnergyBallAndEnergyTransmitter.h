@@ -24,6 +24,7 @@ CPPUNIT_TEST_SUITE(TestEnergyBallAndEnergyTransmitter);
         CPPUNIT_TEST(testMovesEastWithFixedSpeed);
         CPPUNIT_TEST(testMovesWestWithFixedSpeed);
         CPPUNIT_TEST(testDiesAfterLifetimeReached);
+        CPPUNIT_TEST(testTransmitterAddedToUpdateVectorAfterReleasingBall);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -315,6 +316,19 @@ public:
             world->step(); // Step donde se crea EnergyBall
         // Testeo que se haya eliminado de world de Box2D
         CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
+        cout << "OK";
+    }
+
+    void testTransmitterAddedToUpdateVectorAfterReleasingBall() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "crear bola energia: ";
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        releaseEnergyBall();
+        auto updated_transm = (EnergyTransmitter*) world->getObjectsToUpdate().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
+        // Verifico es transmisor correcto
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, updated_transm->getId());
+        CPPUNIT_ASSERT_EQUAL(O_E, updated_transm->getDirection());
         cout << "OK";
     }
 };

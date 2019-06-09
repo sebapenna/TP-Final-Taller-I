@@ -15,7 +15,7 @@ void DTOProcessor::applyActionToChell(ProtocolDTO *dto, size_t chell_id) {
             chell->jump();
             break;
         case PROTOCOL_STOP:
-            chell->stop_movement();
+            chell->stopMovement();
             break;
         case PROTOCOL_SHOOT_PORTAL:
             // todo: DISPARAR PORTAL
@@ -27,9 +27,11 @@ void DTOProcessor::applyActionToChell(ProtocolDTO *dto, size_t chell_id) {
             // todo: LIFT ROCK
             break;
         case PROTOCOL_DROP_ROCK:
-            // todo: DROP ROCL
+            // todo: DROP ROCK
             break;
         default:    // No existe este caso
             break;
     }
 }
+
+// todo: GENERATE DTO(COLLIDABLE*) => VECTORES UPDATED Y DELETED

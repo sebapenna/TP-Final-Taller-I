@@ -15,6 +15,7 @@
 using std::remove_if;
 using std::vector;
 using std::for_each;
+using std::string;
 
 World::World(const size_t &width, const size_t &height) : _width(width), _height(height) {
     b2Vec2 gravity(GRAVITY_X, GRAVITY_Y);
@@ -89,8 +90,9 @@ b2World *World::getWorld() const {
 
 /************************ Step ************************/
 void World::step() {
-    // todo: ELIMINAR TODOS LOS PUNTEROS DE CADA CLASE (destroy)
-    // TODO: EN VECTOR PONER nullptr?
+    // Vacio estructuras de objetos actualizados/eliminados durante step
+    _objects_to_update.clear();
+    _objects_to_delete.clear();
     _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
     stepEnergyTransmitters();
     stepEnergyBalls();
@@ -99,6 +101,7 @@ void World::step() {
     stepGates();
     stepChells();
     stepRocks();
+
     // Orden de acciones: primero las que su estado afectan a otros
     // todo: GUARDAR REGISTRO DE LOS IDS DE LO QUE TENGO QUE ELIMINAR, CUALQUIERA SEA OBJETO CON
     //  ID VA A ALCANZAR (RESTO DE DATOS DEL DTO NO ME IMPORTAN). QUIZAS VOY A NECESITAR UN
@@ -125,8 +128,11 @@ void World::stepButtons() {
 }
 
 void World::stepEnergyReceivers() {
-    for (auto &energy_receiver : _energy_receivers)
+    for (auto &energy_receiver : _energy_receivers) {
         energy_receiver->updateState();
+        if (energy_receiver->actedDuringStep())
+            _objects_to_update.push_back(energy_receiver);
+    }
 }
 
 void World::stepEnergyTransmitters() {
@@ -147,9 +153,11 @@ void World::stepChells() {
     for (int i = 0; i < _chells.size(); ++i) {
         auto chell = _chells[i];
         if (chell) {    // Verifico no haberlo eliminado previamente
-            if (!chell->isDead()) // Verifico que no murio en algun contacto
+            if (!chell->isDead()) { // Verifico que no murio en algun contacto
                 chell->move();
-            else {
+                if (chell->actedDuringStep())
+                    _objects_to_update.push_back(chell);
+            } else {
                 _world->DestroyBody(chell->getBody());
                 _objects_to_delete.emplace_back(i, chell->getClassName());
                 delete chell;
@@ -170,6 +178,8 @@ void World::stepEnergyBalls() {
                 _objects_to_delete.emplace_back(i, energy_ball->getClassName());
                 delete energy_ball;
                 _energy_balls[i] = nullptr;
+            } else if (energy_ball->actedDuringStep()) {
+                _objects_to_update.push_back(energy_ball);
             }
         }
     }
@@ -180,11 +190,15 @@ void World::stepEnergyBalls() {
 void World::stepRocks() {
     for (int i = 0; i < _rocks.size(); ++i) {
         auto rock = _rocks[i];
-        if (rock && rock->isDead()) {
-            _world->DestroyBody(rock->getBody());
-            _objects_to_delete.emplace_back(i, rock->getClassName());
-            delete rock;
-            _rocks[i] = nullptr;
+        if (rock) {
+            if (rock->isDead()) {
+                _world->DestroyBody(rock->getBody());
+                _objects_to_delete.push_back({i, rock->getClassName()});
+                delete rock;
+                _rocks[i] = nullptr;
+            } else if (rock->actedDuringStep()) {
+                _objects_to_update.push_back(rock);
+            }
         }
     }
 //    _rocks.erase(remove_if(_rocks.begin(), _rocks.end(), deleted<Rock>), _rocks.end());
@@ -301,7 +315,8 @@ void World::createMetalDiagonalBlock(const float &width, const float &height,
 void World::createRock(const float &x, const float &y) {
     auto body = createDynamicBox(x, y, ROCK_HALF_LEN, ROCK_HALF_LEN,
             ROCK_DENSITY);
-    auto *rock = new Rock(body);
+    // id se incrementa con tamaño del vector de rocas
+    auto *rock = new Rock(_rocks.size(), body);
     body->SetUserData(rock);
     _rocks.push_back(rock);
 }
@@ -314,10 +329,11 @@ void World::createAcid(const float &x, const float &y) {
     _acids.push_back(acid);
 }
 
-void World::createButton(const size_t &id, const float &x, const float &y) {
+void World::createButton(const float &x, const float &y) {
    auto body = createStaticBox(x, y, BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT,
            BUTTON_FRICTION);
-   auto *button = new Button();
+    // id se incrementa con tamaño del vector de botones
+    auto *button = new Button(_buttons.size());
    body->SetUserData(button);
    _buttons.push_back(button);
 }
@@ -327,7 +343,8 @@ void World::createGate(const size_t &id, const float &x, const float &y,
                        const std::vector<size_t>& energy_receiver_needed) {
     auto body = createStaticBox(x, y, GATE_HALF_WIDTH, GATE_HALF_HEIGHT,
             GATE_FRICTION);
-    auto *gate = new Gate();
+    // id se incrementa con tamaño del vector de gates
+    auto *gate = new Gate(_gates.size());
     for (auto &button_id : buttons_needed)
         gate->addButtonNeeded(_buttons.at(button_id));
     for (auto &e_rec_id : energy_receiver_needed)
@@ -336,9 +353,10 @@ void World::createGate(const size_t &id, const float &x, const float &y,
     _gates.push_back(gate);
 }
 
-void World::createEnergyReceiver(const size_t &id, const float &x, const float &y) {
+void World::createEnergyReceiver(const float &x, const float &y) {
     auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_FRICTION);
-    auto e_recv = new EnergyReceiver();
+    // id se incrementa con tamaño del vector de receivers
+    auto e_recv = new EnergyReceiver(_energy_receivers.size());
     body->SetUserData(e_recv);
     _energy_receivers.push_back(e_recv);
 }
@@ -347,7 +365,8 @@ void World::createEnergyTransmitter(const float &x, const float &y,
                                     const uint8_t &direction) {
     auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN,
                                 ENRG_BLOCK_FRICTION);
-    auto *e_transm = new EnergyTransmitter(body, direction);
+    // id se incrementa con tamaño del vector de transmitters
+    auto *e_transm = new EnergyTransmitter(_energy_transmitters.size(), body, direction);
     body->SetUserData(e_transm);
     _energy_transmitters.push_back(e_transm);
 }
@@ -391,7 +410,7 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
 
     body->CreateFixture(&fixture);
 
-    auto *energy_ball = new EnergyBall(body, energy_transm->getDirection());
+    auto *energy_ball = new EnergyBall(_energy_balls.size(), body, energy_transm->getDirection());
     body->SetUserData(energy_ball);
     _energy_balls.push_back(energy_ball);
 }
@@ -424,5 +443,13 @@ void World::createEnergyBarrier(const float &x, const float &y,
     auto e_barrier = new EnergyBarrier();
     body->SetUserData(e_barrier);
     _energy_barriers.push_back(e_barrier);
+}
+
+const vector<Collidable *> &World::getObjectsToUpdate() const {
+    return _objects_to_update;
+}
+
+const vector<std::pair<size_t, string>> &World::getObjectsToDelete() const {
+    return _objects_to_delete;
 }
 

@@ -19,16 +19,15 @@ CPPUNIT_TEST_SUITE_REGISTRATION( TestWorld );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestChell );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestRock );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestButton );
-CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyReceiver );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestGate );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBallAndEnergyTransmitter );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBallAndEnergyReceiver );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyReceiver );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBall );
 
 using CppUnit::TestFactoryRegistry;
 
-int main( int argc, char **argv)
-{
+int main( int argc, char **argv) {
     CppUnit::TextUi::TestRunner runner;
     TestFactoryRegistry &registry = TestFactoryRegistry::getRegistry();
     runner.addTest( registry.makeTest() );

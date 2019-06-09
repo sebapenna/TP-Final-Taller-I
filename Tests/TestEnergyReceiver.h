@@ -28,8 +28,8 @@ public:
     void setUp() {
         world = new World(width, height);
         world->createRockBlock(100, 4, 0, -2); // Piso
-        world->createEnergyReceiver(0, e_recvr1_x, e_recvr1_y);
-        world->createEnergyReceiver(1, e_recvr2_x, e_recvr2_y);
+        world->createEnergyReceiver(e_recvr1_x, e_recvr1_y);
+        world->createEnergyReceiver(e_recvr2_x, e_recvr2_y);
         init_n_bodies = 3;
         e_recvr1 = world->getEnergyReceiver(0);
         e_recvr2 = world->getEnergyReceiver(1);

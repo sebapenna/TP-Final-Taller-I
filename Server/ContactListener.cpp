@@ -46,5 +46,11 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
         auto gate = (Gate*) coll1;
         if (gate->isOpen())
             contact->SetEnabled(false); // Bola energia pasa compuerta abierta
+    } else if (cname1 == ROCK && cname2 == ENERGY_BALL) {
+        coll2->collideWith(coll1);
+        contact->SetEnabled(false); // Evito que roca se mueva por el choque
+    } else if (cname2 == ROCK && cname1 == ENERGY_BALL) {
+        coll1->collideWith(coll2);
+        contact->SetEnabled(false);
     }
 }

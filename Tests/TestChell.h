@@ -5,6 +5,7 @@
 #include "Server/World.h"
 #include "../Server/constants.h"
 #include <Common/exceptions.h>
+#include <string>
 
 using std::cout;
 using std::endl;
@@ -39,6 +40,11 @@ CPPUNIT_TEST_SUITE( TestChell );
         CPPUNIT_TEST( testContactWithRockInItsWay );
         CPPUNIT_TEST( testContactWithAcid );
         CPPUNIT_TEST( testContactWithEnergyBall );
+        CPPUNIT_TEST( testAddedToUpdateVectorAfterMoving );
+        CPPUNIT_TEST( testAddedToUpdateVectorafterStopping );
+        CPPUNIT_TEST( testAddedToUpdateVectorAfterJumping );
+        CPPUNIT_TEST( testAddedToUpdateVectorAfterLandingOnGround );
+        CPPUNIT_TEST( testAddedToDeleteVectorAfterDead );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -96,6 +102,9 @@ public:
             world->step();
         float diff_x = chell->getPositionX() - chell_init_x;
         CPPUNIT_ASSERT_GREATER((float) 0, diff_x);
+        CPPUNIT_ASSERT(chell->isMoving());
+        CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
+        CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
         cout << "OK";
     }
 
@@ -106,6 +115,9 @@ public:
             world->step();
         float diff_x = chell->getPositionX() - chell_init_x;
         CPPUNIT_ASSERT_LESS((float) 0, diff_x);
+        CPPUNIT_ASSERT(chell->isMoving());
+        CPPUNIT_ASSERT_EQUAL(O_O, chell->movementDirection());
+        CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
         cout << "OK";
     }
 
@@ -142,7 +154,7 @@ public:
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        chell->stop_movement();
+        chell->stopMovement();
         for (int i = 0; i < STEP_ITERATIONS; i++)   // Tiempo que demora frenar
             world->step(); // Tiempo que demora frenar por el impulso
         float pos_after_stop = chell->getPositionX();
@@ -150,6 +162,7 @@ public:
             world->step();
             float diff_x = pos_after_stop - chell->getPositionX();
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
+            CPPUNIT_ASSERT(!chell->isMoving());
         }
         cout << "OK";
     }
@@ -159,7 +172,7 @@ public:
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        chell->stop_movement();
+        chell->stopMovement();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step(); // Tiempo que demora frenar por el impulso
         float pos_after_stop = chell->getPositionX();
@@ -167,6 +180,7 @@ public:
             world->step();
             float diff_x = pos_after_stop - chell->getPositionX();
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
+            CPPUNIT_ASSERT(!chell->isMoving());
         }
         cout << "OK";
     }
@@ -207,8 +221,10 @@ public:
         chell->jump();
         for (int i = 0; i < 200; i++) {
             world->step();
-            if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
+            if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
                 jumped = true;
+                CPPUNIT_ASSERT(chell->isJumping());
+            }
         }
         CPPUNIT_ASSERT(jumped);
         cout << "OK";
@@ -259,8 +275,10 @@ public:
         for (int i = 0; i < 200; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
-                if (!jumped)
+                if (!jumped) {
                     chell->move_right();    // Muevo una vez que salto
+                    CPPUNIT_ASSERT(chell->isJumping());
+                }
                 jumped = true;
                 if (chell->getPositionX() > chell_init_x)
                     moved_on_air = true;    // Se movio en X estando en el aire
@@ -281,8 +299,10 @@ public:
         for (int i = 0; i < 200; i++) {
             world->step();
             if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
-                if (!jumped)
+                if (!jumped) {
                     chell->move_left();    // Muevo una vez que salto
+                    CPPUNIT_ASSERT(chell->isJumping());
+                }
                 jumped = true;
                 if (chell->getPositionX() < chell_init_x)
                     moved_on_air = true;    // Se movio en X estando en el aire
@@ -538,7 +558,174 @@ public:
         cout << "OK";
     }
 
+    void testAddedToUpdateVectorAfterMoving() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "movimiento: ";
+        // Testeo con move_right
+        CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+        chell->move_right();
+        bool updated = false;
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            world->step();
+            if (world->getObjectsToUpdate().size() == 1) {
+                // Verifico no se lo agrego a vector de elementos a eliminar
+                CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+                // Verifico chell correcta
+                auto update_chell = (Chell *) world->getObjectsToUpdate().at(0);
+                CPPUNIT_ASSERT_EQUAL((size_t) 0, update_chell->getId());
+                CPPUNIT_ASSERT(update_chell->isMoving());
+                CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
+                CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
+                CPPUNIT_ASSERT(!chell->isJumping());
+                CPPUNIT_ASSERT(!chell->isShooting());
+                CPPUNIT_ASSERT(!chell->isCarryingRock());
+                CPPUNIT_ASSERT(!chell->isDead());
+                updated = true;
+            }
+        }
+        CPPUNIT_ASSERT(updated);
+
+        updated = false;
+        // Testeo con move_left
+        chell->move_left();
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            world->step();
+            if (world->getObjectsToUpdate().size() == 1) {
+                // Verifico no se lo agrego a vector de elementos a eliminar
+                CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+                // Verifico chell correcta
+                auto update_chell = (Chell *) world->getObjectsToUpdate().at(0);
+                CPPUNIT_ASSERT_EQUAL((size_t) 0, update_chell->getId());
+                CPPUNIT_ASSERT(update_chell->isMoving());
+                CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
+                CPPUNIT_ASSERT_EQUAL(O_O, chell->movementDirection());
+                CPPUNIT_ASSERT(!chell->isJumping());
+                CPPUNIT_ASSERT(!chell->isShooting());
+                CPPUNIT_ASSERT(!chell->isCarryingRock());
+                CPPUNIT_ASSERT(!chell->isDead());
+                updated = true;
+            }
+        }
+        CPPUNIT_ASSERT(updated);
+        cout << "OK";
+    }
+
+    void testAddedToUpdateVectorAfterJumping() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "saltar: ";
+        // Testeo con move_right
+        CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+        chell->jump();
+        bool updated = false;
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            world->step();
+            if (world->getObjectsToUpdate().size() == 1) {
+                // Verifico no se lo agrego a vector de elementos a eliminar
+                CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+                // Verifico chell correcta
+                auto update_chell = (Chell *) world->getObjectsToUpdate().at(0);
+                CPPUNIT_ASSERT_EQUAL((size_t) 0, update_chell->getId());
+                CPPUNIT_ASSERT(!update_chell->isMoving());
+                CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
+                CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
+                CPPUNIT_ASSERT(chell->isJumping());
+                CPPUNIT_ASSERT(!chell->isShooting());
+                CPPUNIT_ASSERT(!chell->isCarryingRock());
+                CPPUNIT_ASSERT(!chell->isDead());
+                updated = true;
+            }
+        }
+        CPPUNIT_ASSERT(updated);
+        cout << "OK";
+    }
+
+    void testAddedToUpdateVectorAfterLandingOnGround() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "caer en superficie tras salto: ";
+        // Testeo con move_right
+        CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+        chell->jump();
+        bool updated = false;
+        for (int i = 0; i < 10 * STEP_ITERATIONS; i++) {    // Varias iteraciones para saltar y caer
+            world->step();
+            if (world->getObjectsToUpdate().size() == 1) {
+                auto update_chell = (Chell *) world->getObjectsToUpdate().at(0);
+                if (!update_chell->isJumping()) {   // Chell cayo en superficie
+                    // Verifico no se lo agrego a vector de elementos a eliminar
+                    CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+                    // Verifico chell correcta
+                    CPPUNIT_ASSERT_EQUAL((size_t) 0, update_chell->getId());
+                    CPPUNIT_ASSERT(!update_chell->isMoving());
+                    CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
+                    CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
+                    CPPUNIT_ASSERT(!chell->isJumping());
+                    CPPUNIT_ASSERT(!chell->isShooting());
+                    CPPUNIT_ASSERT(!chell->isCarryingRock());
+                    CPPUNIT_ASSERT(!chell->isDead());
+                    updated = true;
+                }
+            }
+        }
+        CPPUNIT_ASSERT(updated);
+        cout << "OK";
+    }
+
+     void testAddedToUpdateVectorafterStopping() {
+         cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                         "frenar movimiento: ";
+         CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+         chell->move_right();
+         for (int i = 0; i < STEP_ITERATIONS; i++)
+             world->step();
+         chell->stopMovement();
+         bool updated = false;
+         for (int i = 0; i < STEP_ITERATIONS; i++) {
+             world->step();
+             if (world->getObjectsToUpdate().size() == 1) { // Chell freno (demora mas de un step)
+                 // Verifico no se lo agrego a vector de elementos a eliminar
+                 CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+                 // Verifico chell correcta
+                 auto update_chell = (Chell*) world->getObjectsToUpdate().at(0);
+                 CPPUNIT_ASSERT_EQUAL((size_t) 0, update_chell->getId());
+                 CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
+                 CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
+                 CPPUNIT_ASSERT(!update_chell->isMoving()); // Not moving implica que se freno
+                 CPPUNIT_ASSERT(!chell->isJumping());
+                 CPPUNIT_ASSERT(!chell->isShooting());
+                 CPPUNIT_ASSERT(!chell->isCarryingRock());
+                 CPPUNIT_ASSERT(!chell->isDead());
+                 updated = true;
+             }
+         }
+         CPPUNIT_ASSERT(updated);
+         cout << "OK";
+    }
+
+    void testAddedToDeleteVectorAfterDead() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos a eliminar luego de "
+                        "morir: ";
+        float acid_x = chell_init_x + CHELL_HALF_WIDTH + ACID_HALF_WIDTH + 1;
+        float acid_y = ACID_HALF_HEIGHT;
+        world->createAcid(acid_x, acid_y);
+        chell->move_right();
+        bool deleted = true;
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            world->step();
+            if (world->getObjectsToDelete().size() == 1) { // Chell freno (demora mas de un step)
+                // Verifico no se lo agrego a vector de elementos a actualizar
+                CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
+                // Verifico chell correcta
+                auto deleted_chell_data = world->getObjectsToDelete().at(0);
+                CPPUNIT_ASSERT_EQUAL((size_t) 0, deleted_chell_data.first);
+                CPPUNIT_ASSERT_EQUAL((std::string) CHELL, deleted_chell_data.second);
+                deleted = true;
+            }
+        }
+        CPPUNIT_ASSERT(deleted);
+        cout << "OK";
+    }
 };
+
 
 // todo: TEST TELETRANSPORTAR Y VER LAS VELOCIDADES ?
 

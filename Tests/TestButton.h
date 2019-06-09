@@ -20,6 +20,8 @@ CPPUNIT_TEST_SUITE(TestButton);
         CPPUNIT_TEST( testDeactivateEndContactWithRock );
         CPPUNIT_TEST( testActivateContactWithChell );
         CPPUNIT_TEST( testActivateAndDeactivateContactWithChell );
+        CPPUNIT_TEST( testAddedToUpdateVectorAfterActivating );
+        CPPUNIT_TEST( testAddedToUpdateVectorAfterDeactivating );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -35,8 +37,8 @@ public:
     void setUp() {
         world = new World(width, height);
         world->createRockBlock(100, 4, 0, -2); // Piso
-        world->createButton(0, button1_x, button1_y);
-        world->createButton(1, button2_x, button2_y);
+        world->createButton(button1_x, button1_y);
+        world->createButton(button2_x, button2_y);
         init_n_bodies = 3;
         button1 = world->getButton(0);
         button2 = world->getButton(1);
@@ -189,6 +191,32 @@ public:
         CPPUNIT_ASSERT(button_act);    // Boton se activo en algun momento
         CPPUNIT_ASSERT(!button1->isActivated());    // Finalizo el contacto
         CPPUNIT_ASSERT_GREATER(button1_x, chell->getPositionX()); // Paso la roca
+        cout << "OK";
+    }
+
+    void testAddedToUpdateVectorAfterActivating() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "activarse: ";
+        button1->activate();
+        world->step();
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
+        auto update_button = (Button*) world->getObjectsToUpdate().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, update_button->getId());
+        CPPUNIT_ASSERT(update_button->isActivated());
+        cout << "OK";
+    }
+
+    void testAddedToUpdateVectorAfterDeactivating() {
+        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
+                        "desactivarse: ";
+        button2->activate();
+        world->step();
+        button2->deactivate();
+        world->step();
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
+        auto update_button = (Button*) world->getObjectsToUpdate().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, update_button->getId());
+        CPPUNIT_ASSERT(!update_button->isActivated());
         cout << "OK";
     }
 };

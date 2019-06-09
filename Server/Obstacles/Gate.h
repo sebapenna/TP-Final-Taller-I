@@ -11,8 +11,13 @@ private:
     bool _open = false;
     std::vector<Button*> _buttons_needed;
     std::vector<EnergyReceiver*>  _energy_reveivers_needed;
+    const size_t _id;
 
 public:
+    explicit Gate(const size_t &id);
+
+    const size_t getId() const;
+
     bool isOpen();
 
     void addButtonNeeded(Button* button);

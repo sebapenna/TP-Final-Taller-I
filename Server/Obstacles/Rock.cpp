@@ -1,7 +1,7 @@
 #include "Rock.h"
 #include <Server/constants.h>
 
-Rock::Rock(b2Body *body) : _body(body){
+Rock::Rock(const size_t &id, b2Body *body) : _body(body), _id(id) {
     _previous_x = _body->GetPosition().x;
     _previous_y = _body->GetPosition().y;
 }
@@ -51,11 +51,18 @@ bool Rock::actedDuringStep() {
         _previously_dead = _dead;   // Se debe eliminar roca
         return true;
     }
-    if (_previous_x != _body->GetPosition().x || _previous_y != _body->GetPosition().y) {
+    // Calculo diferencia para evitar detectar cambio de posicion menor a delta
+    float diff_x = abs(_previous_x - _body->GetPosition().x);
+    float diff_y = abs(_previous_y - _body->GetPosition().y);
+    if (diff_x > DELTA_POS || diff_y > DELTA_POS) {
         _previous_x = _body->GetPosition().x;
         _previous_y = _body->GetPosition().y;
         return true;    // Se movio
     }
     return false;
+}
+
+const size_t Rock::getId() const {
+    return _id;
 }
 

@@ -1,7 +1,7 @@
 #include "EnergyBall.h"
 #include <Server/constants.h>
 
-EnergyBall::EnergyBall(b2Body *body, uint8_t direction) {
+EnergyBall::EnergyBall(const size_t &id, b2Body *body, uint8_t direction) : _id(id) {
     _body = body;
     int x_impulse = 0, y_impulse = 0;
     switch (direction) {
@@ -51,6 +51,10 @@ b2Body *EnergyBall::getBody() const {
     return _body;
 }
 
+size_t EnergyBall::getId() const {
+    return _id;
+}
+
 void EnergyBall::collideWith(Collidable *other) {
     auto c_name = other->getClassName();
     if (c_name == ROCK_BLOCK || c_name == ACID || c_name == BUTTON ||
@@ -71,7 +75,10 @@ bool EnergyBall::actedDuringStep() {
         _previously_dead = _dead;
         return true;
     }
-    if (_previous_x != _body->GetPosition().x || _previous_y != _body->GetPosition().y) {
+    // Calculo diferencia para evitar detectar cambio de posicion menor a delta
+    float diff_x = abs(_previous_x - _body->GetPosition().x);
+    float diff_y = abs(_previous_y - _body->GetPosition().y);
+    if (diff_x > DELTA_POS || diff_y > DELTA_POS) {
         _previous_x = _body->GetPosition().x;
         _previous_y = _body->GetPosition().y;
         return true;
