@@ -17,9 +17,9 @@ FakeServer::FakeServer(ProtectedBlockingQueue &blockingQueue, SafeQueue &safeQue
 void FakeServer::run() {
     int x=200;
     safeQueue.push((void *) new ChellDTO(1, x, 200, 201, 220, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
-    safeQueue.push((void *) new PlayerChellIdDTO(1));
     safeQueue.push((void *) new ChellDTO(2, -200, -100, 201, 220, WEST, NOT_TILTED, NOT_MOVING, JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
-    safeQueue.push((void *) new ChellDTO(3, 100, -100, 201, 220, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+    safeQueue.push((void *) new ChellDTO(3, 100, -100, 201, 220, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DELETE));
+    safeQueue.push((void *) new PlayerChellIdDTO(1));
     while (true) {
         auto protocolDTO = (ProtocolDTO*) blockingQueue.getTopAndPop();
         if (protocolDTO->getClassId() == PROTOCOL_MOVE_LEFT) {

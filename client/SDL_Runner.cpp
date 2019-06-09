@@ -6,6 +6,8 @@
 #include <iostream>
 #include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
 #include <client/View/DiagonalBlockMetalView.h>
+#include <client/View/AcidView.h>
+#include <client/View/RockView.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -21,8 +23,10 @@ SDL_Runner::SDL_Runner(std::string& title, SafeQueue &safeQueue) : safeQueue(saf
 void SDL_Runner::run() {
     std::string chell_file_name("chell");
     WorldView world;
-
     std::string block_file_name("block");
+    std::string bulletAndRock("bulletAndRock");
+    std::string acidAndButtons("acidAndButtons");
+    std::string gate_file_name("gate");
     for (int startX = -2000; startX<7000; startX+=128) {
         for (int startY = -2000; startY<7000; startY+=128) {
             View* block = new BlockRockView(textureFactory.getTextureByName(block_file_name),renderer);
@@ -33,39 +37,66 @@ void SDL_Runner::run() {
         block->setDestRect(startX, 400, 128,128);
         world.addView(block);
     }
+    View* acid = new AcidView(textureFactory.getTextureByName(acidAndButtons),renderer);
+    acid->setDestRect(192, 350, 128,50);
+    world.addView(acid);
+    View* rock1 = new RockView(textureFactory.getTextureByName(bulletAndRock),renderer);
+    rock1->setDestRect(500, 400, 128,100);
+    world.addView(rock1);
 
+    GatesView* gate = new GatesView(1, textureFactory.getTextureByName(gate_file_name), renderer);
+    gate->setDestRect(300,400,200,200);
+    world.addGates(gate);
 
-
+    int timeStepMs = 1000.f / 70.f;
+    int timeLastMs = 0;
+    int timeAccumulatedMs = 0;
+    int timeCurrentMs = 0;
     while (connected) {
         renderer.clearRender();
-        auto newItem = (ProtocolDTO*) safeQueue.getTopAndPop();
-        if (newItem) {
-            if (newItem->getClassId() == PROTOCOL_CHELL_DATA) {
-                auto newChell = (ChellDTO *) newItem;
-                auto chell2 = new ChellAnimationView(newChell->getId(),
-                                                     textureFactory.getTextureByName(chell_file_name), renderer);
-                Position chell2Pos(newChell->getX(), newChell->getY());
-                chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
-                world.addChell(chell2, chell2Pos);
-                if (newChell->getMoving()) {
-                    if (newChell->getDirection() == WEST) {
-                        world.setChellState(newChell->getId(), State::runningLeft);
-                    } else {
-                        world.setChellState(newChell->getId(), State::runningRight);
+        timeLastMs = timeCurrentMs;
+        timeCurrentMs = SDL_GetTicks();
+        int timeDeltaMs = timeCurrentMs - timeLastMs;
+        timeAccumulatedMs += timeDeltaMs;
+
+        while (timeAccumulatedMs >= timeStepMs) {
+            auto newItem = (ProtocolDTO*) safeQueue.getTopAndPop();
+            if (newItem) {
+                switch (newItem->getClassId()) {
+                    case PROTOCOL_CHELL_DATA: {
+                        auto newChell = (ChellDTO *) newItem;
+                        auto chell2 = new ChellAnimationView(newChell->getId(),
+                                                             textureFactory.getTextureByName(chell_file_name), renderer);
+                        Position chell2Pos(newChell->getX(), newChell->getY());
+                        chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
+                        world.addChell(chell2, chell2Pos);
+                        if (newChell->getDeleteState()) {
+                            world.setChellState(newChell->getId(), ChellState::dying);
+                        } else if (newChell->getMoving()) {
+                            if (newChell->getDirection() == WEST) {
+                                world.setChellState(newChell->getId(), ChellState::runningLeft);
+                            } else {
+                                world.setChellState(newChell->getId(), ChellState::runningRight);
+                            }
+                        } else if (newChell->getJumping()) {
+                            world.setChellState(newChell->getId(), ChellState::flying);
+                        } else {
+                            world.setChellState(newChell->getId(), ChellState::standing);
+                        }
+
+                        break;
                     }
-                } else {
-                    world.setChellState(newChell->getId(), State::standing);
+                    case PROTOCOL_PLAYER_CHELL_ID: {
+                        auto chellId = (PlayerChellIdDTO*) newItem;
+                        world.setCamara(chellId->getChellId(), 1000, 1000);
+                        this->myChellId = chellId->getChellId();
+                        break;
+                    }
                 }
-                if (newChell->getJumping()) {
-                    world.setChellState(newChell->getId(), State::flying);
-                }
-            } else if (newItem->getClassId() == PROTOCOL_PLAYER_CHELL_ID) {
-                auto chellId = (PlayerChellIdDTO*) newItem;
-                world.setCamara(chellId->getChellId(), 1000, 1000);
-                this->myChellId = chellId->getChellId();
             }
+            world.draw();
+            timeAccumulatedMs -= timeStepMs;
         }
-        world.draw();
         renderer.render();
     }
 }

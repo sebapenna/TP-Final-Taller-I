@@ -9,7 +9,7 @@
 #include "../ComponentsSDL/AnimatedSprite.h"
 #include "View.h"
 
-enum State {standing, runningLeft, runningRight, firing, flying, dying};
+enum ChellState {standing, runningLeft, runningRight, firing, flying, dying};
 class ChellAnimationView : public View {
 private:
     int id;
@@ -18,12 +18,13 @@ private:
     AnimatedSprite firingChell;
     AnimatedSprite flyingChell;
     AnimatedSprite dyingChell;
-    State state;
+    ChellState state;
 public:
     ChellAnimationView(int id, SDL_Texture* texture, Renderer& renderer, int x=0, int y=0);
     int getId() const;
     void draw(Camera& camera);
-    void setState(State state);
+    void setState(ChellState state);
+    bool isDead();
 };
 
 

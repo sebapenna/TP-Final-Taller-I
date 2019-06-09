@@ -1621,7 +1621,7 @@ class MockRolodex : public Rolodex {
       .WillOnce(SetArrayArgument<0>(names.begin(), names.end()));
 ```
 
-## Changing a Mock Object's Behavior Based on the State ##
+## Changing a Mock Object's Behavior Based on the ChellState ##
 
 If you expect a call to change the behavior of a mock object, you can use `::testing::InSequence` to specify different behaviors before and after the call:
 

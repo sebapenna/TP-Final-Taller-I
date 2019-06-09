@@ -20,7 +20,7 @@ void TextureFactory::init(Renderer& renderer) {
     textures["chell"] = loadTexture(std::string("chell.png"), renderer);
     textures["block"] = loadTexture(std::string("block.png"), renderer);
     textures["gate"] = loadTexture(std::string("gates.png"), renderer);
-    textures["bullet"] = loadTexture(std::string("bullet.png"), renderer);
+    textures["bulletAndRock"] = loadTexture(std::string("bulletAndRock.png"), renderer);
     textures["acidAndButtons"] = loadTexture(std::string("acidAndButtons.png"), renderer);
 }
 

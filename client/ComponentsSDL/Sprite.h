@@ -25,7 +25,7 @@ public:
     void setSourceW(int w);
     void setTexture(SDL_Texture *newTexture);
     void setAlphaMod(Uint8 alpha);
-    SDL_Rect* getSrc();
+    SDL_Rect getSrc();
     SDL_Texture* getTexture();
     void setSourceRect(int x, int y, int w, int h);
 
