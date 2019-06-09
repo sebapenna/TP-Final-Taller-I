@@ -29,6 +29,9 @@ void WorldView::draw() {
         if (camera->isInCamera(chell.second->getDst())) {
             chell.second->draw(*camera);
         }
+        if (chell.second->isDead()) {
+            chells.erase(chell.first);
+        }
     }
 }
 

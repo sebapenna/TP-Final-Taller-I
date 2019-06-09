@@ -24,6 +24,7 @@ public:
     int getId() const;
     void draw(Camera& camera);
     void setState(ChellState state);
+    bool isDead();
 };
 
 

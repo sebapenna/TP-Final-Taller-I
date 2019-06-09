@@ -24,7 +24,7 @@ void SDL_Runner::run() {
     std::string chell_file_name("chell");
     WorldView world;
     std::string block_file_name("block");
-    std::string bulletAndRock("bullet");
+    std::string bulletAndRock("bulletAndRock");
     std::string acidAndButtons("acidAndButtons");
     std::string gate_file_name("gate");
     for (int startX = -2000; startX<7000; startX+=128) {
@@ -70,20 +70,20 @@ void SDL_Runner::run() {
                         Position chell2Pos(newChell->getX(), newChell->getY());
                         chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
                         world.addChell(chell2, chell2Pos);
-                        if (newChell->getMoving()) {
+                        if (newChell->getDeleteState()) {
+                            world.setChellState(newChell->getId(), ChellState::dying);
+                        } else if (newChell->getMoving()) {
                             if (newChell->getDirection() == WEST) {
                                 world.setChellState(newChell->getId(), ChellState::runningLeft);
-                                world.openGate(1);
                             } else {
                                 world.setChellState(newChell->getId(), ChellState::runningRight);
-                                world.closeGate(1);
                             }
+                        } else if (newChell->getJumping()) {
+                            world.setChellState(newChell->getId(), ChellState::flying);
                         } else {
                             world.setChellState(newChell->getId(), ChellState::standing);
                         }
-                        if (newChell->getJumping()) {
-                            world.setChellState(newChell->getId(), ChellState::flying);
-                        }
+
                         break;
                     }
                     case PROTOCOL_PLAYER_CHELL_ID: {
