@@ -25,6 +25,12 @@ void WorldView::draw() {
             gate.second->draw(*camera);
         }
     }
+
+    for (auto const& button: buttons) {
+        if (camera->isInCamera(button.second->getDst())) {
+            button.second->draw(*camera);
+        }
+    }
     for(auto const& chell: chells) {
         if (camera->isInCamera(chell.second->getDst())) {
             chell.second->draw(*camera);
@@ -39,18 +45,30 @@ void WorldView::addView(View* view) {
     views.push_back(view);
 }
 
-void WorldView::addGates(GatesView *gate) {
+void WorldView::addGates(GateView *gate) {
     gates[gate->getId()] = gate;
 }
 
 void WorldView::openGate(int16_t id) {
-    GatesView* gate = gates[id];
+    GateView* gate = gates[id];
     gate->open();
 }
 
 void WorldView::closeGate(int16_t id) {
-    GatesView* gate = gates[id];
+    GateView* gate = gates[id];
     gate->close();
+}
+
+void WorldView::addButton(ButtonView* button) {
+    buttons[button->getId()] = button;
+}
+
+void WorldView::activateButton(int16_t id) {
+    buttons[id]->enable();
+}
+
+void WorldView::deactivateButton(int16_t id) {
+    buttons[id]->disable();
 }
 
 void WorldView::addChell(ChellAnimationView* chell, Position& position) {

@@ -10,13 +10,16 @@
 #include "View/ChellAnimationView.h"
 #include <vector>
 #include <map>
-#include <client/View/GatesView.h>
+#include <client/View/GateView.h>
+#include <client/View/ButtonView.h>
 
 class WorldView {
 private:
     std::vector<View*> views;
     std::map<int, ChellAnimationView*> chells;
-    std::map<int, GatesView*> gates;
+    std::map<int, GateView*> gates;
+    std::map<int, ButtonView*> buttons;
+
     Camera* camera;
 public:
     WorldView();
@@ -24,9 +27,12 @@ public:
     void setCamara(int16_t id, int w, int h);
     void draw();
     void addView(View* view);
-    void addGates(GatesView* gate);
+    void addGates(GateView* gate);
     void openGate(int16_t id);
     void closeGate(int16_t id);
+    void addButton(ButtonView* button);
+    void activateButton(int16_t id);
+    void deactivateButton(int16_t id);
     void addChell(ChellAnimationView* chell, Position& position);
     void setChellState(int16_t id, ChellState state);
 };
