@@ -25,6 +25,12 @@ void WorldView::draw() {
             gate.second->draw(*camera);
         }
     }
+
+    for (auto const& button: buttons) {
+        if (camera->isInCamera(button.second->getDst())) {
+            button.second->draw(*camera);
+        }
+    }
     for(auto const& chell: chells) {
         if (camera->isInCamera(chell.second->getDst())) {
             chell.second->draw(*camera);
@@ -51,6 +57,10 @@ void WorldView::openGate(int16_t id) {
 void WorldView::closeGate(int16_t id) {
     GateView* gate = gates[id];
     gate->close();
+}
+
+void WorldView::addButton(ButtonView* button) {
+    buttons[button->getId()] = button;
 }
 
 void WorldView::activateButton(int16_t id) {

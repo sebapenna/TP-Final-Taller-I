@@ -30,6 +30,7 @@ public:
     void addGates(GateView* gate);
     void openGate(int16_t id);
     void closeGate(int16_t id);
+    void addButton(ButtonView* button);
     void activateButton(int16_t id);
     void deactivateButton(int16_t id);
     void addChell(ChellAnimationView* chell, Position& position);

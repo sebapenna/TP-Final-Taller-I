@@ -15,9 +15,9 @@ ButtonView::ButtonView(int id, SDL_Texture *texture, Renderer &renderer, int x, 
 }
 
 void ButtonView::draw(Camera &camera) {
-    if (this->state = ButtonState::activated) {
+    if (this->state == ButtonState::activated) {
         activatedButton.draw(camera,this->getDst());
-    } else if (this->state = ButtonState::deactivated) {
+    } else if (this->state == ButtonState::deactivated) {
         deactivatedButton.draw(camera,this->getDst());
     }
 }

@@ -18,7 +18,6 @@ void View::setDestRect(int x, int y, int w, int h) {
 }
 
 View::View(int x, int y) : position(x, y) {
-
 }
 
 Position &View::getPosition() {

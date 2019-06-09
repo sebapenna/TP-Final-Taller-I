@@ -98,6 +98,7 @@ void SDL_Runner::run() {
                         auto buttonData = (ButtonDTO*) newItem;
                         auto button = new ButtonView(buttonData->getId(), textureFactory.getTextureByName(acidAndButtons), renderer);
                         button->setDestRect(buttonData->getX(), buttonData->getY(), buttonData->getWidth(), buttonData->getHeight());
+                        world.addButton(button);
                         break;
                     }
                     case PROTOCOL_BUTTON_CHANGE_STATE: {
