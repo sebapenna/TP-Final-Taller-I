@@ -2,10 +2,10 @@
 // Created by jonathanmedina on 08/06/19.
 //
 
-#include "GatesView.h"
+#include "GateView.h"
 
 
-GatesView::GatesView(int id, SDL_Texture *texture, Renderer &renderer, int x, int y) :
+GateView::GateView(int id, SDL_Texture *texture, Renderer &renderer, int x, int y) :
         View(x, y), id(id),
         closedGate(texture, renderer),
         gate(texture, renderer, 193, 385, 1, 2051, 10, 19, 1, 1, AnimationState::oneTime) {
@@ -13,7 +13,7 @@ GatesView::GatesView(int id, SDL_Texture *texture, Renderer &renderer, int x, in
         this->state = GateState::closed;
 }
 
-void GatesView::draw(Camera &camera) {
+void GateView::draw(Camera &camera) {
     if (this->state == GateState::closed) {
         closedGate.draw(camera, this->getDst());
     } else if (this->state == GateState::open) {
@@ -27,15 +27,15 @@ void GatesView::draw(Camera &camera) {
     }
 }
 
-int GatesView::getId() const {
+int GateView::getId() const {
     return id;
 }
 
-void GatesView::close() {
+void GateView::close() {
     gate.setState(AnimationState::revert);
     this->state = GateState::isClosingBack;
 }
 
-void GatesView::open() {
+void GateView::open() {
     this->state = GateState::open;
 }

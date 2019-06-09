@@ -4,7 +4,7 @@
 
 #include "BlockMetalView.h"
 
-BlockMetalView::BlockMetalView(SDL_Texture *texture, Renderer &renderer, int x, int y) : View(x, y), block(texture, renderer){
+BlockMetalView::BlockMetalView(SDL_Texture *texture, Renderer &renderer, int x, int y) : View(x, y), block(texture, renderer) {
     block.setSourceRect(1,601,192,192);
 }
 

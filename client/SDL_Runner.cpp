@@ -8,6 +8,9 @@
 #include <client/View/DiagonalBlockMetalView.h>
 #include <client/View/AcidView.h>
 #include <client/View/RockView.h>
+#include <Common/ProtocolTranslator/ButtonDTO.h>
+#include <client/View/ButtonView.h>
+#include <Common/ProtocolTranslator/ButtonStateDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -44,7 +47,7 @@ void SDL_Runner::run() {
     rock1->setDestRect(500, 400, 128,100);
     world.addView(rock1);
 
-    GatesView* gate = new GatesView(1, textureFactory.getTextureByName(gate_file_name), renderer);
+    GateView* gate = new GateView(1, textureFactory.getTextureByName(gate_file_name), renderer);
     gate->setDestRect(300,400,200,200);
     world.addGates(gate);
 
@@ -70,7 +73,7 @@ void SDL_Runner::run() {
                         Position chell2Pos(newChell->getX(), newChell->getY());
                         chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
                         world.addChell(chell2, chell2Pos);
-                        if (newChell->getDeleteState()) {
+                        if (newChell->getDeleteState() == DELETE) {
                             world.setChellState(newChell->getId(), ChellState::dying);
                         } else if (newChell->getMoving()) {
                             if (newChell->getDirection() == WEST) {
@@ -78,12 +81,11 @@ void SDL_Runner::run() {
                             } else {
                                 world.setChellState(newChell->getId(), ChellState::runningRight);
                             }
-                        } else if (newChell->getJumping()) {
+                        } else if (newChell->getJumping() == JUMPING) {
                             world.setChellState(newChell->getId(), ChellState::flying);
                         } else {
                             world.setChellState(newChell->getId(), ChellState::standing);
                         }
-
                         break;
                     }
                     case PROTOCOL_PLAYER_CHELL_ID: {
@@ -91,6 +93,20 @@ void SDL_Runner::run() {
                         world.setCamara(chellId->getChellId(), 1000, 1000);
                         this->myChellId = chellId->getChellId();
                         break;
+                    }
+                    case PROTOCOL_BUTTON_DATA: {
+                        auto buttonData = (ButtonDTO*) newItem;
+                        auto button = new ButtonView(buttonData->getId(), textureFactory.getTextureByName(acidAndButtons), renderer);
+                        button->setDestRect(buttonData->getX(), buttonData->getY(), buttonData->getWidth(), buttonData->getHeight());
+                        break;
+                    }
+                    case PROTOCOL_BUTTON_CHANGE_STATE: {
+                        auto buttonState = (ButtonStateDTO*) newItem;
+                        if (buttonState->getState() == PRESSED) {
+                            world.activateButton(buttonState->getId());
+                        } else {
+                            world.deactivateButton(buttonState->getId());
+                        }
                     }
                 }
             }
