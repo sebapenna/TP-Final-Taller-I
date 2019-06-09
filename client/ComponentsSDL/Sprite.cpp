@@ -46,8 +46,8 @@ void Sprite::setSourceW(int w) {
     srcRect.w = w;
 }
 
-SDL_Rect *Sprite::getSrc() {
-    return &srcRect;
+SDL_Rect Sprite::getSrc() {
+    return srcRect;
 }
 
 SDL_Texture *Sprite::getTexture() {

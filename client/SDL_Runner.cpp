@@ -26,6 +26,7 @@ void SDL_Runner::run() {
     std::string block_file_name("block");
     std::string bulletAndRock("bullet");
     std::string acidAndButtons("acidAndButtons");
+    std::string gate_file_name("gate");
     for (int startX = -2000; startX<7000; startX+=128) {
         for (int startY = -2000; startY<7000; startY+=128) {
             View* block = new BlockRockView(textureFactory.getTextureByName(block_file_name),renderer);
@@ -43,6 +44,9 @@ void SDL_Runner::run() {
     rock1->setDestRect(500, 400, 128,100);
     world.addView(rock1);
 
+    GatesView* gate = new GatesView(1, textureFactory.getTextureByName(gate_file_name), renderer);
+    gate->setDestRect(300,400,200,200);
+    world.addGates(gate);
 
     int timeStepMs = 1000.f / 70.f;
     int timeLastMs = 0;
@@ -68,15 +72,17 @@ void SDL_Runner::run() {
                         world.addChell(chell2, chell2Pos);
                         if (newChell->getMoving()) {
                             if (newChell->getDirection() == WEST) {
-                                world.setChellState(newChell->getId(), State::runningLeft);
+                                world.setChellState(newChell->getId(), ChellState::runningLeft);
+                                world.openGate(1);
                             } else {
-                                world.setChellState(newChell->getId(), State::runningRight);
+                                world.setChellState(newChell->getId(), ChellState::runningRight);
+                                world.closeGate(1);
                             }
                         } else {
-                            world.setChellState(newChell->getId(), State::standing);
+                            world.setChellState(newChell->getId(), ChellState::standing);
                         }
                         if (newChell->getJumping()) {
-                            world.setChellState(newChell->getId(), State::flying);
+                            world.setChellState(newChell->getId(), ChellState::flying);
                         }
                         break;
                     }

@@ -29,10 +29,23 @@ void AnimatedSprite::moveNextSprite() {
         return;
     }
     currentTime++;
+    if (animationState == AnimationState::revert) {
+        if (!historyAnimation.size()) return;
+        if (i == 0) {
+            i = totalColumns-1;
+            j--;
+        } else {
+            i--;
+        }
+
+        SDL_Rect lastSrc = historyAnimation.back();
+        historyAnimation.pop_back();
+        currentSprite--;
+        this->setSourceRect(lastSrc.x, lastSrc.y, lastSrc.w, lastSrc.h);
+        return;
+    }
     if((amountSprites == currentSprite) && (animationState == AnimationState::onRepeat)) { // Reset
-        i = 0;
-        j = 0;
-        currentSprite = 1;
+        this->reset();
     } else if (((amountSprites != currentSprite) && (animationState == AnimationState::oneTime)
     || (animationState == AnimationState::onRepeat))) {
         if (totalColumns-1 == i) {
@@ -44,6 +57,9 @@ void AnimatedSprite::moveNextSprite() {
         currentSprite++;
     }
     this->setSourceXY(i * width + startX + offSetX * i, j * height + startY + offSetY * j);
+    historyAnimation.push_back(this->getSrc());
+
+
 }
 
 void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect) {
@@ -54,14 +70,25 @@ void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect) {
 void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect, SDL_RendererFlip flip) {
     this->moveNextSprite();
     this->draw(camera, dstRect, flip);
+
 }
 
 void AnimatedSprite::setTimePerSprite(Uint32 t) {
     timePerSprite = t;
 }
 
+bool AnimatedSprite::done() {
+    return (((amountSprites == currentSprite) && (animationState != AnimationState::revert)) ||
+            ((currentSprite == 1) && (animationState == AnimationState::revert)));
+}
+
 void AnimatedSprite::reset() {
-    currentSprite = 0;
+    historyAnimation.clear();
+    currentSprite = 1;
     i = 0;
     j = 0;
+}
+
+void AnimatedSprite::setState(AnimationState state) {
+    this->animationState = state;
 }

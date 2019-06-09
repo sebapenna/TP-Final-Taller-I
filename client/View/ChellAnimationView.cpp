@@ -29,7 +29,7 @@ void ChellAnimationView::draw(Camera& camera) {
     }
 
 }
-void ChellAnimationView::setState(State state) {
+void ChellAnimationView::setState(ChellState state) {
     this->state = state;
 }
 
