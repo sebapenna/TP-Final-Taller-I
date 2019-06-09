@@ -8,7 +8,7 @@
 
 #include "../ComponentsSDL/Sprite.h"
 
-class BlockRockView : public View{
+class BlockRockView : public View {
 private:
     Sprite block;
 public:
