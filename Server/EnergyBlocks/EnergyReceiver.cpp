@@ -26,5 +26,13 @@ void EnergyReceiver::collideWith(Collidable *other) {
 }
 
 void EnergyReceiver::endCollitionWith(Collidable *other) {
+    // No tiene acciones al finalizar colisiones
+}
 
+bool EnergyReceiver::actedDuringStep() {
+    if (_previous_state != _state) {
+        _previous_state = _state;   // Actualizo previous state para evitar detectar falso cambio
+        return true;
+    }
+    return false;
 }

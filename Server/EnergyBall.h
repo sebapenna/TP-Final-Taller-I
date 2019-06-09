@@ -9,8 +9,8 @@ class EnergyBall: public Collidable {
 private:
     b2Body *_body;
     float _lifetime = 0;
-    bool _dead = false;
-    bool _kill = false; // Booleano para indicar si es step en que eliminar energy ball
+    float _previous_x, _previous_y;
+    bool _dead = false, _previously_dead = false;
 
 public:
     EnergyBall(b2Body *body, uint8_t direction);
@@ -31,9 +31,7 @@ public:
 
     void endCollitionWith(Collidable *other) override;
 
-    bool kill() const;
-
-    void killed();
+    bool actedDuringStep() override;
 };
 
 

@@ -27,7 +27,7 @@ add_library(portal-src
         Obstacles/Acid.cpp
         Obstacles/EnergyBarrier.cpp
         PinTool.cpp
-        )
+        DTOProcessor.cpp DTOProcessor.h)
 
 target_link_libraries(portal-src common-src Box2D yaml-parser)
 

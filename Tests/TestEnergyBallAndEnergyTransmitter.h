@@ -59,17 +59,15 @@ public:
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i) {
                 world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
+                CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(0));
             }
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
 
         float new_y = e_transm_y + dist_transm_to_enrgball;
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        auto energy_ball = world->getEnergyBall(0);
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
+        CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(1)); // No existe otra bola
         CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getPositionX());
         CPPUNIT_ASSERT_GREATEREQUAL(new_y, energy_ball->getPositionY());
         cout << "OK";
@@ -82,17 +80,15 @@ public:
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i) {
                 world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
+                CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(0));
             }
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
 
         float new_y = e_transm_y - dist_transm_to_enrgball;
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        auto energy_ball = world->getEnergyBall(0);
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
+        CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(1)); // No existe otra bola
         CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getPositionX());
         CPPUNIT_ASSERT_LESSEQUAL(new_y, energy_ball->getPositionY());
         cout << "OK";
@@ -105,17 +101,15 @@ public:
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i) {
                 world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
+                CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(0));
             }
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
 
         float new_x = e_transm_x + dist_transm_to_enrgball;
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
+        auto energy_ball = world->getEnergyBall(0);
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
+        CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(1)); // No existe otra bola
         CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getPositionY());
         CPPUNIT_ASSERT_GREATEREQUAL(new_x, energy_ball->getPositionX());
         cout << "OK";
@@ -128,16 +122,14 @@ public:
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
             for (int i = 0; i < STEP_ITERATIONS; ++i) {
                 world->step();
-                auto vec = world->getEnergyBalls();
-                CPPUNIT_ASSERT_EQUAL((size_t) 0, vec.size());
+                CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(0));
             }
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
 
         float new_x = e_transm_x - dist_transm_to_enrgball;
-        auto vec = world->getEnergyBalls();
-        auto energy_ball = vec[0];
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, vec.size());
+        auto energy_ball = world->getEnergyBall(0);
+        CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(1)); // No existe otra bola
         CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getPositionY());
         CPPUNIT_ASSERT_LESSEQUAL(new_x, energy_ball->getPositionX());
         cout << "OK";
@@ -154,13 +146,12 @@ public:
             for (int j = 1; j < TIME_TO_RELEASE; ++j) {
                 for (int i = 0; i < STEP_ITERATIONS; ++i)
                     world->step();
-                if (total_balls > 0 && world->getEnergyBalls().empty())
+                if (total_balls > 0 && !world->getEnergyBall(k))
                     ball_removed = true; // Se elimino una bola por el tiempo transcurrido
             }
             for (int i = 0; i < STEP_ITERATIONS; ++i)
                 world->step(); // Step donde se crea EnergyBall
-            auto vec_size = world->getEnergyBalls().size();
-            if (vec_size == 1)
+            if (world->getEnergyBall(k))
                 ++total_balls;
         }
         CPPUNIT_ASSERT_EQUAL((size_t) 2, total_balls);
@@ -174,7 +165,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
         releaseEnergyBall();
 
-        auto energy_ball = world->getEnergyBalls().at(0);
+        auto energy_ball = world->getEnergyBall(0);
         float previous_pos_y = energy_ball->getPositionY();
         float previous_pos_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
@@ -191,7 +182,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
         releaseEnergyBall();
 
-        auto energy_ball = world->getEnergyBalls().at(0);
+        auto energy_ball = world->getEnergyBall(0);
         float previous_pos_y = energy_ball->getPositionY();
         float previous_pos_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
@@ -208,7 +199,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
         releaseEnergyBall();
 
-        auto energy_ball = world->getEnergyBalls().at(0);
+        auto energy_ball = world->getEnergyBall(0);
         float previous_pos_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Permito avanzar a la bola de energia
@@ -225,7 +216,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
         releaseEnergyBall();
 
-        auto energy_ball = world->getEnergyBalls().at(0);
+        auto energy_ball = world->getEnergyBall(0);
         float previous_pos_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step();  // Permito avanzar a la bola de energia
@@ -242,7 +233,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
         releaseEnergyBall();
 
-        auto energy_ball = world->getEnergyBalls().at(0);
+        auto energy_ball = world->getEnergyBall(0);
         float y_step = 0;
         float init_y = energy_ball->getPositionY();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
@@ -261,7 +252,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
         releaseEnergyBall();
 
-        auto energy_ball = world->getEnergyBalls().at(0);
+        auto energy_ball = world->getEnergyBall(0);
         float y_step = 0;
         float init_y = energy_ball->getPositionY();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
@@ -280,7 +271,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
         releaseEnergyBall();
 
-        auto energy_ball = world->getEnergyBalls().at(0);
+        auto energy_ball = world->getEnergyBall(0);
         float x_step = 0;
         float init_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
@@ -299,7 +290,7 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
         releaseEnergyBall();
 
-        auto energy_ball = world->getEnergyBalls().at(0);
+        auto energy_ball = world->getEnergyBall(0);
         float x_step = 0;
         float init_x = energy_ball->getPositionX();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
@@ -318,13 +309,11 @@ public:
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
         releaseEnergyBall();
 
-        size_t n_energy_balls = world->getEnergyBalls().size();
         int n_bodies = world->getWorld()->GetBodyCount();
         int iterations = ENERGY_BALL_MAX_LIFETIME / TIME_STEP;
         for (int i = 0; i < iterations; ++i)
             world->step(); // Step donde se crea EnergyBall
-        // Testeo que se haya eliminado de vector y world de Box2D
-        CPPUNIT_ASSERT_LESS(n_energy_balls, world->getEnergyBalls().size());
+        // Testeo que se haya eliminado de world de Box2D
         CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }

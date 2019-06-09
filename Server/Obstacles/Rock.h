@@ -7,6 +7,9 @@
 class Rock: public Collidable {
 private:
     b2Body *_body;
+    float _previous_x, _previous_y;
+    bool _previously_dead = false;  // Guardo estado previo para identificar cambio
+    bool _dead = false;
 
 public:
     explicit Rock(b2Body *body);
@@ -17,13 +20,19 @@ public:
 
     float getVelocityY();
 
-    const std::string getClassName() override;
+    b2Body *getBody() const;
+
+    bool isDead() const;
 
     void teletransport(float x, float y);
+
+    const std::string getClassName() override;
 
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
+
+    bool actedDuringStep() override;
 };
 
 

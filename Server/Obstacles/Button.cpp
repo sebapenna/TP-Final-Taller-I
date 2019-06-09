@@ -39,3 +39,11 @@ void Button::endCollitionWith(Collidable *other) {
     if (c_name == ROCK || c_name == CHELL)
         this->deactivate();
 }
+
+bool Button::actedDuringStep() {
+    if (_previous_state != _state) {
+        _previous_state = _state;   // Actualizo previous step para evitar detectar falso cambio
+        return true;
+    }
+    return false;
+}

@@ -4,9 +4,10 @@
 #include <Server/Collidable.h>
 #include <Server/constants.h>
 
-class EnergyReceiver: Collidable {
+class EnergyReceiver: public Collidable {
 private:
 
+    uint8_t _previous_state = NOT_ACTIVATED;    // Estado previo para detectar cambio estado
     uint8_t _state = NOT_ACTIVATED;
     bool _activated = false;
 
@@ -21,8 +22,9 @@ public:
 
     void collideWith(Collidable *other) override;
 
-private:
     void endCollitionWith(Collidable *other) override;
+
+    bool actedDuringStep() override;
 };
 
 

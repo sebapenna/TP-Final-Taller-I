@@ -19,3 +19,6 @@ void MetalDiagonalBlock::endCollitionWith(Collidable *other) {
     // No realiza ninguna accion
 }
 
+bool MetalDiagonalBlock::actedDuringStep() {
+    return false;   // Nunca realiza accion durante un step
+}

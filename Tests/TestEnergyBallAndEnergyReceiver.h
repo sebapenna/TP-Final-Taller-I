@@ -51,7 +51,7 @@ public:
 
         createEnergyBall();
 
-        auto e_recv = world->getEnergyReceivers().at(0);
+        auto e_recv = world->getEnergyReceiver(0);
         CPPUNIT_ASSERT(!e_recv->isActivated());
 
         int n_bod = world->getWorld()->GetBodyCount();
@@ -80,7 +80,7 @@ public:
 
         createEnergyBall();
 
-        auto e_recv = world->getEnergyReceivers().at(0);
+        auto e_recv = world->getEnergyReceiver(0);
         CPPUNIT_ASSERT(!e_recv->isActivated());
 
         int n_bod = world->getWorld()->GetBodyCount();
@@ -109,7 +109,7 @@ public:
 
         createEnergyBall();
 
-        auto e_recv = world->getEnergyReceivers().at(0);
+        auto e_recv = world->getEnergyReceiver(0);
         CPPUNIT_ASSERT(!e_recv->isActivated());
         int n_bod = world->getWorld()->GetBodyCount();
         float time_elapsed = 0; // Contabilizo tiempo antes que muera bola
@@ -137,7 +137,7 @@ public:
 
         createEnergyBall();
 
-        auto e_recv = world->getEnergyReceivers().at(0);
+        auto e_recv = world->getEnergyReceiver(0);
         CPPUNIT_ASSERT(!e_recv->isActivated());
         int n_bod = world->getWorld()->GetBodyCount();
         float time_elapsed = 0; // Contabilizo tiempo antes que muera bola

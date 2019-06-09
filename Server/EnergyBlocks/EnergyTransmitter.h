@@ -9,6 +9,7 @@ private:
     b2Body *_body;
     uint8_t _direction; // Direccion en que saldra la Bola Energia
     float32 _time_elapsed = 0;
+    bool _changed_state = false;    // Booleano para indicar camibo de estado durante step
 
 public:
     explicit EnergyTransmitter(b2Body *body, uint8_t direction);
@@ -25,6 +26,8 @@ public:
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
+
+    bool actedDuringStep() override;
 };
 
 

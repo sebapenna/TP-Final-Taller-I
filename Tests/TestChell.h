@@ -38,6 +38,7 @@ CPPUNIT_TEST_SUITE( TestChell );
         CPPUNIT_TEST( testContactWithFallingRock );
         CPPUNIT_TEST( testContactWithRockInItsWay );
         CPPUNIT_TEST( testContactWithAcid );
+        CPPUNIT_TEST( testContactWithEnergyBall );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -383,16 +384,20 @@ public:
         float b_y = 0;
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NO);
         chell->move_right();
-        bool y_increased = false;
+        bool y_increased = false, tilted = false;
         for (int i = 1; i < 200; i++) {
             world->step();
             CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->getPositionX());
             if ((chell->getPositionY() - DELTA_POS) > chell_init_y)
                 y_increased = true; // Subio por bloque diagonal
+            if (chell->tilt() == WEST)
+                tilted = true;
         }
         float diff_y = chell->getPositionY() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y); // Cayo al final del bloque
         CPPUNIT_ASSERT(y_increased);
+        CPPUNIT_ASSERT(tilted);
+        CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
         cout << "OK";
     }
 
@@ -403,16 +408,20 @@ public:
         float b_y = 0;
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NE);
         chell->move_left();
-        bool y_increased = false;
+        bool y_increased = false, tilted= false;
         for (int i = 1; i < 200; i++) {
             world->step();
             CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->getPositionX());
             if ((chell->getPositionY() - DELTA_POS) > chell_init_y)
                 y_increased = true; // Subio por bloque diagonal
+            if (chell->tilt() == EAST)
+                tilted = true;
         }
         float diff_y = chell->getPositionY() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y); // Cayo al final del bloque
         CPPUNIT_ASSERT(y_increased);
+        CPPUNIT_ASSERT(tilted);
+        CPPUNIT_ASSERT_EQUAL(NOT_TILTED, chell->tilt());
         cout << "OK";
     }
 
@@ -475,7 +484,7 @@ public:
         auto n_bodies = world->getWorld()->GetBodyCount();
         for (int i = 1; i < STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT(chell->isDead()); // Se elimino chell
+        CPPUNIT_ASSERT_EQUAL((Chell*)nullptr, world->getChell(0)); // Se elimino chell
         CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }
@@ -488,7 +497,7 @@ public:
         auto n_bodies = world->getWorld()->GetBodyCount();
         for (int i = 1; i < 2 * STEP_ITERATIONS; i++)
             world->step();
-        auto rock = world->getRocks().at(0);
+        auto rock = world->getRock(0);
         // Verifico roca frena a chell
         CPPUNIT_ASSERT_LESS(rock->getPositionX(), chell->getPositionX());
         CPPUNIT_ASSERT(!chell->isDead());
@@ -505,7 +514,26 @@ public:
         chell->move_right();    // Avanzo chell para que choque con acido
         for (int i = 1; i < 2 * STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT(chell->isDead());
+        CPPUNIT_ASSERT_EQUAL((Chell*)nullptr, world->getChell(0)); // Se elimino chell
+        CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
+        cout << "OK";
+    }
+
+    void testContactWithEnergyBall() {
+        cout << endl << "TEST morir tras contacto con energy ball: ";
+        float transm_x = chell_init_x + CHELL_HALF_WIDTH + 2 * (ENRG_BALL_RADIUS) +
+                ENRG_BLOCK_HALF_LEN + 4;
+        float transm_y  = ENRG_BLOCK_HALF_LEN;
+        world->createEnergyTransmitter(transm_x, transm_y, O_O);    // Lanzara bola contra chell
+        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+            for (int i = 0; i < STEP_ITERATIONS; ++i)
+                world->step();
+        for (int i = 0; i < STEP_ITERATIONS; ++i)
+            world->step(); // Step donde se crea EnergyBall
+        auto n_bodies = world->getWorld()->GetBodyCount();
+        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i)
+            world->step(); // Permito movimiento energy ball
+        CPPUNIT_ASSERT_EQUAL((Chell*)nullptr, world->getChell(0)); // Se elimino chell
         CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }

@@ -18,6 +18,8 @@ public:
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
+
+    bool actedDuringStep() override;
 };
 
 

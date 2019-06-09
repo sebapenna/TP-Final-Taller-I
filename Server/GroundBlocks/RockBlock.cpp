@@ -12,3 +12,7 @@ void RockBlock::collideWith(Collidable *other) {
 void RockBlock::endCollitionWith(Collidable *other) {
     // No realiza ninguna accion
 }
+
+bool RockBlock::actedDuringStep() {
+    return false;   // Nunca realiza accion durante un step
+}

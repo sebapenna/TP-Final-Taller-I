@@ -2,6 +2,7 @@
 #include <Server/constants.h>
 #include <Common/exceptions.h>
 #include <Server/Obstacles/Rock.h>
+#include <Server/GroundBlocks/MetalDiagonalBlock.h>
 
 Chell::Chell(unsigned int id, b2Body *body) : _id(id){
     _body = body;
@@ -9,7 +10,14 @@ Chell::Chell(unsigned int id, b2Body *body) : _id(id){
     _jump_state = ON_GROUND;
     _jump = false;
     _dead = false;
-    _kill = false;
+    _previous_tilt = NOT_TILTED;
+    _tilt = NOT_TILTED;
+    _previous_x = _body->GetPosition().x;
+    _previous_y = _body->GetPosition().y;
+}
+
+const unsigned int Chell::getId() const {
+    return _id;
 }
 
 float Chell::getPositionX() {
@@ -18,6 +26,18 @@ float Chell::getPositionX() {
 
 float Chell::getPositionY() {
     return  _body->GetPosition().y;
+}
+
+bool Chell::isDead() {
+    return _dead;
+}
+
+b2Body *Chell::getBody() const {
+    return _body;
+}
+
+int16_t Chell::tilt() const {
+    return _tilt;
 }
 
 void Chell::move_left() {
@@ -119,34 +139,58 @@ void Chell::collideWith(Collidable *other) {
         auto rock = (Rock*) other;
         float head_pos = this->getPositionY() + CHELL_HALF_HEIGHT;
         // Verifico esta por encima de chell y cayendo
-        if (rock->getPositionY() > head_pos && rock->getVelocityY() != 0) {
-            if (!_dead)
-                _kill = true;
+        if (rock->getPositionY() > head_pos && rock->getVelocityY() != 0)
             _dead = true;
-        }
-    } else if (cname == ACID) {
-        if (!_dead)
-            _kill = true;
+    } else if (cname == ACID || cname == ENERGY_BALL) {
         _dead = true;
+    } else if (cname == METAL_DIAGONAL_BLOCK) {
+        auto block = (MetalDiagonalBlock*) other;
+        switch (block->getOrientation()) {
+            case O_NE:
+                _tilt = EAST;
+                break;
+            case O_NO:
+                _tilt = WEST;
+                break;
+            default:    // Chell no se inclina
+                break;
+        }
     }
 }
 
 void Chell::endCollitionWith(Collidable *other) {
-
+    if (other->getClassName() == METAL_DIAGONAL_BLOCK)
+        _tilt = NOT_TILTED;   // Deja de caminar en diagonal
 }
 
-bool Chell::isDead() {
-    return _dead;
+bool Chell::actedDuringStep() {
+    if (_previously_dead != _dead){
+        _previously_dead = _dead;   // Chell murio en ultimo step
+        return true;
+    }
+    if (_previous_x != _body->GetPosition().x || _previous_y != _body->GetPosition().y) {
+        _previous_x = _body->GetPosition().x;
+        _previous_y = _body->GetPosition().y;
+        return true;
+    }
+    if (_previous_tilt != _tilt) {
+        _previous_tilt = _tilt;
+        return true;
+    }
+    if (_previously_carrying != _carrying_rock) {
+        _previously_carrying = _carrying_rock;
+        return true;
+    }
+    // Retorno ultima condicion, shooting no cambio estado porque es solo un instante,
+    // y se actualiza llamando a isShooting();
+    return _shooting;
 }
 
-b2Body *Chell::getBody() const {
-    return _body;
+bool Chell::isShooting() {
+    if (_shooting) {
+        _shooting = false;
+        return true;
+    }
+    return false;
 }
 
-bool Chell::kill() const {
-    return _kill;
-}
-
-void Chell::killed() {
-    _kill = false;
-}

@@ -8,6 +8,7 @@ bool EnergyTransmitter::releaseEnergyBall() {
     _time_elapsed += TIME_STEP;
     if (_time_elapsed >= TIME_TO_RELEASE) {
         _time_elapsed = 0;
+        _changed_state = true;
         return true;
     }
     return false;
@@ -21,14 +22,22 @@ uint8_t EnergyTransmitter::getDirection() const {
     return _direction;
 }
 
-void EnergyTransmitter::collideWith(Collidable *other) {
-
-}
-
 const std::string EnergyTransmitter::getClassName() {
     return ENERGY_TRANSMITTER;
 }
 
-void EnergyTransmitter::endCollitionWith(Collidable *other) {
+void EnergyTransmitter::collideWith(Collidable *other) {
+    // No realiza accion al detectar colision
+}
 
+void EnergyTransmitter::endCollitionWith(Collidable *other) {
+    // No realiza accion al finalizar colision
+}
+
+bool EnergyTransmitter::actedDuringStep() {
+    if (_changed_state) {
+        _changed_state = false; // Reseteo booleano para no detectar falso cambio de estado
+        return true;
+    }
+    return false;
 }

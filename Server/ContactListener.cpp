@@ -33,17 +33,16 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
     auto cname2 = coll2->getClassName();
     if (cname1 == ENERGY_BARRIER & (cname2 == ENERGY_BALL || cname2 == CHELL)) {
         contact->SetEnabled(false);
-    } else if ((cname2 == ENERGY_BARRIER) &&
-                (cname1 == ENERGY_BALL || cname1 == CHELL)) {
+    } else if ((cname2 == ENERGY_BARRIER) && (cname1 == ENERGY_BALL || cname1 == CHELL)) {
         contact->SetEnabled(false);
     } else if ((cname1 == ENERGY_BALL && cname2 == ENERGY_BALL) ||
             (cname2 == ENERGY_BALL && cname1 == ENERGY_BALL)) {
         contact->SetEnabled(false);
-    } else if (cname1 == ENERGY_BALL && cname2 == GATE) {
+    } else if ((cname1 == ENERGY_BALL || cname1 == ROCK) && cname2 == GATE) {
         auto gate = (Gate*) coll2;
         if (gate->isOpen())
             contact->SetEnabled(false); // Bola energia pasa compuerta abierta
-    } else if (cname2 == ENERGY_BALL && cname1 == GATE) {
+    } else if ((cname2 == ENERGY_BALL || cname2 == ROCK) && cname1 == GATE) {
         auto gate = (Gate*) coll1;
         if (gate->isOpen())
             contact->SetEnabled(false); // Bola energia pasa compuerta abierta

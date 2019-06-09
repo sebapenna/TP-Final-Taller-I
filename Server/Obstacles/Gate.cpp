@@ -33,9 +33,17 @@ const std::string Gate::getClassName() {
 }
 
 void Gate::collideWith(Collidable *other) {
-
+    // No realiza ninguna accion ante colision
 }
 
 void Gate::endCollitionWith(Collidable *other) {
+    // No realiza ninguna accion ante fin de colision
+}
 
+bool Gate::actedDuringStep() {
+    if (_previously_open != _open) {
+        _previously_open = _open;  // Seteo booleano para evitar detectar falso cambio de estado
+        return true;
+    }
+    return false;
 }

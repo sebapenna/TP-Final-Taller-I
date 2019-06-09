@@ -35,7 +35,7 @@ public:
         cout << "OK";
     }
 
-
+    // todo: TEST DETECTEDUPDATES VECTOR
 };
 
 #endif //PORTAL_TESTWORLD_H

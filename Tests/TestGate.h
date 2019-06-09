@@ -30,6 +30,7 @@ private:
     float button1_x = 0, button1_y = 2, button2_x = 6, button2_y = 2;
     float e_recvr1_x = 40, e_recvr1_y = 2, e_recvr2_x = 50, e_recvr2_y = 2;
     float gate1_x = -10, gate1_y = 4, gate2_x = -20, gate2_y = 4;
+    int init_n_bodies;
 
 public:
     void setUp() {
@@ -37,19 +38,17 @@ public:
         world->createRockBlock(100, 4, 0, -2); // Piso
         world->createButton(0, button1_x, button1_y);
         world->createButton(1, button2_x, button2_y);
-        auto button_vector = world->getButtons();
-        button1 = button_vector[0];
-        button2 = button_vector[1];
+        button1 = world->getButton(0);
+        button2 = world->getButton(1);
         world->createEnergyReceiver(0, e_recvr1_x, e_recvr1_y);
         world->createEnergyReceiver(1, e_recvr2_x, e_recvr2_y);
-        auto e_recvr_vector = world->getEnergyReceivers();
-        e_recvr1 = e_recvr_vector[0];
-        e_recvr2 = e_recvr_vector[1];
+        e_recvr1 = world->getEnergyReceiver(0);
+        e_recvr2 = world->getEnergyReceiver(1);
         world->createGate(0, gate1_x, gate1_y, {0, 1}, {1});
         world->createGate(1, gate2_x, gate2_y, {0}, {0, 1});
-        auto gate_vector = world->getGates();
-        gate1 = gate_vector[0];
-        gate2 = gate_vector[1];
+        init_n_bodies = 7;
+        gate1 = world->getGate(0);
+        gate2 = world->getGate(1);
     }
 
     void tearDown() {
@@ -59,8 +58,7 @@ public:
     void testCreate() {
         cout << endl << endl << "TEST GATE";
         cout << endl << "TEST crear correctamente: ";
-        auto gate_vector = world->getGates();
-        CPPUNIT_ASSERT_EQUAL((size_t) 2, gate_vector.size());
+        CPPUNIT_ASSERT_EQUAL(init_n_bodies, world->getWorld()->GetBodyCount());
         CPPUNIT_ASSERT(!gate1->isOpen());
         CPPUNIT_ASSERT(!gate2->isOpen());
         cout << "OK";

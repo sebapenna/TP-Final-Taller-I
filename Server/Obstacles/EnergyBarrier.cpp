@@ -1,14 +1,19 @@
 #include "EnergyBarrier.h"
 #include <Server/constants.h>
 
-void EnergyBarrier::collideWith(Collidable *other) {
-
-}
-
 const std::string EnergyBarrier::getClassName() {
     return ENERGY_BARRIER;
 }
 
-void EnergyBarrier::endCollitionWith(Collidable *other) {
+void EnergyBarrier::collideWith(Collidable *other) {
+    // No realiza ninguna accion ante colision
+}
 
+void EnergyBarrier::endCollitionWith(Collidable *other) {
+    // No realiza ninguna accion ante fin colision
+
+}
+
+bool EnergyBarrier::actedDuringStep() {
+    return false;     // No realiza ninguna accion durante step
 }

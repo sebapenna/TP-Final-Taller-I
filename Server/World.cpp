@@ -14,8 +14,9 @@
 
 using std::remove_if;
 using std::vector;
+using std::for_each;
 
-World::World(size_t width, size_t height) : _width(width), _height(height) {
+World::World(const size_t &width, const size_t &height) : _width(width), _height(height) {
     b2Vec2 gravity(GRAVITY_X, GRAVITY_Y);
     _world = new b2World(gravity);
     _contact_listener = new ContactListener(_world);
@@ -24,8 +25,10 @@ World::World(size_t width, size_t height) : _width(width), _height(height) {
 
 template<class T>
 void deletePointerVector(vector<T> &v) {
-    for (auto &ptr : v)
+    for (auto &ptr : v) {
         delete ptr;
+        ptr = nullptr;
+    }
 }
 
 World::~World() {
@@ -53,31 +56,30 @@ size_t World::getHeight() const {
     return _height;
 }
 
-Chell *World::getChell(size_t id) {
-    if (id < _chells.size())
-        return _chells[id];
-    return nullptr;
+Chell *World::getChell(const size_t &id) {
+    return (id < _chells.size()) ? _chells[id] : nullptr;
 }
 
-const std::vector<Rock *> &World::getRocks() const {
-    return _rocks;
-}
-
-const vector<Button *> &World::getButtons() const {
-    return _buttons;
+Rock *World::getRock(const size_t &id) {
+    return (id < _rocks.size()) ? _rocks[id] : nullptr;
 }
 
 
-const vector<Gate *> &World::getGates() const {
-    return _gates;
+Button *World::getButton(const size_t &id) {
+    return (id < _buttons.size()) ? _buttons[id] : nullptr;
 }
 
-const vector<EnergyReceiver *> &World::getEnergyReceivers() const {
-    return _energy_receivers;
+Gate *World::getGate(const size_t &id) {
+    return (id < _gates.size()) ? _gates[id]: nullptr;
 }
 
-const std::vector<EnergyBall *> &World::getEnergyBalls() const {
-    return _energy_balls;
+EnergyReceiver *World::getEnergyReceiver(const size_t &id) {
+    return (id < _energy_receivers.size()) ? _energy_receivers[id] : nullptr;
+}
+
+
+EnergyBall *World::getEnergyBall(const size_t &id) {
+    return (id < _energy_balls.size()) ? _energy_balls[id] : nullptr;
 }
 
 b2World *World::getWorld() const {
@@ -90,43 +92,103 @@ void World::step() {
     // todo: ELIMINAR TODOS LOS PUNTEROS DE CADA CLASE (destroy)
     // TODO: EN VECTOR PONER nullptr?
     _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
+    stepEnergyTransmitters();
+    stepEnergyBalls();
+    stepButtons();
+    stepEnergyReceivers();
+    stepGates();
+    stepChells();
+    stepRocks();
     // Orden de acciones: primero las que su estado afectan a otros
-    for (auto &energy_transmitter : _energy_transmitters)
-        if (energy_transmitter->releaseEnergyBall())
-            this->createEnergyBall(energy_transmitter);
+    // todo: GUARDAR REGISTRO DE LOS IDS DE LO QUE TENGO QUE ELIMINAR, CUALQUIERA SEA OBJETO CON
+    //  ID VA A ALCANZAR (RESTO DE DATOS DEL DTO NO ME IMPORTAN). QUIZAS VOY A NECESITAR UN
+    //  VECTOR DE CADA OBJETO PARA LOS UPDATED. O HACER UN MAP<ID,CLASSNAME(STRING)> PARA LOS QUE
+    //  HAYA QUE ELIMNAR, SEPARADO DE LOS QUE NO MURIERON PERO SI SE ACTUALIZARON. DONDE HAGO
+    //  DESTROY BODY TODAVIA TENGO EL ID, ME LO PUEDO GUARDAR AHI EN EL MAP
+    // todo: ELIMINAR ROCAS QUE DESAPARECEN
+}
 
-    for (auto energy_ball : _energy_balls) {
-        if (!energy_ball->isDead())
-            energy_ball->updateLifetime();
-        if (energy_ball->kill()) {  // Compruebo si debo eliminar, updateLifetime lo podria setear
-            _world->DestroyBody(energy_ball->getBody());
-            energy_ball->killed();
-//            delete energy_ball;
-        }
-    }
-    _energy_balls.erase(remove_if(_energy_balls.begin(), _energy_balls.end(),
-            [](EnergyBall* e) {
-        if (e->isDead()) {
-                delete e;
-                return true;
-            } else { return false; }}), _energy_balls.end());
-
-    for (auto &button : _buttons)
-        button->updateState();
-    for (auto &energy_receiver : _energy_receivers)
-        energy_receiver->updateState();
-    for (auto &gate : _gates)
+void World::stepGates() {
+    for (auto &gate : _gates) {
         gate->updateState();
-    for (auto &chell : _chells) {
-        if (!chell->isDead()) {
-            chell->move();
-        } else if (chell->kill()) {   // Verifico si ya elimine bodys
-            _world->DestroyBody(chell->getBody());
-            chell->killed();    // Notifico a chell que ya fue eliminada
-        }   // todo: REMOVE_IF COMO CON ENERGY_BALLS
+        if (gate->actedDuringStep())
+            _objects_to_update.push_back(gate);
     }
 }
 
+void World::stepButtons() {
+    for (auto &button : _buttons) {
+        button->updateState();
+        if (button->actedDuringStep())
+            _objects_to_update.push_back(button);
+    }
+}
+
+void World::stepEnergyReceivers() {
+    for (auto &energy_receiver : _energy_receivers)
+        energy_receiver->updateState();
+}
+
+void World::stepEnergyTransmitters() {
+    for (auto &energy_transmitter : _energy_transmitters) {
+        if (energy_transmitter->releaseEnergyBall())
+            this->createEnergyBall(energy_transmitter);
+        if (energy_transmitter->actedDuringStep())
+            _objects_to_update.push_back(energy_transmitter);
+    }
+}
+
+//template <class T>  // Libera memoria de entidades con capacidad de morir
+//bool deleted(T* ptr) {
+//    return ptr->isDead() ? (delete ptr, ptr = nullptr, true) : false;
+//}
+
+void World::stepChells() {
+    for (int i = 0; i < _chells.size(); ++i) {
+        auto chell = _chells[i];
+        if (chell) {    // Verifico no haberlo eliminado previamente
+            if (!chell->isDead()) // Verifico que no murio en algun contacto
+                chell->move();
+            else {
+                _world->DestroyBody(chell->getBody());
+                _objects_to_delete.emplace_back(i, chell->getClassName());
+                delete chell;
+                _chells[i] = nullptr;
+            }
+        }
+    }
+//    _chells.erase(remove_if(_chells.begin(), _chells.end(), deleted<Chell>), _chells.end());
+}
+
+void World::stepEnergyBalls() {
+    for (int i = 0; i < _energy_balls.size(); ++i) {
+        auto energy_ball = _energy_balls[i];
+        if (energy_ball) { // Verifico no haberlo eliminado previamente
+            energy_ball->updateLifetime();
+            if (energy_ball->isDead()) {
+                _world->DestroyBody(energy_ball->getBody());
+                _objects_to_delete.emplace_back(i, energy_ball->getClassName());
+                delete energy_ball;
+                _energy_balls[i] = nullptr;
+            }
+        }
+    }
+//    _energy_balls.erase(remove_if(_energy_balls.begin(), _energy_balls.end(), deleted<EnergyBall>),
+//            _energy_balls.end());
+}
+
+void World::stepRocks() {
+    for (int i = 0; i < _rocks.size(); ++i) {
+        auto rock = _rocks[i];
+        if (rock && rock->isDead()) {
+            _world->DestroyBody(rock->getBody());
+            _objects_to_delete.emplace_back(i, rock->getClassName());
+            delete rock;
+            _rocks[i] = nullptr;
+        }
+    }
+//    _rocks.erase(remove_if(_rocks.begin(), _rocks.end(), deleted<Rock>), _rocks.end());
+}
 
 /************************ Create Bodies ************************/
 b2Body *World::createStaticBox(const float &x, const float &y,
@@ -319,7 +381,7 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
 
     b2CircleShape shape;
     shape.m_p.Set(0,0); // Posicion relativa al centro
-    shape.m_radius = ENRG_BALL_RADIUS;
+    shape.m_radius = ENRG_BALL_RADIUS - DELTA_POS; // Reduzco tamaño para evitar contacto por delta
 
     b2FixtureDef fixture;
     fixture.shape = &shape;
@@ -363,5 +425,4 @@ void World::createEnergyBarrier(const float &x, const float &y,
     body->SetUserData(e_barrier);
     _energy_barriers.push_back(e_barrier);
 }
-
 

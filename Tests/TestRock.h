@@ -14,6 +14,7 @@ CPPUNIT_TEST_SUITE(TestRock);
         CPPUNIT_TEST( testCreate );
         CPPUNIT_TEST( testFallsWithGravity );
         CPPUNIT_TEST( testRemainsStillOnGround );
+        CPPUNIT_TEST( testContactWithBarrier );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -23,6 +24,7 @@ private:
     size_t width = 100;
     size_t height = 200;
     float rock1_x = 0, rock1_y = 2, rock2_x = 6, rock2_y = 4;
+    int init_n_bodies;
 
 public:
     void setUp() {
@@ -30,9 +32,9 @@ public:
         world->createRockBlock(100, 4, 0, -2); // Piso
         world->createRock(rock1_x, rock1_y);
         world->createRock(rock2_x, rock2_y);
-        auto rock_vector = world->getRocks();
-        rock1 = rock_vector[0];
-        rock2 = rock_vector[1];
+        init_n_bodies = 3;  // Cantidad de bodies que creo al inicio
+        rock1 = world->getRock(0);
+        rock2 = world->getRock(1);
     }
 
     void tearDown() {
@@ -42,8 +44,7 @@ public:
     void testCreate() {
         cout << endl << endl << "TEST ROCK";
         cout << endl << "TEST crear correctamente: ";
-        auto rock_vector = world->getRocks();
-        CPPUNIT_ASSERT_EQUAL((size_t) 2, rock_vector.size());
+        CPPUNIT_ASSERT_EQUAL(init_n_bodies, world->getWorld()->GetBodyCount());
         CPPUNIT_ASSERT_EQUAL(rock1_x, rock1->getPositionX());
         CPPUNIT_ASSERT_EQUAL(rock1_y, rock1->getPositionY());
         CPPUNIT_ASSERT_EQUAL(rock2_x, rock2->getPositionX());
@@ -73,7 +74,17 @@ public:
         cout << "OK";
     }
 
-
-
+    void testContactWithBarrier() {
+        cout << endl << "TEST eliminar ante contacto con barrera energia: ";
+        float barrier_x = 10, barrier_y = BARRIER_HALF_LENGTH;
+        world->createEnergyBarrier(barrier_x, barrier_y, O_V);
+        auto n_bodies = world->getWorld()->GetBodyCount();
+        rock1->teletransport(barrier_x, barrier_y);
+        for (int i = 0; i < STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT_EQUAL(n_bodies - 1, world->getWorld()->GetBodyCount());
+        CPPUNIT_ASSERT_EQUAL((Rock*)nullptr, world->getRock(0));
+        cout << "OK";
+    }
 };
 #endif //PORTAL_TESTROCK_H

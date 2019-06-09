@@ -12,6 +12,8 @@ option(BOX2D_BUILD_STATIC "Build Box2D static libraries" ON)
 set(BOX2D_VERSION 2.3.0)
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
+set(YAML_CPP_BUILD_TESTS OFF)
+set(YAML_CPP_BUILD_TOOLS OFF)
 
 add_subdirectory(Box2D)
 add_subdirectory(Yaml)

@@ -29,6 +29,7 @@ private:
     size_t width = 100;
     size_t height = 200;
     float button1_x = 0, button1_y = 2, button2_x = 6, button2_y = 2;
+    int init_n_bodies;  // Cantidad de bodies al inicio
 
 public:
     void setUp() {
@@ -36,9 +37,9 @@ public:
         world->createRockBlock(100, 4, 0, -2); // Piso
         world->createButton(0, button1_x, button1_y);
         world->createButton(1, button2_x, button2_y);
-        auto button_vector = world->getButtons();
-        button1 = button_vector[0];
-        button2 = button_vector[1];
+        init_n_bodies = 3;
+        button1 = world->getButton(0);
+        button2 = world->getButton(1);
     }
 
     void tearDown() {
@@ -48,8 +49,7 @@ public:
     void testCreate() {
         cout << endl << endl << "TEST BUTTON";
         cout << endl << "TEST crear correctamente: ";
-        auto button_vector = world->getButtons();
-        CPPUNIT_ASSERT_EQUAL((size_t) 2, button_vector.size());
+        CPPUNIT_ASSERT_EQUAL(init_n_bodies, world->getWorld()->GetBodyCount());
         CPPUNIT_ASSERT(!button1->isActivated());
         CPPUNIT_ASSERT(!button2->isActivated());
         cout << "OK";
@@ -128,7 +128,7 @@ public:
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
         CPPUNIT_ASSERT(button1->isActivated());
-        auto rock = world->getRocks().at(0);
+        auto rock = world->getRock(0);
         float diff_x = abs(button1_x - rock->getPositionX());
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x); // Verifico posicion de la roca
         cout << "OK";
@@ -145,7 +145,7 @@ public:
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
         CPPUNIT_ASSERT(button1->isActivated());
-        auto rock = world->getRocks().at(0);
+        auto rock = world->getRock(0);
         rock->teletransport(rock_x + 50, rock_y);   // Saco roca del boton
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
