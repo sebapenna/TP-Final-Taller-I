@@ -30,7 +30,7 @@ add_library(sdldemo
         SDL_Runner.h
         FakeServer.cpp
         FakeServer.h
-        View/DiagonalBlockMetalView.cpp View/DiagonalBlockMetalView.h)
+        View/DiagonalBlockMetalView.cpp View/DiagonalBlockMetalView.h View/AcidView.cpp View/AcidView.h)
 
 
 

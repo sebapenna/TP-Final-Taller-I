@@ -6,6 +6,7 @@
 #include <iostream>
 #include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
 #include <client/View/DiagonalBlockMetalView.h>
+#include <client/View/AcidView.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -22,6 +23,7 @@ void SDL_Runner::run() {
     std::string chell_file_name("chell");
     WorldView world;
     std::string block_file_name("block");
+    std::string acidAndButtons("acidAndButtons");
     for (int startX = -2000; startX<7000; startX+=128) {
         for (int startY = -2000; startY<7000; startY+=128) {
             View* block = new BlockRockView(textureFactory.getTextureByName(block_file_name),renderer);
@@ -32,6 +34,9 @@ void SDL_Runner::run() {
         block->setDestRect(startX, 400, 128,128);
         world.addView(block);
     }
+    View* acid = new AcidView(textureFactory.getTextureByName(acidAndButtons),renderer);
+    acid->setDestRect(192, 350, 128,50);
+    world.addView(acid);
 
     int timeStepMs = 1000.f / 70.f;
     int timeLastMs = 0;

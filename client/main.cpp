@@ -33,7 +33,7 @@ int main(int argc, char** argv){
     std::cout << listString << std::endl;*/
     
     try {
-        std::string title("hello world");
+        std::string title("Portal");
 
         // Chell turning around
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
