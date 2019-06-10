@@ -16,8 +16,9 @@
 
 #include "../Common/SafeQueue.h"
 
-FakeServer::FakeServer(ProtectedBlockingQueue &blockingQueue, SafeQueue &safeQueue) : blockingQueue(blockingQueue), safeQueue(safeQueue) {
-
+FakeServer::FakeServer(ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> &blockingQueue,
+        SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue) :
+        blockingQueue(blockingQueue), safeQueue(safeQueue) {
 }
 
 void FakeServer::run() {

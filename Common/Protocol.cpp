@@ -1,5 +1,6 @@
 #include "Protocol.h"
 #include "ProtocolTranslator/ProtocolTranslator.h"
+#include "exceptions.h"
 #include <vector>
 #include <string>
 #include <exception>
@@ -32,7 +33,9 @@ void Protocol::operator>>(int16_t &dest) {
 
 void Protocol::operator<<(const ProtocolDTO &dto) {
      vector<int16_t> data_vector;
-     ProtocolTranslator::translate(&dto, data_vector);
+     int res = ProtocolTranslator::translate(&dto, data_vector);
+     if (res == -1)
+         throw WrongProtocolException();
      for (auto &data : data_vector)
          *this << data;
 }
@@ -50,4 +53,6 @@ void Protocol::operator>>(std::shared_ptr<ProtocolDTO>& ptr) {
         data_vector.push_back(aux);
     }
     ptr = ProtocolTranslator::translate(data_vector);
+    if (!ptr)
+        throw WrongProtocolException();
 }

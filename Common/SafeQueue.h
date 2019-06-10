@@ -9,17 +9,29 @@
 // Monitor de la cola, responsable de agregar los elementos e
 // interpretar los mismos controlando los posibles threads a traves de
 // condition variable
+template <class T>
 class SafeQueue {
-    std::queue<std::shared_ptr<ProtocolDTO>> _queue;
+    std::queue<T> _queue;
     std::mutex _m;
 
 public:
     // Agrega un elemeto a la cola
-    void push(std::shared_ptr<ProtocolDTO> new_data);
+    void push(T new_data) {
+        std::lock_guard<std::mutex> lock(_m);
+        this->_queue.push(std::move(new_data));
+    }
 
     // Retorna un elemento de la cola y lo quita.
     // Retorna nullptr en caso que la cola este vacia
-    std::shared_ptr<ProtocolDTO>  getTopAndPop();
+    T  getTopAndPop() {
+        std::lock_guard<std::mutex> lock(_m);
+        std::shared_ptr<ProtocolDTO>  aux = nullptr;
+        if (!this->_queue.empty()) {
+            aux = _queue.front();
+            this->_queue.pop();
+        }
+        return aux;
+    }
 };
 
 

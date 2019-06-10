@@ -38,8 +38,8 @@ int main(int argc, char** argv){
         // Chell turning around
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
 
-        ProtectedBlockingQueue blockingQueue;
-        SafeQueue safeQueue;
+        ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;
+        SafeQueue<std::shared_ptr<ProtocolDTO>> safeQueue;
         SDL_Runner sdlRunner(title, safeQueue);
         sdlRunner.start();
         FakeServer server(blockingQueue, safeQueue);

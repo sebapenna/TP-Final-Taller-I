@@ -9,12 +9,14 @@
 #include "../Common/Thread.h"
 #include "../Common/ProtectedBlockingQueue.h"
 #include "../Common/SafeQueue.h"
+#include <memory>
 
 class FakeServer : public Thread {
-    ProtectedBlockingQueue& blockingQueue;
-    SafeQueue& safeQueue;
+    ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>>& blockingQueue;
+    SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue;
 public:
-    FakeServer(ProtectedBlockingQueue& blockingQueue, SafeQueue& safeQueue);
+    FakeServer(ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>>& blockingQueue,
+            SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue);
     void run() override;
 };
 

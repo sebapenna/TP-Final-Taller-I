@@ -13,7 +13,7 @@
 #include "../Common/Thread.h"
 
 class SDL_Runner : public Thread{
-    SafeQueue& safeQueue;
+    SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue;
     bool connected;
     Window window;
     Renderer renderer;
@@ -21,7 +21,7 @@ class SDL_Runner : public Thread{
     int16_t myChellId;
 
 public:
-    SDL_Runner(std::string& title, SafeQueue& safeQueue);
+    SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue);
     void run() override;
 };
 

@@ -54,6 +54,12 @@ struct UnknownException : public exception {
     }
 };
 
+struct WrongProtocolException : public exception {
+    const char * what() const throw() override {
+        return "Protocolo enviado incorrecto.\n";
+    }
+};
+
 
 
 

@@ -27,7 +27,8 @@
 #include "client/View/BlockRockView.h"
 #include "client/View/BlockMetalView.h"
 
-SDL_Runner::SDL_Runner(std::string& title, SafeQueue &safeQueue) : safeQueue(safeQueue), connected(true), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
+SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue) :
+safeQueue(safeQueue), connected(true), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
     textureFactory.init(renderer);
     srand (time(NULL));
 }
