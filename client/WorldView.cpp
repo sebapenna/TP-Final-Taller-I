@@ -48,31 +48,31 @@ void WorldView::draw() {
     }
 }
 
-void WorldView::addView(View* view) {
+void WorldView::addView(std::shared_ptr<View> view) {
     views.push_back(view);
 }
-void WorldView::addRock(RockView* rock) {
+void WorldView::addRock(std::shared_ptr<RockView> rock) {
     if (rocks.count(rock->getId())) {
         rocks[rock->getId()]->setPosition(rock->getPosition());
     } else {
         rocks[rock->getId()] = rock;
     }
 }
-void WorldView::addGates(GateView *gate) {
+void WorldView::addGates(std::shared_ptr<GateView> gate) {
     gates[gate->getId()] = gate;
 }
 
 void WorldView::openGate(int16_t id) {
-    GateView* gate = gates[id];
+    auto gate = gates[id];
     gate->open();
 }
 
 void WorldView::closeGate(int16_t id) {
-    GateView* gate = gates[id];
+    auto gate = gates[id];
     gate->close();
 }
 
-void WorldView::addButton(ButtonView* button) {
+void WorldView::addButton(std::shared_ptr<ButtonView> button) {
     buttons[button->getId()] = button;
 }
 
@@ -84,9 +84,9 @@ void WorldView::deactivateButton(int16_t id) {
     buttons[id]->disable();
 }
 
-void WorldView::addChell(ChellAnimationView* chell, Position& position) {
+void WorldView::addChell(std::shared_ptr<ChellAnimationView> chell, Position& position) {
     if (chells.count(chell->getId())) {
-        ChellAnimationView* chellView = chells[chell->getId()];
+        auto chellView = chells[chell->getId()];
         chellView->setPosition(position);
     } else {
         chells[chell->getId()] = chell;
@@ -95,11 +95,11 @@ void WorldView::addChell(ChellAnimationView* chell, Position& position) {
 }
 
 void WorldView::setChellState(int16_t id, ChellState state) {
-    ChellAnimationView* chell = chells[id];
+    auto chell = chells[id];
     chell->setState(state);
 }
 
 void WorldView::setCamara(int16_t id, int w, int h) {
-    ChellAnimationView* chellView = chells[id];
+    auto chellView = chells[id];
     this->camera = new Camera(w, h, chellView->getPosition());
 }

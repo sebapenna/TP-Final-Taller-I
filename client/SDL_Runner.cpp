@@ -41,15 +41,15 @@ void SDL_Runner::run() {
     std::string gate_file_name("gate");
     for (int startX = -2000; startX<7000; startX+=128) {
         for (int startY = -2000; startY<7000; startY+=128) {
-            View* block = new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer);
+            auto block = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
             block->setDestRect(startX, startY, 128, 128);
             world.addView(block);
         }
-        View* block = new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer);
+        auto block = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
         block->setDestRect(startX, 400, 128,128);
         world.addView(block);
     }
-    View* acid = new AcidView(textureFactory.getTextureByName(acidAndButtons),renderer);
+    auto acid = std::shared_ptr<AcidView>(new AcidView(textureFactory.getTextureByName(acidAndButtons),renderer));
     acid->setDestRect(192, 350, 128,50);
     world.addView(acid);
 
@@ -72,10 +72,10 @@ void SDL_Runner::run() {
                 switch (newItem->getClassId()) {
                     case PROTOCOL_CHELL_DATA: {
                         auto newChell = (ChellDTO *) newItem;
-                        auto chell2 = new ChellAnimationView(newChell->getId(),
-                                                             textureFactory.getTextureByName(chell_file_name), renderer);
+                        auto chell2 = std::shared_ptr<ChellAnimationView>(new ChellAnimationView(newChell->getId(),
+                                                             textureFactory.getTextureByName(chell_file_name), renderer));
                         Position chell2Pos(newChell->getX(), newChell->getY());
-                        chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
+                        chell2.get()->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
                         world.addChell(chell2, chell2Pos);
                         if (newChell->getDeleteState() == DELETE) {
                             world.setChellState(newChell->getId(), ChellState::dying);
@@ -100,8 +100,8 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_BUTTON_DATA: {
                         auto buttonData = (ButtonDTO*) newItem;
-                        auto button = new ButtonView(buttonData->getId(), textureFactory.getTextureByName(acidAndButtons), renderer);
-                        button->setDestRect(buttonData->getX(), buttonData->getY(), buttonData->getWidth(), buttonData->getHeight());
+                        auto button = std::shared_ptr<ButtonView>(new ButtonView(buttonData->getId(), textureFactory.getTextureByName(acidAndButtons), renderer));
+                        button.get()->setDestRect(buttonData->getX(), buttonData->getY(), buttonData->getWidth(), buttonData->getHeight());
                         world.addButton(button);
                         break;
                     }
@@ -116,8 +116,8 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_GATE_DATA: {
                         auto gateDTO = (GateDTO*) newItem;
-                        auto gate = new GateView(gateDTO->getId(), textureFactory.getTextureByName(gate_file_name), renderer);
-                        gate->setDestRect(gateDTO->getX(), gateDTO->getY(), gateDTO->getWidth(), gateDTO->getHeight());
+                        auto gate = std::shared_ptr<GateView>(new GateView(gateDTO->getId(), textureFactory.getTextureByName(gate_file_name), renderer));
+                        gate.get()->setDestRect(gateDTO->getX(), gateDTO->getY(), gateDTO->getWidth(), gateDTO->getHeight());
                         world.addGates(gate);
                         break;
                     }
@@ -132,21 +132,21 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_ACID_DATA: {
                         auto acidDTO = (AcidDTO*) newItem;
-                        auto acid = new AcidView(textureFactory.getTextureByName(acidAndButtons), renderer);
+                        auto acid = std::shared_ptr<AcidView>(new AcidView(textureFactory.getTextureByName(acidAndButtons), renderer));
                         acid->setDestRect(acidDTO->getX(), acidDTO->getY(), acidDTO->getWidth(), acidDTO->getHeight());
                         world.addView(acid);
                         break;
                     }
                     case PROTOCOL_ROCK_BLOCK_DATA: {
                         auto rockBlockDTO = (RockBlockDTO*) newItem;
-                        auto rockBlock = new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer);
+                        auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
                         rockBlock->setDestRect(rockBlockDTO->getX(), rockBlockDTO->getY(), rockBlockDTO->getWidth(), rockBlockDTO->getHeight());
                         world.addView(rockBlock);
                         break;
                     }
                     case PROTOCOL_METAL_BLOCK_DATA: {
                         auto metalBlockDTO = (MetalBlockDTO*) newItem;
-                        auto metalBlock = new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer);
+                        auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
                         metalBlock->setDestRect(metalBlockDTO->getX(), metalBlockDTO->getY(), metalBlockDTO->getWidth(), metalBlockDTO->getHeight());
                         world.addView(metalBlock);
                         break;
@@ -154,7 +154,7 @@ void SDL_Runner::run() {
                     case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA: {
                         auto diagonalMetalBlockDTO = (MetalDiagonalBlockDTO*) newItem;
                         //bool orientation = diagonalMetalBlockDTO->getOrientation();
-                        auto diagonalMetalBlock = new DiagonalBlockMetalView(textureFactory.getTextureByName(block_file_name), renderer);
+                        auto diagonalMetalBlock = std::shared_ptr<DiagonalBlockMetalView>(new DiagonalBlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
                         diagonalMetalBlock->setDestRect(diagonalMetalBlockDTO->getX(), diagonalMetalBlockDTO->getY(), diagonalMetalBlockDTO->getSideLength(), diagonalMetalBlockDTO->getSideLength());
                         world.addView(diagonalMetalBlock);
                         break;
@@ -170,7 +170,7 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_ROCK_DATA: {
                         auto rockDTO = (RockDTO*)newItem;
-                        auto rock = new RockView(rockDTO->getId(), textureFactory.getTextureByName(bulletAndRock), renderer);
+                        auto rock = std::shared_ptr<RockView>(new RockView(rockDTO->getId(), textureFactory.getTextureByName(bulletAndRock), renderer));
                         rock->setDestRect(rockDTO->getX(), rockDTO->getY(), rockDTO->getSideLength(), rockDTO->getSideLength());
                         world.addRock(rock);
                         break;
