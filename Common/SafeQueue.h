@@ -25,7 +25,7 @@ public:
     // Retorna nullptr en caso que la cola este vacia
     T  getTopAndPop() {
         std::lock_guard<std::mutex> lock(_m);
-        std::shared_ptr<ProtocolDTO>  aux = nullptr;
+        T  aux = nullptr;
         if (!this->_queue.empty()) {
             aux = _queue.front();
             this->_queue.pop();
