@@ -6,8 +6,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-RockView::RockView(SDL_Texture *texture, Renderer &renderer, int x, int y) : View(x, y), rock(texture, renderer) {
-    srand (time(NULL));
+RockView::RockView(int id, SDL_Texture *texture, Renderer &renderer, int x, int y) :
+            View(x, y), id(id),
+            rock(texture, renderer) {
     int random = rand() % 3;
     if (random == 0) {
         rock.setSourceRect(87, 4513, 85, 83);
@@ -20,4 +21,8 @@ RockView::RockView(SDL_Texture *texture, Renderer &renderer, int x, int y) : Vie
 
 void RockView::draw(Camera &camera) {
     rock.draw(camera,this->getDst());
+}
+
+int RockView::getId() const {
+    return id;
 }

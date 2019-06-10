@@ -12,6 +12,7 @@
 #include <map>
 #include <client/View/GateView.h>
 #include <client/View/ButtonView.h>
+#include <client/View/RockView.h>
 
 class WorldView {
 private:
@@ -19,6 +20,7 @@ private:
     std::map<int, ChellAnimationView*> chells;
     std::map<int, GateView*> gates;
     std::map<int, ButtonView*> buttons;
+    std::map<int, RockView*> rocks;
 
     Camera* camera;
 public:
@@ -35,6 +37,7 @@ public:
     void deactivateButton(int16_t id);
     void addChell(ChellAnimationView* chell, Position& position);
     void setChellState(int16_t id, ChellState state);
+    void addRock(RockView* rock);
 };
 
 

@@ -11,10 +11,13 @@
 
 class RockView : public View {
 private:
+    int id;
     Sprite rock;
 public:
-    RockView(SDL_Texture* texture, Renderer& renderer, int  x = 0, int y = 0);
+    RockView(int id, SDL_Texture* texture, Renderer& renderer, int  x = 0, int y = 0);
     void draw(Camera& camera);
+
+    int getId() const;
 };
 
 

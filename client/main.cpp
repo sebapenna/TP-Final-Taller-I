@@ -56,18 +56,27 @@ int main(int argc, char** argv){
                     }
                 } else if (e.type == SDL_KEYDOWN) {
                     switch (e.key.keysym.sym) {
-                        case SDLK_d:
-                            blockingQueue.push((void*) new MoveRightDTO());
+                        case SDLK_d: {
+                            std::shared_ptr<ProtocolDTO> dto (new MoveRightDTO());
+                            blockingQueue.push(dto);
                             break;
-                        case SDLK_a:
-                            blockingQueue.push((void*) new MoveLeftDTO());
+                        }
+                        case SDLK_a: {
+                            std::shared_ptr<ProtocolDTO> dto (new MoveLeftDTO());
+                            blockingQueue.push(dto);
                             break;
-                        case SDLK_w:
-                            blockingQueue.push((void*) new JumpDTO());
+                        }
+                        case SDLK_w: {
+                            std::shared_ptr<ProtocolDTO>dto(new JumpDTO());
+                            blockingQueue.push(dto);
+                            //blockingQueue.push((void*) new JumpDTO());
                             break;
+                        }
+
                     }
                 } else if (e.type == SDL_KEYUP) {
-                    blockingQueue.push((void*) new StopDTO());
+                    std::shared_ptr<ProtocolDTO> dto (new StopDTO());
+                    blockingQueue.push(dto);
                 }
             }
         }

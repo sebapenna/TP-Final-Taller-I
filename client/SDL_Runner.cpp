@@ -16,8 +16,9 @@
 #include <Common/ProtocolTranslator/AcidDTO.h>
 #include <Common/ProtocolTranslator/RockBlockDTO.h>
 #include <Common/ProtocolTranslator/MetalBlockDTO.h>
-#include <Server/GroundBlocks/MetalDiagonalBlock.h>
 #include <Common/ProtocolTranslator/MetalDiagonalBlockDTO.h>
+#include <Common/ProtocolTranslator/RockDTO.h>
+#include <Server/constants.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -28,11 +29,12 @@
 
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue &safeQueue) : safeQueue(safeQueue), connected(true), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
     textureFactory.init(renderer);
+    srand (time(NULL));
 }
 
 void SDL_Runner::run() {
-    std::string chell_file_name("chell");
     WorldView world;
+    std::string chell_file_name("chell");
     std::string block_file_name("block");
     std::string bulletAndRock("bulletAndRock");
     std::string acidAndButtons("acidAndButtons");
@@ -50,13 +52,7 @@ void SDL_Runner::run() {
     View* acid = new AcidView(textureFactory.getTextureByName(acidAndButtons),renderer);
     acid->setDestRect(192, 350, 128,50);
     world.addView(acid);
-    View* rock1 = new RockView(textureFactory.getTextureByName(bulletAndRock),renderer);
-    rock1->setDestRect(500, 400, 128,100);
-    world.addView(rock1);
 
-    GateView* gate = new GateView(1, textureFactory.getTextureByName(gate_file_name), renderer);
-    gate->setDestRect(300,400,200,200);
-    world.addGates(gate);
 
     int timeStepMs = 1000.f / 70.f;
     int timeLastMs = 0;
@@ -70,7 +66,8 @@ void SDL_Runner::run() {
         timeAccumulatedMs += timeDeltaMs;
 
         while (timeAccumulatedMs >= timeStepMs) {
-            auto newItem = (ProtocolDTO*) safeQueue.getTopAndPop();
+            auto aux = safeQueue.getTopAndPop();
+            auto newItem = aux.get();
             if (newItem) {
                 switch (newItem->getClassId()) {
                     case PROTOCOL_CHELL_DATA: {
@@ -83,7 +80,7 @@ void SDL_Runner::run() {
                         if (newChell->getDeleteState() == DELETE) {
                             world.setChellState(newChell->getId(), ChellState::dying);
                         } else if (newChell->getMoving()) {
-                            if (newChell->getDirection() == WEST) {
+                            if (newChell->getDirection() == O_O) {
                                 world.setChellState(newChell->getId(), ChellState::runningLeft);
                             } else {
                                 world.setChellState(newChell->getId(), ChellState::runningRight);
@@ -172,7 +169,10 @@ void SDL_Runner::run() {
                         break;
                     }
                     case PROTOCOL_ROCK_DATA: {
-
+                        auto rockDTO = (RockDTO*)newItem;
+                        auto rock = new RockView(rockDTO->getId(), textureFactory.getTextureByName(bulletAndRock), renderer);
+                        rock->setDestRect(rockDTO->getX(), rockDTO->getY(), rockDTO->getSideLength(), rockDTO->getSideLength());
+                        world.addRock(rock);
                         break;
                     }
                     case PROTOCOL_ENERGY_BALL_DATA: {
