@@ -41,7 +41,7 @@ class ProtectedBlockingQueue {
             std::unique_lock<std::mutex> lock(_m);
             while (this->_queue.empty() && !_pushing_finished)
                 this->_cond_var.wait(lock);
-            std::shared_ptr<ProtocolDTO> aux = nullptr;
+            T aux = nullptr;
             if (!this->_queue.empty()) {
                 aux = _queue.front();
                 this->_queue.pop();
