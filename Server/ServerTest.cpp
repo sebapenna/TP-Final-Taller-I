@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
     if (argc != N_ARGS)
         cout << WrongArgumentException().what();
     try {
-        SafeQueue queue;
+        SafeQueue<std::shared_ptr<ProtocolDTO>> queue;
 
         cout << "Abriendo socket aceptador..."<<endl;
         AcceptSocket accept_sckt(argv[PORT_POS], MAX_WAITING_QUEUE_SIZE);
@@ -57,7 +57,7 @@ int main(int argc, char const *argv[]) {
 //        cout << "Y: "<<n_dto->getY()<<endl;
 
         for (p = queue.getTopAndPop(); p; p = queue.getTopAndPop()) {
-            switch (p.get()->getClassId()){
+            switch (p->getClassId()){
                 case PROTOCOL_MOVE_RIGHT: {
                     auto dto = (MoveRightDTO *) p.get();
                     cout << "Se recibio Protocolo de ID: " << dto->getClassId() << endl;

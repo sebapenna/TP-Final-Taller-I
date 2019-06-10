@@ -3,7 +3,7 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 #include "../Server/YamlData/YamlParser.h"
-#include "../Server/constants.h"
+#include "Server/Model/constants.h"
 #include <string>
 
 using std::cout;

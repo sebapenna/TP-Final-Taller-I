@@ -1,6 +1,6 @@
 #include <string>
 #include "EnergyTransmitterData.h"
-#include "../constants.h"
+#include "Server/Model/constants.h"
 
 EnergyTransmitterData::EnergyTransmitterData(const float &x, const float &y,
                                              const std::string &direction)

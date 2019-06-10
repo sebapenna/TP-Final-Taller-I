@@ -7,29 +7,29 @@ include_directories(..)
 add_subdirectory(YamlData)
 
 add_library(portal-src
-        Chell.cpp
-        ContactListener.cpp
-        constants.h
-        EnergyBall.cpp
+        Model/Chell.cpp
+        Model/ContactListener.cpp
+        Model/constants.h
+        Model/EnergyBall.cpp
         ../Common/exceptions.h
-        Portal.cpp
-        World.cpp
-        EnergyBlocks/EnergyReceiver.cpp
-        EnergyBlocks/EnergyTransmitter.cpp
-        GroundBlocks/MetalBlock.cpp
-        GroundBlocks/MetalDiagonalBlock.cpp
-        GroundBlocks/RockBlock.cpp
-        Obstacles/Button.cpp
-        Obstacles/Gate.cpp
-        Obstacles/Rock.cpp
+        Model/Portal.cpp
+        Model/World.cpp
+        Model/EnergyBlocks/EnergyReceiver.cpp
+        Model/EnergyBlocks/EnergyTransmitter.cpp
+        Model/GroundBlocks/MetalBlock.cpp
+        Model/GroundBlocks/MetalDiagonalBlock.cpp
+        Model/GroundBlocks/RockBlock.cpp
+        Model/Obstacles/Button.cpp
+        Model/Obstacles/Gate.cpp
+        Model/Obstacles/Rock.cpp
         Stage.cpp
-        Collidable.h
-        Obstacles/Acid.cpp
-        Obstacles/EnergyBarrier.cpp
-        PinTool.cpp
-        DTOProcessor.cpp DTOProcessor.h)
+        Model/Collidable.h
+        Model/Obstacles/Acid.cpp
+        Model/Obstacles/EnergyBarrier.cpp
+        Model/PinTool.cpp
+        Processor.cpp Processor.h ServerMain.cpp Lobby.cpp Lobby.h GameThread.cpp GameThread.h Player.cpp Player.h ReceiverThread.cpp ReceiverThread.h)
 
-target_link_libraries(portal-src common-src Box2D yaml-parser)
+target_link_libraries(portal-src common-src Box2D yaml-parser pthread)
 
 add_executable(server
         ServerTest.cpp)

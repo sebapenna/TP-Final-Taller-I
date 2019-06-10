@@ -2,7 +2,7 @@
 #define PORTAL_STAGE_H
 
 #include <string>
-#include "World.h"
+#include "Server/Model/World.h"
 
 class Stage {
 private:
@@ -11,13 +11,6 @@ private:
 public:
     explicit Stage(const std::string &config_file);
 
-    // run
-    // addPlayer
-    // deletePlayer
-    // send/recv data
-    // atributo: cola protocol
-    // translateProtocol
-    // => llamar metodo world
 };
 
 

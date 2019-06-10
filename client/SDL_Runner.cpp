@@ -18,7 +18,7 @@
 #include <Common/ProtocolTranslator/MetalBlockDTO.h>
 #include <Common/ProtocolTranslator/MetalDiagonalBlockDTO.h>
 #include <Common/ProtocolTranslator/RockDTO.h>
-#include <Server/constants.h>
+#include <Server/Model/constants.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"

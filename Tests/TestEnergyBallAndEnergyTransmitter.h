@@ -2,8 +2,8 @@
 #define PORTAL_TESTENERGYBALLANDENERGYTRANSMITTER_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include "Server/World.h"
-#include "Server/constants.h"
+#include "Server/Model/World.h"
+#include "Server/Model/constants.h"
 
 using std::cout;
 using std::endl;

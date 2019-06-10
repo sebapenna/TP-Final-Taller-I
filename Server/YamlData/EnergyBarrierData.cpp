@@ -1,5 +1,5 @@
 #include "EnergyBarrierData.h"
-#include <Server/constants.h>
+#include <Server/Model/constants.h>
 
 EnergyBarrierData::EnergyBarrierData(const float &x, const float &y,
                                      const std::string &o) : _x(x), _y(y) {

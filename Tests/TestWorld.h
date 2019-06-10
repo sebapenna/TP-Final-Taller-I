@@ -2,7 +2,7 @@
 #define PORTAL_TESTWORLD_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include "Server/World.h"
+#include "Server/Model/World.h"
 
 using std::cout;
 using std::endl;
