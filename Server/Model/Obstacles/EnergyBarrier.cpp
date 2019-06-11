@@ -1,7 +1,10 @@
 #include "EnergyBarrier.h"
 #include <Server/Model/constants.h>
 
-const std::string EnergyBarrier::getClassName() {
+EnergyBarrier::EnergyBarrier(const float &x, const float &y, const float &width,
+                             const float &height) : _x(x), _y(y), _width(width), _height(height) { }
+
+const uint8_t EnergyBarrier::getClassId() {
     return ENERGY_BARRIER;
 }
 
@@ -16,4 +19,20 @@ void EnergyBarrier::endCollitionWith(Collidable *other) {
 
 bool EnergyBarrier::actedDuringStep() {
     return false;     // No realiza ninguna accion durante step
+}
+
+const float EnergyBarrier::getX() const {
+    return _x;
+}
+
+const float EnergyBarrier::getY() const {
+    return _y;
+}
+
+const float EnergyBarrier::getWidth() const {
+    return _width;
+}
+
+const float EnergyBarrier::getHeight() const {
+    return _height;
 }

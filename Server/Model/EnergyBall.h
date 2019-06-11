@@ -24,11 +24,11 @@ public:
 
     b2Body *getBody() const;
 
-    const float getPositionX();
+    const float getX();
 
-    const float getPositionY();
+    const float getY();
 
-    const std::string getClassName() override;
+    const uint8_t getClassId() override;
 
     void collideWith(Collidable *other) override;
 

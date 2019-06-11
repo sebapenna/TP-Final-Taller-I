@@ -1,7 +1,8 @@
 #include "PinTool.h"
+#include <Server/Model/constants.h>
 
-const std::string PinTool::getClassName() {
-    return std::__cxx11::string();
+const uint8_t PinTool::getClassId() {
+    return PIN_TOOL;
 }
 
 void PinTool::collideWith(Collidable *other) {

@@ -46,8 +46,8 @@ public:
         world->createEnergyReceiver(e_recvr2_x, e_recvr2_y);
         e_recvr1 = world->getEnergyReceiver(0);
         e_recvr2 = world->getEnergyReceiver(1);
-        world->createGate(0, gate1_x, gate1_y, {0, 1}, {1});
-        world->createGate(1, gate2_x, gate2_y, {0}, {0, 1});
+        world->createGate(gate1_x, gate1_y, {0, 1}, {1});
+        world->createGate(gate2_x, gate2_y, {0}, {0, 1});
         init_n_bodies = 7;
         gate1 = world->getGate(0);
         gate2 = world->getGate(1);
@@ -159,7 +159,7 @@ public:
         auto updated_vec = world->getObjectsToUpdate();
         size_t id = 0;
         for (auto &updated : updated_vec) {
-            if (updated->getClassName() == GATE){
+            if (updated->getClassId() == GATE){
                 auto updated_gate = (Gate*) updated;
                 CPPUNIT_ASSERT_EQUAL(id, updated_gate->getId());
                 CPPUNIT_ASSERT(updated_gate->isOpen());
@@ -185,7 +185,7 @@ public:
         auto updated_vec = world->getObjectsToUpdate();
         size_t id = 0;
         for (auto &updated : updated_vec) {
-            if (updated->getClassName() == GATE){
+            if (updated->getClassId() == GATE){
                 auto updated_gate = (Gate*) updated;
                 CPPUNIT_ASSERT_EQUAL(id, updated_gate->getId());
                 CPPUNIT_ASSERT(!updated_gate->isOpen());

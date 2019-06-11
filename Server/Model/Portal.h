@@ -14,7 +14,7 @@ public:
 
     void collideWith(Collidable *other) override;
 
-    const std::string getClassName() override;
+    const uint8_t getClassId() override;
 };
 
 

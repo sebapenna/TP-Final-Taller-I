@@ -5,7 +5,7 @@
 
 class Collidable {
 public:
-    virtual const std::string getClassName() = 0;
+    virtual const uint8_t getClassId() = 0;
 
     // Indica si durante el step el objeto realizo alguna accion
     virtual bool actedDuringStep() = 0;

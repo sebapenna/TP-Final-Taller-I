@@ -59,7 +59,7 @@ public:
     void setUp() {
         world = new World(width, height);
         world->createRockBlock(1000, 4, 0, -2);  // Piso
-        world->createChell(chell_init_x, chell_init_y, 0);
+        world->createChell(chell_init_x, chell_init_y);
         chell = world->getChell(0);
     }
 
@@ -70,16 +70,16 @@ public:
     void testCreateChell() {
         cout << endl << endl << "TESTS CHELL";
         cout << endl << "TEST crear correctamente: ";
-        CPPUNIT_ASSERT_EQUAL(chell->getPositionX(), chell_init_x);
-        CPPUNIT_ASSERT_EQUAL(chell->getPositionY(), chell_init_y);
+        CPPUNIT_ASSERT_EQUAL(chell->getX(), chell_init_x);
+        CPPUNIT_ASSERT_EQUAL(chell->getY(), chell_init_y);
         cout << "OK";
     }
 
     void testTeletransport() {
         cout << endl <<  "TEST teletransportar: ";
         chell->teletransport(5,5);
-        CPPUNIT_ASSERT_EQUAL(chell->getPositionX(), (float) 5);
-        CPPUNIT_ASSERT_EQUAL(chell->getPositionY(), (float) 5);
+        CPPUNIT_ASSERT_EQUAL(chell->getX(), (float) 5);
+        CPPUNIT_ASSERT_EQUAL(chell->getY(), (float) 5);
         cout << "OK";
     }
 
@@ -88,8 +88,8 @@ public:
         chell->teletransport(0, 4); // Elevo a chell para que caiga
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        float y_diff = chell->getPositionY() - chell_init_y;
-        float x_diff = chell->getPositionX() - chell_init_x;
+        float y_diff = chell->getY() - chell_init_y;
+        float x_diff = chell->getX() - chell_init_x;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, x_diff);
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, y_diff);
         cout << "OK";
@@ -100,7 +100,7 @@ public:
         chell->move_right();
         for (int i = 1; i < STEP_ITERATIONS; i++)
             world->step();
-        float diff_x = chell->getPositionX() - chell_init_x;
+        float diff_x = chell->getX() - chell_init_x;
         CPPUNIT_ASSERT_GREATER((float) 0, diff_x);
         CPPUNIT_ASSERT(chell->isMoving());
         CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
@@ -113,7 +113,7 @@ public:
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        float diff_x = chell->getPositionX() - chell_init_x;
+        float diff_x = chell->getX() - chell_init_x;
         CPPUNIT_ASSERT_LESS((float) 0, diff_x);
         CPPUNIT_ASSERT(chell->isMoving());
         CPPUNIT_ASSERT_EQUAL(O_O, chell->movementDirection());
@@ -128,8 +128,8 @@ public:
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
             if (x_step == 0)
-                x_step = chell->getPositionX() - chell_init_x;
-            float diff_x = abs(x_step * i) - abs(chell->getPositionX());
+                x_step = chell->getX() - chell_init_x;
+            float diff_x = abs(x_step * i) - abs(chell->getX());
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
         }
         cout << "OK";
@@ -142,8 +142,8 @@ public:
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
             if (x_step == 0)
-                x_step = chell->getPositionX() - chell_init_x;
-            float diff_x = abs(x_step * i) - abs(chell->getPositionX());
+                x_step = chell->getX() - chell_init_x;
+            float diff_x = abs(x_step * i) - abs(chell->getX());
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
         }
         cout << "OK";
@@ -157,10 +157,10 @@ public:
         chell->stopMovement();
         for (int i = 0; i < STEP_ITERATIONS; i++)   // Tiempo que demora frenar
             world->step(); // Tiempo que demora frenar por el impulso
-        float pos_after_stop = chell->getPositionX();
+        float pos_after_stop = chell->getX();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
-            float diff_x = pos_after_stop - chell->getPositionX();
+            float diff_x = pos_after_stop - chell->getX();
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
             CPPUNIT_ASSERT(!chell->isMoving());
         }
@@ -175,10 +175,10 @@ public:
         chell->stopMovement();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step(); // Tiempo que demora frenar por el impulso
-        float pos_after_stop = chell->getPositionX();
+        float pos_after_stop = chell->getX();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
-            float diff_x = pos_after_stop - chell->getPositionX();
+            float diff_x = pos_after_stop - chell->getX();
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
             CPPUNIT_ASSERT(!chell->isMoving());
         }
@@ -190,13 +190,13 @@ public:
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        float pos_before_move_left = chell->getPositionX();
+        float pos_before_move_left = chell->getX();
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step(); // Tiempo que demora frenar por el impulso
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT_LESS(pos_before_move_left,  chell->getPositionX());
+        CPPUNIT_ASSERT_LESS(pos_before_move_left, chell->getX());
         cout << "OK";
     }
 
@@ -205,13 +205,13 @@ public:
         chell->move_left();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        float pos_before_move_left = chell->getPositionX();
+        float pos_before_move_left = chell->getX();
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step(); // Tiempo que demora frenar por el impulso
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT_GREATER(pos_before_move_left,  chell->getPositionX());
+        CPPUNIT_ASSERT_GREATER(pos_before_move_left, chell->getX());
         cout << "OK";
     }
 
@@ -221,7 +221,7 @@ public:
         chell->jump();
         for (int i = 0; i < 200; i++) {
             world->step();
-            if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
+            if ((chell->getY() - chell_init_y) > DELTA_POS) {
                 jumped = true;
                 CPPUNIT_ASSERT(chell->isJumping());
             }
@@ -250,18 +250,18 @@ public:
         chell->jump();
         for (int i = 0; i < 200; i++) {
             world->step();
-            if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
+            if ((chell->getY() - chell_init_y) > DELTA_POS)
                 jumped1 = true;
         }
-        float diff_y = chell->getPositionY() - chell_init_y;
+        float diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
         chell->jump();
         for (int i = 0; i < 200; i++) {
             world->step();
-            if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
+            if ((chell->getY() - chell_init_y) > DELTA_POS)
                 jumped2 = true;
         }
-        diff_y = chell->getPositionY() - chell_init_y;
+        diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
         CPPUNIT_ASSERT(jumped1);
         CPPUNIT_ASSERT(jumped2);
@@ -274,19 +274,19 @@ public:
         chell->jump();
         for (int i = 0; i < 200; i++) {
             world->step();
-            if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
+            if ((chell->getY() - chell_init_y) > DELTA_POS) {
                 if (!jumped) {
                     chell->move_right();    // Muevo una vez que salto
                     CPPUNIT_ASSERT(chell->isJumping());
                 }
                 jumped = true;
-                if (chell->getPositionX() > chell_init_x)
+                if (chell->getX() > chell_init_x)
                     moved_on_air = true;    // Se movio en X estando en el aire
             }
         }
-        float diff_y = chell->getPositionY() - chell_init_y;
+        float diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
-        CPPUNIT_ASSERT_GREATER(chell_init_x, chell->getPositionX());
+        CPPUNIT_ASSERT_GREATER(chell_init_x, chell->getX());
         CPPUNIT_ASSERT(jumped);
         CPPUNIT_ASSERT(moved_on_air);
         cout << "OK";
@@ -298,19 +298,19 @@ public:
         chell->jump();
         for (int i = 0; i < 200; i++) {
             world->step();
-            if ((chell->getPositionY() - chell_init_y) > DELTA_POS) {
+            if ((chell->getY() - chell_init_y) > DELTA_POS) {
                 if (!jumped) {
                     chell->move_left();    // Muevo una vez que salto
                     CPPUNIT_ASSERT(chell->isJumping());
                 }
                 jumped = true;
-                if (chell->getPositionX() < chell_init_x)
+                if (chell->getX() < chell_init_x)
                     moved_on_air = true;    // Se movio en X estando en el aire
             }
         }
-        float diff_y = chell->getPositionY() - chell_init_y;
+        float diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, diff_y);
-        CPPUNIT_ASSERT_LESS(chell_init_x, chell->getPositionX());
+        CPPUNIT_ASSERT_LESS(chell_init_x, chell->getX());
         CPPUNIT_ASSERT(jumped);
         CPPUNIT_ASSERT(moved_on_air);
         cout << "OK";
@@ -322,18 +322,18 @@ public:
         chell->move_right();
         for (int i = 0; i < 200; i++) {
             world->step();
-            if (chell->getPositionX() > chell_init_x) {
+            if (chell->getX() > chell_init_x) {
                 if (!jumped) {
                     jumped = true;
                     chell->jump();
                 }
-                if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
+                if ((chell->getY() - chell_init_y) > DELTA_POS)
                     jumped_after_moving = true;
             }
         }
         CPPUNIT_ASSERT(jumped);
         CPPUNIT_ASSERT(jumped_after_moving);
-        CPPUNIT_ASSERT_LESS(DELTA_POS, chell->getPositionY() - chell_init_y);
+        CPPUNIT_ASSERT_LESS(DELTA_POS, chell->getY() - chell_init_y);
         cout << "OK";
     }
 
@@ -343,18 +343,18 @@ public:
         chell->move_left();
         for (int i = 0; i < 200; i++) {
             world->step();
-            if (chell->getPositionX() < chell_init_x) {
+            if (chell->getX() < chell_init_x) {
                 if (!jumped) {
                     jumped = true;
                     chell->jump();
                 }
-                if ((chell->getPositionY() - chell_init_y) > DELTA_POS)
+                if ((chell->getY() - chell_init_y) > DELTA_POS)
                     jumped_after_moving = true;
             }
         }
         CPPUNIT_ASSERT(jumped);
         CPPUNIT_ASSERT(jumped_after_moving);
-        CPPUNIT_ASSERT_LESS(DELTA_POS, chell->getPositionY() - chell_init_y);
+        CPPUNIT_ASSERT_LESS(DELTA_POS, chell->getY() - chell_init_y);
         cout << "OK";
     }
 
@@ -367,10 +367,10 @@ public:
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step();
-        CPPUNIT_ASSERT_GREATER(chell_init_x, chell->getPositionX());
+        CPPUNIT_ASSERT_GREATER(chell_init_x, chell->getX());
         float expected_pos = b_x - b_width/2 - CHELL_HALF_WIDTH;
-        CPPUNIT_ASSERT_LESS(expected_pos, chell->getPositionX());
-        float diff_y = chell->getPositionY() - chell_init_y;
+        CPPUNIT_ASSERT_LESS(expected_pos, chell->getX());
+        float diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         cout << "OK";
     }
@@ -385,14 +385,14 @@ public:
         float max_height = 0;
         for (int i = 0; i < 200; ++i) {   // Jump with no roof
             world->step();
-            if (chell->getPositionY() > max_height)
-                max_height = chell->getPositionY();
+            if (chell->getY() > max_height)
+                max_height = chell->getY();
         }
         world->createRockBlock(b_width, b_height, b_x, b_y);
         chell->jump();
         for (int i = 0; i < 200; ++i) {   // Jump with roof
             world->step();
-            CPPUNIT_ASSERT_LESS(max_height, chell->getPositionY());
+            CPPUNIT_ASSERT_LESS(max_height, chell->getY());
         }
         cout << "OK";
     }
@@ -407,13 +407,13 @@ public:
         bool y_increased = false, tilted = false;
         for (int i = 1; i < 200; i++) {
             world->step();
-            CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->getPositionX());
-            if ((chell->getPositionY() - DELTA_POS) > chell_init_y)
+            CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->getX());
+            if ((chell->getY() - DELTA_POS) > chell_init_y)
                 y_increased = true; // Subio por bloque diagonal
             if (chell->tilt() == WEST)
                 tilted = true;
         }
-        float diff_y = chell->getPositionY() - chell_init_y;
+        float diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y); // Cayo al final del bloque
         CPPUNIT_ASSERT(y_increased);
         CPPUNIT_ASSERT(tilted);
@@ -431,13 +431,13 @@ public:
         bool y_increased = false, tilted= false;
         for (int i = 1; i < 200; i++) {
             world->step();
-            CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->getPositionX());
-            if ((chell->getPositionY() - DELTA_POS) > chell_init_y)
+            CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->getX());
+            if ((chell->getY() - DELTA_POS) > chell_init_y)
                 y_increased = true; // Subio por bloque diagonal
             if (chell->tilt() == EAST)
                 tilted = true;
         }
-        float diff_y = chell->getPositionY() - chell_init_y;
+        float diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y); // Cayo al final del bloque
         CPPUNIT_ASSERT(y_increased);
         CPPUNIT_ASSERT(tilted);
@@ -462,9 +462,9 @@ public:
         chell->move_right();
         for (int i = 1; i < 200; i++) {
             world->step();
-            CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->getPositionX());
+            CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->getX());
         }
-        float diff_y = chell->getPositionY() - chell_init_y;
+        float diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         cout << "OK";
     }
@@ -487,10 +487,10 @@ public:
         chell->move_left();
         for (int i = 1; i < 200; i++) {
             world->step();
-            if (abs(chell->getPositionX()) > DELTA_POS) // Evito falla por delta
-                CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->getPositionX());
+            if (abs(chell->getX()) > DELTA_POS) // Evito falla por delta
+                CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->getX());
         }
-        float diff_y = chell->getPositionY() - chell_init_y;
+        float diff_y = chell->getY() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         cout << "OK";
     }
@@ -519,7 +519,7 @@ public:
             world->step();
         auto rock = world->getRock(0);
         // Verifico roca frena a chell
-        CPPUNIT_ASSERT_LESS(rock->getPositionX(), chell->getPositionX());
+        CPPUNIT_ASSERT_LESS(rock->getX(), chell->getX());
         CPPUNIT_ASSERT(!chell->isDead());
         CPPUNIT_ASSERT_EQUAL(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
@@ -717,7 +717,7 @@ public:
                 // Verifico chell correcta
                 auto deleted_chell_data = world->getObjectsToDelete().at(0);
                 CPPUNIT_ASSERT_EQUAL((size_t) 0, deleted_chell_data.first);
-                CPPUNIT_ASSERT_EQUAL((std::string) CHELL, deleted_chell_data.second);
+                CPPUNIT_ASSERT_EQUAL(CHELL, deleted_chell_data.second);
                 deleted = true;
             }
         }

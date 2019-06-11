@@ -1,5 +1,7 @@
 #include <Common/Protocol.h>
 #include "Common/exceptions.h"
+#include "Event.h"
+#include "Player.h"
 #include <iostream>
 #include <Common/AcceptSocket.h>
 #include <Common/Socket.h>
@@ -24,18 +26,23 @@ int main(int argc, char const *argv[]) {
     if (argc != N_ARGS)
         cout << WrongArgumentException().what();
     try {
-        SafeQueue<std::shared_ptr<ProtocolDTO>> queue;
+        SafeQueue<shared_ptr<Event>> queue;
 
         cout << "Abriendo socket aceptador..."<<endl;
         AcceptSocket accept_sckt(argv[PORT_POS], MAX_WAITING_QUEUE_SIZE);
         cout << "Disponible a conexiones..."<<endl;
-        Socket sckt = accept_sckt.acceptConnection();
-        cout << "Conexion establecida"<<endl;
-        Protocol prot(move(sckt));
 
-        shared_ptr<ProtocolDTO> p;
-        prot >> p;
-        queue.push(p);
+        Player player(move(accept_sckt.acceptConnection()));
+        player.setId(0);
+        cout << "Conexion establecida"<<endl;
+
+
+        shared_ptr<ProtocolDTO> dto_ptr;
+        player.receiveDTO(dto_ptr);
+
+
+        shared_ptr<Event> event = std::make_shared<Event>(player.id(), dto_ptr);
+        queue.push(std::move(event));    // Encolo evento y id de player
         cout << "DTO recibido y encolado"<<endl;
 
 //        auto dto = (MoveRightDTO *) p.get();
