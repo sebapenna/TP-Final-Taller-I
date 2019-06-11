@@ -121,6 +121,6 @@ void WorldView::setCamara(int16_t id, int w, int h) {
 
 void WorldView::setBackground(std::shared_ptr<BackgroundView>& background) {
     this->background = background;
-    this->background->setDestRect(-1000,0,1980,1024);
-    this->background->setPosition(camera->getPosition());
+    //this->background->setDestRect(0,0,10,10);
+    //this->background->setPosition(camera->getPosition());
 }

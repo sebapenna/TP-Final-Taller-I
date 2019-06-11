@@ -152,16 +152,23 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_ROCK_BLOCK_DATA: {
                         auto rockBlockDTO = (RockBlockDTO*) newItem;
-                        auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
-                        rockBlock->setDestRect(rockBlockDTO->getX(), rockBlockDTO->getY(), rockBlockDTO->getWidth(), rockBlockDTO->getHeight());
-                        world.addView(rockBlock);
+                        for(int i=0; i<rockBlockDTO->getWidth(); i+=4) {
+                            auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
+                            rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY(), 4, rockBlockDTO->getHeight());
+                            world.addView(rockBlock);
+                        }
                         break;
                     }
                     case PROTOCOL_METAL_BLOCK_DATA: {
                         auto metalBlockDTO = (MetalBlockDTO*) newItem;
-                        auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
+                        for(int i=0; i<metalBlockDTO->getWidth(); i+=4) {
+                            auto rockBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
+                            rockBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY(), 4, metalBlockDTO->getHeight());
+                            world.addView(rockBlock);
+                        }
+                       /* auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
                         metalBlock->setDestRect(metalBlockDTO->getX(), metalBlockDTO->getY(), metalBlockDTO->getWidth(), metalBlockDTO->getHeight());
-                        world.addView(metalBlock);
+                        world.addView(metalBlock);*/
                         break;
                     }
                     case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA: {

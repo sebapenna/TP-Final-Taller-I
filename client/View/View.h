@@ -16,7 +16,7 @@ class View {
 private:
     SDL_Rect dstSrc;
     Position position;
-    int convertMetersToPixels(int meters);
+    int convertMetersToPixelsPos(int meters);
 public:
     View(int x, int y);
     SDL_Rect* getDst();
@@ -24,6 +24,8 @@ public:
     void setPosition(Position& position);
     virtual void draw(Camera& camera) = 0;
     Position& getPosition();
+
+    int convertMetersToPixelsTam(int meters);
 };
 
 
