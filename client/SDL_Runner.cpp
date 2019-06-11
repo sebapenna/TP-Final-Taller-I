@@ -28,8 +28,6 @@
 #include "client/View/BlockRockView.h"
 #include "client/View/BlockMetalView.h"
 
-#define METERS_TO_PIXELS_CONVERSION 100
-
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue, bool& done) :
 safeQueue(safeQueue), done(done), window(title, 1600, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
     textureFactory.init(renderer);
@@ -79,9 +77,8 @@ void SDL_Runner::run() {
                         auto newChell = (ChellDTO *) newItem;
                         auto chell2 = std::shared_ptr<ChellAnimationView>(new ChellAnimationView(newChell->getId(),
                                                              textureFactory.getTextureByName(chell_file_name), renderer));
-                        Position chell2Pos(newChell->getX(), newChell->getY());
-                        chell2.get()->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
-                        world.addChell(chell2, chell2Pos);
+                        chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
+                        world.addChell(chell2);
                         if (newChell->getDeleteState() == DELETE) {
                             world.setChellState(newChell->getId(), ChellState::dying);
                         } else if (newChell->getMoving()) {

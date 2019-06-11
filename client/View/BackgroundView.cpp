@@ -11,6 +11,6 @@ BackgroundView::BackgroundView(SDL_Texture *texture, Renderer &renderer, int x, 
 
 void BackgroundView::draw(Camera &camera) {
     this->setPosition(camera.getPosition());
-    this->setDestRect(this->getPosition().getX() - this->getDst()->w, this->getPosition().getY() + this->getDst()->h, this->getDst()->w, this->getDst()->h);
+    this->setDestRect(this->getPosition().getX()- this->getDst()->w/2, this->getPosition().getY() + this->getDst()->h/2, this->getDst()->w, this->getDst()->h);
     background.draw(camera,this->getDst());
 }

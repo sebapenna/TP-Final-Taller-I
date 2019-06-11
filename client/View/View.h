@@ -16,6 +16,7 @@ class View {
 private:
     SDL_Rect dstSrc;
     Position position;
+    int convertMetersToPixels(int meters);
 public:
     View(int x, int y);
     SDL_Rect* getDst();

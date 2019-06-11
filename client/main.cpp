@@ -36,15 +36,15 @@ int main(int argc, char** argv){
 
         SDL_Runner sdlRunner(title, safeQueue, done);
         sdlRunner.start();
-        Protocol protocol("localhost", "8080");
+     /*   Protocol protocol("localhost", "8080");
 
         ClientSender clientSender(protocol, blockingQueue, done);
         clientSender.run();
 
         ClientReceiver clientReceiver(protocol, safeQueue, done);
-        clientReceiver.run();
-       /* FakeServer server(blockingQueue, safeQueue, done);
-        server.start();*/
+        clientReceiver.run();*/
+        FakeServer server(blockingQueue, safeQueue, done);
+        server.start();
 
         SDL_Event e;
         std::shared_ptr<ProtocolDTO> beginDTO (new BeginDTO());
@@ -91,9 +91,9 @@ int main(int argc, char** argv){
         }
         sdlRunner.join();
         blockingQueue.setFinishedAdding();
-        clientSender.join();
-        clientReceiver.join();
-        //server.join();
+    /*    clientSender.join();
+        clientReceiver.join();*/
+        server.join();
         return 0;
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;

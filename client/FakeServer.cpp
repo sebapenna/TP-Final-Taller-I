@@ -32,7 +32,7 @@ void FakeServer::run() {
         //safeQueue.push((void*) new MetalBlockDTO(startX, 400, 128,128));
     }*/
     int x=200;
-    std::shared_ptr<ProtocolDTO>dto(new ChellDTO(1, x, 200, 201, 220, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+    std::shared_ptr<ProtocolDTO>dto(new ChellDTO(1, x, 200, 200, 220, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
     safeQueue.push(dto);
     std::shared_ptr<ProtocolDTO>dto2(new ChellDTO(2, -200, -100, 201, 220, WEST, NOT_TILTED, NOT_MOVING, JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
     safeQueue.push(dto2);
@@ -61,20 +61,20 @@ void FakeServer::run() {
             x-=10;
 
             //safeQueue.push((void *) new ButtonStateDTO(1, PRESSED));
-            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 200, 200, 220, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
             //std::shared_ptr<ProtocolDTO>dto10(new GateStateDTO(1, OPEN));
             std::shared_ptr<ProtocolDTO>dto10(new ButtonStateDTO(1, PRESSED));
             safeQueue.push(dto10);
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_RIGHT) {
             x+=10;
-            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, EAST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 200, 200, 220, EAST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
             std::shared_ptr<ProtocolDTO>dto10(new GateStateDTO(1, CLOSED));
             safeQueue.push(dto10);
             //safeQueue.push((void *) new ButtonStateDTO(1, NOT_PRESSED));
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_STOP) {
-            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 200, 201, 220, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
         }
     }

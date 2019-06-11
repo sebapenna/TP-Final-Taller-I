@@ -37,7 +37,7 @@ public:
     void addButton(std::shared_ptr<ButtonView>& button);
     void activateButton(int16_t id);
     void deactivateButton(int16_t id);
-    void addChell(std::shared_ptr<ChellAnimationView>& chell, Position& position);
+    void addChell(std::shared_ptr<ChellAnimationView>& chell);
     void setChellState(int16_t id, ChellState state);
     void makeChellTiltedLeft(int16_t id);
     void makeChellTiltedRight(int16_t id);

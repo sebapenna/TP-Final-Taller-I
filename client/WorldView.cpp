@@ -85,13 +85,12 @@ void WorldView::deactivateButton(int16_t id) {
     buttons[id]->disable();
 }
 
-void WorldView::addChell(std::shared_ptr<ChellAnimationView>& chell, Position& position) {
+void WorldView::addChell(std::shared_ptr<ChellAnimationView>& chell) {
     if (chells.count(chell->getId())) {
         auto chellView = chells[chell->getId()];
-        chellView->setPosition(position);
+        chellView->setPosition(chell->getPosition());
     } else {
         chells[chell->getId()] = chell;
-        chell->setDestRect(position.getX(), position.getY(), 201, 220 );
     }
 }
 
