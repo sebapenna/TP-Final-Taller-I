@@ -12,8 +12,9 @@
 class DiagonalBlockMetalView : public View {
 private:
     Sprite block;
+    int16_t orientation;
 public:
-    DiagonalBlockMetalView(SDL_Texture* texture, Renderer& renderer, int x = 0, int y = 0);
+    DiagonalBlockMetalView(SDL_Texture* texture, Renderer& renderer, int16_t orientation, int x = 0, int y = 0);
     void draw(Camera& camera);
 };
 

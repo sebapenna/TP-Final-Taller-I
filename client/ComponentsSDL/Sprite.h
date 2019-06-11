@@ -20,8 +20,7 @@ private:
 
 public:
     Sprite(SDL_Texture* texture, Renderer &renderer);
-    void draw(Camera& camera, SDL_Rect* dstRect);
-    void draw(Camera &camera, SDL_Rect* dstRect, double angle, SDL_RendererFlip flip);
+    void draw(Camera &camera, SDL_Rect* dstRect, double angle=0, SDL_RendererFlip flip = SDL_FLIP_NONE);
     void setSourceW(int w);
     void setTexture(SDL_Texture *newTexture);
     void setAlphaMod(Uint8 alpha);

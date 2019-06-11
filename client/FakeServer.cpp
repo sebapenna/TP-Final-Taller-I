@@ -13,6 +13,7 @@
 #include <Common/ProtocolTranslator/RockBlockDTO.h>
 #include <Common/ProtocolTranslator/GateStateDTO.h>
 #include <Server/Model/constants.h>
+#include <Common/ProtocolTranslator/MetalDiagonalBlockDTO.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 
@@ -47,6 +48,11 @@ void FakeServer::run() {
     safeQueue.push(dto7);
     std::shared_ptr<ProtocolDTO>dto8(new RockDTO(1, 500, 400, 128, DONT_DELETE));
     safeQueue.push(dto8);
+    std::shared_ptr<ProtocolDTO>dto18(new MetalDiagonalBlockDTO(100, 500, 128, O_SE));
+    safeQueue.push(dto18);
+    std::shared_ptr<ProtocolDTO>dto19(new MetalDiagonalBlockDTO(100, 300, 128, O_NO));
+    safeQueue.push(dto19);
+
     std::shared_ptr<ProtocolDTO>dto20(new ChellDTO(4, 100, -100, 201, 220, WEST, O_O, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
     safeQueue.push(dto20);
     while (!done) {

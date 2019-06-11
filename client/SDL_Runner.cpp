@@ -163,8 +163,7 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA: {
                         auto diagonalMetalBlockDTO = (MetalDiagonalBlockDTO*) newItem;
-                        //bool orientation = diagonalMetalBlockDTO->getOrientation();
-                        auto diagonalMetalBlock = std::shared_ptr<DiagonalBlockMetalView>(new DiagonalBlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
+                        auto diagonalMetalBlock = std::shared_ptr<DiagonalBlockMetalView>(new DiagonalBlockMetalView(textureFactory.getTextureByName(block_file_name), renderer, diagonalMetalBlockDTO->getOrientation()));
                         diagonalMetalBlock->setDestRect(diagonalMetalBlockDTO->getX(), diagonalMetalBlockDTO->getY(), diagonalMetalBlockDTO->getSideLength(), diagonalMetalBlockDTO->getSideLength());
                         world.addView(diagonalMetalBlock);
                         break;
