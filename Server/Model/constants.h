@@ -46,9 +46,11 @@
 #define DELTA_Y_VEL 0.001    // Error de velocidad por caida de cuerpos al suelo
 #define DELTA_POS   (float) 0.02    // Error posicion (x e y)
 
+#define HALF_BOX_LEN 2
+
 /* Configuracion Chell */
-#define CHELL_HALF_WIDTH  2
-#define CHELL_HALF_HEIGHT  2
+#define CHELL_HALF_WIDTH  HALF_BOX_LEN
+#define CHELL_HALF_HEIGHT  HALF_BOX_LEN
 #define CHELL_DENSITY   1
 
 /* Coniguracion Rock */
@@ -56,12 +58,12 @@
 #define ROCK_DENSITY    1
 
 /* Coniguracion Acid */
-#define ACID_HALF_WIDTH  2
-#define ACID_HALF_HEIGHT  0.5
+#define ACID_HALF_WIDTH  HALF_BOX_LEN
+#define ACID_HALF_HEIGHT  (ACID_HALF_WIDTH / 4)
 #define ACID_FRICTION    100    // Cuerpo se frene en acido
 
 /* Configuracion Button */
-#define BUTTON_HALF_WIDTH  2
+#define BUTTON_HALF_WIDTH  HALF_BOX_LEN
 #define BUTTON_HALF_HEIGHT  0.5
 #define BUTTON_FRICTION    0
 
@@ -69,17 +71,17 @@
 #define ACTIVATED (uint8_t) 1
 
 /* Configuracion Gate */
-#define GATE_HALF_WIDTH  2
-#define GATE_HALF_HEIGHT  4
+#define GATE_HALF_WIDTH  HALF_BOX_LEN
+#define GATE_HALF_HEIGHT  (2 * GATE_HALF_WIDTH)
 #define GATE_FRICTION    0
 
 /* Configuracion Energy Receiver y Energy Transmitter */
-#define ENRG_BLOCK_HALF_LEN  2 // Largo de medio lado del recvr/transmitter (cuerpos cuadrados)
+#define ENRG_BLOCK_HALF_LEN  HALF_BOX_LEN // Largo de medio lado del recvr/transmitter (cuerpos cuadrados)
 #define ENRG_BLOCK_FRICTION    0
 #define TIME_TO_RELEASE 10  // Tiempo tras que libera bola energia el transmisor
 
 /* Configuracion Energy Ball */
-#define ENRG_BALL_RADIUS    2
+#define ENRG_BALL_RADIUS    HALF_BOX_LEN
 #define ENRG_BALL_DENSITY    1
 #define ENRG_BALL_FORCE 100
 #define ENERGY_BALL_MAX_LIFETIME 5
@@ -93,23 +95,23 @@
 #define BARRIER_HALF_WIDTH   1
 
 /* Class Names*/
-#define ENERGY_RECEIVER "EnergyReceiver"
-#define ENERGY_TRANSMITTER "EnergyTranmistter"
-#define METAL_BLOCK "MetalBlock"
-#define METAL_DIAGONAL_BLOCK "MetalDiagonalBlock"
-#define ROCK_BLOCK "RockBlock"
-#define BUTTON "Button"
-#define GATE "Gate"
-#define ROCK "Rock"
-#define ACID    "Acid"
-#define ENERGY_BARRIER "EnergyBarrier"
-#define CHELL   "Chell"
-#define ENERGY_BALL "EnergyBall"
-#define PORTAL_RAY  "PortalRay"
-#define PORTAL  "Portal"
-#define PIN_TOOL_RAY    "PinToolRay"
-#define PIN_TOOL    "PinTool"
-#define CAKE    "Cake"
+#define ENERGY_RECEIVER (uint8_t) 0
+#define ENERGY_TRANSMITTER (uint8_t) 1
+#define METAL_BLOCK (uint8_t) 2
+#define METAL_DIAGONAL_BLOCK (uint8_t) 3
+#define ROCK_BLOCK (uint8_t) 4
+#define BUTTON (uint8_t) 5
+#define GATE (uint8_t) 6
+#define ROCK (uint8_t) 7
+#define ACID    (uint8_t) 8
+#define ENERGY_BARRIER (uint8_t) 9
+#define CHELL   (uint8_t) 10
+#define ENERGY_BALL (uint8_t) 11
+#define PORTAL_RAY  (uint8_t) 12
+#define PORTAL  (uint8_t) 13
+#define PIN_TOOL_RAY    (uint8_t) 14
+#define PIN_TOOL    (uint8_t) 15
+#define CAKE    (uint8_t) 16
 
 /* Path YAML */
 //#ifdef DEBUG_MODE

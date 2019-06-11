@@ -6,11 +6,11 @@ Rock::Rock(const size_t &id, b2Body *body) : _body(body), _id(id) {
     _previous_y = _body->GetPosition().y;
 }
 
-float Rock::getPositionX() {
+float Rock::getX() {
     return _body->GetPosition().x;
 }
 
-float Rock::getPositionY() {
+float Rock::getY() {
     return _body->GetPosition().y;
 }
 
@@ -31,12 +31,12 @@ void Rock::teletransport(float x, float y) {
     _body->SetTransform(new_pos, 0);
 }
 
-const std::string Rock::getClassName() {
+const uint8_t Rock::getClassId() {
     return ROCK;
 }
 
 void Rock::collideWith(Collidable *other) {
-    auto c_name = other->getClassName();
+    auto c_name = other->getClassId();
     if (c_name == ENERGY_BARRIER) {
         _dead = true;
     }

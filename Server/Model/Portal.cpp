@@ -9,6 +9,6 @@ void Portal::collideWith(Collidable *other) {
 
 }
 
-const std::string Portal::getClassName() {
+const uint8_t Portal::getClassId() {
     return PORTAL_RAY;
 }

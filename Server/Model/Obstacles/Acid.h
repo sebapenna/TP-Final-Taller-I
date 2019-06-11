@@ -4,14 +4,22 @@
 #include <Server/Model/Collidable.h>
 
 class Acid: public Collidable {
+private:
+    const float _x, _y;
 public:
-    const std::string getClassName() override;
+    Acid(const float& x, const float& y);
+
+    const uint8_t getClassId() override;
 
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
 
     bool actedDuringStep() override;
+
+    const float getX() const;
+
+    const float getY() const;
 };
 
 

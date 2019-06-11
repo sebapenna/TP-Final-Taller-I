@@ -21,8 +21,9 @@
 class World {
 private:
     b2World *_world;
-    const size_t _width;
-    const size_t _height;
+    size_t _width;
+    size_t _height;
+
     std::vector<Chell*> _chells;
     std::vector<Rock*> _rocks;
     std::vector<Button*> _buttons;
@@ -34,10 +35,11 @@ private:
     // _pin_tools ?
     // todo: YAML::Node _config => configuracion de constants.h
 
-    // Vector para llevar registro de objetos que modificaron su estado/posicion durante step
+    // Vector de objetos que modificaron su estado/posicion durante step
     std::vector<Collidable*> _objects_to_update;
-    // Lista con id e identificador de la clase para los objetos que tendran que ser eliminados
-    std::vector<std::pair<size_t ,std::string>> _objects_to_delete;
+
+    // Vector de pares con los datos <id, classId> de los elementos a eliminar
+    std::vector<std::pair<size_t , uint8_t>> _objects_to_delete;
 
     /* Atributos para evitar leaks */
     ContactListener* _contact_listener;
@@ -63,25 +65,32 @@ private:
     void stepChells();
     void stepRocks();
 
-
 public:
-    // todo: archivo yaml en el constructor
     World(const size_t &width, const size_t &height);
+
+    // Constructor para demorar construccion hasta momento en que se tienen datos de width y height.
+    World() = default;
 
     ~World();
 
-    // Se envarga de vacia las estructuras de elementos actualizados/eliminados antes de realizar
-    // el step.
+    // Asignacion por movimiento.
+    // PRE: solo utilizar cuando se construye nuevo World, no cuando ya se lo haya utilizado
+    World& operator=(World&& other);
+    World& operator=(World& other) = delete;
+
+    // Step del world. Aplica todas las acciones ante asignadas a los distintos objetos.
+    // Vacia las estructuras de elementos actualizados/eliminados antes de realizar el step.
     void step();
 
+
+    /***************************************** Getters *************************************/
     size_t getWidth() const;
-
     size_t getHeight() const;
-
     b2World *getWorld() const;
 
-    // POST: no continuar utilizando el puntero devuelto posterior a un step, ya que podria haber
-    //  sido eliminado por alguna accion, volver a utilizar el metodo para verificar su existencia.
+    // POST [PARA TODOS LOS GETTERS DE PUNTEROS]: no continuar utilizando el puntero devuelto
+    // posterior a un step, ya que podria haber sido eliminado por alguna accion, volver a utilizar
+    // el metodo para verificar su existencia.
     Chell *getChell(const size_t &id);
     Rock *getRock(const size_t& id);
     Button *getButton(const size_t& id);
@@ -89,20 +98,26 @@ public:
     EnergyReceiver *getEnergyReceiver(const size_t& id);
     EnergyBall *getEnergyBall(const size_t& id);
 
+    const std::vector<Chell *> &getChells() const;
+    const std::vector<Rock *> &getRocks() const;
+    const std::vector<Button *> &getButtons() const;
+    const std::vector<Gate *> &getGates() const;
+    const std::vector<EnergyReceiver *> &getEnergyReceivers() const;
+    const std::vector<EnergyTransmitter *> &getEnergyTransmitters() const;
+    const std::vector<RockBlock *> &getRockBlocks() const;
+    const std::vector<Acid *> &getAcids() const;
+    const std::vector<MetalDiagonalBlock *> &getMetalDiagonalBlocks() const;
+    const std::vector<MetalBlock *> &getMetalBlocks() const;
+    const std::vector<EnergyBarrier *> &getEnergyBarriers() const;
+
     const std::vector<Collidable *> &getObjectsToUpdate() const;
-    // Vector donde cada elemento sera una tupla con los datos <id, classId> de los elementos a
-    // eliminar
-    const std::vector<std::pair<size_t, std::string>> &getObjectsToDelete() const;
+    const std::vector<std::pair<size_t, uint8_t>> &getObjectsToDelete() const;
 
-    // Se debe crear en orden de id creciente
-    void createChell(const float &x, const float &y, size_t id);
 
-    /* WIDT Y HEIGHT ES DE EL TOTAL DEL CUERPO */
-    void createRockBlock(const float& width, const float& height,
-            const float& x, const float& y);
-
-    void createMetalBlock(const float& width, const float& height,
-            const float& x, const float& y);
+    /******************************* Creacion Objetos **********************************/
+    // PRE [PARA AMBOS CREATE BLOCK[: width y height son ancho y alto del cuerpo completo
+    void createRockBlock(const float& width, const float& height, const float& x, const float& y);
+    void createMetalBlock(const float& width, const float& height, const float& x, const float& y);
 
     // X e Y deben ser la posicion de la punta inferior izquierda, pensando el bloque diagonal
     // como un cuadrado completo, sin importar la orientacion del mismo
@@ -110,17 +125,19 @@ public:
             const float& x, const float& y, const uint8_t& orientation);
 
     void createRock(const float& x, const float& y);
-
     void createAcid(const float& x, const float& y);
 
-    // Se debe crear en orden de id creciente
+    // PRE: Se debe crear en orden de id creciente
+    void createChell(const float &x, const float &y);
+
+    // PRE: Se debe crear en orden de id creciente
     void createButton(const float &x, const float &y);
 
-    void createGate(const size_t& id, const float& x, const float& y,
-            const std::vector<size_t>& buttons_needed,
-            const std::vector<size_t>& energy_receiver_needed);
+    // PRE: Se debe crear en orden de id creciente
+    void createGate(const float &x, const float &y, const std::vector<size_t> &buttons_needed,
+                    const std::vector<size_t> &energy_receiver_needed);
 
-    // Se debe crear en orden de id creciente
+    // PRE: Se debe crear en orden de id creciente
     void createEnergyReceiver(const float &x, const float &y);
 
     void createEnergyTransmitter(const float &x, const float &y, const uint8_t &direction);

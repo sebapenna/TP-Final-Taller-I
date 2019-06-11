@@ -35,15 +35,15 @@ bool EnergyBall::isDead() {
     return (_dead || diff_time < TIME_STEP);
 }
 
-const float EnergyBall::getPositionX() {
+const float EnergyBall::getX() {
     return _body->GetPosition().x;
 }
 
-const float EnergyBall::getPositionY() {
+const float EnergyBall::getY() {
     return _body->GetPosition().y;
 }
 
-const std::string EnergyBall::getClassName() {
+const uint8_t EnergyBall::getClassId() {
     return ENERGY_BALL;
 }
 
@@ -56,7 +56,7 @@ size_t EnergyBall::getId() const {
 }
 
 void EnergyBall::collideWith(Collidable *other) {
-    auto c_name = other->getClassName();
+    auto c_name = other->getClassId();
     if (c_name == ROCK_BLOCK || c_name == ACID || c_name == BUTTON ||
         c_name == ROCK || c_name == ENERGY_RECEIVER || c_name == CHELL ||
         c_name == PIN_TOOL) {

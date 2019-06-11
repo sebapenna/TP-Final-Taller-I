@@ -20,11 +20,11 @@ const size_t Chell::getId() const {
     return _id;
 }
 
-float Chell::getPositionX() {
+float Chell::getX() {
     return  _body->GetPosition().x;
 }
 
-float Chell::getPositionY() {
+float Chell::getY() {
     return  _body->GetPosition().y;
 }
 
@@ -129,17 +129,17 @@ void Chell::move() {
     updateJumpState();
 }
 
-const std::string Chell::getClassName() {
+const uint8_t Chell::getClassId() {
     return CHELL;
 }
 
 void Chell::collideWith(Collidable *other) {
-    auto cname = other->getClassName();
+    auto cname = other->getClassId();
     if (cname == ROCK ) {
         auto rock = (Rock*) other;
-        float head_pos = this->getPositionY() + CHELL_HALF_HEIGHT;
+        float head_pos = this->getY() + CHELL_HALF_HEIGHT;
         // Verifico esta por encima de chell y cayendo
-        if (rock->getPositionY() > head_pos && rock->getVelocityY() != 0)
+        if (rock->getY() > head_pos && rock->getVelocityY() != 0)
             _dead = true;
     } else if (cname == ACID || cname == ENERGY_BALL) {
         _dead = true;
@@ -159,7 +159,7 @@ void Chell::collideWith(Collidable *other) {
 }
 
 void Chell::endCollitionWith(Collidable *other) {
-    if (other->getClassName() == METAL_DIAGONAL_BLOCK)
+    if (other->getClassId() == METAL_DIAGONAL_BLOCK)
         _tilt = NOT_TILTED;   // Deja de caminar en diagonal
 }
 

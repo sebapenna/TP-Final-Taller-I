@@ -1,7 +1,9 @@
 #include "Acid.h"
 #include <Server/Model/constants.h>
 
-const std::string Acid::getClassName() {
+Acid::Acid(const float &x, const float &y) : _x(x), _y(y) { }
+
+const uint8_t Acid::getClassId() {
     return ACID;
 }
 
@@ -15,4 +17,12 @@ void Acid::endCollitionWith(Collidable *other) {
 
 bool Acid::actedDuringStep() {
     return false;     // No realiza ninguna accion durante step
+}
+
+const float Acid::getX() const {
+    return _x;
+}
+
+const float Acid::getY() const {
+    return _y;
 }

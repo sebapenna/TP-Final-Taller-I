@@ -4,6 +4,7 @@
 #include <thread>
 #include <Common/SafeQueue.h>
 #include "Player.h"
+#include "Event.h"
 
 // Thread exclusivo recibir datos por parte del player indicado en el constructor y encolarlos en
 //  la cola de eventos
@@ -13,13 +14,12 @@ private:
     Player &_player;
     bool _dead = false;
 
-    // Ejecuta las acciones entre player y events_queue. Finaliza cuando cliente se desconecta
-    void run(Player &player,
-            SafeQueue<std::pair<size_t, std::shared_ptr<ProtocolDTO>>> &events_queue);
+    // Recibe los DTO provenientes de player y los encola para ser posteriormente aplicados
+    // al modelo. Finaliza cuando cliente se desconecta
+    void run(Player &player, SafeQueue<std::shared_ptr<Event>> &events_queue);
 
 public:
-    ReceiverThread(Player &player,
-            SafeQueue<std::pair<size_t, std::shared_ptr<ProtocolDTO>>>&events_queue);
+    ReceiverThread(Player &player, SafeQueue<std::shared_ptr<Event>> &events_queue);
 
     void join();
 

@@ -15,3 +15,11 @@ size_t Player::id() const {
 void Player::receiveDTO(std::shared_ptr<ProtocolDTO> &dto) {
     _connection >> dto;
 }
+
+void Player::send(ProtocolDTO &dto) {
+    _connection << dto;
+}
+
+void Player::send(std::shared_ptr<ProtocolDTO> &dto) {
+    _connection << *dto.get();
+}

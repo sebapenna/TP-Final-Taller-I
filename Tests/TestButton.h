@@ -131,7 +131,7 @@ public:
             world->step();
         CPPUNIT_ASSERT(button1->isActivated());
         auto rock = world->getRock(0);
-        float diff_x = abs(button1_x - rock->getPositionX());
+        float diff_x = abs(button1_x - rock->getX());
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x); // Verifico posicion de la roca
         cout << "OK";
     }
@@ -160,13 +160,13 @@ public:
         float chell_x = button1_x;
         float dist_to_chell = BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT;
         float chell_y = button1_y + dist_to_chell + 2;
-        world->createChell(chell_x, chell_y, 0);
+        world->createChell(chell_x, chell_y);
         CPPUNIT_ASSERT(!button1->isActivated());
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
         CPPUNIT_ASSERT(button1->isActivated());
         auto chell = world->getChell(0);
-        float diff_x = abs(button1_x - chell->getPositionX());
+        float diff_x = abs(button1_x - chell->getX());
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x); // Verifico posicion de la roca
         cout << "OK";
     }
@@ -178,7 +178,7 @@ public:
         float dist_to_chell_x = BUTTON_HALF_HEIGHT + CHELL_HALF_WIDTH;
         float chell_x = button1_x - dist_to_chell_x - 2;
         float chell_y = button1_y + dist_to_chell_y + 2;
-        world->createChell(chell_x, chell_y, 0);
+        world->createChell(chell_x, chell_y);
         auto chell = world->getChell(0);
         chell->move_right(); // Muevo chell para que pase por boton
         bool button_act = false;
@@ -190,7 +190,7 @@ public:
         }
         CPPUNIT_ASSERT(button_act);    // Boton se activo en algun momento
         CPPUNIT_ASSERT(!button1->isActivated());    // Finalizo el contacto
-        CPPUNIT_ASSERT_GREATER(button1_x, chell->getPositionX()); // Paso la roca
+        CPPUNIT_ASSERT_GREATER(button1_x, chell->getX()); // Paso la roca
         cout << "OK";
     }
 

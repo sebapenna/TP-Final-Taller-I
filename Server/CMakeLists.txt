@@ -27,7 +27,7 @@ add_library(portal-src
         Model/Obstacles/Acid.cpp
         Model/Obstacles/EnergyBarrier.cpp
         Model/PinTool.cpp
-        Processor.cpp Processor.h ServerMain.cpp Lobby.cpp Lobby.h GameThread.cpp GameThread.h Player.cpp Player.h ReceiverThread.cpp ReceiverThread.h)
+        DTOProcessor.cpp DTOProcessor.h ServerMain.cpp Lobby.cpp Lobby.h GameThread.cpp GameThread.h Player.cpp Player.h ReceiverThread.cpp ReceiverThread.h Model/WorldObjectsStorage.cpp Model/WorldObjectsStorage.h WorldObjectDTOTranslator.cpp WorldObjectDTOTranslator.h PositionTranslator.cpp PositionTranslator.h Event.cpp Event.h)
 
 target_link_libraries(portal-src common-src Box2D yaml-parser pthread)
 

@@ -22,7 +22,7 @@ uint8_t EnergyTransmitter::getDirection() const {
     return _direction;
 }
 
-const std::string EnergyTransmitter::getClassName() {
+const uint8_t EnergyTransmitter::getClassId() {
     return ENERGY_TRANSMITTER;
 }
 
@@ -44,4 +44,12 @@ bool EnergyTransmitter::actedDuringStep() {
 
 size_t EnergyTransmitter::getId() const {
     return _id;
+}
+
+float EnergyTransmitter::getX() {
+    return _body->GetPosition().x;
+}
+
+float EnergyTransmitter::getY() {
+    return _body->GetPosition().y;
 }

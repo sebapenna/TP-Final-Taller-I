@@ -159,7 +159,7 @@ void World::stepChells() {
                     _objects_to_update.push_back(chell);
             } else {
                 _world->DestroyBody(chell->getBody());
-                _objects_to_delete.emplace_back(i, chell->getClassName());
+                _objects_to_delete.emplace_back(i, chell->getClassId());
                 delete chell;
                 _chells[i] = nullptr;
             }
@@ -175,7 +175,7 @@ void World::stepEnergyBalls() {
             energy_ball->updateLifetime();
             if (energy_ball->isDead()) {
                 _world->DestroyBody(energy_ball->getBody());
-                _objects_to_delete.emplace_back(i, energy_ball->getClassName());
+                _objects_to_delete.emplace_back(i, energy_ball->getClassId());
                 delete energy_ball;
                 _energy_balls[i] = nullptr;
             } else if (energy_ball->actedDuringStep()) {
@@ -193,7 +193,7 @@ void World::stepRocks() {
         if (rock) {
             if (rock->isDead()) {
                 _world->DestroyBody(rock->getBody());
-                _objects_to_delete.emplace_back(i, rock->getClassName());
+                _objects_to_delete.emplace_back(i, rock->getClassId());
                 delete rock;
                 _rocks[i] = nullptr;
             } else if (rock->actedDuringStep()) {
@@ -249,7 +249,7 @@ b2Body *World::createDynamicBox(const float &x, const float &y,
 void World::createRockBlock(const float &width, const float &height,
         const float &x, const float &y) {
     auto body = createStaticBox(x, y, width / 2, height / 2, BLOCK_FRICTION);
-    auto rock_block = new RockBlock();
+    auto rock_block = new RockBlock(x, y, width, height);
     body->SetUserData(rock_block);
     _rock_blocks.push_back(rock_block);
 }
@@ -257,7 +257,7 @@ void World::createRockBlock(const float &width, const float &height,
 void World::createMetalBlock(const float &width, const float &height,
         const float &x, const float &y) {
     auto body = createStaticBox(x, y , width/2, height/2, BLOCK_FRICTION);
-    auto metal_block = new MetalBlock();
+    auto metal_block = new MetalBlock(x, y, width, height);
     body->SetUserData(metal_block);
     _metal_blocks.push_back(metal_block);
 }
@@ -307,7 +307,7 @@ void World::createMetalDiagonalBlock(const float &width, const float &height,
 
     body->CreateFixture(&fixture);
 
-    auto met_diag_block = new MetalDiagonalBlock(orientation);
+    auto met_diag_block = new MetalDiagonalBlock(x, y, width, height, orientation);
     body->SetUserData(met_diag_block);
     _metal_diagonal_blocks.push_back(met_diag_block);
 }
@@ -324,7 +324,7 @@ void World::createRock(const float &x, const float &y) {
 void World::createAcid(const float &x, const float &y) {
     auto body = createStaticBox(x, y, ACID_HALF_WIDTH, ACID_HALF_HEIGHT,
             ACID_FRICTION);
-    auto acid = new Acid();
+    auto acid = new Acid(x, y);
     body->SetUserData(acid);   // Suficiente que sea una macro
     _acids.push_back(acid);
 }
@@ -333,18 +333,17 @@ void World::createButton(const float &x, const float &y) {
    auto body = createStaticBox(x, y, BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT,
            BUTTON_FRICTION);
     // id se incrementa con tamaño del vector de botones
-    auto *button = new Button(_buttons.size());
+    auto *button = new Button(_buttons.size(), x, y);
    body->SetUserData(button);
    _buttons.push_back(button);
 }
 
-void World::createGate(const size_t &id, const float &x, const float &y,
-                       const std::vector<size_t>& buttons_needed,
-                       const std::vector<size_t>& energy_receiver_needed) {
+void World::createGate(const float &x, const float &y, const std::vector<size_t> &buttons_needed,
+                       const std::vector<size_t> &energy_receiver_needed) {
     auto body = createStaticBox(x, y, GATE_HALF_WIDTH, GATE_HALF_HEIGHT,
             GATE_FRICTION);
     // id se incrementa con tamaño del vector de gates
-    auto *gate = new Gate(_gates.size());
+    auto *gate = new Gate(_gates.size(), x, y);
     for (auto &button_id : buttons_needed)
         gate->addButtonNeeded(_buttons.at(button_id));
     for (auto &e_rec_id : energy_receiver_needed)
@@ -356,7 +355,7 @@ void World::createGate(const size_t &id, const float &x, const float &y,
 void World::createEnergyReceiver(const float &x, const float &y) {
     auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_FRICTION);
     // id se incrementa con tamaño del vector de receivers
-    auto e_recv = new EnergyReceiver(_energy_receivers.size());
+    auto e_recv = new EnergyReceiver(_energy_receivers.size(), x, y);
     body->SetUserData(e_recv);
     _energy_receivers.push_back(e_recv);
 }
@@ -415,32 +414,32 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
     _energy_balls.push_back(energy_ball);
 }
 
-void World::createChell(const float &x, const float &y, size_t id) {
+void World::createChell(const float &x, const float &y) {
 //    todo: restitution necesaria ? => puede hacer sdl
     auto body = createDynamicBox(x, y, CHELL_HALF_WIDTH, CHELL_HALF_HEIGHT,
             CHELL_DENSITY);
-    auto chell = new Chell(id, body);
+    auto chell = new Chell(_chells.size(), body);
     body->SetUserData(chell);
     _chells.push_back(chell);
 }
 
 void World::createEnergyBarrier(const float &x, const float &y,
                                 const uint8_t &direction) {
-    float height = 0, width = 0;
+    float half_height = 0, half_width = 0;
     switch (direction) {
         case O_V:
-            height = BARRIER_HALF_LENGTH;
-            width = BARRIER_HALF_WIDTH;
+            half_height = BARRIER_HALF_LENGTH;
+            half_width = BARRIER_HALF_WIDTH;
             break;
         case O_H:
-            height = BARRIER_HALF_WIDTH;
-            width = BARRIER_HALF_LENGTH;
+            half_height = BARRIER_HALF_WIDTH;
+            half_width = BARRIER_HALF_LENGTH;
             break;
         default:    // No existe este caso
             break;
     }
-    auto body = createStaticBox(x, y , width, height, 0);   // Friction = 0
-    auto e_barrier = new EnergyBarrier();
+    auto body = createStaticBox(x, y , half_width, half_height, 0);   // Friction = 0
+    auto e_barrier = new EnergyBarrier(x, y, 2 * half_width, 2 * half_height);
     body->SetUserData(e_barrier);
     _energy_barriers.push_back(e_barrier);
 }
@@ -449,7 +448,67 @@ const vector<Collidable *> &World::getObjectsToUpdate() const {
     return _objects_to_update;
 }
 
-const vector<std::pair<size_t, string>> &World::getObjectsToDelete() const {
+const vector<std::pair<size_t, uint8_t>> &World::getObjectsToDelete() const {
     return _objects_to_delete;
 }
+
+World &World::operator=(World &&other) {
+    if (&other == this)
+        return *this;
+    _width = other._width;
+    _height = other._height;
+    _world = other._world;
+    _contact_listener = other._contact_listener;
+
+    other._width = -1;
+    other._height = -1;
+    other._world = nullptr;
+    other._contact_listener = nullptr;
+    return *this;
+}
+
+const vector<Chell *> &World::getChells() const {
+    return _chells;
+}
+
+const vector<Rock *> &World::getRocks() const {
+    return _rocks;
+}
+
+const vector<Button *> &World::getButtons() const {
+    return _buttons;
+}
+
+const vector<Gate *> &World::getGates() const {
+    return _gates;
+}
+
+const vector<EnergyReceiver *> &World::getEnergyReceivers() const {
+    return _energy_receivers;
+}
+
+const vector<EnergyTransmitter *> &World::getEnergyTransmitters() const {
+    return _energy_transmitters;
+}
+
+const vector<RockBlock *> &World::getRockBlocks() const {
+    return _rock_blocks;
+}
+
+const vector<Acid *> &World::getAcids() const {
+    return _acids;
+}
+
+const vector<MetalDiagonalBlock *> &World::getMetalDiagonalBlocks() const {
+    return _metal_diagonal_blocks;
+}
+
+const vector<MetalBlock *> &World::getMetalBlocks() const {
+    return _metal_blocks;
+}
+
+const vector<EnergyBarrier *> &World::getEnergyBarriers() const {
+    return _energy_barriers;
+}
+
 

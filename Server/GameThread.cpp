@@ -1,35 +1,65 @@
 #include "GameThread.h"
+#include "Stage.h"
+#include "DTOProcessor.h"
 #include <algorithm>
+#include <chrono>
 
+using namespace std::chrono;
 using std::remove_if;
 using std::move;
 using std::ref;
 using std::lock_guard;
 using std::mutex;
 
-void GameThread::run() {
+// SEGUNDO: envio id a cada jugador ?
+// TERCERO: comienza game loop?
+void GameThread::run(std::string map_filename) {
     try {
-        while (!_begin_game) { }    // Loop esperando a que se indica que comienza la partida
-        // CERO: leo archivo yaml y creo en world => YA LO HACE STAGE
-        // PRIMERO: envio todos los datos de stage
-        // SEGUNDO: envio id a cada jugador ?
-        // TERCERO: comienza game loop?
+        Stage stage(move(map_filename));    // Creo stage en tiempo de espera al comienzo
 
-        // Stage(fname)
-        // stage.getDTOsToSend() => vector<ProtocolDTO>
-        // for (x int v) { for (player in players) player.send(x) }
-        // for (x in players) x.send(player_id)
-        /* HASTA ACA DATA INICIAL */
+        while (!_begin_game) { }    // Loop esperando a que se indique que comienza la partida
 
-        // for (x in players) x.send(BEGINGAME)
-        /* INICIA JUEGO */
+        auto stage_dtos = stage.getInitialConfiguration();
+        for (auto &stage_object_dto : stage_dtos)   // Envio escenario completo a cada jugador
+            for (auto &player : _players)
+                player.send(stage_object_dto);
 
-        // while() {    // while players != 0? y otra condicion
-        //      desencolar
-        //      apply(n)
-        //      step
-        //      sleep
-        // }
+
+        for (auto &player : _players) {
+            auto dto = _processor.createDTO(player.id());    // Notifico a cada jugador su id
+            player.send(dto);
+        }
+        /* Enviada toda la configuracion para jugar */
+
+
+        // todo: for (x in players) x.send(BEGINGAME)         /* INICIA JUEGO */
+
+        /// Loop mientra haya jugadore y no haya terminado el juego
+         while(!_players.empty() && _game_finished) {
+             auto start = high_resolution_clock::now();
+
+             // Desencolo
+             for (auto event = _events_queue.getTopAndPop(); event; event = _events_queue.getTopAndPop())
+                stage.apply(event->getPtr().get(), event->getId()); //todo:timeout
+
+            // Step
+            stage.step();
+
+            // Notifico cambios a los jugadores
+            for (auto &dto : stage.getUpdatedDTO())    // Envio DTO de objetos a actualizar
+                 for (auto &player : _players)
+                     player.send(dto);
+             for (auto &dto : stage.getDeletedDTO())    // Envio DTO de objetos a eliminar
+                 for (auto &player : _players)
+                     player.send(dto);
+
+             // Sleep
+             auto stop = high_resolution_clock::now();
+             auto duration = duration_cast<seconds>(stop - start);
+             int sleep_time = TIME_STEP - duration.count();
+             if (sleep_time > 0)
+                 std::this_thread::sleep_for(seconds(sleep_time));
+         }
     } catch(const std::exception& e) {
         throw;
     } catch(...) {
@@ -38,8 +68,8 @@ void GameThread::run() {
 
 }
 
-GameThread::GameThread(Player &&new_player, std::string map_filename) :
-_map_filename(move(map_filename)), _gameloop(&GameThread::run, this) {
+GameThread::GameThread(Player &&new_player, std::string &&map_filename) :
+_map_filename(move(map_filename)), _gameloop(&GameThread::run, this, move(map_filename)) {
     addPlayer(move(new_player));
 }
 
@@ -53,7 +83,7 @@ void GameThread::addPlayer(Player &&new_player) {
 
 void GameThread::deletePlayer(const size_t &id) {
     // todo: eliminar threads. Necesario? No se van a agregar jugadores
-//    lock_guard<mutex> lock(_m);
+    lock_guard<mutex> lock(_m);
 //    for (auto &thread : _receive_threads)
 //        if (thread.getPlayerId() == id)
 //            thread.join();  // Termino ejecucion del thread
@@ -69,4 +99,9 @@ void GameThread::deletePlayer(const size_t &id) {
 void GameThread::beginGame() {
     lock_guard<mutex> lock(_m);
     _begin_game = true;
+}
+
+void GameThread::endGame() {
+    lock_guard<mutex> lock(_m);
+    _game_finished = true;
 }

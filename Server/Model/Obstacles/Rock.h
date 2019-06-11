@@ -15,9 +15,9 @@ private:
 public:
     explicit Rock(const size_t &id, b2Body *body);
 
-    float getPositionX();
+    float getX();
 
-    float getPositionY();
+    float getY();
 
     float getVelocityY();
 
@@ -29,7 +29,7 @@ public:
 
     void teletransport(float x, float y);
 
-    const std::string getClassName() override;
+    const uint8_t getClassId() override;
 
     void collideWith(Collidable *other) override;
 

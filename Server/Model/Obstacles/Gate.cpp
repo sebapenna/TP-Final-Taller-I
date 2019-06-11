@@ -1,6 +1,6 @@
 #include "Gate.h"
 
-Gate::Gate(const size_t &id) :_id(id){ }
+Gate::Gate(const size_t &id, const float& x, const float& y) :_id(id), _x(x), _y(y) { }
 
 bool Gate::isOpen() {
     return _open;
@@ -34,7 +34,7 @@ void Gate::updateState() {
     _open = true;   // Estaban todos activos
 }
 
-const std::string Gate::getClassName() {
+const uint8_t Gate::getClassId() {
     return GATE;
 }
 
@@ -52,4 +52,13 @@ bool Gate::actedDuringStep() {
         return true;
     }
     return false;
+}
+
+
+const float Gate::getX() const {
+    return _x;
+}
+
+const float Gate::getY() const {
+    return _y;
 }

@@ -29,9 +29,9 @@ public:
 
     const size_t getId() const;
 
-    float getPositionX();
+    float getX();
 
-    float getPositionY();
+    float getY();
 
     // Indica la orientacion de chell.
     // WEST: inclinado hacia izquierda
@@ -58,7 +58,7 @@ public:
 
     bool isDead();
 
-    const std::string getClassName() override;
+    const uint8_t getClassId() override;
 
     void collideWith(Collidable *other) override;
 

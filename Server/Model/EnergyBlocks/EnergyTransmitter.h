@@ -25,13 +25,17 @@ public:
 
     size_t getId() const;
 
-    const std::string getClassName() override;
+    const uint8_t getClassId() override;
 
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
 
     bool actedDuringStep() override;
+
+    float getX();
+
+    float getY();
 };
 
 

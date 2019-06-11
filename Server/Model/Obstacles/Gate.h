@@ -12,9 +12,10 @@ private:
     std::vector<Button*> _buttons_needed;
     std::vector<EnergyReceiver*>  _energy_reveivers_needed;
     const size_t _id;
+    const float _x, _y;
 
 public:
-    explicit Gate(const size_t &id);
+    explicit Gate(const size_t &id, const float& x, const float& y);
 
     const size_t getId() const;
 
@@ -26,13 +27,17 @@ public:
 
     void updateState();
 
-    const std::string getClassName() override;
+    const uint8_t getClassId() override;
 
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
 
     bool actedDuringStep() override;
+
+    const float getX() const;
+
+    const float getY() const;
 };
 
 
