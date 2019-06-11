@@ -12,6 +12,7 @@
 #include <queue>
 #include <Common/ProtocolTranslator/JumpDTO.h>
 #include <Common/ProtocolTranslator/StopDTO.h>
+#include <Common/Protocol.h>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/MoveLeftDTO.h"
@@ -38,18 +39,23 @@ int main(int argc, char** argv){
         // Chell turning around
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
 
+        //Protocol protocol("localhost", "8080");
+        bool done = false;
         ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;
         SafeQueue<std::shared_ptr<ProtocolDTO>> safeQueue;
-        SDL_Runner sdlRunner(title, safeQueue);
+
+        SDL_Runner sdlRunner(title, safeQueue, done);
         sdlRunner.start();
-        FakeServer server(blockingQueue, safeQueue);
+
+        FakeServer server(blockingQueue, safeQueue, done);
         server.start();
         SDL_Event e;
 
-        while (true) {
+        while (!done) {
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
-                    return 0;
+                    done=true;
+                    break;
                 } else if (e.type == SDL_MOUSEBUTTONDOWN){
                     if (e.button.button == SDL_BUTTON_LEFT) {
                         //chell.fire();
@@ -69,7 +75,10 @@ int main(int argc, char** argv){
                         case SDLK_w: {
                             std::shared_ptr<ProtocolDTO>dto(new JumpDTO());
                             blockingQueue.push(dto);
-                            //blockingQueue.push((void*) new JumpDTO());
+                            break;
+                        }
+                        case SDLK_q: {
+                            done=true;
                             break;
                         }
 
@@ -80,6 +89,10 @@ int main(int argc, char** argv){
                 }
             }
         }
+        sdlRunner.join();
+        blockingQueue.setFinishedAdding();
+        server.join();
+        return 0;
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
         return 1;

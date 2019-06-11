@@ -11,14 +11,15 @@
 #include <Common/ProtocolTranslator/RockDTO.h>
 #include <Common/ProtocolTranslator/MetalBlockDTO.h>
 #include <Common/ProtocolTranslator/RockBlockDTO.h>
+#include <Common/ProtocolTranslator/GateStateDTO.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 
 #include "../Common/SafeQueue.h"
 
 FakeServer::FakeServer(ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> &blockingQueue,
-        SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue) :
-        blockingQueue(blockingQueue), safeQueue(safeQueue) {
+        SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue, bool& done) :
+        blockingQueue(blockingQueue), safeQueue(safeQueue), done(done) {
 }
 
 void FakeServer::run() {
@@ -37,7 +38,7 @@ void FakeServer::run() {
     safeQueue.push(dto3);
     std::shared_ptr<ProtocolDTO>dto4(new ButtonDTO(1, -200, 360, 200, 50));
     safeQueue.push(dto4);
-    std::shared_ptr<ProtocolDTO>dto5(new GateDTO(1, 300, 400, 200, 200));
+    std::shared_ptr<ProtocolDTO>dto5(new GateDTO(1, 400, 200, 200, 350));
     safeQueue.push(dto5);
     std::shared_ptr<ProtocolDTO>dto6(new PlayerChellIdDTO(1));
     safeQueue.push(dto6);
@@ -45,17 +46,21 @@ void FakeServer::run() {
     safeQueue.push(dto7);
     std::shared_ptr<ProtocolDTO>dto8(new RockDTO(1, 500, 400, 128, DONT_DELETE));
     safeQueue.push(dto8);
-    while (true) {
+    while (!done) {
         auto protocolDTO = blockingQueue.getTopAndPop();
         if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_LEFT) {
             x-=10;
             //safeQueue.push((void *) new ButtonStateDTO(1, PRESSED));
             std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
+            std::shared_ptr<ProtocolDTO>dto10(new GateStateDTO(1, OPEN));
+            safeQueue.push(dto10);
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_RIGHT) {
             x+=10;
             std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, EAST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
+            std::shared_ptr<ProtocolDTO>dto10(new GateStateDTO(1, CLOSED));
+            safeQueue.push(dto10);
             //safeQueue.push((void *) new ButtonStateDTO(1, NOT_PRESSED));
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_STOP) {
             std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));

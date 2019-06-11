@@ -30,7 +30,7 @@ add_library(sdldemo
         SDL_Runner.h
         FakeServer.cpp
         FakeServer.h
-        View/DiagonalBlockMetalView.cpp View/DiagonalBlockMetalView.h View/AcidView.cpp View/AcidView.h View/RockView.cpp View/RockView.h View/GateView.cpp View/GateView.h View/EnergyBarView.cpp View/EnergyBarView.h View/BallView.cpp View/BallView.h View/ButtonView.cpp View/ButtonView.h)
+        View/DiagonalBlockMetalView.cpp View/DiagonalBlockMetalView.h View/AcidView.cpp View/AcidView.h View/RockView.cpp View/RockView.h View/GateView.cpp View/GateView.h View/EnergyBarView.cpp View/EnergyBarView.h View/BallView.cpp View/BallView.h View/ButtonView.cpp View/ButtonView.h ClientSender.cpp ClientSender.h ClientReceiver.cpp ClientReceiver.h)
 
 
 

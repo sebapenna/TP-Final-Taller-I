@@ -14,14 +14,14 @@
 
 class SDL_Runner : public Thread{
     SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue;
-    bool connected;
+    bool& done;
     Window window;
     Renderer renderer;
     TextureFactory textureFactory;
     int16_t myChellId;
 
 public:
-    SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue);
+    SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue, bool& done);
     void run() override;
 };
 
