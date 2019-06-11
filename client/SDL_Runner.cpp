@@ -19,6 +19,7 @@
 #include <Common/ProtocolTranslator/MetalDiagonalBlockDTO.h>
 #include <Common/ProtocolTranslator/RockDTO.h>
 #include <Server/Model/constants.h>
+#include <client/View/BackgroundView.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -40,12 +41,16 @@ void SDL_Runner::run() {
     std::string bulletAndRock("bulletAndRock");
     std::string acidAndButtons("acidAndButtons");
     std::string gate_file_name("gate");
+    std::string background("background");
+    auto back = std::shared_ptr<BackgroundView>(new BackgroundView(textureFactory.getTextureByName(background), renderer));
+    back->setDestRect(-300,300,800,300);
+    world.addView(back);
     for (int startX = -2000; startX<7000; startX+=128) {
-        for (int startY = -2000; startY<7000; startY+=128) {
+        /*for (int startY = -2000; startY<7000; startY+=128) {
             auto block = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
             block->setDestRect(startX, startY, 128, 128);
             world.addView(block);
-        }
+        }*/
         auto block = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
         block->setDestRect(startX, 400, 128,128);
         world.addView(block);
@@ -55,7 +60,7 @@ void SDL_Runner::run() {
     world.addView(acid);
 
 
-    int timeStepMs = 1000.f / 70.f;
+    int timeStepMs = 1000.f / 100.f;
     int timeLastMs = 0;
     int timeAccumulatedMs = 0;
     int timeCurrentMs = 0;

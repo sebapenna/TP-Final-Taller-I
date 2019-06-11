@@ -22,6 +22,7 @@ void TextureFactory::init(Renderer& renderer) {
     textures["gate"] = loadTexture(std::string("gates.png"), renderer);
     textures["bulletAndRock"] = loadTexture(std::string("bulletAndRock.png"), renderer);
     textures["acidAndButtons"] = loadTexture(std::string("acidAndButtons.png"), renderer);
+    textures["background"] = loadTexture(std::string("background.png"), renderer);
 }
 
 SDL_Texture *TextureFactory::getTextureByName(std::string &name) {
