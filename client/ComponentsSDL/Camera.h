@@ -14,7 +14,7 @@ private:
 
 public:
     Camera(int w, int h, Position& position);
-    void draw(SDL_Texture* texture, SDL_Rect* srcRect,SDL_Rect* dstRect, Renderer& renderer, SDL_RendererFlip flip=SDL_FLIP_NONE);
+    void draw(SDL_Texture* texture, SDL_Rect* srcRect,SDL_Rect* dstRect, Renderer& renderer, double angle=0, SDL_RendererFlip flip=SDL_FLIP_NONE);
     bool isInCamera(SDL_Rect* dstRect);
 };
 

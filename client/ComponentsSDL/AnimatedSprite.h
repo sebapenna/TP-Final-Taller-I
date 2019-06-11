@@ -36,7 +36,7 @@ public:
                    int totalColumns, int amountSprites, int offSetX, int offSetY, AnimationState animationState);
     void moveNextSprite();
     void drawMovingSprite(Camera& camera, SDL_Rect* dstRect);
-    void drawMovingSprite(Camera& camera, SDL_Rect* dstRect, SDL_RendererFlip flip);
+    void drawMovingSprite(Camera& camera, SDL_Rect* dstRect, double angle, SDL_RendererFlip flip = SDL_FLIP_NONE);
     void setTimePerSprite(Uint32 t);
     void setState(AnimationState state);
     void reset();

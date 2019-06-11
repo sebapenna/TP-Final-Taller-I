@@ -10,6 +10,7 @@
 #include "View.h"
 
 enum ChellState {standing, runningLeft, runningRight, firing, flying, dying};
+enum ChellIsTilted {TILTEDLEFT, TILTEDRIGHT, NO};
 class ChellAnimationView : public View {
 private:
     int id;
@@ -19,11 +20,15 @@ private:
     AnimatedSprite flyingChell;
     AnimatedSprite dyingChell;
     ChellState state;
+    ChellIsTilted tiltedState;
+
+    double getAngle() const;
 public:
     ChellAnimationView(int id, SDL_Texture* texture, Renderer& renderer, int x=0, int y=0);
     int getId() const;
     void draw(Camera& camera);
     void setState(ChellState state);
+    void setTiltedState(ChellIsTilted state);
     bool isDead();
 };
 

@@ -12,6 +12,7 @@
 #include <Common/ProtocolTranslator/MetalBlockDTO.h>
 #include <Common/ProtocolTranslator/RockBlockDTO.h>
 #include <Common/ProtocolTranslator/GateStateDTO.h>
+#include <Server/Model/constants.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 
@@ -46,6 +47,8 @@ void FakeServer::run() {
     safeQueue.push(dto7);
     std::shared_ptr<ProtocolDTO>dto8(new RockDTO(1, 500, 400, 128, DONT_DELETE));
     safeQueue.push(dto8);
+    std::shared_ptr<ProtocolDTO>dto20(new ChellDTO(4, 100, -100, 201, 220, WEST, O_O, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+    safeQueue.push(dto20);
     while (!done) {
         auto protocolDTO = blockingQueue.getTopAndPop();
         if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_LEFT) {

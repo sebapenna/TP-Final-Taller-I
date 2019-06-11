@@ -14,8 +14,8 @@ void Sprite::draw(Camera &camera, SDL_Rect* dstRect) {
     camera.draw(texture, &srcRect, dstRect, this->renderer);
 }
 
-void Sprite::draw(Camera &camera, SDL_Rect* dstRect, SDL_RendererFlip flip) {
-    camera.draw(texture, &srcRect, dstRect, this->renderer, flip);
+void Sprite::draw(Camera &camera, SDL_Rect* dstRect, double angle, SDL_RendererFlip flip) {
+    camera.draw(texture, &srcRect, dstRect, this->renderer, angle, flip);
 
 }
 

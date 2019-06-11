@@ -38,6 +38,9 @@ public:
     void deactivateButton(int16_t id);
     void addChell(std::shared_ptr<ChellAnimationView> chell, Position& position);
     void setChellState(int16_t id, ChellState state);
+    void makeChellTiltedLeft(int16_t id);
+    void makeChellTiltedRight(int16_t id);
+    void makeChellNotTilted(int16_t id);
     void addRock(std::shared_ptr<RockView> rock);
 };
 

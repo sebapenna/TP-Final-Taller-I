@@ -5,8 +5,6 @@
 #include "Camera.h"
 #include "Position.h"
 
-#define PIXELS_MOVE_CAMERA 10
-
 // METER UN CHELL OBSERVER POSITION.
 // Y LE PIDA LA POSICION A CHELL.
 
@@ -16,13 +14,13 @@ Camera::Camera(int w, int h, Position& position) : position(position), w(w), h(h
 }
 void
 Camera::draw(SDL_Texture *texture, SDL_Rect *srcRect,
-        SDL_Rect *dstRect, Renderer &renderer, SDL_RendererFlip flip) {
+        SDL_Rect *dstRect, Renderer &renderer, double angle, SDL_RendererFlip flip) {
     SDL_Rect to_draw;
     to_draw.x = dstRect->x - position.getX() + this->w / 2;
     to_draw.y = dstRect->y - position.getY() + this->h / 2;
     to_draw.w = dstRect->w;
     to_draw.h = dstRect->h;
-    renderer.copyTexture(texture, srcRect, &to_draw, 0, NULL, flip);
+    renderer.copyTexture(texture, srcRect, &to_draw, angle, NULL, flip);
 }
 
 bool Camera::isInCamera(SDL_Rect* dstRect) {

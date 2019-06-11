@@ -99,6 +99,21 @@ void WorldView::setChellState(int16_t id, ChellState state) {
     chell->setState(state);
 }
 
+void WorldView::makeChellTiltedLeft(int16_t id) {
+    auto chell = chells[id];
+    chell->setTiltedState(ChellIsTilted::TILTEDLEFT);
+}
+
+void WorldView::makeChellTiltedRight(int16_t id) {
+    auto chell = chells[id];
+    chell->setTiltedState(ChellIsTilted::TILTEDRIGHT);
+}
+
+void WorldView::makeChellNotTilted(int16_t id) {
+    auto chell = chells[id];
+    chell->setTiltedState(ChellIsTilted::NO);
+}
+
 void WorldView::setCamara(int16_t id, int w, int h) {
     auto chellView = chells[id];
     this->camera = new Camera(w, h, chellView->getPosition());

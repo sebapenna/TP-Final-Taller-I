@@ -67,9 +67,9 @@ void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect) {
     this->draw(camera, dstRect);
 }
 
-void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect, SDL_RendererFlip flip) {
+void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect, double angle, SDL_RendererFlip flip) {
     this->moveNextSprite();
-    this->draw(camera, dstRect, flip);
+    this->draw(camera, dstRect, angle, flip);
 
 }
 

@@ -91,6 +91,15 @@ void SDL_Runner::run() {
                         } else {
                             world.setChellState(newChell->getId(), ChellState::standing);
                         }
+                        if (newChell->getTilted() == NOT_TILTED) {
+                            world.makeChellNotTilted(newChell->getId());
+                        } else {
+                            if (newChell->getTilted() == O_E) {
+                                world.makeChellTiltedRight(newChell->getId());
+                            } else if (newChell->getTilted() == O_O) {
+                                world.makeChellTiltedLeft(newChell->getId());
+                            }
+                        }
                         break;
                     }
                     case PROTOCOL_PLAYER_CHELL_ID: {
