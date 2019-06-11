@@ -30,3 +30,7 @@ bool Camera::isInCamera(SDL_Rect* dstRect) {
     if (dstRect->y > abs(position.getY()) + this->h) return false;
     return true;
 }
+
+Position &Camera::getPosition() {
+    return position;
+}

@@ -42,9 +42,6 @@ void SDL_Runner::run() {
     std::string acidAndButtons("acidAndButtons");
     std::string gate_file_name("gate");
     std::string background("background");
-    auto back = std::shared_ptr<BackgroundView>(new BackgroundView(textureFactory.getTextureByName(background), renderer));
-    back->setDestRect(-300,300,800,300);
-    world.addView(back);
     for (int startX = -2000; startX<7000; startX+=128) {
         /*for (int startY = -2000; startY<7000; startY+=128) {
             auto block = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
@@ -111,6 +108,8 @@ void SDL_Runner::run() {
                         auto chellId = (PlayerChellIdDTO*) newItem;
                         world.setCamara(chellId->getChellId(), 1000, 1000);
                         this->myChellId = chellId->getChellId();
+                        auto back = std::shared_ptr<BackgroundView>(new BackgroundView(textureFactory.getTextureByName(background), renderer));
+                        world.setBackground(back);
                         break;
                     }
                     case PROTOCOL_BUTTON_DATA: {

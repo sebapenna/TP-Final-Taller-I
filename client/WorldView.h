@@ -14,6 +14,7 @@
 #include <client/View/ButtonView.h>
 #include <client/View/RockView.h>
 #include <memory>
+#include <client/View/BackgroundView.h>
 
 class WorldView {
 private:
@@ -22,7 +23,7 @@ private:
     std::map<int, std::shared_ptr<GateView>> gates;
     std::map<int, std::shared_ptr<ButtonView>> buttons;
     std::map<int, std::shared_ptr<RockView>> rocks;
-
+    std::shared_ptr<BackgroundView> background;
     Camera* camera;
 public:
     WorldView();
@@ -33,15 +34,16 @@ public:
     void addGates(std::shared_ptr<GateView> gate);
     void openGate(int16_t id);
     void closeGate(int16_t id);
-    void addButton(std::shared_ptr<ButtonView> button);
+    void addButton(std::shared_ptr<ButtonView>& button);
     void activateButton(int16_t id);
     void deactivateButton(int16_t id);
-    void addChell(std::shared_ptr<ChellAnimationView> chell, Position& position);
+    void addChell(std::shared_ptr<ChellAnimationView>& chell, Position& position);
     void setChellState(int16_t id, ChellState state);
     void makeChellTiltedLeft(int16_t id);
     void makeChellTiltedRight(int16_t id);
     void makeChellNotTilted(int16_t id);
     void addRock(std::shared_ptr<RockView> rock);
+    void setBackground(std::shared_ptr<BackgroundView>& background);
 };
 
 
