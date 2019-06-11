@@ -13,6 +13,8 @@
 #include <Common/ProtocolTranslator/JumpDTO.h>
 #include <Common/ProtocolTranslator/StopDTO.h>
 #include <Common/Protocol.h>
+#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
+#include <Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/MoveLeftDTO.h"
@@ -43,14 +45,14 @@ int main(int argc, char** argv){
         bool done = false;
         ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;
         SafeQueue<std::shared_ptr<ProtocolDTO>> safeQueue;
-
         SDL_Runner sdlRunner(title, safeQueue, done);
         sdlRunner.start();
 
         FakeServer server(blockingQueue, safeQueue, done);
         server.start();
         SDL_Event e;
-
+        std::shared_ptr<ProtocolDTO> beginDTO (new BeginDTO());
+        blockingQueue.push(beginDTO);
         while (!done) {
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
@@ -78,6 +80,8 @@ int main(int argc, char** argv){
                             break;
                         }
                         case SDLK_q: {
+                            std::shared_ptr<ProtocolDTO>dto(new QuitDTO());
+                            blockingQueue.push(dto);
                             done=true;
                             break;
                         }
