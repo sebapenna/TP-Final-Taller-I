@@ -27,8 +27,8 @@
 #include "client/View/BlockRockView.h"
 #include "client/View/BlockMetalView.h"
 
-SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue) :
-safeQueue(safeQueue), connected(true), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
+SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue, bool& done) :
+safeQueue(safeQueue), done(done), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
     textureFactory.init(renderer);
     srand (time(NULL));
 }
@@ -59,7 +59,7 @@ void SDL_Runner::run() {
     int timeLastMs = 0;
     int timeAccumulatedMs = 0;
     int timeCurrentMs = 0;
-    while (connected) {
+    while (!done) {
         renderer.clearRender();
         timeLastMs = timeCurrentMs;
         timeCurrentMs = SDL_GetTicks();

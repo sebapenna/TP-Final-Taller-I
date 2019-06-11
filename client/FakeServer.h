@@ -14,9 +14,10 @@
 class FakeServer : public Thread {
     ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>>& blockingQueue;
     SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue;
+    bool& done;
 public:
     FakeServer(ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>>& blockingQueue,
-            SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue);
+            SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue, bool& done);
     void run() override;
 };
 
