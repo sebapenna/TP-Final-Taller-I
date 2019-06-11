@@ -43,6 +43,7 @@ World::~World() {
     deletePointerVector<EnergyBall*>(_energy_balls);
     deletePointerVector<Rock*>(_rocks);
     deletePointerVector<MetalDiagonalBlock*>(_metal_diagonal_blocks);
+    deletePointerVector<MetalBlock*>(_metal_blocks);
     deletePointerVector<EnergyBarrier*>(_energy_barriers);
     delete _contact_listener;
     delete _world;

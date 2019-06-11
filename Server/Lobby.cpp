@@ -19,6 +19,7 @@ void Lobby::run() {
     while (true) {
         try {
             Player new_player(move(_accept_socket.acceptConnection()));
+            GameThread new_thread(move(new_player), 1, "filea.yaml");
             // todo: contacto con cliente (thread aparte?). NUEVA_PARTIDA O CONECTARSE_A_UNA?
             // todo: que seleccione mapa
             // if (new_game)
@@ -26,8 +27,6 @@ void Lobby::run() {
             // else
             //  _games.addPlayer(move(new_player))
 
-//                ConnectionThread new_thread(ref(server), move(p));
-//                connections.push_back(move(new_thread));
         } catch(const CantConnectException& e) {
 //                  No se aceptan mas conexiones
         }

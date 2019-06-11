@@ -45,33 +45,25 @@ int main(int argc, char const *argv[]) {
         queue.push(std::move(event));    // Encolo evento y id de player
         cout << "DTO recibido y encolado"<<endl;
 
-//        auto dto = (MoveRightDTO *) p.get();
-//        cout << "Se recibio Protocolo de ID: " << dto->getClassId() << endl;
-
         cout << "Enviando ChellDTO..."<<endl;
-        shared_ptr<ProtocolDTO> p2(new ChellDTO(4, -2, 0, 4, 5, EAST, NOT_TILTED, NOT_MOVING,
+        shared_ptr<ProtocolDTO> send_dto(new ChellDTO(4, -2, 0, 4, 5, EAST, NOT_TILTED, NOT_MOVING,
                 NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
-        prot << *p2.get();
+        player.send(send_dto);
         cout << "Enviado"<<endl;
 
-        prot >> p;
-        queue.push(p);
+        player.receiveDTO(dto_ptr);
+        event = std::make_shared<Event>(player.id(), dto_ptr);
+        queue.push(std::move(event));    // Encolo evento y id de player
 
-//        auto n_dto = (ShootPortalDTO*) p.get();
-//        cout << "Se recibio Protocolo de ID: " << n_dto->getClassId() << endl;
-//        cout << "COLOR: "<<n_dto->getColor()<<endl;
-//        cout << "X: "<<n_dto->getX()<<endl;
-//        cout << "Y: "<<n_dto->getY()<<endl;
-
-        for (p = queue.getTopAndPop(); p; p = queue.getTopAndPop()) {
-            switch (p->getClassId()){
+        for (auto e = queue.getTopAndPop(); e; e = queue.getTopAndPop()) {
+            switch (e->getPtr()->getClassId()){
                 case PROTOCOL_MOVE_RIGHT: {
-                    auto dto = (MoveRightDTO *) p.get();
+                    auto dto = (MoveRightDTO *) e->getPtr().get();
                     cout << "Se recibio Protocolo de ID: " << dto->getClassId() << endl;
                     break;
                 }
                 case PROTOCOL_SHOOT_PORTAL: {
-                    auto n_dto = (ShootPortalDTO *) p.get();
+                    auto n_dto = (ShootPortalDTO *) e->getPtr().get();
                     cout << "Se recibio Protocolo de ID: " << n_dto->getClassId() << endl;
                     cout << "COLOR: " << n_dto->getColor() << endl;
                     cout << "X: " << n_dto->getX() << endl;

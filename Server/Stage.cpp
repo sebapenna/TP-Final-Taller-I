@@ -1,4 +1,3 @@
-#include <Server/YamlData/YamlParser.h>
 #include<vector>
 #include "Stage.h"
 #include "WorldObjectDTOTranslator.h"
@@ -78,9 +77,8 @@ Stage::Stage(std::string &&config_file) {
     } catch(...) { } // No hay barreras eergia
 
     // Configuracion chells
-    vector<ChellData> chells_vector;
     try {
-        chells_vector = config.loadChellData();
+        _available_chells = config.loadChellData();
     } catch(...) { } // No hay chells
 
 
@@ -121,31 +119,33 @@ Stage::Stage(std::string &&config_file) {
 
     for (auto &it : e_barrier_vector)
         _world.createEnergyBarrier(it.getX(), it.getY(), it.getOrientation());
+}
 
-    for (auto &it : chells_vector)
-        _world.createChell(it.getX(), it.getY());
+void Stage::createChells(const size_t &n_players) {
+    for (size_t i = 0; i < n_players; ++i) {
+        auto chell = _available_chells[i];
+        _world.createChell(chell.getX(), chell.getY());
+    }
 }
 
 vector<shared_ptr<ProtocolDTO>> Stage::getInitialConfiguration() {
     vector<shared_ptr<ProtocolDTO>> output;
-    DTOProcessor processor;
-    processor.createDTOs<RockBlock *>(_world.getRockBlocks(), output, true);
-    processor.createDTOs<MetalBlock *>(_world.getMetalBlocks(), output, true);
-    processor.createDTOs<MetalDiagonalBlock *>(_world.getMetalDiagonalBlocks(), output, true);
-    processor.createDTOs<EnergyTransmitter *>(_world.getEnergyTransmitters(), output, true);
-    processor.createDTOs<EnergyReceiver *>(_world.getEnergyReceivers(), output, true);
-    processor.createDTOs<Acid *>(_world.getAcids(), output, true);
-    processor.createDTOs<Button *>(_world.getButtons(), output, true);
-    processor.createDTOs<Gate *>(_world.getGates(), output, true);
-    processor.createDTOs<EnergyBarrier *>(_world.getEnergyBarriers(), output, true);
-    processor.createDTOs<Chell *>(_world.getChells(), output, true);
-    processor.createDTOs<Rock *>(_world.getRocks(), output, true);
+    _processor.createDTOs<RockBlock *>(_world.getRockBlocks(), output, true);
+    _processor.createDTOs<MetalBlock *>(_world.getMetalBlocks(), output, true);
+    _processor.createDTOs<MetalDiagonalBlock *>(_world.getMetalDiagonalBlocks(), output, true);
+    _processor.createDTOs<EnergyTransmitter *>(_world.getEnergyTransmitters(), output, true);
+    _processor.createDTOs<EnergyReceiver *>(_world.getEnergyReceivers(), output, true);
+    _processor.createDTOs<Acid *>(_world.getAcids(), output, true);
+    _processor.createDTOs<Button *>(_world.getButtons(), output, true);
+    _processor.createDTOs<Gate *>(_world.getGates(), output, true);
+    _processor.createDTOs<EnergyBarrier *>(_world.getEnergyBarriers(), output, true);
+    _processor.createDTOs<Chell *>(_world.getChells(), output, true);
+    _processor.createDTOs<Rock *>(_world.getRocks(), output, true);
     return move(output);
 }
 
 void Stage::apply(ProtocolDTO *dto, const size_t& player_id) {
-    DTOProcessor processor;
-    processor.applyActionToChell(_world, dto, player_id);
+    _processor.applyActionToChell(_world, dto, player_id);
 }
 
 void Stage::step() {
@@ -154,15 +154,13 @@ void Stage::step() {
 
 std::vector<std::shared_ptr<ProtocolDTO>> Stage::getUpdatedDTO() {
     vector<shared_ptr<ProtocolDTO>> output;
-    DTOProcessor processor;
-    processor.createDTOs<Collidable*>(_world.getObjectsToUpdate(), output);
+    _processor.createDTOs<Collidable*>(_world.getObjectsToUpdate(), output);
     return move(output);
 }
 
 std::vector<std::shared_ptr<ProtocolDTO>> Stage::getDeletedDTO() {
     vector<shared_ptr<ProtocolDTO>> output;
-    DTOProcessor processor;
     for (auto &obj_delete : _world.getObjectsToDelete())
-        output.push_back(processor.createDTO(obj_delete.first, obj_delete.second));
+        output.push_back(_processor.createDTO(obj_delete.first, obj_delete.second));
     return std::move(output);
 }

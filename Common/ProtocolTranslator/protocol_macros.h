@@ -208,5 +208,10 @@
 #define PLAYER_CHELL_ID_ARGS    1
 
 #define PROTOCOL_QUIT   (int16_t)   27
+#define QUIT_ARGS  0
+
+
+#define PROTOCOL_BEGIN   (int16_t)   28
+#define BEGIN_ARGS  0
 
 #endif //PORTAL_PROTOCOL_MACROS_H

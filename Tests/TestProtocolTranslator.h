@@ -33,6 +33,8 @@
 #include <Common/ProtocolTranslator/EnergyTransmitterActivateDTO.h>
 #include <Common/ProtocolTranslator/EnergyReceiverActivateDTO.h>
 #include <Common/ProtocolTranslator/GateStateDTO.h>
+#include <Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h>
+#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
 
 using std::cout;
 using std::endl;
@@ -95,6 +97,10 @@ CPPUNIT_TEST_SUITE( TestProtocolTranslator );
         CPPUNIT_TEST(testTranslateEnergyReceiverActivateData);
         CPPUNIT_TEST(testTranslateGateStateDTO);
         CPPUNIT_TEST(testTranslateGateStateData);
+        CPPUNIT_TEST(testTranslateQuitDTO);
+        CPPUNIT_TEST(testTranslateQuitData);
+        CPPUNIT_TEST(testTranslateBeginDTO);
+        CPPUNIT_TEST(testTranslateBeginData);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -115,13 +121,14 @@ public:
     void testTranslateMoveLeftData() {
         cout << endl << "TEST traducir datos MoveLeft a DTO: ";
         vector<int16_t> v;
-        v.push_back(MOVE_LEFT_ARGS);
         v.push_back(PROTOCOL_MOVE_LEFT);
+        v.push_back(MOVE_LEFT_ARGS);
         auto p = ProtocolTranslator::translate(v);
         auto dto = (MoveLeftDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_MOVE_LEFT, dto->getClassId());
         cout << "OK";
     }
+    
     void testTranslateMoveRightDTO() {
         cout << endl << "TEST traducir MoveRightDTO a datos: ";
         shared_ptr<ProtocolDTO> pdto(new MoveRightDTO());
@@ -903,6 +910,47 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) CLOSED, dto->getState());
         cout << "OK";
     }
+    
+    void testTranslateQuitDTO() {
+        cout << endl << "TEST traducir QuitDTO a datos: ";
+        shared_ptr<ProtocolDTO> pdto(new QuitDTO());
+        int vec_size = ProtocolTranslator::translate(pdto.get(), output);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_QUIT, output.at(PROTOCOL_ID_POS));
+        CPPUNIT_ASSERT_EQUAL(QUIT_ARGS + extra_data, vec_size);
+        cout << "OK";
+    }
+
+    void testTranslateQuitData() {
+        cout << endl << "TEST traducir datos Quit a DTO: ";
+        vector<int16_t> v;
+        v.push_back(PROTOCOL_QUIT);
+        v.push_back(QUIT_ARGS);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (QuitDTO*) p.get();
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_QUIT, dto->getClassId());
+        cout << "OK";
+    }
+    
+    void testTranslateBeginDTO() {
+        cout << endl << "TEST traducir BeginDTO a datos: ";
+        shared_ptr<ProtocolDTO> pdto(new BeginDTO());
+        int vec_size = ProtocolTranslator::translate(pdto.get(), output);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_BEGIN, output.at(PROTOCOL_ID_POS));
+        CPPUNIT_ASSERT_EQUAL(BEGIN_ARGS + extra_data, vec_size);
+        cout << "OK";
+    }
+
+    void testTranslateBeginData() {
+        cout << endl << "TEST traducir datos Begin a DTO: ";
+        vector<int16_t> v;
+        v.push_back(PROTOCOL_BEGIN);
+        v.push_back(BEGIN_ARGS);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (BeginDTO*) p.get();
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_BEGIN, dto->getClassId());
+        cout << "OK";
+    }
+    
 };
     
 #endif //PORTAL_TESTPROTOCOLTRANSLATOR_H

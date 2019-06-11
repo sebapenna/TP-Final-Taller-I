@@ -32,6 +32,6 @@ add_library(protocol-translator
         EnergyTransmitterActivateDTO.cpp EnergyTransmitterActivateDTO.h
         EnergyReceiverActivateDTO.cpp EnergyReceiverActivateDTO.h
         GateStateDTO.cpp GateStateDTO.h
-        )
+        ConnectionDTO/QuitDTO.cpp ConnectionDTO/QuitDTO.h ConnectionDTO/BeginDTO.cpp ConnectionDTO/BeginDTO.h)
 
 

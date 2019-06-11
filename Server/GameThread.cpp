@@ -17,49 +17,76 @@ void GameThread::run(std::string map_filename) {
     try {
         Stage stage(move(map_filename));    // Creo stage en tiempo de espera al comienzo
 
-        while (!_begin_game) { }    // Loop esperando a que se indique que comienza la partida
-
-        auto stage_dtos = stage.getInitialConfiguration();
-        for (auto &stage_object_dto : stage_dtos)   // Envio escenario completo a cada jugador
-            for (auto &player : _players)
-                player.send(stage_object_dto);
-
-
-        for (auto &player : _players) {
-            auto dto = _processor.createDTO(player.id());    // Notifico a cada jugador su id
-            player.send(dto);
+        // Loop esperando a que se indique que comienza la partida. Verifico no se hayan
+        // desconectado todos los jugadores
+        while (!_begin_game && !_players.empty()) {
+            auto event = _events_queue.getTopAndPop();
+            if (event != nullptr) { // Posible deseconexion
+                switch (event->getProtocolId()) {
+                    case PROTOCOL_QUIT:
+                        deletePlayer(event->getPlayerId()); // Elimino jugador de la partida
+                        break;
+                    case PROTOCOL_BEGIN: {
+                        if (event->getPlayerId() == 0)  // Solo owner de partida puede iniciar
+                            _begin_game = true;
+                        break;
+                    }
+                }
+            }
         }
-        /* Enviada toda la configuracion para jugar */
+        if (!_players.empty()) {    // Verifico que hay jugadores
+            // Creo los chells una vez determinada la cantidad final de jugadores
+            stage.createChells(_players.size());
+
+            // Envio escenario completo a cada jugador
+            auto stage_dtos = stage.getInitialConfiguration();
+            for (auto &stage_object_dto : stage_dtos)
+                for (auto &player : _players)
+                    player.send(stage_object_dto);
+
+            // Notifico a cada jugador su id
+            for (auto &player : _players) {
+                auto dto = DTOProcessor::createDTO(player.id());
+                player.send(dto);
+            }
+            /* Enviada toda la configuracion para jugar */
 
 
-        // todo: for (x in players) x.send(BEGINGAME)         /* INICIA JUEGO */
+            // todo: for (x in players) x.send(BEGINGAME)         /* INICIA JUEGO */
 
-        /// Loop mientra haya jugadore y no haya terminado el juego
-         while(!_players.empty() && _game_finished) {
-             auto start = high_resolution_clock::now();
+            // Loop mientras haya jugadores y no haya terminado el juego
+            while (!_players.empty() && _game_finished) {
+                auto start = high_resolution_clock::now();
 
-             // Desencolo
-             for (auto event = _events_queue.getTopAndPop(); event; event = _events_queue.getTopAndPop())
-                stage.apply(event->getPtr().get(), event->getId()); //todo:timeout
+                // Desencolo       //todo:TIMEOUT !
+                for (auto event = _events_queue.getTopAndPop(); event; event = _events_queue
+                        .getTopAndPop()) {
+                    stage.apply(event->getPtr().get(), event->getPlayerId());
+                    if (event->getProtocolId() == PROTOCOL_QUIT)
+                        deletePlayer(event->getPlayerId()); // Elimino jugador de la partida
+                }
 
-            // Step
-            stage.step();
+                // Step
+                stage.step();
 
-            // Notifico cambios a los jugadores
-            for (auto &dto : stage.getUpdatedDTO())    // Envio DTO de objetos a actualizar
-                 for (auto &player : _players)
-                     player.send(dto);
-             for (auto &dto : stage.getDeletedDTO())    // Envio DTO de objetos a eliminar
-                 for (auto &player : _players)
-                     player.send(dto);
+                // Notifico cambios a los jugadores
+                for (auto &dto : stage.getUpdatedDTO()) {   // Envio DTO de objetos a actualizar
+                    for (auto &player : _players)
+                        player.send(dto);
+                }
+                for (auto &dto : stage.getDeletedDTO()) {   // Envio DTO de objetos a eliminar
+                    for (auto &player : _players)
+                        player.send(dto);
+                }
 
-             // Sleep
-             auto stop = high_resolution_clock::now();
-             auto duration = duration_cast<seconds>(stop - start);
-             int sleep_time = TIME_STEP - duration.count();
-             if (sleep_time > 0)
-                 std::this_thread::sleep_for(seconds(sleep_time));
-         }
+                // Sleep
+                auto stop = high_resolution_clock::now();
+                auto duration = duration_cast<seconds>(stop - start);
+                int sleep_time = TIME_STEP - duration.count();
+                if (sleep_time > 0)
+                    std::this_thread::sleep_for(seconds(sleep_time));
+            }
+        }
     } catch(const std::exception& e) {
         throw;
     } catch(...) {
@@ -68,8 +95,9 @@ void GameThread::run(std::string map_filename) {
 
 }
 
-GameThread::GameThread(Player &&new_player, std::string &&map_filename) :
-_map_filename(move(map_filename)), _gameloop(&GameThread::run, this, move(map_filename)) {
+GameThread::GameThread(Player &&new_player, const size_t& max_players, std::string &&map_filename) :
+_map_filename(move(map_filename)), _gameloop(&GameThread::run, this, move(map_filename)),
+_max_players(max_players) {
     addPlayer(move(new_player));
 }
 
@@ -80,6 +108,9 @@ void GameThread::addPlayer(Player &&new_player) {
     new_player.setId(_players.size());
     _players.push_back(move(new_player));
 }
+
+// todo: THREAD QUE CONTROLE SI RECEIVER_THREAD IS_ALIVE (jugador no corto conexion) => IF DEAD
+//  DELETE_PLAYER
 
 void GameThread::deletePlayer(const size_t &id) {
     // todo: eliminar threads. Necesario? No se van a agregar jugadores

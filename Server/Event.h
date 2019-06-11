@@ -14,9 +14,12 @@ private:
 public:
     Event(const size_t& id, std::shared_ptr<ProtocolDTO> ptr);
 
-    const size_t getId() const;
+    const size_t getPlayerId() const;
 
     const std::shared_ptr<ProtocolDTO> &getPtr() const;
+
+    // Retorna el id del protocolo del evento
+    const int16_t getProtocolId() const;
 };
 
 

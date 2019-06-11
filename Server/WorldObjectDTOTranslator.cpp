@@ -39,21 +39,21 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
         case ROCK_BLOCK: {
             auto obj = (RockBlock *) collidable;
             auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                    obj->getWidth(), obj->getHeight());
+                    obj->getWidth() / 2, obj->getHeight() / 2);
             return make_shared<RockBlockDTO>(new_pos.first, new_pos.second, obj->getWidth(),
                                              obj->getHeight());
         }
         case METAL_BLOCK: {
             auto obj = (MetalBlock *) collidable;
             auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                         obj->getWidth(), obj->getHeight());
+                                                         obj->getWidth() / 2, obj->getHeight() / 2);
             return make_shared<MetalBlockDTO>(new_pos.first, new_pos.second, obj->getWidth(),
                                              obj->getHeight());
         }
         case METAL_DIAGONAL_BLOCK: {
             auto obj = (MetalDiagonalBlock *) collidable;
             auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                         obj->getWidth(), obj->getHeight());
+                                                         obj->getWidth() / 2, obj->getHeight() / 2);
             // todo: tomo height como largo de cada cara (corregir y agregar width y height a DTO)
             return make_shared<MetalDiagonalBlockDTO>(new_pos.first, new_pos.second,
                     obj->getWidth(), obj->getOrientation());

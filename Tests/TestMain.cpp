@@ -12,6 +12,8 @@
 #include "TestEnergyBallAndEnergyReceiver.h"
 #include "TestEnergyBall.h"
 #include "TestProtocolTranslator.h"
+#include "TestPositionTranslator.h"
+#include "TestWorldObjectDTOTranslator.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestProtocolTranslator );
@@ -24,6 +26,8 @@ CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBallAndEnergyTransmitter );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBallAndEnergyReceiver );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyReceiver );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestEnergyBall );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestPositionTranslator );
+CPPUNIT_TEST_SUITE_REGISTRATION( TestWorldObjectDTOTranslator );
 
 using CppUnit::TestFactoryRegistry;
 

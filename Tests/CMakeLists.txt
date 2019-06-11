@@ -15,6 +15,7 @@ add_executable(tests
         TestEnergyBallAndEnergyTransmitter.h
         TestEnergyBallAndEnergyReceiver.h
         TestEnergyBall.h
-        TestProtocolTranslator.h)
+        TestProtocolTranslator.h
+        TestPositionTranslator.h TestWorldObjectDTOTranslator.h)
 
 target_link_libraries(tests cppunit portal-src common-src)

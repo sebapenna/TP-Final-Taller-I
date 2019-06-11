@@ -8,11 +8,11 @@ using std::ref;
 void ReceiverThread::run(Player &player, SafeQueue<shared_ptr<Event>> &events_queue) {
     try {
         shared_ptr<ProtocolDTO> dto_ptr;
-        player.receiveDTO(dto_ptr); // Receive bloqueante
-
-        shared_ptr<Event> p = std::make_shared<Event>(player.id(), dto_ptr);
-
-        events_queue.push(std::move(p));    // Encolo evento y id de player
+        while (true) {  // Loop finalizara cuando se corte conexion
+            player.receiveDTO(dto_ptr); // Receive bloqueante
+            shared_ptr<Event> p = std::make_shared<Event>(player.id(), dto_ptr);
+            events_queue.push(std::move(p));    // Encolo evento y id de player
+        }
     } catch (FailedRecvException& e) {
         // Catch de exception ya que se puede terminar conexion voluntariamente
         // en medio de recepcion de datos

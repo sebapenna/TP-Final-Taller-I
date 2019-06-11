@@ -33,6 +33,9 @@ void DTOProcessor::applyActionToChell(World &world, ProtocolDTO *dto, size_t che
         case PROTOCOL_DROP_ROCK:
             // todo: DROP ROCK
             break;
+        case PROTOCOL_QUIT:
+            // todo: eliminar chell de WORLD
+            break;
         default:    // No existe este caso
             break;
     }

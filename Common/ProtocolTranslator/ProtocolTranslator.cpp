@@ -27,6 +27,8 @@
 #include "EnergyTransmitterActivateDTO.h"
 #include "EnergyReceiverActivateDTO.h"
 #include "GateStateDTO.h"
+#include "Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h"
+#include "Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h"
 #include <vector>
 #include <iostream>
 
@@ -39,6 +41,12 @@ using std::make_shared;
 int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &output) {
     output.push_back(dto->getClassId());    // Siempre primer valor es el ID
     switch (dto->getClassId()) {
+        case PROTOCOL_BEGIN:
+            output.push_back(BEGIN_ARGS);
+            break;
+        case PROTOCOL_QUIT:
+            output.push_back(QUIT_ARGS);
+            break;
         case PROTOCOL_MOVE_LEFT:
             output.push_back(MOVE_LEFT_ARGS);
             break;  // No tiene mas datos a agregar
@@ -153,6 +161,12 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &outpu
 shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &input) {
     int command = input.at(0);
     switch (command) {
+        case PROTOCOL_BEGIN:
+            return  make_shared<BeginDTO>();
+
+        case PROTOCOL_QUIT:
+            return  make_shared<QuitDTO>();
+
         case PROTOCOL_MOVE_LEFT:
             return make_shared<MoveLeftDTO>();
 
