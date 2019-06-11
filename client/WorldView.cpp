@@ -53,7 +53,7 @@ void WorldView::addView(std::shared_ptr<View> view) {
 }
 void WorldView::addRock(std::shared_ptr<RockView> rock) {
     if (rocks.count(rock->getId())) {
-        rocks[rock->getId()]->setPosition(rock->getPosition());
+        rocks[rock->getId()]->setDestRect(rock->getDst()->x, rock->getDst()->y, rock->getDst()->w, rock->getDst()->h);
     } else {
         rocks[rock->getId()] = rock;
     }
