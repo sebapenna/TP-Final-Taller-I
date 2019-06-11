@@ -38,6 +38,7 @@
 #define NOT_CARRYING   (int16_t)    0
 #define CARRYING    (int16_t)   1
 
+/********************************** MENSAJES PROTOCOLO ***************************/
 #define PROTOCOL_MOVE_LEFT   (int16_t) 0
 #define MOVE_LEFT_ARGS  0
 
@@ -205,5 +206,7 @@
 #define PROTOCOL_PLAYER_CHELL_ID    (int16_t) 26
 #define PLAYER_CHELL_ID_POS 2
 #define PLAYER_CHELL_ID_ARGS    1
+
+#define PROTOCOL_QUIT   (int16_t)   27
 
 #endif //PORTAL_PROTOCOL_MACROS_H
