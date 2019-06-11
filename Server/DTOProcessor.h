@@ -11,7 +11,7 @@
 class DTOProcessor {
 public:
     // Procesa el dto recibido por el servidor para realizar una determinada accion
-    void applyActionToChell(World &world, ProtocolDTO *dto, size_t chell_id);
+    void applyActionToChell(World *world, ProtocolDTO *dto, size_t chell_id);
 
     // Procesa el vector de clase T (objetos que heredan de Collidable) y en base a sus datos
     // genera los DTO correspondientes, almacenandolos en el vector output. Retorna la cantidad de
@@ -30,6 +30,9 @@ public:
 
     // Genera el DTO para los elementos eliminados en base al id de la clase y el id del objeto
     std::shared_ptr<ProtocolDTO> createDTO(const size_t& object_id, const uint8_t& object_class_id);
+
+    // Genera el DTO para notificar el comienzo del juego
+    static std::shared_ptr<ProtocolDTO> createBeginDTO();
 
 };
 

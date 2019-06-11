@@ -17,7 +17,12 @@ int main(int argc, char const *argv[]) {
     if (argc != N_ARGS)
         throw WrongArgumentException();
     try {
+        cout << "Generando Lobby..."<<endl;
+
         Lobby lobby(argv[PORT_POS]);
+
+        cout << "Lobby creado, disponible a conexiones..."<<endl;
+
 
         std::thread exit([&]() {    // Thread para cerrar servidor
             char c;

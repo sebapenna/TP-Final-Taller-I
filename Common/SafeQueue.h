@@ -5,6 +5,7 @@
 #include <queue>
 #include <memory>
 #include <Common/ProtocolTranslator/ProtocolDTO.h>
+#include <iostream>
 
 // Monitor de la cola, responsable de agregar los elementos e
 // interpretar los mismos controlando los posibles threads a traves de
@@ -15,7 +16,7 @@ class SafeQueue {
     std::mutex _m;
 
 public:
-    // Agrega un elemeto a la cola
+    // Agrega un elemento a la cola
     void push(T new_data) {
         std::lock_guard<std::mutex> lock(_m);
         this->_queue.push(std::move(new_data));
@@ -32,7 +33,20 @@ public:
         }
         return aux;
     }
+
+//    // Asignacion por movimiento
+    SafeQueue<T>& operator=(SafeQueue<T>&& other) {
+        if (this == &other)
+            return *this;
+        _queue = std::move(other._queue);
+        return *this;
+    }
+
+    SafeQueue& operator=(SafeQueue& other) = delete;
+
 };
+
+
 
 
 #endif //PORTAL_PROTECTEDQUEUE_H

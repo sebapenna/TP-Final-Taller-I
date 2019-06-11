@@ -1,32 +1,46 @@
 #include "Lobby.h"
 #include "Player.h"
 #include <Common/exceptions.h>
+#include <iostream>
 
 #define WAITING_QUEUE_SIZE  10
 #define CONCURRENT_GAMES_LIMIT  3
 
+using std::cout;
+using std::endl;
 using std::move;
 
 Lobby::Lobby(const std::string &port) : _accept_socket(port, WAITING_QUEUE_SIZE) { }
 
 void Lobby::shutdown() {
-    // todo: aca hago join de los threads
     _accept_socket.shutdown();
+    _connection_closed = true;
+    for (auto &game : _games) {
+        game.endGame();
+        game.join();
+    }
 }
 
 void Lobby::run() {
     // Loop va a finalizar cuando haga shutdown a Lobby, mientras tanto escucha conexiones
-    while (true) {
+    while (!_connection_closed) {
         try {
+            cout << endl << "Esperando nuevo jugador..." << endl;
+
             Player new_player(move(_accept_socket.acceptConnection()));
-            GameThread new_thread(move(new_player), 1, "filea.yaml");
+
+            cout << "Nuevo jugador conectado, creando partida..."<<endl;
+
+            GameThread new_thread(move(new_player), 1, std::move("filea.yaml"));
+            _games.push_back(move(new_thread));
+
+            cout << "Partida creada"<<endl;
             // todo: contacto con cliente (thread aparte?). NUEVA_PARTIDA O CONECTARSE_A_UNA?
             // todo: que seleccione mapa
             // if (new_game)
             //  GameThread new_game(new_player, move(map_filename));
             // else
             //  _games.addPlayer(move(new_player))
-
         } catch(const CantConnectException& e) {
 //                  No se aceptan mas conexiones
         }

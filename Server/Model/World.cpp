@@ -345,10 +345,13 @@ void World::createGate(const float &x, const float &y, const std::vector<size_t>
             GATE_FRICTION);
     // id se incrementa con tamaño del vector de gates
     auto *gate = new Gate(_gates.size(), x, y);
+
     for (auto &button_id : buttons_needed)
         gate->addButtonNeeded(_buttons.at(button_id));
+
     for (auto &e_rec_id : energy_receiver_needed)
         gate->addEnergyReceiverNeeded(_energy_receivers.at(e_rec_id));
+
     body->SetUserData(gate);
     _gates.push_back(gate);
 }

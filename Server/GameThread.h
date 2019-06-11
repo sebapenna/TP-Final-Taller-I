@@ -24,9 +24,9 @@ private:
     SafeQueue<std::shared_ptr<Event>> _events_queue;
     std::list<Player> _players;
     std::vector<ReceiverThread> _receive_threads;
-    const size_t _max_players;
-    bool _begin_game = false, _game_finished = false;
-    const std::string _map_filename;
+    size_t _max_players;
+    bool _begin_game = false, _game_finished = false, _empty_game = false;
+    std::string _map_filename;
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
@@ -35,6 +35,8 @@ private:
 public:
     // map_filename es el archivo yaml con la configuracion del mapa
     explicit GameThread(Player &&new_player, const size_t& max_players, std::string &&map_filename);
+
+    GameThread(GameThread &&other);
 
     void addPlayer(Player &&new_player);
 
@@ -45,6 +47,13 @@ public:
 
     // Indico que se debe finalizar la partida
     void endGame();
+
+    void join();
+
+    // Asignacion por movimiento
+    GameThread& operator=(GameThread&& other);
+
+    GameThread& operator=(GameThread& other) = delete;
 };
 
 

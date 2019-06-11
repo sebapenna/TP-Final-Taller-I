@@ -10,6 +10,7 @@ class Lobby {
 private:
     AcceptSocket _accept_socket;
     std::vector<GameThread> _games;
+    bool _connection_closed = false;
 //    size_t _active_games;
 
 public:

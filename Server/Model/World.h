@@ -133,7 +133,8 @@ public:
     // PRE: Se debe crear en orden de id creciente
     void createButton(const float &x, const float &y);
 
-    // PRE: Se debe crear en orden de id creciente
+    // PRE: Se debe crear en orden de id creciente. Se deben haber creado los buttons y gates
+    // cuyos id paso en los vectores
     void createGate(const float &x, const float &y, const std::vector<size_t> &buttons_needed,
                     const std::vector<size_t> &energy_receiver_needed);
 

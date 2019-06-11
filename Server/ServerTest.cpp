@@ -10,6 +10,7 @@
 #include <Common/ProtocolTranslator/protocol_macros.h>
 #include <Common/ProtocolTranslator/ShootPortalDTO.h>
 #include <Common/SafeQueue.h>
+#include <Common/ProtocolTranslator/RockBlockDTO.h>
 
 #define PORT_POS    1
 #define N_ARGS  2
@@ -27,6 +28,7 @@ int main(int argc, char const *argv[]) {
         cout << WrongArgumentException().what();
     try {
         SafeQueue<shared_ptr<Event>> queue;
+        cout << endl << endl << "LLEGA"<< endl << endl;
 
         cout << "Abriendo socket aceptador..."<<endl;
         AcceptSocket accept_sckt(argv[PORT_POS], MAX_WAITING_QUEUE_SIZE);
@@ -40,6 +42,7 @@ int main(int argc, char const *argv[]) {
         shared_ptr<ProtocolDTO> dto_ptr;
         player.receiveDTO(dto_ptr);
 
+        cout << "Nuevo jugador conectado, creando partida..."<<endl;
 
         shared_ptr<Event> event = std::make_shared<Event>(player.id(), dto_ptr);
         queue.push(std::move(event));    // Encolo evento y id de player

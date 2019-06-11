@@ -52,6 +52,7 @@ void Protocol::operator>>(std::shared_ptr<ProtocolDTO>& ptr) {
         *this >> aux;
         data_vector.push_back(aux);
     }
+
     ptr = ProtocolTranslator::translate(data_vector);
     if (!ptr)
         throw WrongProtocolException();

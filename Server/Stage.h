@@ -13,12 +13,14 @@
 
 class Stage {
 private:
-    World _world;
+    World *_world;
     DTOProcessor _processor;
     std::vector<ChellData> _available_chells;
 
 public:
     explicit Stage(std::string &&config_file);
+
+    ~Stage();
 
     // Agrego al mapa la cantidad indicada de chells, determinada por la cantidad de jugadores
     // que tiene la partida.
@@ -28,6 +30,8 @@ public:
 
     // Retorna vector con todos los DTOs respectivos a los objetos del mapa creados mediante el
     // archivo de configuracion
+    // PRE: haber utilizado metodo createChells para agregarlas al juego, de lo contrario no se
+    // enviaran sus datos
     std::vector<std::shared_ptr<ProtocolDTO>> getInitialConfiguration();
 
     // Retorna vector con los DTO de aquellos objetos que tuvieron alguna actualizacion en su

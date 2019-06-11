@@ -1,13 +1,14 @@
 #include <Common/ProtocolTranslator/RockBlockDTO.h>
 #include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
 #include <Common/ProtocolTranslator/RockDTO.h>
+#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
 #include "DTOProcessor.h"
 
 using std::vector;
 using std::shared_ptr;
 
-void DTOProcessor::applyActionToChell(World &world, ProtocolDTO *dto, size_t chell_id) {
-    auto chell = world.getChell(chell_id);    // Chell con la que interactuar
+void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t chell_id) {
+    auto chell = world->getChell(chell_id);    // Chell con la que interactuar
     switch (dto->getClassId()) {
         case PROTOCOL_MOVE_LEFT:
             chell->move_left();
@@ -48,4 +49,8 @@ std::shared_ptr<ProtocolDTO> DTOProcessor::createDTO(const size_t &player_id) {
 shared_ptr<ProtocolDTO>DTOProcessor::createDTO(const size_t &object_id,
         const uint8_t &object_class_id) {
     return std::move(WorldObjectDTOTranslator::translate(object_id, object_class_id));
+}
+
+std::shared_ptr<ProtocolDTO> DTOProcessor::createBeginDTO() {
+    return std::make_shared<BeginDTO>();
 }
