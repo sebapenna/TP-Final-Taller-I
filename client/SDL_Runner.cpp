@@ -28,8 +28,10 @@
 #include "client/View/BlockRockView.h"
 #include "client/View/BlockMetalView.h"
 
+#define METERS_TO_PIXELS_CONVERSION 100
+
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue, bool& done) :
-safeQueue(safeQueue), done(done), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
+safeQueue(safeQueue), done(done), window(title, 1600, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
     textureFactory.init(renderer);
     srand (time(NULL));
 }
@@ -106,7 +108,7 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_PLAYER_CHELL_ID: {
                         auto chellId = (PlayerChellIdDTO*) newItem;
-                        world.setCamara(chellId->getChellId(), 1000, 1000);
+                        world.setCamara(chellId->getChellId(), window.getWidth(), window.getHeight());
                         this->myChellId = chellId->getChellId();
                         auto back = std::shared_ptr<BackgroundView>(new BackgroundView(textureFactory.getTextureByName(background), renderer));
                         world.setBackground(back);
