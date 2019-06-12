@@ -28,3 +28,7 @@ void Player::send(ProtocolDTO &dto) {
 void Player::send(std::shared_ptr<ProtocolDTO> &dto) {
     _connection << *dto.get();
 }
+
+void Player::disconnect() {
+    _connection.disconnect();
+}

@@ -7,8 +7,6 @@ using std::ref;
 
 void ReceiverThread::run(shared_ptr<Player> player, SafeQueue<shared_ptr<Event>> &events_queue) {
     try {
-        std::cout << std::endl << "ReceiverThread: Comienza ejecucion receive thread..." <<
-        std::endl;
         shared_ptr<ProtocolDTO> dto_ptr;
         while (!_dead) {  // Loop finalizara cuando se corte conexion
             //events_queue = player.handshake()
@@ -33,6 +31,7 @@ _player(player), _thread(&ReceiverThread::run, this, player, ref(events_queue)) 
 
 void ReceiverThread::join() {
     _dead = true;   // En primer lugar para finalizar llop receiver
+    _player->disconnect();
     _thread.join();
 }
 

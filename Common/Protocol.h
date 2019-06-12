@@ -16,6 +16,8 @@ private:
 public:
     Protocol(const std::string& ip, const std::string& port);
 
+    ~Protocol();
+
     explicit Protocol(Socket &&other);
 
     // Envia un DTO
@@ -29,6 +31,8 @@ public:
 
     // Recibe int16_t. Se encarga de cambiar el endianess despues de recibir
     void operator>>(int16_t &dest);
+
+    void disconnect();
 };
 
 

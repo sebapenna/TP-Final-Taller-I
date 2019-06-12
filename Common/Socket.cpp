@@ -40,9 +40,13 @@ Socket &Socket::operator=(Socket &&other) {
 
 Socket::~Socket() {
     if (descriptor != -1) {
-        shutdown(descriptor, SHUT_RDWR);
+        ::shutdown(descriptor, SHUT_RDWR);
         close(descriptor);
     }
+}
+
+void Socket::shutdown() {
+    this->~Socket();    // Cierro el socket
 }
 
 void Socket::send(const void *src, int src_size) {
@@ -63,3 +67,4 @@ void Socket::recv(void *dest, int recv_bytes) {
             throw FailedRecvException();
     }
 }
+

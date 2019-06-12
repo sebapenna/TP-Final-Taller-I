@@ -32,6 +32,8 @@ public:
 
     // Recibe size_in_bytes bytes. No cambia endianess
     void recv(void *dest, int recv_bytes);
+
+    void shutdown();
 };
 
 #endif //TP3_SOCKET_H

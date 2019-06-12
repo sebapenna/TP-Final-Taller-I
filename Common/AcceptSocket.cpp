@@ -45,4 +45,5 @@ Socket AcceptSocket::acceptConnection() {
 
 void AcceptSocket::shutdown() {
     ::shutdown(descriptor, SHUT_RDWR);
+    close(descriptor);
 }

@@ -31,6 +31,7 @@ void GameThread::run(std::string map_filename) {
         // desconectado todos los jugadores
         cout << "Esperando que owner de la partida decida comenzarla..."<<endl;
         while (!_begin_game && !_empty_game) {
+            // todo: un sleep_for?
             auto event = _events_queue.getTopAndPop();  // todo: Cambiar, desencola todo el tiempo
             if (event != nullptr) { // Posible deseconexion
                 switch (event->getProtocolId()) {
@@ -134,9 +135,10 @@ void GameThread::run(std::string map_filename) {
     }
 }
 
-GameThread::GameThread(std::shared_ptr<Player> new_player, const size_t& max_players, std::string &&map_filename) :
+GameThread::GameThread(std::shared_ptr<Player> new_player, const size_t &max_players,
+                       std::string &&map_filename, const size_t &id) :
 _map_filename(move(map_filename)), _gameloop(&GameThread::run, this, move(map_filename)),
-_max_players(max_players) {
+_max_players(max_players), _id(id) {
     addPlayer(move(new_player));
 }
 
@@ -145,7 +147,7 @@ void GameThread::addPlayer(std::shared_ptr<Player> new_player) {
     lock_guard<mutex> lock(_m);
     new_player->setId(_players.size());
     _players.push_back(new_player);
-    // todo: move a Player
+    // todo: mover a Player
     auto new_thread = std::make_shared<ReceiverThread>(new_player, ref(_events_queue));
     _receive_threads.push_back(move(new_thread));
 }
@@ -154,7 +156,7 @@ void GameThread::addPlayer(std::shared_ptr<Player> new_player) {
 //  DELETE_PLAYER
 
 void GameThread::deletePlayer(const size_t &id) {
-    // todo: eliminar threads. Necesario? No se van a agregar jugadores
+    // todo: eliminar threads. Necesario? No se van a agregar jugadores (durante partida, antes si)
     lock_guard<mutex> lock(_m);
 //    for (auto &thread : _receive_threads)
 //        if (thread.getPlayerId() == id)
@@ -187,6 +189,10 @@ void GameThread::join() {
     _gameloop.join();
     std::for_each(_receive_threads.begin(), _receive_threads.end(),
             [](std::shared_ptr<ReceiverThread> &thread) {thread->join();});
+}
+
+const size_t GameThread::id() const {
+    return _id;
 }
 
 

@@ -21,6 +21,8 @@ public:
     void send(ProtocolDTO &dto);
 
     void send(std::shared_ptr<ProtocolDTO> &dto);
+
+    void disconnect();
 };
 
 

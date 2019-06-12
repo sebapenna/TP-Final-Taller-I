@@ -21,6 +21,8 @@ public:
     void run();
 
 //    bool gamesLimitReached();
+
+// todo: loby.addGame ? => podria tener race condition
 };
 
 

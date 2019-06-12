@@ -27,6 +27,7 @@ private:
     size_t _max_players;
     bool _begin_game = false, _game_finished = false, _empty_game = false;
     std::string _map_filename;
+    const size_t _id;   // id de la partida
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
@@ -36,7 +37,8 @@ private:
 
 public:
     // map_filename es el archivo yaml con la configuracion del mapa
-    explicit GameThread(std::shared_ptr<Player> new_player, const size_t& max_players, std::string &&map_filename);
+    explicit GameThread(std::shared_ptr<Player> new_player, const size_t &max_players,
+                        std::string &&map_filename, const size_t &id);
 
     void addPlayer(std::shared_ptr<Player> new_player);
 
@@ -49,6 +51,8 @@ public:
     void endGame();
 
     void join();
+
+    const size_t id() const;
 };
 
 

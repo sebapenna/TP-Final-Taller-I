@@ -21,6 +21,10 @@ Protocol::Protocol(Socket &&other) {
     _socket = std::move(other);
 }
 
+Protocol::~Protocol() {
+    _socket.shutdown();
+}
+
 void Protocol::operator<<(const int16_t &data) {
     int16_t aux = htons(data);
     _socket.send(&aux, TWO_BYTES);
@@ -56,4 +60,8 @@ void Protocol::operator>>(std::shared_ptr<ProtocolDTO>& ptr) {
     ptr = ProtocolTranslator::translate(data_vector);
     if (!ptr)
         throw WrongProtocolException();
+}
+
+void Protocol::disconnect() {
+    this->~Protocol();  // Disconnect implica cerrar el protocolo, es decir, cerrar el socket
 }

@@ -23,30 +23,30 @@ void Lobby::shutdown() {
 
 void Lobby::run() {
     // Loop va a finalizar cuando haga shutdown a Lobby, mientras tanto escucha conexiones
-    while (!_connection_closed) {
-        try {
-            cout << endl << "Esperando nuevo jugador..." << endl;
-
+    try {
+        while (!_connection_closed) {
             auto ptr = std::make_shared<Player>(move(_accept_socket.acceptConnection()));
 
             cout << "Nuevo jugador conectado, creando partida..."<<endl;
 
-            auto new_thread = std::make_shared<GameThread>(ptr, 1, std::move("filea.yaml"));
+            // todo: que se actualizen los id de las partidas a medida que se eliminan (simil
+            //  players)
+            auto new_thread = std::make_shared<GameThread>(ptr, 1, std::move("filea.yaml"),
+                    _games.size());
             _games.push_back(new_thread);
 
-            cout << "Partida creada"<<endl;
             // todo: contacto con cliente (thread aparte?). NUEVA_PARTIDA O CONECTARSE_A_UNA?
-            // todo: que seleccione mapa
+            // todo: que seleccione mapa => TODO ESTO EN PLAYER.HANDSHAKE
             // if (new_game)
             //  GameThread new_game(new_player, move(map_filename));
             // else
             //  _games.addPlayer(move(new_player))
-        } catch(const CantConnectException& e) {
-//                  No se aceptan mas conexiones
         }
-    }
+    } catch(const CantConnectException& e) { }  // Socket aceptador cerrado
 }
 
+
+//todo: limite de nuevas partidas
 //bool Lobby::gamesLimitReached() {
 //    return _active_games == CONCURRENT_GAMES_LIMIT;
 //}
