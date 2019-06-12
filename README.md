@@ -13,4 +13,7 @@ Ademas utilizamos YAML para guardar configuraciones.
 * Para instalar SDL, en la terminal ejecutar: sudo apt install libsdl2-dev && sudo apt install libsdl2-image-dev && sudo apt install libsdl2-ttf-dev && sudo apt-get install libsdl2-mixer-dev
 * Para instalar CPPUnit en la terminal, ejecutar: sudo apt-get install libcppunit-dev
 * Clonar repositorio
-* 
+* Y realizar un cmake . dentro de la carpeta descargada.
+
+
+En caso de que el cliente no funcione, mover los *.png a donde esta el binario del client.
