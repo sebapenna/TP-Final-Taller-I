@@ -17,3 +17,10 @@ Ademas utilizamos YAML para guardar configuraciones.
 
 
 En caso de que el cliente no funcione, mover los *.png a donde esta el binario del client.
+
+Por el momento el servido esta testeado contra un cliente de prueba. Para ejecutarlos se debe acceder al directorio Server y ejecutar por linea de comandos:
+./server PORT (Habilita el servidor a recibir conexiones y crea una "nueva partida" por cada cliente que se conecte)
+./client IP PORT (Conecta el cliente al servidor y envia y recibe una serie de mensajes propios del protocolo)
+
+En la terminal del cliente se vera en pantalla los datos recibidos de distintos objetos en el mapa.
+Para cerrar el servidor se debe presionar la letra 'q'
