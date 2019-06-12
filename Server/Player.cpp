@@ -2,7 +2,12 @@
 
 using std::move;
 
-Player::Player(Socket &&socket) : _connection(move(socket)) { }
+// todo: porque doble movimiento
+Player::Player(Socket &&socket/*lobby*/) : _connection(move(socket)) {
+// todo: receiver tread lo creo aca, atributo suyo
+//loby.creategame
+//loby.addgame
+}
 
 void Player::setId(size_t id) {
     _id = id;

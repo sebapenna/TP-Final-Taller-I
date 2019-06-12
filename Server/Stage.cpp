@@ -88,6 +88,8 @@ Stage::Stage(std::string &&config_file) {
     /******************** Inicializo World *********************/
     _world = new World(world_data.getWidth(), world_data.getHeight());
 
+
+    //todo: PASAR TODO A FOR EACH
     for (auto &it : rock_blocks_data_vector)
         _world->createRockBlock(it.getWidth(), it.getHeight(), it.getX(),
                 it.getY());

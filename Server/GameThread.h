@@ -21,9 +21,9 @@ private:
     // sabra a que chell aplicar la accion
     std::mutex _m;
     std::thread _gameloop;
+    std::list<std::shared_ptr<Player>> _players;
     SafeQueue<std::shared_ptr<Event>> _events_queue;
-    std::list<Player> _players;
-    std::vector<ReceiverThread> _receive_threads;
+    std::vector<std::shared_ptr<ReceiverThread>> _receive_threads;
     size_t _max_players;
     bool _begin_game = false, _game_finished = false, _empty_game = false;
     std::string _map_filename;
@@ -32,13 +32,13 @@ private:
     // se debe iniciar y se llama al metodo beginGame.
     void run(std::string map_filename);
 
+    void sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto);
+
 public:
     // map_filename es el archivo yaml con la configuracion del mapa
-    explicit GameThread(Player &&new_player, const size_t& max_players, std::string &&map_filename);
+    explicit GameThread(std::shared_ptr<Player> new_player, const size_t& max_players, std::string &&map_filename);
 
-    GameThread(GameThread &&other);
-
-    void addPlayer(Player &&new_player);
+    void addPlayer(std::shared_ptr<Player> new_player);
 
     void deletePlayer(const size_t& id);
 
@@ -49,11 +49,6 @@ public:
     void endGame();
 
     void join();
-
-    // Asignacion por movimiento
-    GameThread& operator=(GameThread&& other);
-
-    GameThread& operator=(GameThread& other) = delete;
 };
 
 

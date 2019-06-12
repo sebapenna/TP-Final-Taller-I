@@ -33,17 +33,6 @@ public:
         }
         return aux;
     }
-
-//    // Asignacion por movimiento
-    SafeQueue<T>& operator=(SafeQueue<T>&& other) {
-        if (this == &other)
-            return *this;
-        _queue = std::move(other._queue);
-        return *this;
-    }
-
-    SafeQueue& operator=(SafeQueue& other) = delete;
-
 };
 
 

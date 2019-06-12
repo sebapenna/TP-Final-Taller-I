@@ -13,11 +13,11 @@ using std::move;
 Lobby::Lobby(const std::string &port) : _accept_socket(port, WAITING_QUEUE_SIZE) { }
 
 void Lobby::shutdown() {
-    _accept_socket.shutdown();
     _connection_closed = true;
+    _accept_socket.shutdown();
     for (auto &game : _games) {
-        game.endGame();
-        game.join();
+        game->endGame();
+        game->join();
     }
 }
 
@@ -27,12 +27,12 @@ void Lobby::run() {
         try {
             cout << endl << "Esperando nuevo jugador..." << endl;
 
-            Player new_player(move(_accept_socket.acceptConnection()));
+            auto ptr = std::make_shared<Player>(move(_accept_socket.acceptConnection()));
 
             cout << "Nuevo jugador conectado, creando partida..."<<endl;
 
-            GameThread new_thread(move(new_player), 1, std::move("filea.yaml"));
-            _games.push_back(move(new_thread));
+            auto new_thread = std::make_shared<GameThread>(ptr, 1, std::move("filea.yaml"));
+            _games.push_back(new_thread);
 
             cout << "Partida creada"<<endl;
             // todo: contacto con cliente (thread aparte?). NUEVA_PARTIDA O CONECTARSE_A_UNA?

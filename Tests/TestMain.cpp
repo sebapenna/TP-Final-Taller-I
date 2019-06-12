@@ -15,7 +15,7 @@
 #include "TestPositionTranslator.h"
 #include "TestWorldObjectDTOTranslator.h"
 
-CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
+//CPPUNIT_TEST_SUITE_REGISTRATION( TestYamlParser );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestProtocolTranslator );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestWorld );
 CPPUNIT_TEST_SUITE_REGISTRATION( TestChell );

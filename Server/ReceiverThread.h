@@ -11,15 +11,15 @@
 class ReceiverThread {
 private:
     std::thread _thread;
-    Player &_player;
+    std::shared_ptr<Player> _player;
     bool _dead = false;
 
     // Recibe los DTO provenientes de player y los encola para ser posteriormente aplicados
     // al modelo. Finaliza cuando cliente se desconecta
-    void run(Player &player, SafeQueue<std::shared_ptr<Event>> &events_queue);
+    void run(std::shared_ptr<Player> player, SafeQueue<std::shared_ptr<Event>> &events_queue);
 
 public:
-    ReceiverThread(Player &player, SafeQueue<std::shared_ptr<Event>> &events_queue);
+    ReceiverThread(std::shared_ptr<Player> player, SafeQueue<std::shared_ptr<Event>> &events_queue);
 
     void join();
 

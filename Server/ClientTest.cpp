@@ -107,6 +107,9 @@ int main(int argc, char const *argv[]) {
                 case PROTOCOL_ROCK_DATA:
                     cout << "ROCK" << endl;
                     break;
+                case PROTOCOL_PLAYER_CHELL_ID:
+                    cout << "PLAYER CHELL ID" << endl;
+                    break;
             }
             prot >> dto_ptr;
         }
@@ -144,16 +147,14 @@ int main(int argc, char const *argv[]) {
         cout << "Enviado"<<endl;
         receiveData(prot, pdto);
 
-        // Recibo 3 loops mas
-        receiveData(prot, pdto);
-        receiveData(prot, pdto);
-        receiveData(prot, pdto);
-
 
         pdto = std::make_shared<QuitDTO>();
         cout << "Enviando QuitDTO para terminar partida..."<<endl;
         prot << *pdto.get();
         cout << "Enviado"<<endl;
+        receiveData(prot, pdto);
+
+        // Recibo 3 loops mas
         receiveData(prot, pdto);
 
 

@@ -36,7 +36,7 @@ void Protocol::operator<<(const ProtocolDTO &dto) {
      int res = ProtocolTranslator::translate(&dto, data_vector);
      if (res == -1)
          throw WrongProtocolException();
-     for (auto &data : data_vector)
+    for (auto &data : data_vector)
          *this << data;
 }
 

@@ -162,10 +162,10 @@ shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &inp
     int command = input.at(0);
     switch (command) {
         case PROTOCOL_BEGIN:
-            return  make_shared<BeginDTO>();
+            return make_shared<BeginDTO>();
 
         case PROTOCOL_QUIT:
-            return  make_shared<QuitDTO>();
+            return make_shared<QuitDTO>();
 
         case PROTOCOL_MOVE_LEFT:
             return make_shared<MoveLeftDTO>();
