@@ -29,7 +29,7 @@
 #include "client/View/BlockMetalView.h"
 
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue, bool& done) :
-safeQueue(safeQueue), done(done), window(title, 1000, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
+safeQueue(safeQueue), done(done), window(title, 1600, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
     textureFactory.init(renderer);
     srand (time(NULL));
 }
@@ -42,9 +42,6 @@ void SDL_Runner::run() {
     std::string acidAndButtons("acidAndButtons");
     std::string gate_file_name("gate");
     std::string background("background");
-    auto back = std::shared_ptr<BackgroundView>(new BackgroundView(textureFactory.getTextureByName(background), renderer));
-    back->setDestRect(-300,300,800,300);
-    world.addView(back);
     for (int startX = -2000; startX<7000; startX+=128) {
         /*for (int startY = -2000; startY<7000; startY+=128) {
             auto block = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
@@ -80,9 +77,8 @@ void SDL_Runner::run() {
                         auto newChell = (ChellDTO *) newItem;
                         auto chell2 = std::shared_ptr<ChellAnimationView>(new ChellAnimationView(newChell->getId(),
                                                              textureFactory.getTextureByName(chell_file_name), renderer));
-                        Position chell2Pos(newChell->getX(), newChell->getY());
-                        chell2.get()->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
-                        world.addChell(chell2, chell2Pos);
+                        chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
+                        world.addChell(chell2);
                         if (newChell->getDeleteState() == DELETE) {
                             world.setChellState(newChell->getId(), ChellState::dying);
                         } else if (newChell->getMoving()) {
@@ -109,8 +105,10 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_PLAYER_CHELL_ID: {
                         auto chellId = (PlayerChellIdDTO*) newItem;
-                        world.setCamara(chellId->getChellId(), 1000, 1000);
+                        world.setCamara(chellId->getChellId(), window.getWidth(), window.getHeight());
                         this->myChellId = chellId->getChellId();
+                        auto back = std::shared_ptr<BackgroundView>(new BackgroundView(textureFactory.getTextureByName(background), renderer));
+                        world.setBackground(back);
                         break;
                     }
                     case PROTOCOL_BUTTON_DATA: {
@@ -154,16 +152,23 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_ROCK_BLOCK_DATA: {
                         auto rockBlockDTO = (RockBlockDTO*) newItem;
-                        auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
-                        rockBlock->setDestRect(rockBlockDTO->getX(), rockBlockDTO->getY(), rockBlockDTO->getWidth(), rockBlockDTO->getHeight());
-                        world.addView(rockBlock);
+                        for(int i=0; i<rockBlockDTO->getWidth(); i+=4) {
+                            auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
+                            rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY(), 4, rockBlockDTO->getHeight());
+                            world.addView(rockBlock);
+                        }
                         break;
                     }
                     case PROTOCOL_METAL_BLOCK_DATA: {
                         auto metalBlockDTO = (MetalBlockDTO*) newItem;
-                        auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
+                        for(int i=0; i<metalBlockDTO->getWidth(); i+=4) {
+                            auto rockBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
+                            rockBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY(), 4, metalBlockDTO->getHeight());
+                            world.addView(rockBlock);
+                        }
+                       /* auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
                         metalBlock->setDestRect(metalBlockDTO->getX(), metalBlockDTO->getY(), metalBlockDTO->getWidth(), metalBlockDTO->getHeight());
-                        world.addView(metalBlock);
+                        world.addView(metalBlock);*/
                         break;
                     }
                     case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA: {

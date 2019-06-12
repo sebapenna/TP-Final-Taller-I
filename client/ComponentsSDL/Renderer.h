@@ -17,7 +17,7 @@ public:
 
     void copyTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst, double angle, SDL_Point* center, SDL_RendererFlip flip);
     void copyTexture(SDL_Texture* texture, SDL_Rect* src, SDL_Rect* dst);
-    void copyTexture(SDL_Texture* texture, SDL_Rect* dst);
+    void copyTexture(SDL_Texture* texture, SDL_Rect* dst=NULL);
     void clearRender();
     void render();
     void fill(int r, int g, int b, int alpha);

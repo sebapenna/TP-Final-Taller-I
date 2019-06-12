@@ -12,6 +12,7 @@
 class BackgroundView : public View {
 private:
     Sprite background;
+    Renderer& renderer;
 public:
     BackgroundView(SDL_Texture* texture, Renderer& renderer, int x = 0, int y = 0);
     void draw(Camera& camera);

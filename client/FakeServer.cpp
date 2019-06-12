@@ -31,48 +31,56 @@ void FakeServer::run() {
         }
         //safeQueue.push((void*) new MetalBlockDTO(startX, 400, 128,128));
     }*/
-    int x=200;
-    std::shared_ptr<ProtocolDTO>dto(new ChellDTO(1, x, 200, 201, 220, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+    int x=0;
+    std::shared_ptr<ProtocolDTO>dto(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
     safeQueue.push(dto);
-    std::shared_ptr<ProtocolDTO>dto2(new ChellDTO(2, -200, -100, 201, 220, WEST, NOT_TILTED, NOT_MOVING, JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+    /*std::shared_ptr<ProtocolDTO>dto2(new ChellDTO(2, 1, 5, 4, 4, WEST, NOT_TILTED, NOT_MOVING, JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
     safeQueue.push(dto2);
-    std::shared_ptr<ProtocolDTO>dto3(new ChellDTO(3, 100, -100, 201, 220, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DELETE));
+    */
+    std::shared_ptr<ProtocolDTO>dto3(new ChellDTO(2, -15, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DELETE));
     safeQueue.push(dto3);
-    std::shared_ptr<ProtocolDTO>dto4(new ButtonDTO(1, -200, 360, 200, 50));
+    std::shared_ptr<ProtocolDTO>dto4(new ButtonDTO(1, 10, 4, BUTTON_HALF_WIDTH*2, BUTTON_HALF_HEIGHT*2));
     safeQueue.push(dto4);
-    std::shared_ptr<ProtocolDTO>dto5(new GateDTO(1, 400, 200, 200, 350));
+    std::shared_ptr<ProtocolDTO>dto5(new GateDTO(1, -1, 4, GATE_HALF_WIDTH*2, GATE_HALF_HEIGHT*2));
     safeQueue.push(dto5);
     std::shared_ptr<ProtocolDTO>dto6(new PlayerChellIdDTO(1));
     safeQueue.push(dto6);
-    std::shared_ptr<ProtocolDTO>dto7(new RockDTO(3, 0, 400, 128, DONT_DELETE));
+    std::shared_ptr<ProtocolDTO>dto7(new RockDTO(3, 7, 4, ROCK_HALF_LEN*2, DONT_DELETE));
     safeQueue.push(dto7);
-    std::shared_ptr<ProtocolDTO>dto8(new RockDTO(1, 500, 400, 128, DONT_DELETE));
+    std::shared_ptr<ProtocolDTO>dto8(new MetalBlockDTO(-50,0,300,4));
     safeQueue.push(dto8);
-    std::shared_ptr<ProtocolDTO>dto18(new MetalDiagonalBlockDTO(100, 500, 128, O_SE));
+    /*
+    std::shared_ptr<ProtocolDTO>dto8(new RockDTO(1, 500, 400, 128, DONT_DELETE));
+    safeQueue.push(dto8);*/
+    std::shared_ptr<ProtocolDTO>dto18(new MetalDiagonalBlockDTO(-90, 4, 4, O_SE));
     safeQueue.push(dto18);
-    std::shared_ptr<ProtocolDTO>dto19(new MetalDiagonalBlockDTO(100, 300, 128, O_NO));
+    std::shared_ptr<ProtocolDTO>dto19(new MetalDiagonalBlockDTO(-10, 4, 4, O_NO));
     safeQueue.push(dto19);
 
-    std::shared_ptr<ProtocolDTO>dto20(new ChellDTO(4, 100, -100, 201, 220, WEST, O_O, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
-    safeQueue.push(dto20);
     while (!done) {
         auto protocolDTO = blockingQueue.getTopAndPop();
         if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_LEFT) {
-            x-=10;
+            x-=1;
             //safeQueue.push((void *) new ButtonStateDTO(1, PRESSED));
-            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
-            std::shared_ptr<ProtocolDTO>dto10(new GateStateDTO(1, OPEN));
+
+            std::shared_ptr<ProtocolDTO>dto11(new GateStateDTO(1, OPEN));
+            std::shared_ptr<ProtocolDTO>dto10(new ButtonStateDTO(1, PRESSED));
             safeQueue.push(dto10);
+            safeQueue.push(dto11);
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_RIGHT) {
-            x+=10;
-            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, EAST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+            x+=1;
+            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, EAST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
+
             std::shared_ptr<ProtocolDTO>dto10(new GateStateDTO(1, CLOSED));
             safeQueue.push(dto10);
+            std::shared_ptr<ProtocolDTO>dto11(new ButtonStateDTO(1, NOT_PRESSED));
+            safeQueue.push(dto11);
             //safeQueue.push((void *) new ButtonStateDTO(1, NOT_PRESSED));
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_STOP) {
-            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1,x,200, 201, 220, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+            std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
         }
     }

@@ -24,9 +24,13 @@ Camera::draw(SDL_Texture *texture, SDL_Rect *srcRect,
 }
 
 bool Camera::isInCamera(SDL_Rect* dstRect) {
-    if (dstRect->x + dstRect->w < position.getX() - this->w/2) return false;
+    /*if (dstRect->x + dstRect->w < position.getX() - this->w/2) return false;
     if (dstRect->x > abs(position.getX()) + this->w) return false;
     if (dstRect->y + dstRect->h < position.getY() - this->h/2) return false;
-    if (dstRect->y > abs(position.getY()) + this->h) return false;
+    if (dstRect->y > abs(position.getY()) + this->h) return false;*/
     return true;
+}
+
+Position &Camera::getPosition() {
+    return position;
 }
