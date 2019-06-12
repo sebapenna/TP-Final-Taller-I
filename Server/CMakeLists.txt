@@ -46,15 +46,7 @@ add_executable(server
 
 target_link_libraries(server portal-src)
 
-
-
-
-# todo: ELIMINAR SERVER/CLIENT TEST
-add_executable(server-test
-        ServerTest.cpp)
-
-target_link_libraries(server-test portal-src)
-
+# todo : eliminar client test
 add_executable(client
         ClientTest.cpp)
 

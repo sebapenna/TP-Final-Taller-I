@@ -186,6 +186,60 @@ sdldemo/fast:
 	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/build
 .PHONY : sdldemo/fast
 
+ClientReceiver.o: ClientReceiver.cpp.o
+
+.PHONY : ClientReceiver.o
+
+# target to build an object file
+ClientReceiver.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ClientReceiver.cpp.o
+.PHONY : ClientReceiver.cpp.o
+
+ClientReceiver.i: ClientReceiver.cpp.i
+
+.PHONY : ClientReceiver.i
+
+# target to preprocess a source file
+ClientReceiver.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ClientReceiver.cpp.i
+.PHONY : ClientReceiver.cpp.i
+
+ClientReceiver.s: ClientReceiver.cpp.s
+
+.PHONY : ClientReceiver.s
+
+# target to generate assembly for a file
+ClientReceiver.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ClientReceiver.cpp.s
+.PHONY : ClientReceiver.cpp.s
+
+ClientSender.o: ClientSender.cpp.o
+
+.PHONY : ClientSender.o
+
+# target to build an object file
+ClientSender.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ClientSender.cpp.o
+.PHONY : ClientSender.cpp.o
+
+ClientSender.i: ClientSender.cpp.i
+
+.PHONY : ClientSender.i
+
+# target to preprocess a source file
+ClientSender.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ClientSender.cpp.i
+.PHONY : ClientSender.cpp.i
+
+ClientSender.s: ClientSender.cpp.s
+
+.PHONY : ClientSender.s
+
+# target to generate assembly for a file
+ClientSender.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ClientSender.cpp.s
+.PHONY : ClientSender.cpp.s
+
 ComponentsSDL/AnimatedSprite.o: ComponentsSDL/AnimatedSprite.cpp.o
 
 .PHONY : ComponentsSDL/AnimatedSprite.o
@@ -456,6 +510,87 @@ TextureFactory.cpp.s:
 	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/TextureFactory.cpp.s
 .PHONY : TextureFactory.cpp.s
 
+View/AcidView.o: View/AcidView.cpp.o
+
+.PHONY : View/AcidView.o
+
+# target to build an object file
+View/AcidView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/AcidView.cpp.o
+.PHONY : View/AcidView.cpp.o
+
+View/AcidView.i: View/AcidView.cpp.i
+
+.PHONY : View/AcidView.i
+
+# target to preprocess a source file
+View/AcidView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/AcidView.cpp.i
+.PHONY : View/AcidView.cpp.i
+
+View/AcidView.s: View/AcidView.cpp.s
+
+.PHONY : View/AcidView.s
+
+# target to generate assembly for a file
+View/AcidView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/AcidView.cpp.s
+.PHONY : View/AcidView.cpp.s
+
+View/BackgroundView.o: View/BackgroundView.cpp.o
+
+.PHONY : View/BackgroundView.o
+
+# target to build an object file
+View/BackgroundView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BackgroundView.cpp.o
+.PHONY : View/BackgroundView.cpp.o
+
+View/BackgroundView.i: View/BackgroundView.cpp.i
+
+.PHONY : View/BackgroundView.i
+
+# target to preprocess a source file
+View/BackgroundView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BackgroundView.cpp.i
+.PHONY : View/BackgroundView.cpp.i
+
+View/BackgroundView.s: View/BackgroundView.cpp.s
+
+.PHONY : View/BackgroundView.s
+
+# target to generate assembly for a file
+View/BackgroundView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BackgroundView.cpp.s
+.PHONY : View/BackgroundView.cpp.s
+
+View/BallView.o: View/BallView.cpp.o
+
+.PHONY : View/BallView.o
+
+# target to build an object file
+View/BallView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BallView.cpp.o
+.PHONY : View/BallView.cpp.o
+
+View/BallView.i: View/BallView.cpp.i
+
+.PHONY : View/BallView.i
+
+# target to preprocess a source file
+View/BallView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BallView.cpp.i
+.PHONY : View/BallView.cpp.i
+
+View/BallView.s: View/BallView.cpp.s
+
+.PHONY : View/BallView.s
+
+# target to generate assembly for a file
+View/BallView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BallView.cpp.s
+.PHONY : View/BallView.cpp.s
+
 View/BlockMetalView.o: View/BlockMetalView.cpp.o
 
 .PHONY : View/BlockMetalView.o
@@ -510,6 +645,33 @@ View/BlockRockView.cpp.s:
 	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/BlockRockView.cpp.s
 .PHONY : View/BlockRockView.cpp.s
 
+View/ButtonView.o: View/ButtonView.cpp.o
+
+.PHONY : View/ButtonView.o
+
+# target to build an object file
+View/ButtonView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/ButtonView.cpp.o
+.PHONY : View/ButtonView.cpp.o
+
+View/ButtonView.i: View/ButtonView.cpp.i
+
+.PHONY : View/ButtonView.i
+
+# target to preprocess a source file
+View/ButtonView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/ButtonView.cpp.i
+.PHONY : View/ButtonView.cpp.i
+
+View/ButtonView.s: View/ButtonView.cpp.s
+
+.PHONY : View/ButtonView.s
+
+# target to generate assembly for a file
+View/ButtonView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/ButtonView.cpp.s
+.PHONY : View/ButtonView.cpp.s
+
 View/ChellAnimationView.o: View/ChellAnimationView.cpp.o
 
 .PHONY : View/ChellAnimationView.o
@@ -563,6 +725,87 @@ View/DiagonalBlockMetalView.s: View/DiagonalBlockMetalView.cpp.s
 View/DiagonalBlockMetalView.cpp.s:
 	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/DiagonalBlockMetalView.cpp.s
 .PHONY : View/DiagonalBlockMetalView.cpp.s
+
+View/EnergyBarView.o: View/EnergyBarView.cpp.o
+
+.PHONY : View/EnergyBarView.o
+
+# target to build an object file
+View/EnergyBarView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/EnergyBarView.cpp.o
+.PHONY : View/EnergyBarView.cpp.o
+
+View/EnergyBarView.i: View/EnergyBarView.cpp.i
+
+.PHONY : View/EnergyBarView.i
+
+# target to preprocess a source file
+View/EnergyBarView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/EnergyBarView.cpp.i
+.PHONY : View/EnergyBarView.cpp.i
+
+View/EnergyBarView.s: View/EnergyBarView.cpp.s
+
+.PHONY : View/EnergyBarView.s
+
+# target to generate assembly for a file
+View/EnergyBarView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/EnergyBarView.cpp.s
+.PHONY : View/EnergyBarView.cpp.s
+
+View/GateView.o: View/GateView.cpp.o
+
+.PHONY : View/GateView.o
+
+# target to build an object file
+View/GateView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/GateView.cpp.o
+.PHONY : View/GateView.cpp.o
+
+View/GateView.i: View/GateView.cpp.i
+
+.PHONY : View/GateView.i
+
+# target to preprocess a source file
+View/GateView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/GateView.cpp.i
+.PHONY : View/GateView.cpp.i
+
+View/GateView.s: View/GateView.cpp.s
+
+.PHONY : View/GateView.s
+
+# target to generate assembly for a file
+View/GateView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/GateView.cpp.s
+.PHONY : View/GateView.cpp.s
+
+View/RockView.o: View/RockView.cpp.o
+
+.PHONY : View/RockView.o
+
+# target to build an object file
+View/RockView.cpp.o:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/RockView.cpp.o
+.PHONY : View/RockView.cpp.o
+
+View/RockView.i: View/RockView.cpp.i
+
+.PHONY : View/RockView.i
+
+# target to preprocess a source file
+View/RockView.cpp.i:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/RockView.cpp.i
+.PHONY : View/RockView.cpp.i
+
+View/RockView.s: View/RockView.cpp.s
+
+.PHONY : View/RockView.s
+
+# target to generate assembly for a file
+View/RockView.cpp.s:
+	cd /home/seba/Escritorio/Portal && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/RockView.cpp.s
+.PHONY : View/RockView.cpp.s
 
 View/View.o: View/View.cpp.o
 
@@ -659,6 +902,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... list_install_components"
 	@echo "... install"
+	@echo "... ClientReceiver.o"
+	@echo "... ClientReceiver.i"
+	@echo "... ClientReceiver.s"
+	@echo "... ClientSender.o"
+	@echo "... ClientSender.i"
+	@echo "... ClientSender.s"
 	@echo "... ComponentsSDL/AnimatedSprite.o"
 	@echo "... ComponentsSDL/AnimatedSprite.i"
 	@echo "... ComponentsSDL/AnimatedSprite.s"
@@ -689,18 +938,39 @@ help:
 	@echo "... TextureFactory.o"
 	@echo "... TextureFactory.i"
 	@echo "... TextureFactory.s"
+	@echo "... View/AcidView.o"
+	@echo "... View/AcidView.i"
+	@echo "... View/AcidView.s"
+	@echo "... View/BackgroundView.o"
+	@echo "... View/BackgroundView.i"
+	@echo "... View/BackgroundView.s"
+	@echo "... View/BallView.o"
+	@echo "... View/BallView.i"
+	@echo "... View/BallView.s"
 	@echo "... View/BlockMetalView.o"
 	@echo "... View/BlockMetalView.i"
 	@echo "... View/BlockMetalView.s"
 	@echo "... View/BlockRockView.o"
 	@echo "... View/BlockRockView.i"
 	@echo "... View/BlockRockView.s"
+	@echo "... View/ButtonView.o"
+	@echo "... View/ButtonView.i"
+	@echo "... View/ButtonView.s"
 	@echo "... View/ChellAnimationView.o"
 	@echo "... View/ChellAnimationView.i"
 	@echo "... View/ChellAnimationView.s"
 	@echo "... View/DiagonalBlockMetalView.o"
 	@echo "... View/DiagonalBlockMetalView.i"
 	@echo "... View/DiagonalBlockMetalView.s"
+	@echo "... View/EnergyBarView.o"
+	@echo "... View/EnergyBarView.i"
+	@echo "... View/EnergyBarView.s"
+	@echo "... View/GateView.o"
+	@echo "... View/GateView.i"
+	@echo "... View/GateView.s"
+	@echo "... View/RockView.o"
+	@echo "... View/RockView.i"
+	@echo "... View/RockView.s"
 	@echo "... View/View.o"
 	@echo "... View/View.i"
 	@echo "... View/View.s"

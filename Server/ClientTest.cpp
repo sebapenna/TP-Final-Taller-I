@@ -60,7 +60,7 @@ int main(int argc, char const *argv[]) {
         Protocol prot(argv[IP_POS], argv[PORT_POS]);
         cout << "Conexion establecida"<<endl;
 
-        std::this_thread::sleep_for(std::chrono::seconds(5)); // Espero a mandar BEGIN
+        std::this_thread::sleep_for(std::chrono::seconds(2)); // Espero a mandar BEGIN
 
         cout << "Enviando BeginDTO..."<<endl;
         shared_ptr<ProtocolDTO> pdto(new BeginDTO());
@@ -152,10 +152,7 @@ int main(int argc, char const *argv[]) {
         cout << "Enviando QuitDTO para terminar partida..."<<endl;
         prot << *pdto.get();
         cout << "Enviado"<<endl;
-        receiveData(prot, pdto);
 
-        // Recibo 3 loops mas
-        receiveData(prot, pdto);
 
 
 

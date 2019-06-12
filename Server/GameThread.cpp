@@ -5,6 +5,7 @@
 #include <chrono>
 #include <iostream>
 #include <Common/exceptions.h>
+#include "Player.h"
 
 
 using namespace std::chrono;
@@ -19,8 +20,17 @@ using std::shared_ptr;
 
 
 void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
-    for_each(_players.begin(), _players.end(), [this, &dto]
-            (shared_ptr<Player> &player) { player->send(dto);});
+    std::vector<size_t> to_delete;
+    for_each(_players.begin(), _players.end(), [this, &dto, &to_delete] (Player* &player) {
+        try {
+            player->send(dto);
+        } catch(FailedSendException& e) { // Medida seguridad, almaceno ids de clientes desonectados
+            cout << "Entro" << endl;
+            to_delete.push_back(player->id());
+        }
+    });
+    // Elimino clientes que se desonectaron
+    for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) {deletePlayer(id);});
 }
 
 void GameThread::run(std::string map_filename) {
@@ -58,9 +68,13 @@ void GameThread::run(std::string map_filename) {
             });
 
             // Notifico a cada jugador su id
-            for_each(_players.begin(), _players.end(), [this](shared_ptr<Player> &player) {
+            for_each(_players.begin(), _players.end(), [this](Player* &player) {
                 auto player_id_dto = DTOProcessor::createDTO(player->id());
-                player->send(player_id_dto);
+                try {
+                    player->send(player_id_dto);
+                } catch(FailedSendException& e) {   // Cliente desconectado
+                    deletePlayer(player->id());
+                }
             });
 
             // Enviada toda la configuracion para jugar
@@ -78,7 +92,8 @@ void GameThread::run(std::string map_filename) {
                 auto start = high_resolution_clock::now();
 
                 // Desencolo       //todo:TIMEOUT !
-                for (auto event = _events_queue.getTopAndPop(); event; event = _events_queue.getTopAndPop()) {
+                for (auto event = _events_queue.getTopAndPop(); event;
+                        event = _events_queue.getTopAndPop()) {
                     stage.apply(event->getPtr().get(), event->getPlayerId());
                     if (event->getProtocolId() == PROTOCOL_QUIT)
                         deletePlayer(event->getPlayerId()); // Elimino jugador de la partida
@@ -107,7 +122,11 @@ void GameThread::run(std::string map_filename) {
                 /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
                 for (auto &player : _players) {
                     auto dto = DTOProcessor::createBeginDTO();
-                    player->send(dto);
+                    try {
+                        player->send(dto);
+                    } catch(FailedSendException& e) {   // Cliente desconectado
+                        deletePlayer(player->id());
+                    }
                 }
 
 
@@ -135,40 +154,45 @@ void GameThread::run(std::string map_filename) {
     }
 }
 
-GameThread::GameThread(std::shared_ptr<Player> new_player, const size_t &max_players,
-                       std::string &&map_filename, const size_t &id) :
-_map_filename(move(map_filename)), _gameloop(&GameThread::run, this, move(map_filename)),
-_max_players(max_players), _id(id) {
-    addPlayer(move(new_player));
+GameThread::GameThread(Player* new_player, const size_t &max_players,
+                       std::string &&map_filename, const size_t &id) : _game_finished(false),
+                       _empty_game(false), _begin_game(false),
+                       _gameloop(&GameThread::run, this, move(map_filename)),
+                       _max_players(max_players), _id(id) {
+    addPlayerIfNotFull(new_player);
 }
 
 
-void GameThread::addPlayer(std::shared_ptr<Player> new_player) {
+bool GameThread::addPlayerIfNotFull(Player* new_player) {
     lock_guard<mutex> lock(_m);
+    if (_players.size() >= _max_players)    // Maximo de jugadores alcanzado
+        return false;
     new_player->setId(_players.size());
     _players.push_back(new_player);
-    // todo: mover a Player
-    auto new_thread = std::make_shared<ReceiverThread>(new_player, ref(_events_queue));
-    _receive_threads.push_back(move(new_thread));
+    return true;
 }
 
 // todo: THREAD QUE CONTROLE SI RECEIVER_THREAD IS_ALIVE (jugador no corto conexion) => IF DEAD
 //  DELETE_PLAYER
 
 void GameThread::deletePlayer(const size_t &id) {
-    // todo: eliminar threads. Necesario? No se van a agregar jugadores (durante partida, antes si)
     lock_guard<mutex> lock(_m);
-//    for (auto &thread : _receive_threads)
-//        if (thread.getPlayerId() == id)
-//            thread.join();  // Termino ejecucion del thread
-//    _receive_threads.erase(remove_if(_receive_threads.begin(), _receive_threads.end(),
-//            &ReceiverThread::isDead), _receive_threads.end());
-    _players.remove_if([this, &id](std::shared_ptr<Player> player) {
-        if (!_begin_game && player->id() > id) // Actualizo ids mientras busco elemento, en caso de juego aun no inciado
+    _players.remove_if([this, &id](Player* player) {
+        if (!_begin_game && player->id() > id) {
+            // Actualizo ids mientras busco elemento, en caso de juego aun no inciado
             player->setId(player->id() - 1);
-        return player->id() == id;
+            return false;
+        }
+        if (player->id() == id) {
+            std::cout << std::endl << std::endl << "DELETE"<<std::endl << std::endl;
+            delete player;
+            player = nullptr;
+            return true;
+        }
+        return false;
     });
     if (_players.empty()) {   // Se fueron todos los jugadpres
+        std::cout << "VACIO" <<std::endl;
         _empty_game = true;
         _game_finished = true;
     }
@@ -181,18 +205,26 @@ void GameThread::beginGame() {
 
 void GameThread::endGame() {
     // todo: notificar al cliente que termino ?
-    lock_guard<mutex> lock(_m);
     _game_finished = true;
+    std::for_each(_players.begin(), _players.end(), [](Player* &player){
+        player->disconnect();
+    });
+    _gameloop.join();
 }
 
 void GameThread::join() {
     _gameloop.join();
-    std::for_each(_receive_threads.begin(), _receive_threads.end(),
-            [](std::shared_ptr<ReceiverThread> &thread) {thread->join();});
+    std::for_each(_players.begin(), _players.end(), [](Player* &player){
+        player->join();
+    });
 }
 
 const size_t GameThread::id() const {
     return _id;
+}
+
+SafeQueue<std::shared_ptr<Event>>& GameThread::getEventsQueue() {
+    return _events_queue;
 }
 
 

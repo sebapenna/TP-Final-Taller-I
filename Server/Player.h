@@ -3,14 +3,27 @@
 
 #include <Common/Protocol.h>
 #include <memory>
+#include "ReceiverThread.h"
+
+class Lobby;
 
 class Player {
 private:
     Protocol _connection;
     size_t _id = 0; // 0 por default, pero es necesario utilizar el metodo setId para asignarlo
+    std::thread _receiver_thread;
+    bool _connected;
+
+
+    void run(Lobby &lobby);
 
 public:
-    explicit Player(Socket &&socket);
+    // Se brinda socket por movimiento ya que dentro de Player se hara un move de dicho socket,
+    // por lo tanto de esta manera el usuario que utilize esta clase sabra que pierde ownership
+    // del mismo
+    explicit Player(Socket &&socket, Lobby &lobby);
+
+    ~Player();
 
     void setId(size_t id);
 
@@ -23,6 +36,8 @@ public:
     void send(std::shared_ptr<ProtocolDTO> &dto);
 
     void disconnect();
+
+    void join();
 };
 
 

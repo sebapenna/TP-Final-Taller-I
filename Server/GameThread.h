@@ -6,10 +6,11 @@
 #include <vector>
 #include <thread>
 #include <mutex>
-#include "Player.h"
 #include "ReceiverThread.h"
 #include "DTOProcessor.h"
 #include <string>
+
+class Player;
 
 // A cada jugador se le asignara un id (inician desde 0) por orden de llegada (su posicion en el
 // vector). Este id se notificara a los usuarios una vez iniciada la partida, ya que se podria
@@ -21,12 +22,11 @@ private:
     // sabra a que chell aplicar la accion
     std::mutex _m;
     std::thread _gameloop;
-    std::list<std::shared_ptr<Player>> _players;
+    std::list</*std::shared_ptr<Player>*/Player*> _players;
     SafeQueue<std::shared_ptr<Event>> _events_queue;
-    std::vector<std::shared_ptr<ReceiverThread>> _receive_threads;
+//    std::vector<std::shared_ptr<ReceiverThread>> _receive_threads;
     size_t _max_players;
-    bool _begin_game = false, _game_finished = false, _empty_game = false;
-    std::string _map_filename;
+    bool _begin_game, _game_finished, _empty_game ;
     const size_t _id;   // id de la partida
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
@@ -36,11 +36,13 @@ private:
     void sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto);
 
 public:
-    // map_filename es el archivo yaml con la configuracion del mapa
-    explicit GameThread(std::shared_ptr<Player> new_player, const size_t &max_players,
+    // map_filename es el archivo yaml con la configuracion del map
+    GameThread(/*std::shared_ptr<Player>*/Player* new_player, const size_t &max_players,
                         std::string &&map_filename, const size_t &id);
 
-    void addPlayer(std::shared_ptr<Player> new_player);
+    // Une jugador a la partida en caso de que no se haya llegado al limite de jugadores.
+    // Valor de retorno sera true en caso de haber sido agregado, false de lo contrario.
+    bool addPlayerIfNotFull(/*std::shared_ptr<Player>*/Player* new_player);
 
     void deletePlayer(const size_t& id);
 
@@ -53,6 +55,8 @@ public:
     void join();
 
     const size_t id() const;
+
+    SafeQueue<std::shared_ptr<Event>>& getEventsQueue();
 };
 
 

@@ -3,8 +3,10 @@
 
 #include <thread>
 #include <Common/SafeQueue.h>
-#include "Player.h"
 #include "Event.h"
+
+class Player;
+class Lobby;
 
 // Thread exclusivo recibir datos por parte del player indicado en el constructor y encolarlos en
 //  la cola de eventos
@@ -16,10 +18,10 @@ private:
 
     // Recibe los DTO provenientes de player y los encola para ser posteriormente aplicados
     // al modelo. Finaliza cuando cliente se desconecta
-    void run(std::shared_ptr<Player> player, SafeQueue<std::shared_ptr<Event>> &events_queue);
+    void run(Lobby &lobby/*std::shared_ptr<Player> player*/);
 
 public:
-    ReceiverThread(std::shared_ptr<Player> player, SafeQueue<std::shared_ptr<Event>> &events_queue);
+    explicit ReceiverThread(std::shared_ptr<Player> player, Lobby &lobby);
 
     void join();
 
