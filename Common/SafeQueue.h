@@ -11,7 +11,7 @@
 // interpretar los mismos controlando los posibles threads a traves de
 // condition variable
 template <class T>
-class SafeQueue: std::enable_shared_from_this<SafeQueue<T>> {
+class SafeQueue {
     std::queue<T> _queue;
     std::mutex _m;
 
@@ -32,10 +32,6 @@ public:
             this->_queue.pop();
         }
         return aux;
-    }
-
-    std::shared_ptr<SafeQueue<T>> getSharedPtr() {
-        return this->shared_from_this();
     }
 };
 
