@@ -6,8 +6,15 @@
 #define PORTAL_ENERGYBARVIEW_H
 
 
-class EnergyBarView {
+#include <client/ComponentsSDL/Sprite.h>
+#include "View.h"
 
+class EnergyBarView : public View {
+private:
+    Sprite bar;
+public:
+    EnergyBarView(SDL_Texture* texture, Renderer& renderer, int x = 0, int y = 0);
+    void draw(Camera& camera);
 };
 
 
