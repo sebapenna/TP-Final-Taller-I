@@ -66,8 +66,4 @@ struct FullGameException : public exception {
     }
 };
 
-
-
-
-
 #endif //TP_FINAL_EXCEPTIONS_H

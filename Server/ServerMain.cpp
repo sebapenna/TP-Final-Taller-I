@@ -5,7 +5,6 @@
 
 #define PORT_POS    1
 #define N_ARGS  2
-#define MAX_WAITING_QUEUE_SIZE  10
 #define SUCCESS 0
 #define ERROR   1
 #define QUIT    'q'

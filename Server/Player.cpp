@@ -10,19 +10,17 @@ void Player::run(Lobby &lobby) {
     try {
         shared_ptr<ProtocolDTO> dto_ptr;
         //events_queue = player.handshake()
+        // if (x) joinGame/createGame
         // while events_que != nullptr
-        std::cout << "Sin falla"<<std::endl;
-
-        auto events_queue = ref(lobby.createGame(/*getSharedPtr()*/this, 1, move("filea.yaml")));
-        // todo: HARCODEADO - SACAR
+        // joinGame => catch FullGameException
+// todo: file sale de player handshake, al igual que numero de players
+        auto events_queue = ref(lobby.createGame(this, 1, move("filea.yaml")));
         while (_connected) {  // Loop finalizara cuando se corte conexion
             receiveDTO(dto_ptr); // Receive bloqueante
             shared_ptr<Event> p = std::make_shared<Event>(_id, dto_ptr);
             events_queue.get().push(std::move(p));    // Encolo evento y id de player
         }
-    } catch (FailedRecvException& e) {
-        // Catch de exception ya que se puede terminar conexion voluntariamente
-        // en medio de recepcion de datos
+    } catch (FailedRecvException& e) {         // Se podria cerrar la conexion voluntariamente
         _connected = false;
     } catch (const exception& e) {
         _connected = false;
@@ -30,9 +28,15 @@ void Player::run(Lobby &lobby) {
     }
 }
 
-// todo: porque doble movimiento
 Player::Player(Socket &&socket, Lobby &lobby) : _connected(true), _connection(move(socket)),
 _receiver_thread(&Player::run, this, std::ref(lobby)) { }
+
+Player::~Player() {
+    _connected = false;
+    _connection.disconnect();
+    _receiver_thread.join();
+}
+
 
 void Player::setId(size_t id) {
     _id = id;
@@ -60,10 +64,4 @@ void Player::join() {
 
 void Player::disconnect() {
     this->~Player(); // Cierro player
-}
-
-Player::~Player() {
-    _connected = false;
-    _connection.disconnect();
-    _receiver_thread.join();
 }

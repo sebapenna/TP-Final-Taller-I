@@ -19,13 +19,13 @@ using std::for_each;
 using std::shared_ptr;
 
 
+// todo : NECESARIOS LOS CATCH EN SEND PARA ELIMINAR ?
 void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
     std::vector<size_t> to_delete;
     for_each(_players.begin(), _players.end(), [this, &dto, &to_delete] (Player* &player) {
         try {
             player->send(dto);
         } catch(FailedSendException& e) { // Medida seguridad, almaceno ids de clientes desonectados
-            cout << "Entro" << endl;
             to_delete.push_back(player->id());
         }
     });
@@ -39,7 +39,6 @@ void GameThread::run(std::string map_filename) {
 
         // Loop esperando a que se indique que comienza la partida. Verifico no se hayan
         // desconectado todos los jugadores
-        cout << "Esperando que owner de la partida decida comenzarla..."<<endl;
         while (!_begin_game && !_empty_game) {
             // todo: un sleep_for?
             auto event = _events_queue.getTopAndPop();  // todo: Cambiar, desencola todo el tiempo
@@ -57,7 +56,6 @@ void GameThread::run(std::string map_filename) {
             }
         }
         if (!_empty_game) {    // Verifico que hay jugadores
-            cout << "Iniciando Partida..."<<endl;
             // Creo los chells una vez determinada la cantidad final de jugadores
             stage.createChells(_players.size());
 
@@ -68,14 +66,19 @@ void GameThread::run(std::string map_filename) {
             });
 
             // Notifico a cada jugador su id
-            for_each(_players.begin(), _players.end(), [this](Player* &player) {
+            std::vector<size_t> to_delete;
+            for_each(_players.begin(), _players.end(), [this, &to_delete](Player* &player) {
                 auto player_id_dto = DTOProcessor::createDTO(player->id());
                 try {
                     player->send(player_id_dto);
                 } catch(FailedSendException& e) {   // Cliente desconectado
-                    deletePlayer(player->id());
+                    to_delete.push_back(player->id());
                 }
             });
+            // Elimino clientes que se desonectaron
+            for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) {deletePlayer(id);});
+            // todo: SI MANTENGO ESTE VECTOR DEBERIA ELIMINAR SU CHELL DEL MAPA
+            to_delete.clear();
 
             // Enviada toda la configuracion para jugar
             cout << "Configuracion inicial y IDs enviados"<<endl;
@@ -122,11 +125,11 @@ void GameThread::run(std::string map_filename) {
                 /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
                 for (auto &player : _players) {
                     auto dto = DTOProcessor::createBeginDTO();
-                    try {
+//                    try {
                         player->send(dto);
-                    } catch(FailedSendException& e) {   // Cliente desconectado
-                        deletePlayer(player->id());
-                    }
+//                    } catch(FailedSendException& e) {   // Cliente desconectado
+//                        deletePlayer(player->id());
+//                    }
                 }
 
 
@@ -145,7 +148,7 @@ void GameThread::run(std::string map_filename) {
                     std::this_thread::sleep_for(milliseconds(sleep_time));
             }
         }
-        cout << "Partida finalizada"<<endl;
+        cout << "Partida "<<_id <<  " finalizada"<<endl;
         _game_finished = true; // todo: necesario aca?
     } catch(const std::exception& e) {
         cout << e.what();
@@ -154,8 +157,11 @@ void GameThread::run(std::string map_filename) {
     }
 }
 
+// Todas los atributos se deben inicializar de esta manera antes del thread para ya estar
+// disponibles cuando el  mismo comienze su ejecucion y no haya invalid reads
 GameThread::GameThread(Player* new_player, const size_t &max_players,
-                       std::string &&map_filename, const size_t &id) : _game_finished(false),
+                       std::string &&map_filename, const size_t &id) : _events_queue(),
+                       _game_finished(false),
                        _empty_game(false), _begin_game(false),
                        _gameloop(&GameThread::run, this, move(map_filename)),
                        _max_players(max_players), _id(id) {
@@ -172,9 +178,6 @@ bool GameThread::addPlayerIfNotFull(Player* new_player) {
     return true;
 }
 
-// todo: THREAD QUE CONTROLE SI RECEIVER_THREAD IS_ALIVE (jugador no corto conexion) => IF DEAD
-//  DELETE_PLAYER
-
 void GameThread::deletePlayer(const size_t &id) {
     lock_guard<mutex> lock(_m);
     _players.remove_if([this, &id](Player* player) {
@@ -184,7 +187,6 @@ void GameThread::deletePlayer(const size_t &id) {
             return false;
         }
         if (player->id() == id) {
-            std::cout << std::endl << std::endl << "DELETE"<<std::endl << std::endl;
             delete player;
             player = nullptr;
             return true;
@@ -192,7 +194,6 @@ void GameThread::deletePlayer(const size_t &id) {
         return false;
     });
     if (_players.empty()) {   // Se fueron todos los jugadpres
-        std::cout << "VACIO" <<std::endl;
         _empty_game = true;
         _game_finished = true;
     }
@@ -204,7 +205,7 @@ void GameThread::beginGame() {
 }
 
 void GameThread::endGame() {
-    // todo: notificar al cliente que termino ?
+    // todo: notificar al cliente que termino ? Creo que corta conexion y recibe exception
     _game_finished = true;
     std::for_each(_players.begin(), _players.end(), [](Player* &player){
         player->disconnect();

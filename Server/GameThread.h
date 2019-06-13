@@ -22,9 +22,8 @@ private:
     // sabra a que chell aplicar la accion
     std::mutex _m;
     std::thread _gameloop;
-    std::list</*std::shared_ptr<Player>*/Player*> _players;
+    std::list<Player*> _players;
     SafeQueue<std::shared_ptr<Event>> _events_queue;
-//    std::vector<std::shared_ptr<ReceiverThread>> _receive_threads;
     size_t _max_players;
     bool _begin_game, _game_finished, _empty_game ;
     const size_t _id;   // id de la partida
@@ -37,12 +36,12 @@ private:
 
 public:
     // map_filename es el archivo yaml con la configuracion del map
-    GameThread(/*std::shared_ptr<Player>*/Player* new_player, const size_t &max_players,
+    GameThread(Player* new_player, const size_t &max_players,
                         std::string &&map_filename, const size_t &id);
 
     // Une jugador a la partida en caso de que no se haya llegado al limite de jugadores.
     // Valor de retorno sera true en caso de haber sido agregado, false de lo contrario.
-    bool addPlayerIfNotFull(/*std::shared_ptr<Player>*/Player* new_player);
+    bool addPlayerIfNotFull(Player* new_player);
 
     void deletePlayer(const size_t& id);
 

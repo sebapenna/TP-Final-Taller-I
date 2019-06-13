@@ -51,8 +51,8 @@ void Chell::move_right() {
 void Chell::jump() {
     if (_jump_state == ON_GROUND)
         _jump = true;
-//    else
-//        throw ChellNotOnGroundException();
+    else
+        throw ChellNotOnGroundException();
 }
 
 void Chell::stopMovement() {

@@ -2,6 +2,7 @@
 #include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
 #include <Common/ProtocolTranslator/RockDTO.h>
 #include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
+#include <Common/exceptions.h>
 #include "DTOProcessor.h"
 
 using std::vector;
@@ -17,7 +18,9 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
             chell->move_right();
             break;
         case PROTOCOL_JUMP:
-            chell->jump();
+            try {
+                chell->jump();
+            } catch(ChellNotOnGroundException& e) { } // Ignoro exception
             break;
         case PROTOCOL_STOP:
             chell->stopMovement();
