@@ -54,6 +54,8 @@ int main(int argc, char** argv){
         while (!done) {
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
+                    std::shared_ptr<ProtocolDTO> dto(new QuitDTO());
+                    blockingQueue.push(dto);
                     done = true;
                     break;
                 } else if (e.type == SDL_MOUSEBUTTONDOWN) {

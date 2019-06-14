@@ -294,6 +294,33 @@ ComponentsSDL/Camera.cpp.s:
 	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ComponentsSDL/Camera.cpp.s
 .PHONY : ComponentsSDL/Camera.cpp.s
 
+ComponentsSDL/MusicPlayer.o: ComponentsSDL/MusicPlayer.cpp.o
+
+.PHONY : ComponentsSDL/MusicPlayer.o
+
+# target to build an object file
+ComponentsSDL/MusicPlayer.cpp.o:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ComponentsSDL/MusicPlayer.cpp.o
+.PHONY : ComponentsSDL/MusicPlayer.cpp.o
+
+ComponentsSDL/MusicPlayer.i: ComponentsSDL/MusicPlayer.cpp.i
+
+.PHONY : ComponentsSDL/MusicPlayer.i
+
+# target to preprocess a source file
+ComponentsSDL/MusicPlayer.cpp.i:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ComponentsSDL/MusicPlayer.cpp.i
+.PHONY : ComponentsSDL/MusicPlayer.cpp.i
+
+ComponentsSDL/MusicPlayer.s: ComponentsSDL/MusicPlayer.cpp.s
+
+.PHONY : ComponentsSDL/MusicPlayer.s
+
+# target to generate assembly for a file
+ComponentsSDL/MusicPlayer.cpp.s:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/ComponentsSDL/MusicPlayer.cpp.s
+.PHONY : ComponentsSDL/MusicPlayer.cpp.s
+
 ComponentsSDL/Position.o: ComponentsSDL/Position.cpp.o
 
 .PHONY : ComponentsSDL/Position.o
@@ -968,6 +995,9 @@ help:
 	@echo "... ComponentsSDL/Camera.o"
 	@echo "... ComponentsSDL/Camera.i"
 	@echo "... ComponentsSDL/Camera.s"
+	@echo "... ComponentsSDL/MusicPlayer.o"
+	@echo "... ComponentsSDL/MusicPlayer.i"
+	@echo "... ComponentsSDL/MusicPlayer.s"
 	@echo "... ComponentsSDL/Position.o"
 	@echo "... ComponentsSDL/Position.i"
 	@echo "... ComponentsSDL/Position.s"

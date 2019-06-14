@@ -31,7 +31,7 @@
 #include "client/View/BlockMetalView.h"
 
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue, bool& done) :
-safeQueue(safeQueue), done(done), window(title, 1600, 1000, SDL_WINDOW_SHOWN), renderer(window), textureFactory() {
+safeQueue(safeQueue), done(done), window(title, 1600, 1000, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE), renderer(window), textureFactory() {
     textureFactory.init(renderer);
     srand (time(NULL));
 }
