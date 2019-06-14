@@ -3,8 +3,8 @@
 
 Renderer::Renderer(Window& window) :
         window(window),
-        renderer(SDL_CreateRenderer(window.getWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)), // | SDL_RENDERER_PRESENTVSYNC
-        windowWidth(window.getWidth()), windowHeight(window.getHeight()) {
+        renderer(SDL_CreateRenderer(window.getWindow(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC)) // | SDL_RENDERER_PRESENTVSYNC
+        {
     if (!renderer)
         throw SDLException("Create renderer error: %s", SDL_GetError());
 }

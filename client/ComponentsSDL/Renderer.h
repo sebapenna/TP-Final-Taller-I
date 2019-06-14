@@ -8,8 +8,7 @@ class Renderer {
 private:
     Window& window;
     SDL_Renderer* renderer;
-    int windowWidth;
-    int windowHeight;
+
 
 public:
     Renderer(Window& window);
