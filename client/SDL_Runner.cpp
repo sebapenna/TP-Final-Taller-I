@@ -21,7 +21,7 @@
 #include <Server/Model/constants.h>
 #include <client/View/BackgroundView.h>
 #include <Common/ProtocolTranslator/EnergyBarrierDTO.h>
-#include <client/View/EnergyBarView.h>
+#include <client/View/EnergyBarrierView.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -187,7 +187,7 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_ENERGY_BARRIER_DATA: {
                         auto energyBarrierDTO = (EnergyBarrierDTO*) newItem;
-                        auto energyBarrier = std::shared_ptr<EnergyBarView>(new EnergyBarView(textureFactory.getTextureByName(acidAndButtons), renderer));
+                        auto energyBarrier = std::shared_ptr<EnergyBarrierView>(new EnergyBarrierView(textureFactory.getTextureByName(acidAndButtons), renderer));
                         energyBarrier->setDestRect(energyBarrierDTO->getX(), energyBarrierDTO->getY(), energyBarrierDTO->getWidth(), energyBarrierDTO->getHeight());
                         world.addView(energyBarrier);
                         break;
