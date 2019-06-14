@@ -13,13 +13,44 @@ using std::shared_ptr;
 using std::ref;
 using std::make_shared;
 
-Lobby::Lobby(const std::string &port) : _accept_socket(port, WAITING_QUEUE_SIZE) { }
+
+void Lobby::runEraserThread() {
+    _connection_closed = false;
+    while (!_connection_closed) {
+        // Duermo therad para evitar constantemente buscar partidas eliminadas
+        std::unique_lock<std::mutex> lck(_mtx_sleep);
+        _cv.wait_for(lck, std::chrono::minutes(1), [this]{return _connection_closed;});
+        _games.erase(std::remove_if(_games.begin(), _games.end(), [](shared_ptr<GameThread> game) {
+            if (game->isDead()) {
+                game->endGameAndJoin();
+                return true;
+            }
+            return false;
+        }), _games.end());
+        // Actualizo id de partidas existentes para que concuerden con posicion en vector
+        std::cout << "new loop"<<std::endl;
+        for (size_t new_id = 0; new_id < _games.size(); ++new_id) {
+            std::cout << "old: "<< _games[new_id]->id() << std::endl;
+            _games[new_id]->setId(new_id);
+            std::cout << "new: "<< _games[new_id]->id() << std::endl;
+        }
+    }
+}
+
+Lobby::Lobby(const std::string &port) : _connection_closed(false), _next_player_id(0),
+_accept_socket(port, WAITING_QUEUE_SIZE), _game_eraser_thread(&Lobby::runEraserThread, this) { }
 
 void Lobby::shutdown() {
     _connection_closed = true;
+    _cv.notify_one();   // Notifico a waitfor condicion modificada
+    _game_eraser_thread.join();
     _accept_socket.shutdown();
-    std::for_each(_games.begin(), _games.end(), [](shared_ptr<GameThread> &game) {
-        game->endGame();
+    std::for_each(_players_in_lobby.begin(), _players_in_lobby.end(), [](Player *player) {
+        delete player;
+        player = nullptr;
+    }); // Elimino jugadores que quedaban en lobby
+    std::for_each(_games.begin(), _games.end(), [](shared_ptr<GameThread>  game) {
+        game->endGameAndJoin();
     });
 }
 
@@ -33,12 +64,11 @@ void Lobby::run() {
             // Permito que nuevos jugadores se conecten pero evito que se cree mas de un player en
             // el mismo insante
             _m.lock();
-            Player *new_player = new Player(move(peer), ref(*this));
+            Player *new_player = new Player(move(peer), ref(*this), _next_player_id);
+            ++_next_player_id;  // Incremento hacia proximo a id
+            _players_in_lobby.push_back(new_player);
             _m.unlock();
             cout << "Nuevo jugador conectado, creando partida..."<<endl;
-
-            // todo: que se actualizen los id de las partidas a medida que se eliminan (simil
-            //  players)
         }
     } catch(const CantConnectException& e) { }  // Socket aceptador cerrado
 }
@@ -53,6 +83,12 @@ SafeQueue<std::shared_ptr<Event>> &Lobby::createGame(Player* player,
     // Id de la partida sera en base al tamaño del vector
     auto new_game = std::make_shared<GameThread>(player, n_players, move(map_filename),
             _games.size());
+
+    _players_in_lobby.erase(std::remove_if(_players_in_lobby.begin(), _players_in_lobby.end(),
+            [player](Player *p) {
+        return player->id() == p->id();
+    }), _players_in_lobby.end());     // Elimino player del lobby
+
     _games.push_back(new_game);
     return ref(new_game->getEventsQueue());
 }
@@ -63,15 +99,19 @@ SafeQueue<std::shared_ptr<Event>> &Lobby::joinGame(Player* player,
     // posiblemente el limite de jugadores dentro de la misma.
     std::lock_guard<std::mutex> lock(_m);
     auto game = _games.at(game_id);
-    if (game->addPlayerIfNotFull(player))
+    if (game->addPlayerIfNotFull(player)) {
+        _players_in_lobby.erase(std::remove_if(_players_in_lobby.begin(), _players_in_lobby.end(),
+                [player](Player *p) {
+            return player->id() == p->id();
+        }), _players_in_lobby.end());     // Elimino player del lobby
         return ref(game->getEventsQueue());
+    }
     throw FullGameException();
 }
+
 
 
 //todo: limite de nuevas partidas
 //bool Lobby::gamesLimitReached() {
 //    return _active_games == CONCURRENT_GAMES_LIMIT;
 //}
-
-// todo: thread que elimina games terminados

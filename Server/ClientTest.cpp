@@ -61,7 +61,10 @@ int main(int argc, char const *argv[]) {
         cout << "Conexion establecida"<<endl;
 
         std::this_thread::sleep_for(std::chrono::seconds(2)); // Espero a mandar BEGIN
-
+        char c;
+        do {
+            std::cin.get(c);
+        } while (c != 's');
         cout << "Enviando BeginDTO..."<<endl;
         shared_ptr<ProtocolDTO> pdto(new BeginDTO());
         prot << *pdto.get();

@@ -21,9 +21,7 @@ public:
     // Se brinda socket por movimiento ya que dentro de Player se hara un move de dicho socket,
     // por lo tanto de esta manera el usuario que utilize esta clase sabra que pierde ownership
     // del mismo
-    explicit Player(Socket &&socket, Lobby &lobby);
-
-    ~Player();
+    explicit Player(Socket &&socket, Lobby &lobby, const size_t& id);
 
     void setId(size_t id);
 
@@ -31,13 +29,12 @@ public:
 
     void receiveDTO(std::shared_ptr<ProtocolDTO> &dto);
 
-    void send(ProtocolDTO &dto);
-
     void send(std::shared_ptr<ProtocolDTO> &dto);
 
-    void disconnect();
-
-    void join();
+    // Necesario utilizar este metodo para desconectar y cerrar el jugador correctamente previo a
+    // eliminarlo por completo del juego
+    // POST: el jugador ya no se encuentra conectado y su hilo receptor finalizo la ejecucion
+    void disconnectAndJoin();
 };
 
 
