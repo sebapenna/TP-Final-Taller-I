@@ -26,7 +26,7 @@ private:
     SafeQueue<std::shared_ptr<Event>> _events_queue;
     size_t _max_players;
     bool _begin_game, _game_finished, _empty_game, _dead_thread;
-    const size_t _id;   // id de la partida
+    size_t _id;   // id de la partida
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
@@ -56,6 +56,8 @@ public:
     SafeQueue<std::shared_ptr<Event>>& getEventsQueue();
 
     bool isDead();
+
+    void setId(const size_t &id);
 };
 
 

@@ -216,4 +216,8 @@ bool GameThread::isDead() {
     return _dead_thread;
 }
 
+void GameThread::setId(const size_t &id) {
+    _id = id;
+}
+
 
