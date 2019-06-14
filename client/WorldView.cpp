@@ -73,7 +73,7 @@ void WorldView::closeGate(int16_t id) {
     gate->close();
 }
 
-void WorldView::addButton(std::shared_ptr<ButtonView>& button) {
+void WorldView::addButton(std::shared_ptr<ButtonView> button) {
     buttons[button->getId()] = button;
 }
 
@@ -85,7 +85,7 @@ void WorldView::deactivateButton(int16_t id) {
     buttons[id]->disable();
 }
 
-void WorldView::addChell(std::shared_ptr<ChellAnimationView>& chell) {
+void WorldView::addChell(std::shared_ptr<ChellAnimationView> chell) {
     if (chells.count(chell->getId())) {
         auto chellView = chells[chell->getId()];
         chellView->setPosition(chell->getPosition());
@@ -119,7 +119,7 @@ void WorldView::setCamara(int16_t id, int w, int h) {
     this->camera = new Camera(w, h, chellView->getPosition());
 }
 
-void WorldView::setBackground(std::shared_ptr<BackgroundView>& background) {
+void WorldView::setBackground(std::shared_ptr<BackgroundView> background) {
     this->background = background;
     //this->background->setDestRect(0,0,10,10);
     //this->background->setPosition(camera->getPosition());

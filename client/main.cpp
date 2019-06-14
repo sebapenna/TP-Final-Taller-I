@@ -15,6 +15,7 @@
 #include <Common/Protocol.h>
 #include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
 #include <Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h>
+#include <zconf.h>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/MoveLeftDTO.h"
@@ -36,64 +37,68 @@ int main(int argc, char** argv){
 
         SDL_Runner sdlRunner(title, safeQueue, done);
         sdlRunner.start();
-     /*   Protocol protocol("localhost", "8080");
+
+        Protocol protocol("localhost", "8080");
 
         ClientSender clientSender(protocol, blockingQueue, done);
         clientSender.run();
 
         ClientReceiver clientReceiver(protocol, safeQueue, done);
-        clientReceiver.run();*/
-        FakeServer server(blockingQueue, safeQueue, done);
-        server.start();
+        clientReceiver.run();
 
-        SDL_Event e;
+        /*FakeServer server(blockingQueue, safeQueue, done);
+        server.start();*/
         std::shared_ptr<ProtocolDTO> beginDTO (new BeginDTO());
         blockingQueue.push(beginDTO);
+        SDL_Event e;
         while (!done) {
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
-                    done=true;
+                    done = true;
                     break;
-                } else if (e.type == SDL_MOUSEBUTTONDOWN){
+                } else if (e.type == SDL_MOUSEBUTTONDOWN) {
                     if (e.button.button == SDL_BUTTON_LEFT) {
+
                         //chell.fire();
                     }
                 } else if (e.type == SDL_KEYDOWN) {
                     switch (e.key.keysym.sym) {
                         case SDLK_d: {
-                            std::shared_ptr<ProtocolDTO> dto (new MoveRightDTO());
+                            std::shared_ptr<ProtocolDTO> dto(new MoveRightDTO());
                             blockingQueue.push(dto);
                             break;
                         }
                         case SDLK_a: {
-                            std::shared_ptr<ProtocolDTO> dto (new MoveLeftDTO());
+                            std::shared_ptr<ProtocolDTO> dto(new MoveLeftDTO());
                             blockingQueue.push(dto);
                             break;
                         }
                         case SDLK_w: {
-                            std::shared_ptr<ProtocolDTO>dto(new JumpDTO());
+                            std::shared_ptr<ProtocolDTO> dto(new JumpDTO());
                             blockingQueue.push(dto);
                             break;
                         }
                         case SDLK_q: {
-                            std::shared_ptr<ProtocolDTO>dto(new QuitDTO());
+                            std::shared_ptr<ProtocolDTO> dto(new QuitDTO());
                             blockingQueue.push(dto);
-                            done=true;
+                            done = true;
                             break;
                         }
 
                     }
                 } else if (e.type == SDL_KEYUP) {
-                    std::shared_ptr<ProtocolDTO> dto (new StopDTO());
+                    std::shared_ptr<ProtocolDTO> dto(new StopDTO());
                     blockingQueue.push(dto);
                 }
+                //usleep(100);
             }
         }
         sdlRunner.join();
         blockingQueue.setFinishedAdding();
-    /*    clientSender.join();
-        clientReceiver.join();*/
-        server.join();
+        clientSender.join();
+        clientReceiver.join();
+
+        //server.join();
         return 0;
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;

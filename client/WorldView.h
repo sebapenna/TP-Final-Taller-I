@@ -34,16 +34,16 @@ public:
     void addGates(std::shared_ptr<GateView> gate);
     void openGate(int16_t id);
     void closeGate(int16_t id);
-    void addButton(std::shared_ptr<ButtonView>& button);
+    void addButton(std::shared_ptr<ButtonView> button);
     void activateButton(int16_t id);
     void deactivateButton(int16_t id);
-    void addChell(std::shared_ptr<ChellAnimationView>& chell);
+    void addChell(std::shared_ptr<ChellAnimationView> chell);
     void setChellState(int16_t id, ChellState state);
     void makeChellTiltedLeft(int16_t id);
     void makeChellTiltedRight(int16_t id);
     void makeChellNotTilted(int16_t id);
     void addRock(std::shared_ptr<RockView> rock);
-    void setBackground(std::shared_ptr<BackgroundView>& background);
+    void setBackground(std::shared_ptr<BackgroundView> background);
 };
 
 

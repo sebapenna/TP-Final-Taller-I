@@ -20,6 +20,8 @@
 #include <Common/ProtocolTranslator/RockDTO.h>
 #include <Server/Model/constants.h>
 #include <client/View/BackgroundView.h>
+#include <Common/ProtocolTranslator/EnergyBarrierDTO.h>
+#include <client/View/EnergyBarrierView.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -57,12 +59,11 @@ void SDL_Runner::run() {
     world.addView(acid);
 
 
-    int timeStepMs = 1000.f / 100.f;
+    int timeStepMs = 1000.f / 80.f;
     int timeLastMs = 0;
     int timeAccumulatedMs = 0;
     int timeCurrentMs = 0;
     while (!done) {
-        renderer.clearRender();
         timeLastMs = timeCurrentMs;
         timeCurrentMs = SDL_GetTicks();
         int timeDeltaMs = timeCurrentMs - timeLastMs;
@@ -185,6 +186,10 @@ void SDL_Runner::run() {
                         break;
                     }
                     case PROTOCOL_ENERGY_BARRIER_DATA: {
+                        auto energyBarrierDTO = (EnergyBarrierDTO*) newItem;
+                        auto energyBarrier = std::shared_ptr<EnergyBarrierView>(new EnergyBarrierView(textureFactory.getTextureByName(acidAndButtons), renderer));
+                        energyBarrier->setDestRect(energyBarrierDTO->getX(), energyBarrierDTO->getY(), energyBarrierDTO->getWidth(), energyBarrierDTO->getHeight());
+                        world.addView(energyBarrier);
                         break;
                     }
                     case PROTOCOL_ROCK_DATA: {
@@ -212,9 +217,10 @@ void SDL_Runner::run() {
                     
                 }
             }
-            world.draw();
             timeAccumulatedMs -= timeStepMs;
         }
+        renderer.clearRender();
+        world.draw();
         renderer.render();
     }
 }
