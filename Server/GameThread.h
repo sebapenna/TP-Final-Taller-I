@@ -25,7 +25,7 @@ private:
     std::list<Player*> _players;
     SafeQueue<std::shared_ptr<Event>> _events_queue;
     size_t _max_players;
-    bool _begin_game, _game_finished, _empty_game ;
+    bool _begin_game, _game_finished, _empty_game, _dead_thread;
     const size_t _id;   // id de la partida
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
@@ -48,14 +48,14 @@ public:
     // Indico que se debe iniciar la partida
     void beginGame();
 
-    // Indico que se debe finalizar la partida
-    void endGame();
-
-    void join();
+    // Indico que se debe finalizar la partida y finalizo la ejecucion del hilo
+    void endGameAndJoin();
 
     const size_t id() const;
 
     SafeQueue<std::shared_ptr<Event>>& getEventsQueue();
+
+    bool isDead();
 };
 
 

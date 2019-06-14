@@ -39,25 +39,22 @@ void GameThread::run(std::string map_filename) {
 
         // Loop esperando a que se indique que comienza la partida. Verifico no se hayan
         // desconectado todos los jugadores
-        while (!_begin_game && !_empty_game) {
+        while (!_begin_game && !_empty_game && !_game_finished) {
             // todo: un sleep_for?
             auto event = _events_queue.getTopAndPop();  // todo: Cambiar, desencola todo el tiempo
-            if (event != nullptr) { // Posible deseconexion
+            if (event != nullptr)  // Posible deseconexion
                 switch (event->getProtocolId()) {
                     case PROTOCOL_QUIT:
                         deletePlayer(event->getPlayerId()); // Elimino jugador de la partida
                         break;
-                    case PROTOCOL_BEGIN: {
+                    case PROTOCOL_BEGIN:
                         if (event->getPlayerId() == 0)  // Solo owner de partida puede iniciar
                             _begin_game = true;
                         break;
-                    }
                 }
-            }
         }
-        if (!_empty_game) {    // Verifico que hay jugadores
-            // Creo los chells una vez determinada la cantidad final de jugadores
-            stage.createChells(_players.size());
+        if (_begin_game && !_empty_game) {
+            stage.createChells(_players.size());    // Creo los chells determinados los jugadores
 
             // Envio escenario completo a cada jugador
             auto stage_dtos = stage.getInitialConfiguration();
@@ -76,18 +73,15 @@ void GameThread::run(std::string map_filename) {
                 }
             });
             // Elimino clientes que se desonectaron
-            for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) {deletePlayer(id);});
+            for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) { deletePlayer(id); });
             // todo: SI MANTENGO ESTE VECTOR DEBERIA ELIMINAR SU CHELL DEL MAPA
             to_delete.clear();
-
-            // Enviada toda la configuracion para jugar
-            cout << "Configuracion inicial y IDs enviados"<<endl;
 
             // Notifico a cada jugador que comienza la partida
             auto begin_dto = DTOProcessor::createBeginDTO();
             sendToAllPlayers(begin_dto);
 
-            cout << "Comienza la partida" << endl;
+            cout << "Comienza la partida " << _id << endl;
 
 
             // Loop mientras haya jugadores y no haya terminado el juego
@@ -149,7 +143,7 @@ void GameThread::run(std::string map_filename) {
             }
         }
         cout << "Partida "<<_id <<  " finalizada"<<endl;
-        _game_finished = true; // todo: necesario aca?
+        _dead_thread = true; // todo: necesario aca?
     } catch(const std::exception& e) {
         cout << e.what();
     } catch(...) {
@@ -159,12 +153,10 @@ void GameThread::run(std::string map_filename) {
 
 // Todas los atributos se deben inicializar de esta manera antes del thread para ya estar
 // disponibles cuando el  mismo comienze su ejecucion y no haya invalid reads
-GameThread::GameThread(Player* new_player, const size_t &max_players,
-                       std::string &&map_filename, const size_t &id) : _events_queue(),
-                       _game_finished(false),
-                       _empty_game(false), _begin_game(false),
-                       _gameloop(&GameThread::run, this, move(map_filename)),
-                       _max_players(max_players), _id(id) {
+GameThread::GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
+        const size_t &id) : _game_finished(false), _empty_game(false), _begin_game(false),
+        _dead_thread(false), _max_players(max_players), _id(id),
+        _gameloop(&GameThread::run, this, move(map_filename)) {
     addPlayerIfNotFull(new_player);
 }
 
@@ -186,12 +178,8 @@ void GameThread::deletePlayer(const size_t &id) {
             player->setId(player->id() - 1);
             return false;
         }
-        if (player->id() == id) {
-            delete player;
-            player = nullptr;
-            return true;
-        }
-        return false;
+        return (player->id() == id) ? (player->disconnectAndJoin(), delete player, player =
+                nullptr, true) : false;
     });
     if (_players.empty()) {   // Se fueron todos los jugadpres
         _empty_game = true;
@@ -200,23 +188,19 @@ void GameThread::deletePlayer(const size_t &id) {
 }
 
 void GameThread::beginGame() {
-    lock_guard<mutex> lock(_m);
     _begin_game = true;
 }
 
-void GameThread::endGame() {
-    // todo: notificar al cliente que termino ? Creo que corta conexion y recibe exception
+void GameThread::endGameAndJoin() {
+    // todo: notificar al cliente que termino ? Si, en el gameloop con un protocolo - si cierra el
+    //  servidor tan solo recibira exception
     _game_finished = true;
-    std::for_each(_players.begin(), _players.end(), [](Player* &player){
-        player->disconnect();
-    });
     _gameloop.join();
-}
-
-void GameThread::join() {
-    _gameloop.join();
-    std::for_each(_players.begin(), _players.end(), [](Player* &player){
-        player->join();
+    // Una vez finalizado el gameloop elimino los jugadores
+    std::for_each(_players.begin(), _players.end(), [](Player* &player) {
+        player->disconnectAndJoin();
+        delete player;
+        player = nullptr;
     });
 }
 
@@ -226,6 +210,10 @@ const size_t GameThread::id() const {
 
 SafeQueue<std::shared_ptr<Event>>& GameThread::getEventsQueue() {
     return _events_queue;
+}
+
+bool GameThread::isDead() {
+    return _dead_thread;
 }
 
 

@@ -17,7 +17,12 @@ private:
     std::mutex _m;
     AcceptSocket _accept_socket;
     std::vector<std::shared_ptr<GameThread>> _games;
-    bool _connection_closed = false;
+    std::thread _game_eraser_thread;
+    bool _connection_closed;
+    size_t _next_player_id; // Id a asignar a nuevos jugadores hasta que se unan a partida
+    std::vector<Player*> _players_in_lobby;    // Jugadores que todavia no entraron a partida
+
+    void runEraserThread();
 
 public:
     explicit Lobby(const std::string &port);

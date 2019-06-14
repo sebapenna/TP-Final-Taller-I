@@ -28,15 +28,8 @@ void Player::run(Lobby &lobby) {
     }
 }
 
-Player::Player(Socket &&socket, Lobby &lobby) : _connected(true), _connection(move(socket)),
-_receiver_thread(&Player::run, this, std::ref(lobby)) { }
-
-Player::~Player() {
-    _connected = false;
-    _connection.disconnect();
-    _receiver_thread.join();
-}
-
+Player::Player(Socket &&socket, Lobby &lobby, const size_t& id) : _id(id),_connected(true),
+        _connection(move(socket)), _receiver_thread(&Player::run, this, std::ref(lobby)) { }
 
 void Player::setId(size_t id) {
     _id = id;
@@ -50,18 +43,12 @@ void Player::receiveDTO(std::shared_ptr<ProtocolDTO> &dto) {
     _connection >> dto;
 }
 
-void Player::send(ProtocolDTO &dto) {
-    _connection << dto;
-}
-
 void Player::send(std::shared_ptr<ProtocolDTO> &dto) {
     _connection << *dto.get();
 }
 
-void Player::join() {
+void Player::disconnectAndJoin() {
+        _connected = false;
+    _connection.disconnect();
     _receiver_thread.join();
-}
-
-void Player::disconnect() {
-    this->~Player(); // Cierro player
 }
