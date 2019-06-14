@@ -35,9 +35,6 @@ int main(int argc, char** argv){
         ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;
         SafeQueue<std::shared_ptr<ProtocolDTO>> safeQueue;
 
-        SDL_Runner sdlRunner(title, safeQueue, done);
-        sdlRunner.start();
-
         Protocol protocol("localhost", "8080");
 
         ClientSender clientSender(protocol, blockingQueue, done);
@@ -46,8 +43,12 @@ int main(int argc, char** argv){
         ClientReceiver clientReceiver(protocol, safeQueue, done);
         clientReceiver.run();
 
+        SDL_Runner sdlRunner(title, safeQueue, done);
+        sdlRunner.start();
+
         /*FakeServer server(blockingQueue, safeQueue, done);
         server.start();*/
+        
         std::shared_ptr<ProtocolDTO> beginDTO (new BeginDTO());
         blockingQueue.push(beginDTO);
         SDL_Event e;
@@ -97,10 +98,12 @@ int main(int argc, char** argv){
         }
         sdlRunner.join();
         blockingQueue.setFinishedAdding();
+
         clientSender.join();
         clientReceiver.join();
 
         //server.join();
+
         return 0;
     } catch (std::exception& e) {
         std::cout << e.what() << std::endl;
