@@ -95,6 +95,7 @@ void World::step() {
     _objects_to_update.clear();
     _objects_to_delete.clear();
     _world->Step(TIME_STEP, VELOCITY_ITERATIONS, POSTION_ITERATIONS);
+    // Orden de acciones: primero las que su estado afectan a otros
     stepEnergyTransmitters();
     stepEnergyBalls();
     stepButtons();
@@ -103,13 +104,6 @@ void World::step() {
     stepChells();
     stepRocks();
 
-    // Orden de acciones: primero las que su estado afectan a otros
-    // todo: GUARDAR REGISTRO DE LOS IDS DE LO QUE TENGO QUE ELIMINAR, CUALQUIERA SEA OBJETO CON
-    //  ID VA A ALCANZAR (RESTO DE DATOS DEL DTO NO ME IMPORTAN). QUIZAS VOY A NECESITAR UN
-    //  VECTOR DE CADA OBJETO PARA LOS UPDATED. O HACER UN MAP<ID,CLASSNAME(STRING)> PARA LOS QUE
-    //  HAYA QUE ELIMNAR, SEPARADO DE LOS QUE NO MURIERON PERO SI SE ACTUALIZARON. DONDE HAGO
-    //  DESTROY BODY TODAVIA TENGO EL ID, ME LO PUEDO GUARDAR AHI EN EL MAP
-    // todo: ELIMINAR ROCAS QUE DESAPARECEN
 }
 
 void World::stepGates() {

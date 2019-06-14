@@ -6,6 +6,7 @@
 using std::vector;
 using std::shared_ptr;
 using std::move;
+using std::for_each;
 
 
 Stage::~Stage() {
@@ -20,63 +21,63 @@ Stage::Stage(std::string &&config_file) {
     size_t box_side_length = config.loadBoxSize();
 
     // Configuracion bloques roca
-    vector<RockBlockData> rock_blocks_data_vector;
+    vector<RockBlockData> rock_blocks_vec;
     try {
-        rock_blocks_data_vector = config.loadRockBlocksData();
+        rock_blocks_vec = config.loadRockBlocksData();
     } catch(...) { } // No hay bloques roca
 
     // Configuracion bloques metal
-    vector<MetalBlockData> metal_blocks_data_vector;
+    vector<MetalBlockData> metal_blocks_vec;
     try {
-        metal_blocks_data_vector = config.loadMetalBlocksData();
+        metal_blocks_vec = config.loadMetalBlocksData();
     } catch(...) { } // No hay bloques metal
 
     // Configuracion bloques metal diagonal
-    vector<MetalDiagonalBlockData> metal_diagonal_blocks_data_vector;
+    vector<MetalDiagonalBlockData> metal_diag_blocks_vec;
     try {
-        metal_diagonal_blocks_data_vector = config.loadMetalDiagonalBlockData();
+        metal_diag_blocks_vec = config.loadMetalDiagonalBlockData();
     } catch(...) { } // No hay bloques metal diagonal
 
     // Configuracion rocas
-    vector<RockData> rocks_vector;
+    vector<RockData> rocks_vec;
     try {
-        rocks_vector = config.loadRockData();
+        rocks_vec = config.loadRockData();
     } catch(...) { } // No hay rocas
 
     // Configuracion botones
-    vector<ButtonData> buttons_vector;
+    vector<ButtonData> buttons_vec;
     try {
-        buttons_vector = config.loadButtonData();
+        buttons_vec = config.loadButtonData();
     } catch(...) { } // No hay botones
 
     // Configuracion acido
-    vector<AcidData> acid_vector;
+    vector<AcidData> acid_vec;
     try {
-        acid_vector = config.loadAcidData();
+        acid_vec = config.loadAcidData();
     } catch(...) {  } // No hay acido
 
     // Configuracion compuertas
-    vector<GateData> gates_vector;
+    vector<GateData> gates_vec;
     try {
-        gates_vector = config.loadGateData();
+        gates_vec = config.loadGateData();
     } catch(...) { } // No hay compuertas
 
     // Configuracion transmisores energia
-    vector<EnergyTransmitterData> e_transm_vector;
+    vector<EnergyTransmitterData> e_transm_vec;
     try {
-        e_transm_vector = config.loadEnergyTransmitterData();
+        e_transm_vec = config.loadEnergyTransmitterData();
     } catch(...) { } // No hay emisores energia
 
     // Configuracion receptores energia
-    vector<EnergyReceiverData> e_receiver_vector;
+    vector<EnergyReceiverData> e_receiver_vec;
     try {
-        e_receiver_vector = config.loadEnergyReceiverData();
+        e_receiver_vec = config.loadEnergyReceiverData();
     } catch(...) { } // No hay receptores energia
 
     // Configuracion barreras energia
-    vector<EnergyBarrierData> e_barrier_vector;
+    vector<EnergyBarrierData> e_barrier_vec;
     try {
-        e_barrier_vector = config.loadEnergyBarrierData();
+        e_barrier_vec = config.loadEnergyBarrierData();
     } catch(...) { } // No hay barreras eergia
 
     // Configuracion chells
@@ -88,45 +89,47 @@ Stage::Stage(std::string &&config_file) {
     /******************** Inicializo World *********************/
     _world = new World(world_data.getWidth(), world_data.getHeight());
 
+    for_each(rock_blocks_vec.begin(), rock_blocks_vec.end(), [this](RockBlockData &e) {
+       _world->createRockBlock(e.getWidth(), e.getHeight(), e.getX(), e.getY());
+    });
 
-    //todo: PASAR TODO A FOR EACH
-    for (auto &it : rock_blocks_data_vector)
-        _world->createRockBlock(it.getWidth(), it.getHeight(), it.getX(),
-                it.getY());
+    for_each(metal_blocks_vec.begin(), metal_blocks_vec.end(), [this](MetalBlockData &e) {
+        _world->createMetalBlock(e.getWidth(), e.getHeight(), e.getX(), e.getY());
+    });
 
-    for (auto &it : metal_blocks_data_vector)
-        _world->createMetalBlock(it.getWidth(), it.getHeight(), it.getX(),
-                it.getY());
+    for_each(metal_diag_blocks_vec.begin(), metal_diag_blocks_vec.end(),
+            [this](MetalDiagonalBlockData &e) { _world->createMetalDiagonalBlock(e.getWidth(),
+                    e.getHeight(), e.getX(), e.getY(), e.getOrientation());
+    });
 
-    for (auto &it : metal_diagonal_blocks_data_vector)
-        _world->createMetalDiagonalBlock(it.getWidth(), it.getHeight(),
-                it.getX(), it.getY(), it.getOrientation());
+    for_each(rocks_vec.begin(), rocks_vec.end(), [this](RockData &e) {
+        _world->createRock(e.getX(), e.getY());
+    });
 
-    for (auto &it : rocks_vector)
-        _world->createRock(it.getX(), it.getY());
+    for_each(acid_vec.begin(), acid_vec.end(), [this](AcidData &e) {
+        _world->createAcid(e.getX(), e.getY());
+    });
 
-    for (auto &it : acid_vector)
-        _world->createAcid(it.getX(), it.getY());
+    for_each(buttons_vec.begin(), buttons_vec.end(), [this](ButtonData &e) {
+        _world->createButton(e.getX(), e.getY());
+    });
 
-    for (auto &it : buttons_vector)
-        _world->createButton(it.getX(), it.getY());
+    for_each(e_receiver_vec.begin(), e_receiver_vec.end(), [this](EnergyReceiverData &e) {
+        _world->createEnergyReceiver(e.getX(), e.getY());
+    });
 
+    // IMPORTANTE: gates creada luego de receivers y buttons porque necesea referencia a ellas
+    for_each(gates_vec.begin(), gates_vec.end(), [this](GateData &e) {
+        _world->createGate(e.getX(), e.getY(), e.getButtonsNeeded(), e.getEnergyReceiversNeeded());
+    });
 
-    for (auto &it : e_receiver_vector)
-        _world->createEnergyReceiver(it.getX(), it.getY());
+    for_each(e_transm_vec.begin(), e_transm_vec.end(), [this](EnergyTransmitterData &e) {
+        _world->createEnergyTransmitter(e.getX(), e.getY(), e.getDirection());
+    });
 
-    // IMPORTANTE: gates creada luego de receivers y buttons porque necesita referencia a ellas
-    for (auto &it : gates_vector) {
-        _world->createGate(it.getX(), it.getY(),
-                           it.getButtonsNeeded(), it.getEnergyReceiversNeeded());
-    }
-
-    for (auto &it : e_transm_vector)
-        _world->createEnergyTransmitter(it.getX(), it.getY(),
-                it.getDirection());
-
-    for (auto &it : e_barrier_vector)
-        _world->createEnergyBarrier(it.getX(), it.getY(), it.getOrientation());
+    for_each(e_barrier_vec.begin(), e_barrier_vec.end(), [this](EnergyBarrierData &e) {
+        _world->createEnergyBarrier(e.getX(), e.getY(), e.getOrientation());
+    });
 }
 
 void Stage::createChells(const size_t &n_players) {

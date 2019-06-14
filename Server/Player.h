@@ -2,20 +2,22 @@
 #define PORTAL_PLAYER_H
 
 #include <Common/Protocol.h>
+#include <thread>
 #include <memory>
-#include "ReceiverThread.h"
+#include <Common/SafeQueue.h>
+#include "Event.h"
 
 class Lobby;
 
 class Player {
 private:
     Protocol _connection;
-    size_t _id = 0; // 0 por default, pero es necesario utilizar el metodo setId para asignarlo
+    size_t _id; // 0 por default, pero es necesario utilizar el metodo setId para asignarlo
     std::thread _receiver_thread;
     bool _connected;
 
-
     void run(Lobby &lobby);
+    SafeQueue<Event>& handshake();
 
 public:
     // Se brinda socket por movimiento ya que dentro de Player se hara un move de dicho socket,

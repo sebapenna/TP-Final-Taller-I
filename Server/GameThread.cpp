@@ -143,7 +143,7 @@ void GameThread::run(std::string map_filename) {
             }
         }
         cout << "Partida "<<_id <<  " finalizada"<<endl;
-        _dead_thread = true; // todo: necesario aca?
+        _dead_thread = true; // Registro que se llego al fin del thread
     } catch(const std::exception& e) {
         cout << e.what();
     } catch(...) {

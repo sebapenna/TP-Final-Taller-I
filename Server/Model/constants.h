@@ -11,8 +11,6 @@
  *
  * */
 
-// todo: CONFIGURACIONES A UN YAML
-
 /* Orientaciones cara diagonal bloque metal diagonal */
 #define O_NE    (uint8_t) NORTH_EAST
 #define O_NO    (uint8_t) NORTH_WEST

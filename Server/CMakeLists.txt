@@ -32,7 +32,6 @@ add_library(portal-src
         Lobby.cpp Lobby.h
         GameThread.cpp GameThread.h
         Player.cpp Player.h
-        ReceiverThread.cpp ReceiverThread.h
         Model/WorldObjectsStorage.cpp Model/WorldObjectsStorage.h
         WorldObjectDTOTranslator.cpp WorldObjectDTOTranslator.h
         PositionTranslator.cpp PositionTranslator.h

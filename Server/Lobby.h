@@ -33,14 +33,13 @@ public:
 
     void run();
 
-    // todo: createGameIfNotFull y que retorne exception como joinGame => CATCH EN PLAYER
     // Crea un nuevo GameThread. Retorna la cola de eventos de la partida
     SafeQueue<std::shared_ptr<Event>> &createGame(Player* player, const size_t &n_players,
             std::string &&map_filename);
 
     // Une en al jugador a la partida del id indicado y retorna la cola de eventos de dicha partida.
     // En caso de no haber podido unir al jugador se retorna nullptr
-    SafeQueue<std::shared_ptr<Event>> &joinGame(Player* player, const size_t &game_id);
+    SafeQueue<std::shared_ptr<Event>> &joinGameIfNotFull(Player *player, const size_t &game_id);
 
 //    bool gamesLimitReached();
 };

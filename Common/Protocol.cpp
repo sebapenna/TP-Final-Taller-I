@@ -10,6 +10,7 @@ using std::string;
 using std::vector;
 
 #define TWO_BYTES   2
+#define FOUR_BYTES  4
 
 Protocol::Protocol(const string& host, const string& port)
 try : _socket(host, port) {
@@ -22,6 +23,10 @@ Protocol::Protocol(Socket &&other) {
 }
 
 Protocol::~Protocol() {
+    _socket.shutdown();
+}
+
+void Protocol::disconnect() {
     _socket.shutdown();
 }
 
@@ -62,6 +67,26 @@ void Protocol::operator>>(std::shared_ptr<ProtocolDTO>& ptr) {
         throw WrongProtocolException();
 }
 
-void Protocol::disconnect() {
-    this->~Protocol();  // Disconnect implica cerrar el protocolo, es decir, cerrar el socket
+void Protocol::operator<<(const string &data) {
+    auto str_len = (uint32_t) data.length();
+    *this << str_len;   // Envio el largo
+    _socket.send(data.c_str(), str_len);
+}
+
+void Protocol::operator>>(std::string &dest) {
+    uint32_t str_len;
+    *this >> str_len;   // Recibo largo del string
+    std::vector<char> buffer(str_len + 1, 0);   // + 1 => '\0'
+    _socket.recv(buffer.data(), str_len);
+    dest = std::string(buffer.data());
+}
+
+void Protocol::operator<<(const uint32_t &data) {
+    uint32_t aux = htonl(data);
+    _socket.send(&aux, FOUR_BYTES);
+}
+
+void Protocol::operator>>(uint32_t &dest) {
+    _socket.recv(&dest, FOUR_BYTES);
+    dest = ntohl(dest);
 }

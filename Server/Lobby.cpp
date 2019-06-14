@@ -27,6 +27,7 @@ void Lobby::runEraserThread() {
             }
             return false;
         }), _games.end());
+        //todo: _players_joining para evitar race condition con games id
         // Actualizo id de partidas existentes para que concuerden con posicion en vector
         std::cout << "new loop"<<std::endl;
         for (size_t new_id = 0; new_id < _games.size(); ++new_id) {
@@ -93,8 +94,8 @@ SafeQueue<std::shared_ptr<Event>> &Lobby::createGame(Player* player,
     return ref(new_game->getEventsQueue());
 }
 
-SafeQueue<std::shared_ptr<Event>> &Lobby::joinGame(Player* player,
-        const size_t &game_id) {
+SafeQueue<std::shared_ptr<Event>> &Lobby::joinGameIfNotFull(Player *player,
+                                                            const size_t &game_id) {
     // Evito que varios jugadores intenten unirse a una misma partida al mismo tiempo, rompiendo
     // posiblemente el limite de jugadores dentro de la misma.
     std::lock_guard<std::mutex> lock(_m);
@@ -108,10 +109,3 @@ SafeQueue<std::shared_ptr<Event>> &Lobby::joinGame(Player* player,
     }
     throw FullGameException();
 }
-
-
-
-//todo: limite de nuevas partidas
-//bool Lobby::gamesLimitReached() {
-//    return _active_games == CONCURRENT_GAMES_LIMIT;
-//}

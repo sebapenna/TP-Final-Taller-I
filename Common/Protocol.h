@@ -16,23 +16,39 @@ private:
 public:
     Protocol(const std::string& ip, const std::string& port);
 
-    ~Protocol();
-
     explicit Protocol(Socket &&other);
 
-    // Envia un DTO
-    void operator<<(const ProtocolDTO &dto);
-
-    // Recibe DTO
-    void operator>>(std::shared_ptr<ProtocolDTO>& dto);
-
-    // Envia int16_t. Se encarga de cambiar el endianess antes de enviar
-    void operator<<(const int16_t & data);
-
-    // Recibe int16_t. Se encarga de cambiar el endianess despues de recibir
-    void operator>>(int16_t &dest);
+    ~Protocol();
 
     void disconnect();
+
+    // Send para string. Primero se envian el largo del mismo. No se envia '\0'
+    void operator<<(const std::string& data);
+
+    // Recv para string. Primero se recibe el largo del mismo.
+    void operator>>(std::string &data);
+
+    // Send para uint32_t. Se encarga de cambiar el endianess antes de enviar
+    void operator<<(const uint32_t & data);
+
+    // Recv para uint32_t. Se encarga de cambiar el endianess despues de recibir
+    void operator>>(uint32_t & data);
+
+    // Send para int16_t. Se encarga de cambiar el endianess antes de enviar
+    void operator<<(const int16_t & data);
+
+    // Recv para int16_t. Se encarga de cambiar el endianess despues de recibir
+    void operator>>(int16_t &dest);
+
+    // Send para DTO
+    void operator<<(const ProtocolDTO &dto);
+
+    // Recv para DTO
+    void operator>>(std::shared_ptr<ProtocolDTO>& dto);
+
+
+
+
 };
 
 

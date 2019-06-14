@@ -7,7 +7,6 @@
 #include <vector>
 #include <memory>
 
-// TODO: MUTEX PARA QUE DISTINTA CHELL NO SE CRUZEN con apply ? => creo no x apply con el id
 class DTOProcessor {
 public:
     // Procesa el dto recibido por el servidor para realizar una determinada accion

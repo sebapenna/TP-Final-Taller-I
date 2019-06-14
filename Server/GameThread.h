@@ -6,8 +6,8 @@
 #include <vector>
 #include <thread>
 #include <mutex>
-#include "ReceiverThread.h"
 #include "DTOProcessor.h"
+#include "Event.h"
 #include <string>
 
 class Player;
