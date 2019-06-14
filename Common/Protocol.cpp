@@ -9,6 +9,7 @@
 using std::string;
 using std::vector;
 
+#define ONE_BYTE   1
 #define TWO_BYTES   2
 #define FOUR_BYTES  4
 
@@ -89,4 +90,13 @@ void Protocol::operator<<(const uint32_t &data) {
 void Protocol::operator>>(uint32_t &dest) {
     _socket.recv(&dest, FOUR_BYTES);
     dest = ntohl(dest);
+}
+
+/* Por ser 1 byte no hay cambio endianess */
+void Protocol::operator<<(const uint8_t &data) {
+    _socket.send(&data, ONE_BYTE);
+}
+/* Por ser 1 byte no hay cambio endianess */
+void Protocol::operator>>(uint8_t &dest) {
+    _socket.recv(&dest, ONE_BYTE);
 }

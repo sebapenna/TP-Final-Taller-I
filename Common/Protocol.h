@@ -46,9 +46,10 @@ public:
     // Recv para DTO
     void operator>>(std::shared_ptr<ProtocolDTO>& dto);
 
-
-
-
+    // Send para uint8_t
+    void operator<<(const uint8_t & data);
+    // Recv para uint8_t
+    void operator>>(uint8_t & data);
 };
 
 

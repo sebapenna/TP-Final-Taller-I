@@ -13,20 +13,37 @@
 #define WRONG_OPTION_MSG    "Opcion incorrecta. Intentelo de nuevo.\n"
 
 #define SELECT_PLAYERS_MSG  "Ingrese la cantidad máxima de jugadores para su partida. El valor "\
-"máximo posible es " STR(MAX_PLAYERS_IN_GAME)
+"máximo posible es " STR(MAX_PLAYERS_IN_GAME) STR(.\n)
 
-
-
+#define CREATE_GAME  (uint8_t) 0
+#define JOIN_GAME    (uint8_t) 1
+#define SUCCESS  (uint8_t) 1
+#define ERROR   (uint8_t) 0
 
 using std::move;
 using std::shared_ptr;
 
 SafeQueue<Event>& Player::handshake() {
-//    _connection <<
+    _connection << WELCOME_MSG;
+    uint8_t player_choice;
+    _connection >> player_choice;
+    while (player_choice != CREATE_GAME && player_choice != JOIN_GAME) {    // Comando incorrecto
+        _connection << ERROR;
+        _connection << WRONG_OPTION_MSG;
+        _connection >> player_choice;
+    }
+    _connection << SUCCESS; // Comando correcto
+    _connection << SELECT_PLAYERS_MSG;  // Seleccion cantidad maxima de jugadores
+    _connection >> player_choice;
+    while (player_choice > ) {
+
+    }
 }
 
 void Player::run(Lobby &lobby) {
     try {
+        std::cout << WRONG_OPTION_MSG;
+        std::cout << SELECT_PLAYERS_MSG;
         shared_ptr<ProtocolDTO> dto_ptr;
         //events_queue = player.handshake()
         // if (x) joinGameIfNotFull/createGame

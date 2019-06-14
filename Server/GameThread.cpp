@@ -191,19 +191,6 @@ void GameThread::beginGame() {
     _begin_game = true;
 }
 
-void GameThread::endGameAndJoin() {
-    // todo: notificar al cliente que termino ? Si, en el gameloop con un protocolo - si cierra el
-    //  servidor tan solo recibira exception
-    _game_finished = true;
-    _gameloop.join();
-    // Una vez finalizado el gameloop elimino los jugadores
-    std::for_each(_players.begin(), _players.end(), [](Player* &player) {
-        player->disconnectAndJoin();
-        delete player;
-        player = nullptr;
-    });
-}
-
 const size_t GameThread::id() const {
     return _id;
 }
@@ -220,4 +207,15 @@ void GameThread::setId(const size_t &id) {
     _id = id;
 }
 
-
+void GameThread::endGameAndJoin() {
+    // todo: notificar al cliente que termino ? Si, en el gameloop con un protocolo - si cierra el
+    //  servidor tan solo recibira exception
+    _game_finished = true;
+    _gameloop.join();
+    // Una vez finalizado el gameloop elimino los jugadores
+    std::for_each(_players.begin(), _players.end(), [](Player* &player) {
+        player->disconnectAndJoin();
+        delete player;
+        player = nullptr;
+    });
+}

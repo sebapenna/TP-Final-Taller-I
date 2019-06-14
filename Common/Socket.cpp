@@ -41,21 +41,25 @@ Socket &Socket::operator=(Socket &&other) {
 Socket::~Socket() {
     if (descriptor != -1) {
         ::shutdown(descriptor, SHUT_RDWR);
-        close(descriptor);
+        ::close(descriptor);
     }
 }
 
 void Socket::shutdown() {
-    this->~Socket();    // Cierro el socket
+    if (descriptor != -1) {
+        std::cout << "SHUTDOWN"<<std::endl;
+        ::shutdown(descriptor, SHUT_RDWR);
+        ::close(descriptor);
+        descriptor = -1;
+    }
 }
 
 void Socket::send(const void *src, int src_size) {
     int bytes_tot = 0;
     char *aux = (char *) src;
     while (bytes_tot < src_size) {
-        int bytes_act = ::send(descriptor, &aux[bytes_tot], src_size,
-                MSG_NOSIGNAL);
-        (bytes_act >= 0) ? bytes_tot += bytes_act : throw FailedSendException();
+        int bytes_act = ::send(descriptor, &aux[bytes_tot], src_size, MSG_NOSIGNAL);
+        (bytes_act > 0) ? bytes_tot += bytes_act : throw FailedSendException();
     }
 }
 
@@ -63,7 +67,7 @@ void Socket::recv(void *dest, int recv_bytes) {
     int bytes_recvd = 0;
     while (bytes_recvd < recv_bytes) {
         bytes_recvd = ::recv(descriptor, dest, recv_bytes, MSG_NOSIGNAL);
-        if (bytes_recvd < 0)
+        if (bytes_recvd <= 0)
             throw FailedRecvException();
     }
 }
