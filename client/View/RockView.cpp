@@ -11,11 +11,11 @@ RockView::RockView(int id, SDL_Texture *texture, Renderer &renderer, int x, int 
             rock(texture, renderer) {
     int random = rand() % 3;
     if (random == 0) {
-        rock.setSourceRect(87, 4513, 85, 83);
+        rock.setSourceRect(93, 4528, 72, 54);
     } else if (random == 1) {
-        rock.setSourceRect(173, 4513, 85, 83);
-    } else if (random == 2){
-        rock.setSourceRect(259, 4513, 85, 83);
+        rock.setSourceRect(182, 4523, 67, 60);
+    } else if (random == 2) {
+        rock.setSourceRect(268, 4515, 66, 73);
     }
 }
 
