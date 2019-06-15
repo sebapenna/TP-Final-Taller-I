@@ -6,8 +6,21 @@
 #define PORTAL_ENERGYRECEIVERVIEW_H
 
 
-class EnergyReceiverView {
+#include <client/ComponentsSDL/AnimatedSprite.h>
+#include "View.h"
 
+enum EnergyReceiverState {enable,disable};
+class EnergyReceiverView : public View {
+private:
+    int id;
+    Sprite energyReceiverSprite;
+    AnimatedSprite energyReceiverAnimation;
+    EnergyReceiverState state;
+public:
+    EnergyReceiverView(int id, SDL_Texture* texture, Renderer& renderer, int x = 0, int y = 0);
+    void draw(Camera& camera);
+    void activate();
+    int getId() const;
 };
 
 

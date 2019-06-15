@@ -6,16 +6,16 @@
 #define SDL_WORLDVIEW_H
 
 
-#include "ComponentsSDL/Camera.h"
-#include "View/ChellAnimationView.h"
 #include <vector>
 #include <map>
+#include <memory>
+#include "ComponentsSDL/Camera.h"
+#include "View/ChellAnimationView.h"
 #include <client/View/GateView.h>
 #include <client/View/ButtonView.h>
 #include <client/View/RockView.h>
-#include <memory>
 #include <client/View/BackgroundView.h>
-
+#include <client/View/EnergyReceiverView.h>
 class WorldView {
 private:
     std::vector<std::shared_ptr<View>> views;
@@ -23,6 +23,7 @@ private:
     std::map<int, std::shared_ptr<GateView>> gates;
     std::map<int, std::shared_ptr<ButtonView>> buttons;
     std::map<int, std::shared_ptr<RockView>> rocks;
+    std::map<int, std::shared_ptr<EnergyReceiverView>> receivers;
     std::shared_ptr<BackgroundView> background;
     Camera* camera;
 public:
@@ -44,6 +45,8 @@ public:
     void makeChellNotTilted(int16_t id);
     void addRock(std::shared_ptr<RockView> rock);
     void setBackground(std::shared_ptr<BackgroundView> background);
+    void addReceiver(std::shared_ptr<EnergyReceiverView> block);
+    void activateReceiver(int16_t id);
 };
 
 

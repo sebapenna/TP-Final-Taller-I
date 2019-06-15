@@ -34,6 +34,12 @@ void WorldView::draw() {
         }
     }
 
+    for (auto const& receiver: receivers) {
+        if (camera->isInCamera(receiver.second->getDst())) {
+            receiver.second->draw(*camera);
+        }
+    }
+
     for (auto const& button: buttons) {
         if (camera->isInCamera(button.second->getDst())) {
             button.second->draw(*camera);
@@ -121,6 +127,13 @@ void WorldView::setCamara(int16_t id, int w, int h) {
 
 void WorldView::setBackground(std::shared_ptr<BackgroundView> background) {
     this->background = background;
-    //this->background->setDestRect(0,0,10,10);
-    //this->background->setPosition(camera->getPosition());
 }
+
+void WorldView::addReceiver(std::shared_ptr<EnergyReceiverView> block) {
+    receivers[block->getId()] = block;
+}
+
+void WorldView::activateReceiver(int16_t id) {
+    receivers[id]->activate();
+}
+

@@ -22,6 +22,9 @@
 #include <client/View/BackgroundView.h>
 #include <Common/ProtocolTranslator/EnergyBarrierDTO.h>
 #include <client/View/EnergyBarrierView.h>
+#include <Common/ProtocolTranslator/EnergyReceiverDTO.h>
+#include <client/View/EnergyReceiverView.h>
+#include <Common/ProtocolTranslator/EnergyReceiverActivateDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -29,6 +32,9 @@
 #include "WorldView.h"
 #include "client/View/BlockRockView.h"
 #include "client/View/BlockMetalView.h"
+
+
+#define CUT_LEN_BLOCKS 4
 
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue, bool& done) :
 safeQueue(safeQueue), done(done), window(title, 1600, 1000, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE), renderer(window), textureFactory() {
@@ -44,16 +50,6 @@ void SDL_Runner::run() {
     std::string acidAndButtons("acidAndButtons");
     std::string gate_file_name("gate");
     std::string background("background");
-    for (int startX = -2000; startX<7000; startX+=128) {
-        /*for (int startY = -2000; startY<7000; startY+=128) {
-            auto block = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
-            block->setDestRect(startX, startY, 128, 128);
-            world.addView(block);
-        }*/
-        auto block = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
-        block->setDestRect(startX, 400, 128,128);
-        world.addView(block);
-    }
     auto acid = std::shared_ptr<AcidView>(new AcidView(textureFactory.getTextureByName(acidAndButtons),renderer));
     acid->setDestRect(192, 350, 128,50);
     world.addView(acid);
@@ -153,23 +149,20 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_ROCK_BLOCK_DATA: {
                         auto rockBlockDTO = (RockBlockDTO*) newItem;
-                        for(int i=0; i<rockBlockDTO->getWidth(); i+=4) {
+                        for(int i=0; i<rockBlockDTO->getWidth(); i+=CUT_LEN_BLOCKS) {
                             auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
-                            rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY(), 4, rockBlockDTO->getHeight());
+                            rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY(), CUT_LEN_BLOCKS, rockBlockDTO->getHeight());
                             world.addView(rockBlock);
                         }
                         break;
                     }
                     case PROTOCOL_METAL_BLOCK_DATA: {
                         auto metalBlockDTO = (MetalBlockDTO*) newItem;
-                        for(int i=0; i<metalBlockDTO->getWidth(); i+=4) {
-                            auto rockBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
-                            rockBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY(), 4, metalBlockDTO->getHeight());
-                            world.addView(rockBlock);
+                        for(int i=0; i<metalBlockDTO->getWidth(); i+=CUT_LEN_BLOCKS) {
+                            auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
+                            metalBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY(), CUT_LEN_BLOCKS, metalBlockDTO->getHeight());
+                            world.addView(metalBlock);
                         }
-                       /* auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
-                        metalBlock->setDestRect(metalBlockDTO->getX(), metalBlockDTO->getY(), metalBlockDTO->getWidth(), metalBlockDTO->getHeight());
-                        world.addView(metalBlock);*/
                         break;
                     }
                     case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA: {
@@ -183,6 +176,10 @@ void SDL_Runner::run() {
                         break;
                     }
                     case PROTOCOL_ENERGY_RECEIVER_DATA: {
+                        auto energyReceiverDTO = (EnergyReceiverDTO*) newItem;
+                        auto energyReceiver = std::shared_ptr<EnergyReceiverView>(new EnergyReceiverView(energyReceiverDTO->getId(), textureFactory.getTextureByName(block_file_name), renderer));
+                        energyReceiver->setDestRect(energyReceiverDTO->getX(), energyReceiverDTO->getY(), energyReceiverDTO->getSideLength(), energyReceiverDTO->getSideLength());
+                        world.addReceiver(energyReceiver);
                         break;
                     }
                     case PROTOCOL_ENERGY_BARRIER_DATA: {
@@ -212,6 +209,8 @@ void SDL_Runner::run() {
                         break;
                     }
                     case PROTOCOL_ENERGY_RECEIVER_ACTIVATE: {
+                        auto energyReceiverActivateDTO = (EnergyReceiverActivateDTO*)newItem;
+                        world.activateReceiver(energyReceiverActivateDTO->getId());
                         break;
                     }
                     
