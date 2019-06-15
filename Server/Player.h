@@ -34,12 +34,12 @@ public:
 
     size_t id() const;
 
-    void receiveDTO(std::shared_ptr<ProtocolDTO> &dto);
+    void recv(std::shared_ptr<ProtocolDTO> &dto);
 
     void send(std::shared_ptr<ProtocolDTO> &dto);
 
     // Necesario utilizar este metodo para desconectar y cerrar el jugador correctamente previo a
-    // eliminarlo por completo del juego
+    // eliminarlo por completo del juego (borrarlo de memoria)
     // POST: el jugador ya no se encuentra conectado y su hilo receptor finalizo la ejecucion
     void disconnectAndJoin();
 };

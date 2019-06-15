@@ -4,7 +4,6 @@
 #include <iostream>
 
 #define WAITING_QUEUE_SIZE  10
-#define CONCURRENT_GAMES_LIMIT  3
 
 using std::cout;
 using std::endl;
@@ -20,12 +19,9 @@ void Lobby::runEraserThread() {
         // Duermo therad para evitar constantemente buscar partidas eliminadas
         std::unique_lock<std::mutex> lck(_mtx_sleep);
         _cv.wait_for(lck, std::chrono::minutes(1), [this]{return _connection_closed;});
+
         _games.erase(std::remove_if(_games.begin(), _games.end(), [](shared_ptr<GameThread> game) {
-            if (game->isDead()) {
-                game->endGameAndJoin();
-                return true;
-            }
-            return false;
+            return (game->isDead()) ? (game->endGameAndJoin(), true) : false;
         }), _games.end());
         //todo: _players_joining para evitar race condition con games id
 
@@ -40,60 +36,59 @@ _accept_socket(port, WAITING_QUEUE_SIZE), _game_eraser_thread(&Lobby::runEraserT
 
 void Lobby::shutdown() {
     _connection_closed = true;
-    _cv.notify_one();   // Notifico a waitfor condicion modificada
+    _cv.notify_one();   // Notifico a waitfor que condicion fue modificada
+
     _game_eraser_thread.join();
     _accept_socket.shutdown();
+
     std::for_each(_players_in_lobby.begin(), _players_in_lobby.end(), [](Player *player) {
-        player->disconnectAndJoin();    // Dejo que finaliza correctamente thread del cliente
+        player->disconnectAndJoin();    // Dejo que finalize correctamente thread del cliente
         delete player;
         player = nullptr;
-    }); // Elimino jugadores que quedaban en lobby
+    }); // Elimino jugadores que quedaban en lobby, todavia no presentes en partidas
+
     std::for_each(_games.begin(), _games.end(), [](shared_ptr<GameThread>  game) {
         game->endGameAndJoin();
     });
 }
 
 void Lobby::run() {
-    // Loop va a finalizar cuando haga shutdown a Lobby, mientras tanto escucha conexiones
     try {
         while (!_connection_closed) {
-            // Creo player en heap asi esta disponible para resto del programa al salir de scope
             Socket peer = _accept_socket.acceptConnection();
-
-            // Permito que nuevos jugadores se conecten pero evito que se cree mas de un player en
-            // el mismo insante
+            // Permito nuevas conexiones pero evito que se cree mas de un player en el mismo insante
             _m.lock();
+
+            // Creo player en heap asi esta disponible para resto del programa al salir de scope
             Player *new_player = new Player(move(peer), ref(*this), _next_player_id);
             ++_next_player_id;  // Incremento hacia proximo a id
             _players_in_lobby.push_back(new_player);
+
             _m.unlock();
             cout << "Nuevo jugador conectado, creando partida..."<<endl;
         }
     } catch(const CantConnectException& e) { }  // Socket aceptador cerrado
 }
 
-SafeQueue<shared_ptr<Event>> &Lobby::createGame(Player* player,
-        const size_t &n_players, string &&map_filename) {
+SafeQueue<shared_ptr<Event>> &Lobby::createGame(Player* player, const size_t &n_players,
+        string &&map_filename) {
     // Evito que se creen varias varios GameThread al mismo tiempo y posible race condition al
     // agregar al vector y asignar un id a la partida. Hasta este punto cada jugador tiene una
     // conexion por separado con el servidor, por lo tanto la simultanea creacion de partidas no
     // se ve afectada, tan solo la creacion del Thread.
     std::lock_guard<std::mutex> lock(_m);
     // Id de la partida sera en base al tamaño del vector
-    auto new_game = std::make_shared<GameThread>(player, n_players, move(map_filename),
-            _games.size());
+    auto game = std::make_shared<GameThread>(player, n_players, move(map_filename), _games.size());
 
+    // Elimino player del lobby
     _players_in_lobby.erase(std::remove_if(_players_in_lobby.begin(), _players_in_lobby.end(),
-            [player](Player *p) {
-        return player->id() == p->id();
-    }), _players_in_lobby.end());     // Elimino player del lobby
+            [player](Player *p) { return player->id() == p->id(); }), _players_in_lobby.end());
 
-    _games.push_back(new_game);
-    return ref(new_game->getEventsQueue());
+    _games.push_back(game);
+    return ref(game->getEventsQueue());
 }
 
-SafeQueue<shared_ptr<Event>> &Lobby::joinGameIfNotFull(Player *player,
-                                                            const size_t &game_id) {
+SafeQueue<shared_ptr<Event>> &Lobby::joinGameIfNotFull(Player *player, const size_t &game_id) {
     // Evito que varios jugadores intenten unirse a una misma partida al mismo tiempo, rompiendo
     // posiblemente el limite de jugadores dentro de la misma.
     std::lock_guard<std::mutex> lock(_m);

@@ -4,9 +4,9 @@
 #include "Lobby.h"
 #include "Common/HandshakeHandler.h"
 
-
-
 #define HOW_TO_BEGIN_MSG "Partida creada. Ingrese 0 cuando desee comenzar.\n"
+
+#define HOW_TO_REFRESH_MSG "Ingrese l para actualizar listado de partidas abiertas.\n";
 
 #define CREATE_GAME  (uint8_t) 0
 #define JOIN_GAME    (uint8_t) 1
@@ -32,16 +32,20 @@ SafeQueue<shared_ptr<Event>>& Player::joinGame(Lobby &lobby) {
 
 SafeQueue<shared_ptr<Event>>& Player::createGame(Lobby &lobby) {
     auto pair = HandshakeHandler::createGame(ref(_connection));
-    auto queue = ref(lobby.createGame(this, pair.first, std::move(pair.second)));
-    return ref(queue);
+    return ref(lobby.createGame(this, pair.first, std::move(pair.second)));
 }
 
 SafeQueue<shared_ptr<Event>>& Player::handshake(Lobby &lobby) {
     auto player_choice = HandshakeHandler::getPlayerChoice(ref(_connection));
-    if (player_choice == CREATE_GAME)
-        return std::ref(createGame(std::ref(lobby)));
-    else
+    if (player_choice == CREATE_GAME) {
+        auto queue = ref(createGame(ref(lobby)));
+        _connection << HOW_TO_BEGIN_MSG;    // Envio mensaje con informacion para iniciar
+        return ref(queue);
+    } else {
+        auto queue = ref(joinGame(ref(lobby)));
+        _connection << HOW_TO_REFRESH_MSG;  // Envio mensaje con informacion para ver partidas
         return std::ref(joinGame(std::ref(lobby)));
+    }
 }
 
 void Player::run(Lobby &lobby) {
@@ -49,8 +53,9 @@ void Player::run(Lobby &lobby) {
         shared_ptr<ProtocolDTO> dto_ptr;
 
         auto events_queue = ref(handshake(ref(lobby)));
+
         while (_connected) {  // Loop finalizara cuando se corte conexion
-            receiveDTO(dto_ptr); // Receive bloqueante
+            recv(dto_ptr); // Receive bloqueante
             shared_ptr<Event> p = std::make_shared<Event>(_id, dto_ptr);
             events_queue.get().push(std::move(p));    // Encolo evento y id de player
         }
@@ -73,7 +78,7 @@ size_t Player::id() const {
     return _id;
 }
 
-void Player::receiveDTO(std::shared_ptr<ProtocolDTO> &dto) {
+void Player::recv(std::shared_ptr<ProtocolDTO> &dto) {
     _connection >> dto;
 }
 

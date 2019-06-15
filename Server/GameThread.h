@@ -14,19 +14,17 @@ class Player;
 
 // A cada jugador se le asignara un id (inician desde 0) por orden de llegada (su posicion en el
 // vector). Este id se notificara a los usuarios una vez iniciada la partida, ya que se podria
-// modificar si algun jugador se retira de la partida antes de ser iniciada. solo el owner podra
+// modificar si algun jugador se retira de la partida antes de ser iniciada. Solo el owner podra
 // iniciar partida y sera aquel de id igual a 0
 class GameThread {
 private:
-    // Cola cotendra pares conformados por el id del jugador y el DTO que corresponda, asi se
-    // sabra a que chell aplicar la accion
     std::mutex _m;
     std::thread _gameloop;
     std::list<Player*> _players;
     SafeQueue<std::shared_ptr<Event>> _events_queue;
     size_t _max_players;
-    bool _begin_game, _game_finished, _empty_game, _dead_thread;
     size_t _id;   // id de la partida
+    bool _begin_game, _game_finished, _empty_game, _dead_thread;
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
@@ -36,17 +34,17 @@ private:
 
 public:
     // map_filename es el archivo yaml con la configuracion del map
-    GameThread(Player* new_player, const size_t &max_players,
-                        std::string &&map_filename, const size_t &id);
+    GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
+            const size_t &id);
 
     // Une jugador a la partida en caso de que no se haya llegado al limite de jugadores.
     // Valor de retorno sera true en caso de haber sido agregado, false de lo contrario.
     bool addPlayerIfNotFull(Player* new_player);
 
+    // Elimina jugador del id indicado y libera su memoria
     void deletePlayer(const size_t& id);
 
-    // Indico que se debe iniciar la partida
-    void beginGame();
+
 
     // Indico que se debe finalizar la partida y finalizo la ejecucion del hilo
     void endGameAndJoin();

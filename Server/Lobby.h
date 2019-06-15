@@ -37,7 +37,7 @@ public:
     SafeQueue<std::shared_ptr<Event>> &createGame(Player* player, const size_t &n_players,
             std::string &&map_filename);
 
-    // Une en al jugador a la partida del id indicado y retorna la cola de eventos de dicha partida.
+    // Une el jugador a la partida del id indicado y retorna la cola de eventos de dicha partida.
     // En caso de no haber podido unir al jugador se retorna nullptr
     SafeQueue<std::shared_ptr<Event>> &joinGameIfNotFull(Player *player, const size_t &game_id);
 

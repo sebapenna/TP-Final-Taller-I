@@ -1,12 +1,11 @@
-#include "GameThread.h"
-#include "Stage.h"
-#include "DTOProcessor.h"
-#include <algorithm>
-#include <chrono>
-#include <iostream>
 #include <Common/exceptions.h>
+#include <algorithm>
+#include <iostream>
+#include <chrono>
+#include "GameThread.h"
+#include "DTOProcessor.h"
+#include "Stage.h"
 #include "Player.h"
-
 
 using namespace std::chrono;
 using std::move;
@@ -18,8 +17,6 @@ using std::endl;
 using std::for_each;
 using std::shared_ptr;
 
-
-// todo : NECESARIOS LOS CATCH EN SEND PARA ELIMINAR ?
 void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
     std::vector<size_t> to_delete;
     for_each(_players.begin(), _players.end(), [this, &dto, &to_delete] (Player* &player) {
@@ -37,23 +34,25 @@ void GameThread::run(std::string map_filename) {
     try {
         Stage stage(move(map_filename));    // Creo stage en tiempo de espera al comienzo
 
-        // Loop esperando a que se indique que comienza la partida. Verifico no se hayan
-        // desconectado todos los jugadores
+        // Loop esperando a que owner inicie la partida. Verifico haya jugadores conectados
         while (!_begin_game && !_empty_game && !_game_finished) {
             // todo: un sleep_for?
-            auto event = _events_queue.getTopAndPop();  // todo: Cambiar, desencola todo el tiempo
-            if (event != nullptr)  // Posible deseconexion
+            auto event = _events_queue.getTopAndPop();
+            if (event != nullptr)
                 switch (event->getProtocolId()) {
-                    case PROTOCOL_QUIT:
+                    case PROTOCOL_QUIT: // Jugador que salio de la partida
                         deletePlayer(event->getPlayerId()); // Elimino jugador de la partida
+                        // todo: NOTIFY_PLAYERS && NOTIFY_NEW_OWNER
                         break;
                     case PROTOCOL_BEGIN:
-                        if (event->getPlayerId() == 0)  // Solo owner de partida puede iniciar
+                        if (event->getPlayerId() == 0)  // Solo owner puede iniciar partida
                             _begin_game = true;
+                        // todo: NOTIFY_OWNER_BEGAN_GAME => CLIENTE EMPIEZA A LEER DTOS
                         break;
                 }
         }
-        if (_begin_game && !_empty_game) {
+
+        if (_begin_game && !_empty_game && !_game_finished) {
             stage.createChells(_players.size());    // Creo los chells determinados los jugadores
 
             // Envio escenario completo a cada jugador
@@ -72,7 +71,8 @@ void GameThread::run(std::string map_filename) {
                     to_delete.push_back(player->id());
                 }
             });
-            // Elimino clientes que se desonectaron
+
+            // Elimino posibles clientes que se desonectaron
             for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) { deletePlayer(id); });
             // todo: SI MANTENGO ESTE VECTOR DEBERIA ELIMINAR SU CHELL DEL MAPA
             to_delete.clear();
@@ -89,11 +89,10 @@ void GameThread::run(std::string map_filename) {
                 auto start = high_resolution_clock::now();
 
                 // Desencolo       //todo:TIMEOUT !
-                for (auto event = _events_queue.getTopAndPop(); event;
-                        event = _events_queue.getTopAndPop()) {
-                    stage.apply(event->getPtr().get(), event->getPlayerId());
-                    if (event->getProtocolId() == PROTOCOL_QUIT)
-                        deletePlayer(event->getPlayerId()); // Elimino jugador de la partida
+                for (auto e = _events_queue.getTopAndPop(); e; e = _events_queue.getTopAndPop()) {
+                    stage.apply(e->getPtr().get(), e->getPlayerId());
+                    if (e->getProtocolId() == PROTOCOL_QUIT)
+                        deletePlayer(e->getPlayerId()); // Elimino jugador de la partida
                 }
 
                 // Step
@@ -162,7 +161,8 @@ GameThread::GameThread(Player* new_player, const size_t &max_players, std::strin
 
 bool GameThread::addPlayerIfNotFull(Player* new_player) {
     lock_guard<mutex> lock(_m);
-    if (_players.size() >= _max_players)    // Maximo de jugadores alcanzado
+    // Maximo de jugadores alcanzado o partida ya comenzo
+    if (_players.size() >= _max_players || _begin_game)
         return false;
     new_player->setId(_players.size());
     _players.push_back(new_player);
@@ -171,23 +171,22 @@ bool GameThread::addPlayerIfNotFull(Player* new_player) {
 
 void GameThread::deletePlayer(const size_t &id) {
     lock_guard<mutex> lock(_m);
-    _players.remove_if([this, &id](Player* player) {
-        if (!_begin_game && player->id() > id) {
+    _players.remove_if([this, &id](Player* p) {
+        if (!_begin_game && p->id() > id) {
             // Actualizo ids mientras busco elemento, en caso de juego aun no inciado
-            player->setId(player->id() - 1);
+            p->setId(p->id() - 1);
             return false;
         }
-        return (player->id() == id) ? (player->disconnectAndJoin(), delete player, player =
-                nullptr, true) : false;
+        return (p->id() == id) ? (p->disconnectAndJoin(), delete p, p = nullptr, true) : false;
     });
-    if (_players.empty()) {   // Se fueron todos los jugadpres
+    if (_players.empty()) {   // Se desconectaron todos los jugadores
         _empty_game = true;
         _game_finished = true;
     }
 }
 
-void GameThread::beginGame() {
-    _begin_game = true;
+void GameThread::setId(const size_t &id) {
+    _id = id;
 }
 
 const size_t GameThread::id() const {
@@ -202,13 +201,7 @@ bool GameThread::isDead() {
     return _dead_thread;
 }
 
-void GameThread::setId(const size_t &id) {
-    _id = id;
-}
-
 void GameThread::endGameAndJoin() {
-    // todo: notificar al cliente que termino ? Si, en el gameloop con un protocolo - si cierra el
-    //  servidor tan solo recibira exception
     _game_finished = true;
     _gameloop.join();
     // Una vez finalizado el gameloop elimino los jugadores
