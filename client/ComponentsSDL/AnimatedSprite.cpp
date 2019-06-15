@@ -55,11 +55,9 @@ void AnimatedSprite::moveNextSprite() {
             i++;
         }
         currentSprite++;
+        historyAnimation.push_back(this->getSrc());
     }
     this->setSourceXY(i * width + startX + offSetX * i, j * height + startY + offSetY * j);
-    historyAnimation.push_back(this->getSrc());
-
-
 }
 
 void AnimatedSprite::drawMovingSprite(Camera& camera, SDL_Rect* dstRect) {

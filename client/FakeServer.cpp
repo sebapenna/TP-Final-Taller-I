@@ -15,6 +15,8 @@
 #include <Server/Model/constants.h>
 #include <Common/ProtocolTranslator/MetalDiagonalBlockDTO.h>
 #include <Common/ProtocolTranslator/EnergyBarrierDTO.h>
+#include <Common/ProtocolTranslator/EnergyReceiverActivateDTO.h>
+#include <Common/ProtocolTranslator/EnergyReceiverDTO.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 
@@ -53,6 +55,8 @@ void FakeServer::run() {
     /*
     std::shared_ptr<ProtocolDTO>dto8(new RockDTO(1, 500, 400, 128, DONT_DELETE));
     safeQueue.push(dto8);*/
+    std::shared_ptr<EnergyReceiverDTO>dto16(new EnergyReceiverDTO(1, -20, 4, ENRG_BLOCK_HALF_LEN*2));
+    safeQueue.push(dto16);
     std::shared_ptr<EnergyBarrierDTO>dto17(new EnergyBarrierDTO(15,4,1,20));
     safeQueue.push(dto17);
     std::shared_ptr<ProtocolDTO>dto18(new MetalDiagonalBlockDTO(-90, 4, 4, O_SE));
@@ -81,6 +85,9 @@ void FakeServer::run() {
             safeQueue.push(dto10);
             std::shared_ptr<ProtocolDTO>dto11(new ButtonStateDTO(1, NOT_PRESSED));
             safeQueue.push(dto11);
+
+            std::shared_ptr<EnergyReceiverActivateDTO>dto99(new EnergyReceiverActivateDTO(1));
+            safeQueue.push(dto99);
             //safeQueue.push((void *) new ButtonStateDTO(1, NOT_PRESSED));
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_STOP) {
             std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));

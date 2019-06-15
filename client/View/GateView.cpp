@@ -21,7 +21,7 @@ void GateView::draw(Camera &camera) {
     } else if (this->state == GateState::isClosingBack) {
         gate.drawMovingSprite(camera, this->getDst());
         if (gate.done()) {
-            this->state = closed;
+            this->state = GateState::closed;
             gate.setState(AnimationState::oneTime);
         }
     }
