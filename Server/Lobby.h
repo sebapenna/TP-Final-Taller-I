@@ -41,6 +41,9 @@ public:
     // En caso de no haber podido unir al jugador se retorna nullptr
     SafeQueue<std::shared_ptr<Event>> &joinGameIfNotFull(Player *player, const size_t &game_id);
 
+    // Game_id / Max_players / Players_added / Map_name
+    std::vector<std::tuple<size_t, size_t, size_t, std::string>> getOpenGamesInformation();
+
 //    bool gamesLimitReached();
 };
 

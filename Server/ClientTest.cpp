@@ -1,5 +1,6 @@
 #include <Common/Protocol.h>
 #include "Common/exceptions.h"
+#include "Common/HandshakeHandler.h"
 #include <iostream>
 #include <Common/Socket.h>
 #include <Common/ProtocolTranslator/ChellDTO.h>
@@ -60,16 +61,14 @@ int main(int argc, char const *argv[]) {
         Protocol prot(argv[IP_POS], argv[PORT_POS]);
         cout << "Conexion establecida"<<endl;
 
-        std::this_thread::sleep_for(std::chrono::seconds(2)); // Espero a mandar BEGIN
-        char c;
+
+        HandshakeHandler::getOptionsAndChoose(std::ref(prot));
+
         cout << "Enviando BeginDTO..."<<endl;
         shared_ptr<ProtocolDTO> pdto(new BeginDTO());
         prot << *pdto.get();
         cout << "Enviado"<<endl;
 
-        do {
-            std::cin.get(c);
-        } while (c != 's');
         shared_ptr<ProtocolDTO> dto_ptr;
         prot >> dto_ptr;
 

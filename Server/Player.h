@@ -17,7 +17,12 @@ private:
     bool _connected;
 
     void run(Lobby &lobby);
-    SafeQueue<Event>& handshake();
+
+    SafeQueue<std::shared_ptr<Event>>& handshake(Lobby &lobby);
+
+    SafeQueue<std::shared_ptr<Event>>& createGame(Lobby &lobby);
+
+    SafeQueue<std::shared_ptr<Event>>& joinGame(Lobby &lobby);
 
 public:
     // Se brinda socket por movimiento ya que dentro de Player se hara un move de dicho socket,

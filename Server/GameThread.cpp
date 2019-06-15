@@ -160,7 +160,6 @@ GameThread::GameThread(Player* new_player, const size_t &max_players, std::strin
     addPlayerIfNotFull(new_player);
 }
 
-
 bool GameThread::addPlayerIfNotFull(Player* new_player) {
     lock_guard<mutex> lock(_m);
     if (_players.size() >= _max_players)    // Maximo de jugadores alcanzado
@@ -218,4 +217,9 @@ void GameThread::endGameAndJoin() {
         delete player;
         player = nullptr;
     });
+}
+
+// todo: posible race condition ?
+bool GameThread::openToNewPlayers() {
+    return _begin_game;
 }

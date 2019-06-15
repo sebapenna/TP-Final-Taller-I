@@ -58,6 +58,8 @@ public:
     bool isDead();
 
     void setId(const size_t &id);
+
+    bool openToNewPlayers();
 };
 
 

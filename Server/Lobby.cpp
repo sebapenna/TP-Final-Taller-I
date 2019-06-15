@@ -28,13 +28,10 @@ void Lobby::runEraserThread() {
             return false;
         }), _games.end());
         //todo: _players_joining para evitar race condition con games id
+
         // Actualizo id de partidas existentes para que concuerden con posicion en vector
-        std::cout << "new loop"<<std::endl;
-        for (size_t new_id = 0; new_id < _games.size(); ++new_id) {
-            std::cout << "old: "<< _games[new_id]->id() << std::endl;
+        for (size_t new_id = 0; new_id < _games.size(); ++new_id)
             _games[new_id]->setId(new_id);
-            std::cout << "new: "<< _games[new_id]->id() << std::endl;
-        }
     }
 }
 
@@ -47,6 +44,7 @@ void Lobby::shutdown() {
     _game_eraser_thread.join();
     _accept_socket.shutdown();
     std::for_each(_players_in_lobby.begin(), _players_in_lobby.end(), [](Player *player) {
+        player->disconnectAndJoin();    // Dejo que finaliza correctamente thread del cliente
         delete player;
         player = nullptr;
     }); // Elimino jugadores que quedaban en lobby
@@ -74,7 +72,7 @@ void Lobby::run() {
     } catch(const CantConnectException& e) { }  // Socket aceptador cerrado
 }
 
-SafeQueue<std::shared_ptr<Event>> &Lobby::createGame(Player* player,
+SafeQueue<shared_ptr<Event>> &Lobby::createGame(Player* player,
         const size_t &n_players, string &&map_filename) {
     // Evito que se creen varias varios GameThread al mismo tiempo y posible race condition al
     // agregar al vector y asignar un id a la partida. Hasta este punto cada jugador tiene una
@@ -94,7 +92,7 @@ SafeQueue<std::shared_ptr<Event>> &Lobby::createGame(Player* player,
     return ref(new_game->getEventsQueue());
 }
 
-SafeQueue<std::shared_ptr<Event>> &Lobby::joinGameIfNotFull(Player *player,
+SafeQueue<shared_ptr<Event>> &Lobby::joinGameIfNotFull(Player *player,
                                                             const size_t &game_id) {
     // Evito que varios jugadores intenten unirse a una misma partida al mismo tiempo, rompiendo
     // posiblemente el limite de jugadores dentro de la misma.
@@ -108,4 +106,8 @@ SafeQueue<std::shared_ptr<Event>> &Lobby::joinGameIfNotFull(Player *player,
         return ref(game->getEventsQueue());
     }
     throw FullGameException();
+}
+
+std::vector<std::tuple<size_t, size_t, size_t, std::string>> Lobby::getOpenGamesInformation() {
+
 }

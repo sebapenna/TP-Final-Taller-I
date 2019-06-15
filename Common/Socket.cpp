@@ -47,7 +47,6 @@ Socket::~Socket() {
 
 void Socket::shutdown() {
     if (descriptor != -1) {
-        std::cout << "SHUTDOWN"<<std::endl;
         ::shutdown(descriptor, SHUT_RDWR);
         ::close(descriptor);
         descriptor = -1;

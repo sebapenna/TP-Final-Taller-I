@@ -1,56 +1,54 @@
 #include <Common/exceptions.h>
+#include <string>
 #include "Player.h"
 #include "Lobby.h"
+#include "Common/HandshakeHandler.h"
 
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
 
-#define MAX_PLAYERS_IN_GAME 4
 
-#define WELCOME_MSG "Bienvenido a Portal. Ingrese 0 para crear una nueva partida o 0 para unirse "\
-"a una ya existente:\n"
-
-#define WRONG_OPTION_MSG    "Opcion incorrecta. Intentelo de nuevo.\n"
-
-#define SELECT_PLAYERS_MSG  "Ingrese la cantidad máxima de jugadores para su partida. El valor "\
-"máximo posible es " STR(MAX_PLAYERS_IN_GAME) STR(.\n)
+#define HOW_TO_BEGIN_MSG "Partida creada. Ingrese 0 cuando desee comenzar.\n"
 
 #define CREATE_GAME  (uint8_t) 0
 #define JOIN_GAME    (uint8_t) 1
+
 #define SUCCESS  (uint8_t) 1
 #define ERROR   (uint8_t) 0
 
 using std::move;
 using std::shared_ptr;
+using std::ref;
 
-SafeQueue<Event>& Player::handshake() {
-    _connection << WELCOME_MSG;
-    uint8_t player_choice;
-    _connection >> player_choice;
-    while (player_choice != CREATE_GAME && player_choice != JOIN_GAME) {    // Comando incorrecto
-        _connection << ERROR;
-        _connection << WRONG_OPTION_MSG;
-        _connection >> player_choice;
-    }
-    _connection << SUCCESS; // Comando correcto
-    _connection << SELECT_PLAYERS_MSG;  // Seleccion cantidad maxima de jugadores
-    _connection >> player_choice;
-    while (player_choice > ) {
+SafeQueue<shared_ptr<Event>>& Player::joinGame(Lobby &lobby) {
+//    _connection << HOW_TO_REFRESH_MSG;
+//    uint8_t refresh;
+//    _connection >> refresh;
+//    while (refresh != REFRESH)
+//        errorLoop(refresh);
 
-    }
+
+    // while events_que != nullptr
+    // joinGameIfNotFull => catch FullGameException
+}
+
+SafeQueue<shared_ptr<Event>>& Player::createGame(Lobby &lobby) {
+    auto pair = HandshakeHandler::createGame(ref(_connection));
+    auto queue = ref(lobby.createGame(this, pair.first, std::move(pair.second)));
+    return ref(queue);
+}
+
+SafeQueue<shared_ptr<Event>>& Player::handshake(Lobby &lobby) {
+    auto player_choice = HandshakeHandler::getPlayerChoice(ref(_connection));
+    if (player_choice == CREATE_GAME)
+        return std::ref(createGame(std::ref(lobby)));
+    else
+        return std::ref(joinGame(std::ref(lobby)));
 }
 
 void Player::run(Lobby &lobby) {
     try {
-        std::cout << WRONG_OPTION_MSG;
-        std::cout << SELECT_PLAYERS_MSG;
         shared_ptr<ProtocolDTO> dto_ptr;
-        //events_queue = player.handshake()
-        // if (x) joinGameIfNotFull/createGame
-        // while events_que != nullptr
-        // joinGameIfNotFull => catch FullGameException
-// todo: file sale de player handshake, al igual que numero de players
-        auto events_queue = ref(lobby.createGame(this, 1, move("filea.yaml")));
+
+        auto events_queue = ref(handshake(ref(lobby)));
         while (_connected) {  // Loop finalizara cuando se corte conexion
             receiveDTO(dto_ptr); // Receive bloqueante
             shared_ptr<Event> p = std::make_shared<Event>(_id, dto_ptr);
@@ -88,3 +86,5 @@ void Player::disconnectAndJoin() {
     _connection.disconnect();
     _receiver_thread.join();
 }
+
+
