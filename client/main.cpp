@@ -118,7 +118,7 @@ int main(int argc, char** argv){
         clientSender.join();
         clientReceiver.join();
 
-        server.join();
+        /*server.join();*/
 
         return 0;
     } catch (std::exception& e) {

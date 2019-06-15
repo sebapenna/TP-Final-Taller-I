@@ -11,14 +11,13 @@ CommandReceiver::CommandReceiver(Protocol &protocol, bool &done, bool& user_quit
 
 void CommandReceiver::run() {
     while (!done || !user_quit) {
+        std::string msg;
+        protocol >> msg;
         uint8_t server_command = -1;
         protocol >> server_command;
         if (server_command == 0) {
             done = true;
-        } else {
-            std::string msg;
-            protocol >> msg;
-            std::cout << msg;
         }
+        std::cout << msg;
     }
 }

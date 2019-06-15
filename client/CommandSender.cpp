@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h>
+#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
 #include "CommandSender.h"
 #define START_GAME 0
 #define QUIT_GAME 1
@@ -16,8 +17,8 @@ void CommandSender::run() {
     do {
         std::cin.get(c);
         if (c == START_GAME) {
-            uint8_t code = 0;
-            protocol << code;
+            std::shared_ptr<ProtocolDTO> dto(new BeginDTO()); // Asi no hago el free
+            protocol << *dto.get();
         } else if (c == QUIT_GAME) {
             std::shared_ptr<ProtocolDTO> dto(new QuitDTO()); // Asi no hago el free
             protocol << *dto.get();
