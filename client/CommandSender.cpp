@@ -24,6 +24,6 @@ void CommandSender::run() {
             protocol << *dto.get();
             user_quit = true;
         }
-    } while (!done | !user_quit);
+    } while (!done && !user_quit);
 
 }

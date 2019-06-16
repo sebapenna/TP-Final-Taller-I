@@ -10,7 +10,7 @@ CommandReceiver::CommandReceiver(Protocol &protocol, bool &done, bool& user_quit
 }
 
 void CommandReceiver::run() {
-    while (!done || !user_quit) {
+    while (!done && !user_quit) {
         std::string msg;
         protocol >> msg;
         uint8_t server_command = -1;
