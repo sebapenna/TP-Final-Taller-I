@@ -29,7 +29,7 @@ private:
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
-    void run();
+    void run(std::string &map_filename);
 
     void notifyAllNewPlayer();
 

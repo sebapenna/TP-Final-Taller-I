@@ -226,7 +226,8 @@ b2Body *World::createDynamicBox(const float &x, const float &y,
     b2BodyDef body_def;
     body_def.position.Set(x, y);
     body_def.type = b2_dynamicBody;
-    body_def.fixedRotation = false;
+//    body_def.fixedRotation = false;
+    body_def.fixedRotation = true;
 
     b2PolygonShape shape;
     shape.SetAsBox(box_half_width, box_half_height);
@@ -413,7 +414,6 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
 }
 
 void World::createChell(const float &x, const float &y) {
-//    todo: restitution necesaria ? => puede hacer sdl
     auto body = createDynamicBox(x, y, CHELL_HALF_WIDTH, CHELL_HALF_HEIGHT,
             CHELL_DENSITY);
     auto chell = new Chell(_chells.size(), body);

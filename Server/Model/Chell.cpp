@@ -8,6 +8,7 @@ Chell::Chell(const size_t &id, b2Body *body) : _id(id){
     _body = body;
     _move_state = MOVE_STOP;
     _jump_state = ON_GROUND;
+    _previous_jump_state = ON_GROUND;
     _jump = false;
     _dead = false;
     _previous_tilt = NOT_TILTED;
@@ -108,7 +109,7 @@ int Chell::calculateXImpulse() {
             (vel_x > 0) ? (impulse_factor = -2) : (impulse_factor = -1);
             break;
         case MOVE_STOP:
-            if (_jump_state == ON_GROUND) // Verifico que no este en aire
+//            if (_jump_state == ON_GROUND) // Verifico que no este en aire
                 (vel_x > 0) ? (impulse_factor = -1) : (impulse_factor = 1);
             break;
         default: // No existe este caso
@@ -122,7 +123,7 @@ void Chell::move() {
     x_impulse = calculateXImpulse();
     if (_jump) {
         _jump = false;
-        y_impulse = MOVE_FORCE;
+        y_impulse = JUMP_FORCE;
     }
     b2Vec2 impulse(x_impulse, y_impulse);
     _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
@@ -178,6 +179,10 @@ bool Chell::actedDuringStep() {
     }
     if (_previous_tilt != _tilt) {
         _previous_tilt = _tilt;
+        return true;
+    }
+    if (_previous_jump_state != _jump_state) {
+        _previous_jump_state = _jump_state;
         return true;
     }
     if (_previously_carrying != _carrying_rock) {

@@ -9,7 +9,7 @@ private:
     const size_t _id;
     b2Body *_body;
     uint8 _move_state;
-    uint8 _jump_state;
+    uint8 _jump_state, _previous_jump_state;
     bool _jump, _dead;
     bool _previously_dead = false;
     float _previous_x, _previous_y;
