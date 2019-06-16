@@ -18,7 +18,7 @@ SDL_Rect* View::getDst() {
 void View::setDestRect(int x, int y, int w, int h) {
     position.set(convertMetersToPixelsPos(x + w / 2), convertMetersToPixelsPos(-y - h)); // -h/2
     dstSrc.x = convertMetersToPixelsPos(x);
-    dstSrc.y = convertMetersToPixelsPos(-y-h); //  -h despues paasa a izquierda inferior
+    dstSrc.y = convertMetersToPixelsPos(-y-h);
     dstSrc.w = convertMetersToPixelsPos(w);
     dstSrc.h = convertMetersToPixelsPos(h);
 }

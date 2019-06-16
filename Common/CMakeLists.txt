@@ -11,6 +11,8 @@ add_library(common-src
         Socket.cpp
         AcceptSocket.cpp
         Thread.cpp
-        Protocol.cpp Protocol.h)
+        Protocol.cpp Protocol.h
+        HandshakeHandler.cpp
+        HandshakeHandler.h)
 
 target_link_libraries(common-src protocol-translator)

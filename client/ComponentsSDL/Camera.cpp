@@ -5,15 +5,10 @@
 #include "Camera.h"
 #include "Position.h"
 
-// METER UN CHELL OBSERVER POSITION.
-// Y LE PIDA LA POSICION A CHELL.
-
-// CLASE POSITION QUE TENGA EL X,Y DE CHELL.
-
 Camera::Camera(int w, int h, Position& position) : position(position), w(w), h(h) {
 }
-void
-Camera::draw(SDL_Texture *texture, SDL_Rect *srcRect,
+
+void Camera::draw(SDL_Texture *texture, SDL_Rect *srcRect,
         SDL_Rect *dstRect, Renderer &renderer, double angle, SDL_RendererFlip flip) {
     this->w = renderer.getWindowWidth();
     this->h = renderer.getWindowHeight();
