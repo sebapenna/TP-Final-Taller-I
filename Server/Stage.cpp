@@ -13,7 +13,7 @@ Stage::~Stage() {
     delete _world;
 }
 
-Stage::Stage(std::string &&config_file) {
+Stage::Stage(std::string &config_file) {
     YamlParser config(config_file);
     // Configuracion world
     WorldData world_data = config.loadWorldData();

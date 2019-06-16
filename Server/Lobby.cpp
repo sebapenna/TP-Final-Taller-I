@@ -23,16 +23,12 @@ void Lobby::runEraserThread() {
         _games.erase(std::remove_if(_games.begin(), _games.end(), [](shared_ptr<GameThread> game) {
             return (game->isDead()) ? (game->endGameAndJoin(), true) : false;
         }), _games.end());
-        //todo: _players_joining para evitar race condition con games id
-
-        // Actualizo id de partidas existentes para que concuerden con posicion en vector
-        for (size_t new_id = 0; new_id < _games.size(); ++new_id)
-            _games[new_id]->setId(new_id);
     }
 }
 
 Lobby::Lobby(const std::string &port) : _connection_closed(false), _next_player_id(0),
-_accept_socket(port, WAITING_QUEUE_SIZE), _game_eraser_thread(&Lobby::runEraserThread, this) { }
+_next_game_id(0), _accept_socket(port, WAITING_QUEUE_SIZE),
+_game_eraser_thread(&Lobby::runEraserThread, this) { }
 
 void Lobby::shutdown() {
     _connection_closed = true;
@@ -56,15 +52,12 @@ void Lobby::run() {
     try {
         while (!_connection_closed) {
             Socket peer = _accept_socket.acceptConnection();
-            // Permito nuevas conexiones pero evito que se cree mas de un player en el mismo insante
-            _m.lock();
 
             // Creo player en heap asi esta disponible para resto del programa al salir de scope
             Player *new_player = new Player(move(peer), ref(*this), _next_player_id);
             ++_next_player_id;  // Incremento hacia proximo a id
             _players_in_lobby.push_back(new_player);
 
-            _m.unlock();
             cout << "Nuevo jugador conectado, creando partida..."<<endl;
         }
     } catch(const CantConnectException& e) { }  // Socket aceptador cerrado
@@ -78,7 +71,8 @@ SafeQueue<shared_ptr<Event>> &Lobby::createGame(Player* player, const size_t &n_
     // se ve afectada, tan solo la creacion del Thread.
     std::lock_guard<std::mutex> lock(_m);
     // Id de la partida sera en base al tamaño del vector
-    auto game = std::make_shared<GameThread>(player, n_players, move(map_filename), _games.size());
+    auto game = std::make_shared<GameThread>(player, n_players, move(map_filename), _next_game_id);
+    ++_next_game_id; // Actualizo proximo id
 
     // Elimino player del lobby
     _players_in_lobby.erase(std::remove_if(_players_in_lobby.begin(), _players_in_lobby.end(),
@@ -88,21 +82,35 @@ SafeQueue<shared_ptr<Event>> &Lobby::createGame(Player* player, const size_t &n_
     return ref(game->getEventsQueue());
 }
 
-SafeQueue<shared_ptr<Event>> &Lobby::joinGameIfNotFull(Player *player, const size_t &game_id) {
+SafeQueue<shared_ptr<Event>> &Lobby::joinGameIfOpenAndNotFull(Player *player, const size_t &game_id) {
     // Evito que varios jugadores intenten unirse a una misma partida al mismo tiempo, rompiendo
     // posiblemente el limite de jugadores dentro de la misma.
     std::lock_guard<std::mutex> lock(_m);
-    auto game = _games.at(game_id);
-    if (game->addPlayerIfNotFull(player)) {
-        _players_in_lobby.erase(std::remove_if(_players_in_lobby.begin(), _players_in_lobby.end(),
+
+    // todo: optimizar con binary search
+    auto it = std::find_if(_games.begin(), _games.end(), [game_id](shared_ptr<GameThread> g) {
+        return g->id() == game_id;
+    });
+    if (it == _games.end()) // Se elimino partida
+        throw CantJoinGameException();
+
+    auto game = *it;
+    if (game->addPlayerIfOpenToNewPlayersAndNotFull(player)) {    // Primero compruebo id
+        _players_in_lobby.erase(remove_if(_players_in_lobby.begin(), _players_in_lobby.end(),
                 [player](Player *p) {
             return player->id() == p->id();
         }), _players_in_lobby.end());     // Elimino player del lobby
         return ref(game->getEventsQueue());
     }
-    throw FullGameException();
+
+    throw CantJoinGameException();
 }
 
 std::vector<std::tuple<size_t, size_t, size_t, std::string>> Lobby::getOpenGamesInformation() {
-
+    // GameId - MaxPlayers - PlayersAdded - MapName
+    std::vector<std::tuple<size_t, size_t, size_t, std::string>> output;
+    for (auto &g : _games)
+        if (g->openToNewPlayers())
+            output.emplace_back(g->id(), g->maxPlayers(), g->playersJoined(), g->mapFileName());
+    return move(output);
 }

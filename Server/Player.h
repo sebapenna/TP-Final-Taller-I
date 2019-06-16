@@ -20,10 +20,6 @@ private:
 
     SafeQueue<std::shared_ptr<Event>>& handshake(Lobby &lobby);
 
-    SafeQueue<std::shared_ptr<Event>>& createGame(Lobby &lobby);
-
-    SafeQueue<std::shared_ptr<Event>>& joinGame(Lobby &lobby);
-
 public:
     // Se brinda socket por movimiento ya que dentro de Player se hara un move de dicho socket,
     // por lo tanto de esta manera el usuario que utilize esta clase sabra que pierde ownership
@@ -37,6 +33,10 @@ public:
     void recv(std::shared_ptr<ProtocolDTO> &dto);
 
     void send(std::shared_ptr<ProtocolDTO> &dto);
+
+    // Notifica al cliente con el mensaje indicado. Dentro se encarga de enviar el comando
+    // adecuado para que el cliente sepa que debe recibir un string
+    void notify(const uint8_t &command, const std::string &msg);
 
     // Necesario utilizar este metodo para desconectar y cerrar el jugador correctamente previo a
     // eliminarlo por completo del juego (borrarlo de memoria)

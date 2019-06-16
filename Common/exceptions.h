@@ -60,9 +60,9 @@ struct WrongProtocolException : public exception {
     }
 };
 
-struct FullGameException : public exception {
+struct CantJoinGameException : public exception {
     const char * what() const throw() override {
-        return "No es posible unirse a la partida, ya alcanzo máximo de jugadores.\n";
+        return "No es posible unirse a la partida.\n";
     }
 };
 

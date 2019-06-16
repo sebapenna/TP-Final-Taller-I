@@ -7,6 +7,17 @@
 #include "Stage.h"
 #include "Player.h"
 
+#define HOW_TO_BEGIN_MSG "Partida creada. Ingrese 0 cuando desee comenzar.\n"
+#define WAIT_FOR_BEGIN_MSG  "Se a unido a la partida, espere a que owner la inicie.\n"
+
+#define NEW_PLAYER_ADDED_MSG    "Nuevo jugador agregado a la partida\n"
+#define PLAYER_DELETED_MSG    "Un jugador ha salido de la partida\n"
+#define NEW_OWNER_MSG   "Ahora sos el owner de la partida, ingresa 0 para comenzar la partida\n"
+#define OWNER_BEGAN_GAME   "Owner inicio la partida, comienza el envio de datos\n"
+
+#define NOTIFICATION (uint8_t)  1
+#define BEGIN_GAME  (uint8_t)   0
+
 using namespace std::chrono;
 using std::move;
 using std::ref;
@@ -30,24 +41,24 @@ void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
     for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) {deletePlayer(id);});
 }
 
-void GameThread::run(std::string map_filename) {
+void GameThread::run() {
     try {
-        Stage stage(move(map_filename));    // Creo stage en tiempo de espera al comienzo
+        Stage stage(_map_filename);    // Creo stage en tiempo de espera al comienzo
 
         // Loop esperando a que owner inicie la partida. Verifico haya jugadores conectados
         while (!_begin_game && !_empty_game && !_game_finished) {
-            // todo: un sleep_for?
+            std::this_thread::sleep_for(seconds(20));
             auto event = _events_queue.getTopAndPop();
             if (event != nullptr)
                 switch (event->getProtocolId()) {
                     case PROTOCOL_QUIT: // Jugador que salio de la partida
                         deletePlayer(event->getPlayerId()); // Elimino jugador de la partida
-                        // todo: NOTIFY_PLAYERS && NOTIFY_NEW_OWNER
                         break;
                     case PROTOCOL_BEGIN:
-                        if (event->getPlayerId() == 0)  // Solo owner puede iniciar partida
+                        if (event->getPlayerId() == 0) {  // Solo owner puede iniciar partida
                             _begin_game = true;
-                        // todo: NOTIFY_OWNER_BEGAN_GAME => CLIENTE EMPIEZA A LEER DTOS
+                            notifyOwnerBeganGame();
+                        }
                         break;
                 }
         }
@@ -115,15 +126,15 @@ void GameThread::run(std::string map_filename) {
 
 
 
-                /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
-                for (auto &player : _players) {
-                    auto dto = DTOProcessor::createBeginDTO();
-//                    try {
-                        player->send(dto);
-//                    } catch(FailedSendException& e) {   // Cliente desconectado
-//                        deletePlayer(player->id());
-//                    }
-                }
+//                /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
+//                for (auto &player : _players) {
+//                    auto dto = DTOProcessor::createBeginDTO();
+////                    try {
+//                        player->send(dto);
+////                    } catch(FailedSendException& e) {   // Cliente desconectado
+////                        deletePlayer(player->id());
+////                    }
+//                }
 
 
 
@@ -153,24 +164,36 @@ void GameThread::run(std::string map_filename) {
 // Todas los atributos se deben inicializar de esta manera antes del thread para ya estar
 // disponibles cuando el  mismo comienze su ejecucion y no haya invalid reads
 GameThread::GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
-        const size_t &id) : _game_finished(false), _empty_game(false), _begin_game(false),
-        _dead_thread(false), _max_players(max_players), _id(id),
-        _gameloop(&GameThread::run, this, move(map_filename)) {
-    addPlayerIfNotFull(new_player);
+        const size_t &id) : _map_filename(move(map_filename)), _game_finished(false),
+        _empty_game(false), _begin_game(false), _dead_thread(false), _max_players(max_players),
+        _id(id), _gameloop(&GameThread::run, this) {
+    addPlayerIfOpenToNewPlayersAndNotFull(new_player);
 }
 
-bool GameThread::addPlayerIfNotFull(Player* new_player) {
+bool GameThread::addPlayerIfOpenToNewPlayersAndNotFull(Player *new_player) {
     lock_guard<mutex> lock(_m);
+
     // Maximo de jugadores alcanzado o partida ya comenzo
     if (_players.size() >= _max_players || _begin_game)
         return false;
     new_player->setId(_players.size());
+
+
+    if (new_player->id() != 0) {  // No notifico cuando es el primer jugador
+        new_player->notify(NOTIFICATION, WAIT_FOR_BEGIN_MSG);   // Notifico a jugador que se unio
+        notifyAllNewPlayer();
+    } else {
+        new_player->notify(NOTIFICATION, HOW_TO_BEGIN_MSG); // Mensaje como iniciar al owner
+    }
+
     _players.push_back(new_player);
+
     return true;
 }
 
 void GameThread::deletePlayer(const size_t &id) {
     lock_guard<mutex> lock(_m);
+
     _players.remove_if([this, &id](Player* p) {
         if (!_begin_game && p->id() > id) {
             // Actualizo ids mientras busco elemento, en caso de juego aun no inciado
@@ -179,6 +202,11 @@ void GameThread::deletePlayer(const size_t &id) {
         }
         return (p->id() == id) ? (p->disconnectAndJoin(), delete p, p = nullptr, true) : false;
     });
+
+    notifyAllDeletedPlayer();
+    if (id == 0)    // Elimine al owner, notifico al nuevo
+        notifyNewOwner();
+
     if (_players.empty()) {   // Se desconectaron todos los jugadores
         _empty_game = true;
         _game_finished = true;
@@ -204,6 +232,7 @@ bool GameThread::isDead() {
 void GameThread::endGameAndJoin() {
     _game_finished = true;
     _gameloop.join();
+
     // Una vez finalizado el gameloop elimino los jugadores
     std::for_each(_players.begin(), _players.end(), [](Player* &player) {
         player->disconnectAndJoin();
@@ -212,7 +241,43 @@ void GameThread::endGameAndJoin() {
     });
 }
 
-// todo: posible race condition ?
 bool GameThread::openToNewPlayers() {
-    return _begin_game;
+    return !_begin_game;    // Juego no comenzo
+}
+
+size_t GameThread::maxPlayers() {
+    return _max_players;
+}
+
+size_t GameThread::playersJoined() {
+    return _players.size();
+}
+
+std::string &GameThread::mapFileName() {
+    return _map_filename;
+}
+
+void GameThread::notifyAllNewPlayer() {
+    for_each(_players.begin(), _players.end(), [this] (Player* &player) {
+            player->notify(NOTIFICATION, NEW_PLAYER_ADDED_MSG);
+    });
+}
+
+void GameThread::notifyAllDeletedPlayer() {
+    for_each(_players.begin(), _players.end(), [this] (Player* &player) {
+        player->notify(NOTIFICATION, PLAYER_DELETED_MSG);
+    });
+}
+
+void GameThread::notifyNewOwner() {
+    if (!_players.empty()) {
+        auto new_owner = _players.front();
+        new_owner->notify(NOTIFICATION, NEW_OWNER_MSG);
+    }
+}
+
+void GameThread::notifyOwnerBeganGame() {
+    for_each(_players.begin(), _players.end(), [this] (Player* &player) {
+        player->notify(BEGIN_GAME, OWNER_BEGAN_GAME);
+    });
 }

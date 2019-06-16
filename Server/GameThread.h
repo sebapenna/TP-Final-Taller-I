@@ -25,10 +25,19 @@ private:
     size_t _max_players;
     size_t _id;   // id de la partida
     bool _begin_game, _game_finished, _empty_game, _dead_thread;
+    std::string _map_filename;
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
-    void run(std::string map_filename);
+    void run();
+
+    void notifyAllNewPlayer();
+
+    void notifyAllDeletedPlayer();
+
+    void notifyNewOwner();
+
+    void notifyOwnerBeganGame();
 
     void sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto);
 
@@ -39,7 +48,7 @@ public:
 
     // Une jugador a la partida en caso de que no se haya llegado al limite de jugadores.
     // Valor de retorno sera true en caso de haber sido agregado, false de lo contrario.
-    bool addPlayerIfNotFull(Player* new_player);
+    bool addPlayerIfOpenToNewPlayersAndNotFull(Player *new_player);
 
     // Elimina jugador del id indicado y libera su memoria
     void deletePlayer(const size_t& id);
@@ -58,6 +67,12 @@ public:
     void setId(const size_t &id);
 
     bool openToNewPlayers();
+
+    size_t maxPlayers();
+
+    size_t playersJoined();
+
+    std::string& mapFileName();
 };
 
 

@@ -3,6 +3,8 @@
 
 #include <string>
 #include <Common/Protocol.h>
+#include <Server/Lobby.h>
+
 
 // Handler para la conversacion entre servidor y cliente donde se define la eleccion del jugador
 // a la hora de crear o unirse a una partida, asi como la configuracion en el caso de decidir
@@ -14,7 +16,7 @@ struct HandshakeHandler {
     // Retorna par con cantidad maxima de jugadores y nombre del mapa
     static std::pair<size_t, std::string> createGame(Protocol &connection);
 
-    static size_t joinGame(Protocol &connection);
+    static size_t joinGame(Protocol &connection, Lobby &lobby);
 
     static void getOptionsAndChoose(Protocol &connection);
 };

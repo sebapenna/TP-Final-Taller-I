@@ -4,10 +4,6 @@
 #include "Lobby.h"
 #include "Common/HandshakeHandler.h"
 
-#define HOW_TO_BEGIN_MSG "Partida creada. Ingrese 0 cuando desee comenzar.\n"
-
-#define HOW_TO_REFRESH_MSG "Ingrese l para actualizar listado de partidas abiertas.\n";
-
 #define CREATE_GAME  (uint8_t) 0
 #define JOIN_GAME    (uint8_t) 1
 
@@ -18,33 +14,20 @@ using std::move;
 using std::shared_ptr;
 using std::ref;
 
-SafeQueue<shared_ptr<Event>>& Player::joinGame(Lobby &lobby) {
-//    _connection << HOW_TO_REFRESH_MSG;
-//    uint8_t refresh;
-//    _connection >> refresh;
-//    while (refresh != REFRESH)
-//        errorLoop(refresh);
-
-
-    // while events_que != nullptr
-    // joinGameIfNotFull => catch FullGameException
-}
-
-SafeQueue<shared_ptr<Event>>& Player::createGame(Lobby &lobby) {
-    auto pair = HandshakeHandler::createGame(ref(_connection));
-    return ref(lobby.createGame(this, pair.first, std::move(pair.second)));
-}
-
 SafeQueue<shared_ptr<Event>>& Player::handshake(Lobby &lobby) {
     auto player_choice = HandshakeHandler::getPlayerChoice(ref(_connection));
     if (player_choice == CREATE_GAME) {
-        auto queue = ref(createGame(ref(lobby)));
-        _connection << HOW_TO_BEGIN_MSG;    // Envio mensaje con informacion para iniciar
+        auto choices = HandshakeHandler::createGame(ref(_connection));
+        auto queue = ref(lobby.createGame(this, choices.first, std::move(choices.second)));
         return ref(queue);
     } else {
-        auto queue = ref(joinGame(ref(lobby)));
-        _connection << HOW_TO_REFRESH_MSG;  // Envio mensaje con informacion para ver partidas
-        return std::ref(joinGame(std::ref(lobby)));
+        while (true) { // Loop finaliza cuando se pudo unir jugador a una partida
+            try {
+                auto game_to_join_id = HandshakeHandler::joinGame(ref(_connection), ref(lobby));
+                auto queue = ref(lobby.joinGameIfOpenAndNotFull(this, game_to_join_id));
+                return ref(queue);
+            } catch (CantJoinGameException &e) { }  // No se pudo unir a la partida
+        }
     }
 }
 
@@ -90,6 +73,11 @@ void Player::disconnectAndJoin() {
     _connected = false;
     _connection.disconnect();
     _receiver_thread.join();
+}
+
+void Player::notify(const uint8_t &command, const std::string &msg) {
+    _connection << msg;
+    _connection << command;
 }
 
 

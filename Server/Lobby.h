@@ -11,7 +11,11 @@
 
 class Player;
 
-// Servidor que acepta conexiones
+// Servidor que acepta conexiones. Las nuevas partidas se crean con id icremental a medida que
+// aumenta el numero de partidas. Se cuenta con un thread que transcurrido un cierto tiempo se
+// encarga de eliminar GameThreads cuya ejecucion haya finalizado. Se tiene un registro de
+// aquelos jugadores que aun no hayan sido agregados a partidas y se encuentren conectados para
+// poder liberar su memoria en caso de cerrar el servidor.
 class Lobby {
 private:
     std::mutex _m;
@@ -21,6 +25,7 @@ private:
     std::vector<std::shared_ptr<GameThread>> _games;
     std::thread _game_eraser_thread;    // Thread que elimina partidas terminadas
     size_t _next_player_id; // Id a asignar a nuevos jugadores hasta que se unan a partida
+    size_t _next_game_id; // Id a asignar a nuevas partidas para diferenciarlas al unirse
     std::vector<Player*> _players_in_lobby;    // Jugadores que todavia no entraron a partida
     bool _connection_closed;
 
@@ -39,12 +44,10 @@ public:
 
     // Une el jugador a la partida del id indicado y retorna la cola de eventos de dicha partida.
     // En caso de no haber podido unir al jugador se retorna nullptr
-    SafeQueue<std::shared_ptr<Event>> &joinGameIfNotFull(Player *player, const size_t &game_id);
+    SafeQueue<std::shared_ptr<Event>> &joinGameIfOpenAndNotFull(Player *p, const size_t &game_id);
 
-    // Game_id / Max_players / Players_added / Map_name
+    // GameId - MaxPlayers - PlayersAdded - MapName
     std::vector<std::tuple<size_t, size_t, size_t, std::string>> getOpenGamesInformation();
-
-//    bool gamesLimitReached();
 };
 
 

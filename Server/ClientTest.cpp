@@ -61,123 +61,114 @@ int main(int argc, char const *argv[]) {
         Protocol prot(argv[IP_POS], argv[PORT_POS]);
         cout << "Conexion establecida"<<endl;
 
-
         HandshakeHandler::getOptionsAndChoose(std::ref(prot));
-
-        cout << "Enviando BeginDTO..."<<endl;
-        shared_ptr<ProtocolDTO> pdto(new BeginDTO());
-        prot << *pdto.get();
-        cout << "Enviado"<<endl;
-
-        shared_ptr<ProtocolDTO> dto_ptr;
-        prot >> dto_ptr;
-
-        cout << "Recibiendo configuracion incial..." << endl;
-        while (dto_ptr->getClassId() != PROTOCOL_BEGIN) {
-            switch (dto_ptr->getClassId()) {
-                case PROTOCOL_ROCK_BLOCK_DATA:
-                    cout << "ROCK BLOCK" << endl;
-                    break;
-                case PROTOCOL_METAL_BLOCK_DATA:
-                    cout << "METAL BLOCK" << endl;
-                    break;
-                case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA:
-                    cout << "METAL_DIAGONAL BLOCK" << endl;
-                    break;
-                case PROTOCOL_ENERGY_TRANSMITTER_DATA:
-                    cout << "ENERGY TRANSMITTER" << endl;
-                    break;
-                case PROTOCOL_ENERGY_RECEIVER_DATA:
-                    cout << "ENERGY RECEIVER" << endl;
-                    break;
-                case PROTOCOL_ACID_DATA:
-                    cout << "ACID" << endl;
-                    break;
-                case PROTOCOL_BUTTON_DATA:
-                    cout << "BUTTON" << endl;
-                    break;
-                case PROTOCOL_GATE_DATA:
-                    cout << "GATE" << endl;
-                    break;
-                case PROTOCOL_ENERGY_BARRIER_DATA:
-                    cout << "ENERGY_BARRIER" << endl;
-                    break;
-                case PROTOCOL_CHELL_DATA:
-                    cout << "CHELL" << endl;
-                    break;
-                case PROTOCOL_ROCK_DATA:
-                    cout << "ROCK" << endl;
-                    break;
-                case PROTOCOL_PLAYER_CHELL_ID:
-                    cout << "PLAYER CHELL ID" << endl;
-                    break;
+        std::thread input([&]() {    // Thread para cerrar servidor
+            char c;
+            do {
+                std::cin.get(c);
+            } while (c != 's');
+            cout << "Enviando BeginDTO..."<<endl;
+            shared_ptr<ProtocolDTO> pdto(new BeginDTO());
+            prot << *pdto.get();
+            cout << "Enviado"<<endl;
+        });
+        try {
+            std::string msg;
+            uint8_t command = 1;
+            while (command != 0) {
+                prot >> msg;
+                std::cout << msg;
+                prot >> command;
             }
+
+
+            shared_ptr<ProtocolDTO> dto_ptr;
             prot >> dto_ptr;
-        }
-        cout << "Comienza partida" << endl;
+
+            cout << "Recibiendo configuracion incial..." << endl;
+            while (dto_ptr->getClassId() != PROTOCOL_BEGIN) {
+                switch (dto_ptr->getClassId()) {
+                    case PROTOCOL_ROCK_BLOCK_DATA:
+                        cout << "ROCK BLOCK" << endl;
+                        break;
+                    case PROTOCOL_METAL_BLOCK_DATA:
+                        cout << "METAL BLOCK" << endl;
+                        break;
+                    case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA:
+                        cout << "METAL_DIAGONAL BLOCK" << endl;
+                        break;
+                    case PROTOCOL_ENERGY_TRANSMITTER_DATA:
+                        cout << "ENERGY TRANSMITTER" << endl;
+                        break;
+                    case PROTOCOL_ENERGY_RECEIVER_DATA:
+                        cout << "ENERGY RECEIVER" << endl;
+                        break;
+                    case PROTOCOL_ACID_DATA:
+                        cout << "ACID" << endl;
+                        break;
+                    case PROTOCOL_BUTTON_DATA:
+                        cout << "BUTTON" << endl;
+                        break;
+                    case PROTOCOL_GATE_DATA:
+                        cout << "GATE" << endl;
+                        break;
+                    case PROTOCOL_ENERGY_BARRIER_DATA:
+                        cout << "ENERGY_BARRIER" << endl;
+                        break;
+                    case PROTOCOL_CHELL_DATA:
+                        cout << "CHELL" << endl;
+                        break;
+                    case PROTOCOL_ROCK_DATA:
+                        cout << "ROCK" << endl;
+                        break;
+                    case PROTOCOL_PLAYER_CHELL_ID:
+                        cout << "PLAYER CHELL ID" << endl;
+                        break;
+                }
+                prot >> dto_ptr;
+            }
+            cout << "Comienza partida" << endl;
 
 
-        pdto = std::make_shared<MoveRightDTO>();
-        cout << "Enviando MoveRightDTO..."<<endl;
-        prot << *pdto.get();
-        cout << "Enviado"<<endl;
-        receiveData(prot, pdto);
+            shared_ptr<ProtocolDTO> pdto = std::make_shared<MoveRightDTO>();
+            cout << "Enviando MoveRightDTO..." << endl;
+            prot << *pdto.get();
+            cout << "Enviado" << endl;
+            receiveData(prot, pdto);
 
-        pdto = std::make_shared<StopDTO>();
-        cout << "Enviando StopDTO..."<<endl;
-        prot << *pdto.get();
-        cout << "Enviado"<<endl;
-        receiveData(prot, pdto);
+            pdto = std::make_shared<StopDTO>();
+            cout << "Enviando StopDTO..." << endl;
+            prot << *pdto.get();
+            cout << "Enviado" << endl;
+            receiveData(prot, pdto);
 
-        pdto = std::make_shared<MoveLeftDTO>();
-        cout << "Enviando MoveLeftDTO..."<<endl;
-        prot << *pdto.get();
-        cout << "Enviado"<<endl;
-        receiveData(prot, pdto);
+            pdto = std::make_shared<MoveLeftDTO>();
+            cout << "Enviando MoveLeftDTO..." << endl;
+            prot << *pdto.get();
+            cout << "Enviado" << endl;
+            receiveData(prot, pdto);
 
-        pdto = std::make_shared<StopDTO>();
-        cout << "Enviando StopDTO..."<<endl;
-        prot << *pdto.get();
-        cout << "Enviado"<<endl;
-        receiveData(prot, pdto);
-
-
-        pdto = std::make_shared<JumpDTO>();
-        cout << "Enviando JumpDTO..."<<endl;
-        prot << *pdto.get();
-        cout << "Enviado"<<endl;
-        receiveData(prot, pdto);
+            pdto = std::make_shared<StopDTO>();
+            cout << "Enviando StopDTO..." << endl;
+            prot << *pdto.get();
+            cout << "Enviado" << endl;
+            receiveData(prot, pdto);
 
 
-        pdto = std::make_shared<QuitDTO>();
-        cout << "Enviando QuitDTO para terminar partida..."<<endl;
-        prot << *pdto.get();
-        cout << "Enviado"<<endl;
+            pdto = std::make_shared<JumpDTO>();
+            cout << "Enviando JumpDTO..." << endl;
+            prot << *pdto.get();
+            cout << "Enviado" << endl;
+            receiveData(prot, pdto);
 
 
+            pdto = std::make_shared<QuitDTO>();
+            cout << "Enviando QuitDTO para terminar partida..." << endl;
+            prot << *pdto.get();
+            cout << "Enviado" << endl;
+        } catch (...) {input.join();}
 
-
-//        prot >> p;
-//        auto dto = (ChellDTO*) p.get();
-//        cout << endl<<"Se recibio Protocolo de ID: " << dto->getClassId();
-//        cout << endl<<"ID: "<<dto->getId();
-//        cout << endl<<"X: "<<dto->getX();
-//        cout << endl<<"Y: "<<dto->getY();
-//        cout << endl<<"WIDTH: "<<dto->getWidth();
-//        cout << endl<<"HEIGHT: "<<dto->getHeight();
-//        cout << endl<<"DIRECTION: "<<dto->getDirection();
-//        cout << endl<<"TILTED: "<<dto->getTilted();
-//        cout << endl<<"MOVING: "<<dto->getMoving();
-//        cout << endl<<"JUMPING: "<<dto->getJumping();
-//        cout << endl<<"SHOOTING: "<<dto->getShooting();
-//        cout << endl<<"CARRYING: "<<dto->getCarryingRock();
-//        cout << endl<<"DELETE: "<<dto->getDeleteState()<<endl;
-
-//        pdto.reset();   // Limpio shared_ptr
-//        pdto = std::make_shared<ShootPortalDTO>(BLUE_PORTAL, 5, 15);
-//        cout << "Enviando ShootPortalDTO..."<<endl;
-//        prot << *pdto.get();
-//        cout << "Enviado"<<endl;
+        input.join();
     } catch(const exception& e) {
         cout << e.what();
         return ERROR;

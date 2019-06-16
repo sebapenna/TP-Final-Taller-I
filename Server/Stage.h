@@ -18,7 +18,7 @@ private:
     std::vector<ChellData> _available_chells;
 
 public:
-    explicit Stage(std::string &&config_file);
+    explicit Stage(std::string &config_file);
 
     ~Stage();
 
