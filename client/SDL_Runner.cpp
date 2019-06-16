@@ -244,7 +244,6 @@ void SDL_Runner::run() {
                         world.activateReceiver(energyReceiverActivateDTO->getId());
                         break;
                     }
-                    
                 }
             }
             timeAccumulatedMs -= timeStepMs;

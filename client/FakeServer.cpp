@@ -17,6 +17,7 @@
 #include <Common/ProtocolTranslator/EnergyBarrierDTO.h>
 #include <Common/ProtocolTranslator/EnergyReceiverActivateDTO.h>
 #include <Common/ProtocolTranslator/EnergyReceiverDTO.h>
+#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 
@@ -64,6 +65,8 @@ void FakeServer::run() {
     std::shared_ptr<ProtocolDTO>dto19(new MetalDiagonalBlockDTO(-10, 4, 4, O_NO));
     safeQueue.push(dto19);
 
+    std::shared_ptr<ProtocolDTO>dto999(new BeginDTO());
+    safeQueue.push(dto999);
     while (!done) {
         auto protocolDTO = blockingQueue.getTopAndPop();
         if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_LEFT) {
@@ -72,22 +75,23 @@ void FakeServer::run() {
             std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
 
-            std::shared_ptr<ProtocolDTO>dto11(new GateStateDTO(1, OPEN));
+            /*std::shared_ptr<ProtocolDTO>dto11(new GateStateDTO(1, OPEN));
             std::shared_ptr<ProtocolDTO>dto10(new ButtonStateDTO(1, PRESSED));
             safeQueue.push(dto10);
-            safeQueue.push(dto11);
+            safeQueue.push(dto11);*/
+
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_RIGHT) {
             x+=1;
             std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, EAST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
 
-            std::shared_ptr<ProtocolDTO>dto10(new GateStateDTO(1, CLOSED));
+            /*std::shared_ptr<ProtocolDTO>dto10(new GateStateDTO(1, CLOSED));
             safeQueue.push(dto10);
             std::shared_ptr<ProtocolDTO>dto11(new ButtonStateDTO(1, NOT_PRESSED));
             safeQueue.push(dto11);
 
             std::shared_ptr<EnergyReceiverActivateDTO>dto99(new EnergyReceiverActivateDTO(1));
-            safeQueue.push(dto99);
+            safeQueue.push(dto99);*/
             //safeQueue.push((void *) new ButtonStateDTO(1, NOT_PRESSED));
         } else if (protocolDTO.get()->getClassId() == PROTOCOL_STOP) {
             std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));

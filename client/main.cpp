@@ -56,14 +56,15 @@ int main(int argc, char** argv){
         ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;
         SafeQueue<std::shared_ptr<ProtocolDTO>> safeQueue;
 
+        ClientSender clientSender(protocol, blockingQueue, done);
+        clientSender.start();
+
+        ClientReceiver clientReceiver(protocol, safeQueue, done);
+        clientReceiver.start();
+
         SDL_Runner sdlRunner(title, safeQueue, done);
         sdlRunner.start();
 
-        ClientSender clientSender(protocol, blockingQueue, done);
-        clientSender.run();
-
-        ClientReceiver clientReceiver(protocol, safeQueue, done);
-        clientReceiver.run();
 
         /*FakeServer server(blockingQueue, safeQueue, done);
         server.start();*/
@@ -118,7 +119,7 @@ int main(int argc, char** argv){
         clientSender.join();
         clientReceiver.join();
 
-        /*server.join();*/
+        //server.join();
 
         return 0;
     } catch (std::exception& e) {
