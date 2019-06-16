@@ -91,7 +91,7 @@ bool Chell::movementAlreadyApplied() {
         return true;
     if (_move_state == MOVE_LEFT && vel_x < 0)  // Moviendo hacia izquierda
         return true;
-    return (_move_state == MOVE_STOP && vel_x == 0);    // Cuerpo quieto
+    return (_move_state == MOVE_STOP && vel_x == 0 && !_hit_wall);    // Cuerpo quieto
 }
 
 int Chell::calculateXImpulse() {
@@ -109,8 +109,10 @@ int Chell::calculateXImpulse() {
             (vel_x > 0) ? (impulse_factor = -2) : (impulse_factor = -1);
             break;
         case MOVE_STOP:
-//            if (_jump_state == ON_GROUND) // Verifico que no este en aire
-                (vel_x > 0) ? (impulse_factor = -1) : (impulse_factor = 1);
+            if (vel_x > 0)
+                impulse_factor = -1;
+            else if (vel_x < 0)
+                impulse_factor = 1;
             break;
         default: // No existe este caso
             break;
@@ -130,10 +132,6 @@ void Chell::move() {
     updateJumpState();
 }
 
-const uint8_t Chell::getClassId() {
-    return CHELL;
-}
-
 void Chell::collideWith(Collidable *other) {
     auto cname = other->getClassId();
     if (cname == ROCK ) {
@@ -144,10 +142,10 @@ void Chell::collideWith(Collidable *other) {
             _dead = true;
     } else if (cname == ACID || cname == ENERGY_BALL) {
         _dead = true;
-    } else if (cname == METAL_DIAGONAL_BLOCK) {
+    } else if (cname == METAL_DIAGONAL_BLOCK) { // todo: falla si choca lado plano?
         auto block = (MetalDiagonalBlock*) other;
         switch (block->getOrientation()) {
-            case O_NE:
+            case O_NE:  //todo: para ver si pego en lado diagonal evaluar velocidad !
                 _tilt = EAST;
                 break;
             case O_NO:
@@ -156,12 +154,18 @@ void Chell::collideWith(Collidable *other) {
             default:    // Chell no se inclina
                 break;
         }
+    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK) {
+        _hit_wall = true;
+        _move_state = MOVE_STOP;    // Freno cuando colisiona con bloque (saltando o caminando)
     }
 }
 
 void Chell::endCollitionWith(Collidable *other) {
     if (other->getClassId() == METAL_DIAGONAL_BLOCK)
         _tilt = NOT_TILTED;   // Deja de caminar en diagonal
+    else if (other->getClassId() == ROCK_BLOCK || other->getClassId() == METAL_BLOCK)
+        _hit_wall = false;
+
 }
 
 bool Chell::actedDuringStep() {
@@ -177,6 +181,8 @@ bool Chell::actedDuringStep() {
         _previous_y = _body->GetPosition().y;
         return true;
     }
+    if (_hit_wall)
+        return true;
     if (_previous_tilt != _tilt) {
         _previous_tilt = _tilt;
         return true;
@@ -218,5 +224,9 @@ uint8_t Chell::movementDirection() {
 
 bool Chell::isCarryingRock() {
     return _carrying_rock;
+}
+
+const uint8_t Chell::getClassId() {
+    return CHELL;
 }
 

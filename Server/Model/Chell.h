@@ -16,6 +16,7 @@ private:
     int16_t _tilt, _previous_tilt; // Guardo estado previo para identificar cambio
     bool _carrying_rock = false, _previously_carrying = false;
     bool _shooting = false;
+    bool _hit_wall = false;
 
     // Evita volver a aplicar un impulso en el mismo sentido
     bool movementAlreadyApplied();
