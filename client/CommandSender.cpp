@@ -19,6 +19,7 @@ void CommandSender::run() {
         if (c == START_GAME) {
             std::shared_ptr<ProtocolDTO> dto(new BeginDTO()); // Asi no hago el free
             protocol << *dto.get();
+            done = true;
         } else if (c == QUIT_GAME) {
             std::shared_ptr<ProtocolDTO> dto(new QuitDTO()); // Asi no hago el free
             protocol << *dto.get();

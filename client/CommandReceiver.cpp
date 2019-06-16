@@ -15,9 +15,8 @@ void CommandReceiver::run() {
         protocol >> msg;
         uint8_t server_command = -1;
         protocol >> server_command;
-        if (server_command == 0) {
+        if (server_command == 0)
             done = true;
-        }
         std::cout << msg;
     }
 }

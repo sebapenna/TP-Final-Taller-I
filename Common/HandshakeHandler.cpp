@@ -232,7 +232,6 @@ void HandshakeHandler::getOptionsAndChoose(Protocol &connection) {
     if (choice == CREATE_GAME) {
         choiceLoop(ref(connection), choice);    // Selecciono maximo jugadores
         choiceLoop(ref(connection), choice);    // Selecciono mapa
-
     } else {    // Join
         int16_t refresh;
         refreshLoop(ref(connection), refresh);
