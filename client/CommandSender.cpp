@@ -6,8 +6,8 @@
 #include <Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h>
 #include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
 #include "CommandSender.h"
-#define START_GAME 0
-#define QUIT_GAME 1
+#define START_GAME 's'
+#define QUIT_GAME 'q'
 CommandSender::CommandSender(Protocol &protocol, bool &done, bool& user_quit) :
                 protocol(protocol), done(done), user_quit(user_quit) {
 }

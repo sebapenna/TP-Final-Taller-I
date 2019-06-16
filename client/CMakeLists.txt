@@ -72,7 +72,7 @@ add_executable (sdl-hello
 
 
 
-target_link_libraries(sdl-hello sdldemo common-src SDL2 SDL2_image pthread SDL2_mixer)
+target_link_libraries(sdl-hello sdldemo portal-src common-src SDL2 SDL2_image pthread SDL2_mixer)
 
 install(FILES assets/textures/acidAndButtons.png assets/textures/block.png assets/textures/bulletAndRock.png
         assets/textures/chell.png assets/textures/gates.png assets/backgroundImage/background.png DESTINATION ${CMAKE_BINARY_DIR})

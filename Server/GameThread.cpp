@@ -7,12 +7,13 @@
 #include "Stage.h"
 #include "Player.h"
 
-#define HOW_TO_BEGIN_MSG "Partida creada. Ingrese 0 cuando desee comenzar.\n"
-#define WAIT_FOR_BEGIN_MSG  "Se a unido a la partida, espere a que owner la inicie.\n"
+#define HOW_TO_BEGIN_MSG "Partida creada. Ingrese 's' cuando desee comenzar o 'q' para salir.\n"
+#define WAIT_FOR_BEGIN_MSG  "Se a unido a la partida, espere a que owner la inicie. Presione 'q' "\
+"para salir.\n"
 
 #define NEW_PLAYER_ADDED_MSG    "Nuevo jugador agregado a la partida\n"
 #define PLAYER_DELETED_MSG    "Un jugador ha salido de la partida\n"
-#define NEW_OWNER_MSG   "Ahora sos el owner de la partida, ingresa 0 para comenzar la partida\n"
+#define NEW_OWNER_MSG   "Ahora sos el owner de la partida, ingresa 's' para comenzar la partida\n"
 #define OWNER_BEGAN_GAME   "Owner inicio la partida, comienza el envio de datos\n"
 
 #define NOTIFICATION (uint8_t)  1
