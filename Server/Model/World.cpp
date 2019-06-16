@@ -418,6 +418,7 @@ void World::createChell(const float &x, const float &y) {
             CHELL_DENSITY);
     auto chell = new Chell(_chells.size(), body);
     body->SetUserData(chell);
+    body->SetGravityScale(5);   // No permite que cuerpo flote tanto tiempo en el aire
     _chells.push_back(chell);
 }
 

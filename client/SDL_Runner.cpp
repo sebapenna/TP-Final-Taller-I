@@ -180,14 +180,14 @@ void SDL_Runner::run() {
                         world.addChell(chell2);
                         if (newChell->getDeleteState() == DELETE) {
                             world.setChellState(newChell->getId(), ChellState::dying);
+                        } else if (newChell->getJumping() == JUMPING) {
+                            world.setChellState(newChell->getId(), ChellState::flying);
                         } else if (newChell->getMoving()) {
                             if (newChell->getDirection() == O_O) {
                                 world.setChellState(newChell->getId(), ChellState::runningLeft);
                             } else {
                                 world.setChellState(newChell->getId(), ChellState::runningRight);
                             }
-                        } else if (newChell->getJumping() == JUMPING) {
-                            world.setChellState(newChell->getId(), ChellState::flying);
                         } else {
                             world.setChellState(newChell->getId(), ChellState::standing);
                         }

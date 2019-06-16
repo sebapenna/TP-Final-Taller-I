@@ -27,15 +27,15 @@
 
 /* Box2D */
 #define GRAVITY_X   0.0f
-#define GRAVITY_Y   -20.0f
-#define TIME_STEP   (float32) (1.0f / 60.0f)
+#define GRAVITY_Y   -10.0f
+#define TIME_STEP   (float32) (1.0f / 30.0f)
 #define VELOCITY_ITERATIONS 8
 #define POSTION_ITERATIONS  3
 #define STEP_ITERATIONS (1 / TIME_STEP)
 
 /* Movimiento */
-#define MOVE_FORCE  500
-#define JUMP_FORCE  240
+#define MOVE_FORCE  1500
+#define JUMP_FORCE  /*1250*/2000
 #define MOVE_LEFT   (uint8) 0
 #define MOVE_RIGHT  (uint8) 1
 #define MOVE_STOP   (uint8) 2
@@ -50,7 +50,7 @@
 /* Configuracion Chell */
 #define CHELL_HALF_WIDTH  HALF_BOX_LEN
 #define CHELL_HALF_HEIGHT  HALF_BOX_LEN
-#define CHELL_DENSITY   1
+#define CHELL_DENSITY   5
 
 /* Coniguracion Rock */
 #define ROCK_HALF_LEN  2    // Largo de medio lado de la roca (cuerpo cuadrado)

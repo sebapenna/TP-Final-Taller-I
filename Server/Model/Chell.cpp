@@ -75,7 +75,7 @@ void Chell::updateJumpState() {
                 _jump_state = FALLING;
             break;
         case JUMPED:
-            if (vel_y <= 0) // Empieza a caer
+            if (vel_y <= 0)  // Empieza a caer
                 _jump_state = FALLING;
             break;
         case FALLING:
