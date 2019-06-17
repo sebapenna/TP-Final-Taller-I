@@ -28,7 +28,7 @@
 /* Box2D */
 #define GRAVITY_X   0.0f
 #define GRAVITY_Y   -10.0f
-#define TIME_STEP   (float32) (1.0f / 30.0f)
+#define TIME_STEP   (float) (1.0f / 30.0f)
 #define VELOCITY_ITERATIONS 8
 #define POSTION_ITERATIONS  3
 #define STEP_ITERATIONS (1 / TIME_STEP)
@@ -42,7 +42,7 @@
 #define JUMPED (uint8) 0
 #define ON_GROUND (uint8)   1
 #define FALLING (uint8)  2
-#define DELTA_Y_VEL 0.001    // Error de velocidad por caida de cuerpos al suelo
+#define DELTA_VEL 0.001    // Error de velocidad en movimiento de cuerpos
 #define DELTA_POS   (float) 0.02    // Error posicion (x e y)
 
 #define HALF_BOX_LEN 2
@@ -51,19 +51,20 @@
 #define CHELL_HALF_WIDTH  HALF_BOX_LEN
 #define CHELL_HALF_HEIGHT  HALF_BOX_LEN
 #define CHELL_DENSITY   5
+#define CHELL_GRAVITY_SCALE 5
 
 /* Coniguracion Rock */
 #define ROCK_HALF_LEN  2    // Largo de medio lado de la roca (cuerpo cuadrado)
-#define ROCK_DENSITY    1
+#define ROCK_DENSITY    1000000
 
 /* Coniguracion Acid */
 #define ACID_HALF_WIDTH  HALF_BOX_LEN
-#define ACID_HALF_HEIGHT  (ACID_HALF_WIDTH / 4)
+#define ACID_HALF_HEIGHT  1
 #define ACID_FRICTION    100    // Cuerpo se frene en acido
 
 /* Configuracion Button */
 #define BUTTON_HALF_WIDTH  HALF_BOX_LEN
-#define BUTTON_HALF_HEIGHT  0.5
+#define BUTTON_HALF_HEIGHT  1
 #define BUTTON_FRICTION    0
 
 #define NOT_ACTIVATED   (uint8_t) 0
@@ -86,6 +87,7 @@
 #define ENERGY_BALL_MAX_LIFETIME 5
 
 /* Configuracion Bloques */
+#define METAL_DIAG_BLOC_FRICTION    100
 #define BLOCK_FRICTION  0
 #define BLOCK_DENSITY   1
 

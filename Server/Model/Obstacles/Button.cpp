@@ -1,14 +1,15 @@
 #include <Server/Model/Collidable.h>
+#include <iostream>
 #include "Button.h"
 
 Button::Button(const size_t &id, const float& x, const float& y) : _id(id), _x(x), _y(y) { }
 
 void Button::activate() {
-    _state = ACTIVATED;
+    ++_bodies_on_it;
 }
 
 void Button::deactivate() {
-    _state = NOT_ACTIVATED;
+    --_bodies_on_it;
 }
 
 bool Button::isActivated() {
@@ -16,14 +17,11 @@ bool Button::isActivated() {
 }
 
 void Button::updateState() {
-    switch (_state) {
-        case ACTIVATED:
-            _activated = true;
-            break;
-        case NOT_ACTIVATED:
-            _activated = false;
-            break;
-    }
+    _activated = _bodies_on_it > 0;
+    if (_activated)
+        _state = ACTIVATED;
+    else
+        _state = NOT_ACTIVATED;
 }
 
 size_t Button::getId() const {
@@ -37,13 +35,13 @@ const uint8_t Button::getClassId() {
 void Button::collideWith(Collidable *other) {
     auto c_name = other->getClassId();
     if (c_name == ROCK || c_name == CHELL)
-        this->activate();
+        activate();
 }
 
 void Button::endCollitionWith(Collidable *other) {
     auto c_name = other->getClassId();
     if (c_name == ROCK || c_name == CHELL)
-        this->deactivate();
+        deactivate();
 }
 
 bool Button::actedDuringStep() {

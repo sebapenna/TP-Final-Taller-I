@@ -139,11 +139,6 @@ void World::stepEnergyTransmitters() {
     }
 }
 
-//template <class T>  // Libera memoria de entidades con capacidad de morir
-//bool deleted(T* ptr) {
-//    return ptr->isDead() ? (delete ptr, ptr = nullptr, true) : false;
-//}
-
 void World::stepChells() {
     for (int i = 0; i < _chells.size(); ++i) {
         auto chell = _chells[i];
@@ -160,7 +155,6 @@ void World::stepChells() {
             }
         }
     }
-//    _chells.erase(remove_if(_chells.begin(), _chells.end(), deleted<Chell>), _chells.end());
 }
 
 void World::stepEnergyBalls() {
@@ -178,8 +172,6 @@ void World::stepEnergyBalls() {
             }
         }
     }
-//    _energy_balls.erase(remove_if(_energy_balls.begin(), _energy_balls.end(), deleted<EnergyBall>),
-//            _energy_balls.end());
 }
 
 void World::stepRocks() {
@@ -196,7 +188,6 @@ void World::stepRocks() {
             }
         }
     }
-//    _rocks.erase(remove_if(_rocks.begin(), _rocks.end(), deleted<Rock>), _rocks.end());
 }
 
 /************************ Create Bodies ************************/
@@ -226,7 +217,6 @@ b2Body *World::createDynamicBox(const float &x, const float &y,
     b2BodyDef body_def;
     body_def.position.Set(x, y);
     body_def.type = b2_dynamicBody;
-//    body_def.fixedRotation = false;
     body_def.fixedRotation = true;
 
     b2PolygonShape shape;
@@ -235,6 +225,8 @@ b2Body *World::createDynamicBox(const float &x, const float &y,
     b2FixtureDef fixture;
     fixture.shape = &shape;
     fixture.density = density;
+    fixture.friction = 0;
+    fixture.restitution = -1;   // Permite chell resbale en roca
 
     b2Body *body = _world->CreateBody(&body_def);
 
@@ -299,7 +291,7 @@ void World::createMetalDiagonalBlock(const float &width, const float &height,
 
     b2FixtureDef fixture;
     fixture.shape = &shape;
-    fixture.friction = BLOCK_FRICTION;
+    fixture.friction = METAL_DIAG_BLOC_FRICTION;
 
     body->CreateFixture(&fixture);
 
@@ -418,7 +410,7 @@ void World::createChell(const float &x, const float &y) {
             CHELL_DENSITY);
     auto chell = new Chell(_chells.size(), body);
     body->SetUserData(chell);
-    body->SetGravityScale(5);   // No permite que cuerpo flote tanto tiempo en el aire
+    body->SetGravityScale(CHELL_GRAVITY_SCALE);   // No permite que cuerpo flote tanto tiempo en el aire
     _chells.push_back(chell);
 }
 

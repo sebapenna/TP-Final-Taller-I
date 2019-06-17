@@ -11,6 +11,7 @@ private:
     bool _activated = false;
     size_t _id;
     const float _x, _y;
+    size_t _bodies_on_it = 0;   // Puede que mas de un cuerpo este en contacto con boton
 
 public:
     explicit Button(const size_t &id, const float& x, const float& y);

@@ -94,10 +94,15 @@ vector<GateData> YamlParser::loadGateData() {
         GateData data(it["id"].as<size_t>(),
                       it["x"].as<float>(),
                       it["y"].as<float>());
-        for (auto &sub_it : it["buttons_needed"].as<vector<Node>>())
-            data.addButtonNeeded(sub_it["id"].as<size_t>());
-        for (auto &sub_it : it["energy_receiver_needed"].as<vector<Node>>())
-            data.addEnergyReceiverNeeded(sub_it["id"].as<size_t>());
+        try {
+            for (auto &sub_it : it["buttons_needed"].as<vector<Node>>())
+                data.addButtonNeeded(sub_it["id"].as<size_t>());
+        } catch(...) {} // No necesita botones
+        try {
+            for (auto &sub_it : it["energy_receiver_needed"].as<vector<Node>>())
+                data.addEnergyReceiverNeeded(sub_it["id"].as<size_t>());
+        } catch(...) {} // No necesita receptores
+
         gate_data_vector.push_back(data);
     }
     return std::move(gate_data_vector);

@@ -10,6 +10,8 @@ using std::shared_ptr;
 
 void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t chell_id) {
     auto chell = world->getChell(chell_id);    // Chell con la que interactuar
+    if (!chell) // Chell no se encuentra en el mapa
+        return;
     switch (dto->getClassId()) {
         case PROTOCOL_MOVE_LEFT:
             chell->move_left();

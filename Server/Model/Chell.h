@@ -19,11 +19,17 @@ private:
     bool _hit_wall = false;
 
     // Evita volver a aplicar un impulso en el mismo sentido
-    bool movementAlreadyApplied();
+    bool movementInXAlreadyApplied();
+
+    // Evita volver a aplicar un impulso en el mismo sentido en movimiento diagonal
+    bool movementInYAlreadyApplied();
 
     void updateJumpState();
 
     int calculateXImpulse();
+
+    // Calcula impulso a aplicar en movimiento diagonal
+    int calculateYImpulse();
 
 public:
     Chell(const size_t &id, b2Body *body);

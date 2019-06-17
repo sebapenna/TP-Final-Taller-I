@@ -2,7 +2,7 @@
 world:  # Centrado en x=0, y=width/2
   width: &width  1000
   height: &height 60
-box_side_length: &length 2 # Alto/Ancho box en Box2D (metros)
+box_side_length: &length 4 # Alto/Ancho box en Box2D (metros)
 # x, y: posicion central
 block_rock:
   - width: *width  # floor
@@ -11,7 +11,7 @@ block_rock:
     y: -2
   - width: 4 # roof
     height: 4
-    x: 10
+    x: 44
     y: 2 # *height + *length/2
 #  - width: *length # right_wall
 #    height: *height
@@ -21,20 +21,20 @@ block_rock:
 #    height: *height
 #    x: -1
 #    y: 0
-#block_metal:
+block_metal:
+  - width: *length
+    height: *length
+    x: 48
+    y: 2
+  - width: *length
+    height: *length
+    x: -20
+    y: 2
+#block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuadrado)
 #  - width: *length
 #    height: *length
-#    x: 5
-#    y: 1
-#  - width: *length
-#    height: *length
-#    x: -5
-#    y: 1
-#block_metal_diagonal:
-#  - width: *length
-#    height: *length
-#    x: 10
-#    y: 1
+#    x: 50
+#    y: 0
 #    orientation: NE
 #  - width: *length
 #    height: *length
@@ -51,29 +51,29 @@ block_rock:
 #    x: -20
 #    y: 1
 #    orientation: SO
-#rock:
-#  - x: 10
-#    y: 2
+rock:
+  - x: -60
+    y: 4
 #  - x: -10
 #    y: 2
 #acid:
-#  - x: 40
+#  - x: -50
 #    y: 1
 #  - x: -40
 #    y: 1
-#button:
-#  - id: 0
-#    x: 50
-#    y: 1
+button:
+  - id: 0
+    x: -60
+    y: 1
 #  - id: 1
 #    x: -50
 #    y: 1
-#gate:
-#  - id: 0
-#    x: 60
-#    y: 1
-#    buttons_needed:
-#      - id: 0
+gate:
+  - id: 0
+    x: -50
+    y: 4
+    buttons_needed:
+      - id: 0
 #      - id: 1
 #    energy_receiver_needed:
 #      - id: 0
