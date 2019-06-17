@@ -7,15 +7,12 @@
 #include "Stage.h"
 #include "Player.h"
 
-#define HOW_TO_BEGIN_MSG "Partida creada. Ingrese 's' cuando desee comenzar o 'q' para salir.\n"
-#define WAIT_FOR_BEGIN_MSG  "Se a unido a la partida, espere a que owner la inicie. Presione 'q' "\
-"para salir.\n"
-
 #define NEW_PLAYER_ADDED_MSG    "Nuevo jugador agregado a la partida\n"
 #define PLAYER_DELETED_MSG    "Un jugador ha salido de la partida\n"
 #define NEW_OWNER_MSG   "Ahora sos el owner de la partida, ingresa 's' para comenzar la partida\n"
 #define OWNER_BEGAN_GAME   "Owner inicio la partida, comienza el envio de datos\n"
 
+#define NEW_OWNER (uint8_t)  2
 #define NOTIFICATION (uint8_t)  1
 #define BEGIN_GAME  (uint8_t)   0
 
@@ -127,16 +124,16 @@ void GameThread::run(std::string &&map_filename) {
 
 
 
-
-                /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
-                for (auto &player : _players) {
-                    auto dto = DTOProcessor::createBeginDTO();
-//                    try {
-                        player->send(dto);
-//                    } catch(FailedSendException& e) {   // Cliente desconectado
-//                        deletePlayer(player->id());
-//                    }
-                }
+//
+//                /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
+//                for (auto &player : _players) {
+//                    auto dto = DTOProcessor::createBeginDTO();
+////                    try {
+//                        player->send(dto);
+////                    } catch(FailedSendException& e) {   // Cliente desconectado
+////                        deletePlayer(player->id());
+////                    }
+//                }
 
 
 
@@ -157,8 +154,10 @@ void GameThread::run(std::string &&map_filename) {
         cout << "Partida "<<_id <<  " finalizada"<<endl;
         _dead_thread = true; // Registro que se llego al fin del thread
     } catch(const std::exception& e) {
+        _dead_thread = true; // Registro que se llego al fin del thread
         cout << e.what();
     } catch(...) {
+        _dead_thread = true; // Registro que se llego al fin del thread
         cout << UnknownException().what();
     }
 }
@@ -176,17 +175,14 @@ bool GameThread::addPlayerIfOpenToNewPlayersAndNotFull(Player *new_player) {
     lock_guard<mutex> lock(_m);
 
     // Maximo de jugadores alcanzado o partida ya comenzo
-    if (_players.size() >= _max_players || _begin_game)
+    if (_players.size() >= _max_players || _begin_game) {
+
         return false;
+    }
     new_player->setId(_players.size());
 
-
-    if (new_player->id() != 0) {  // No notifico cuando es el primer jugador
-        new_player->notify(NOTIFICATION, WAIT_FOR_BEGIN_MSG);   // Notifico a jugador que se unio
+    if (new_player->id() != 0)   // No notifico cuando es el primer jugador
         notifyAllNewPlayer();
-    } else {
-        new_player->notify(NOTIFICATION, HOW_TO_BEGIN_MSG); // Mensaje como iniciar al owner
-    }
 
     _players.push_back(new_player);
 
@@ -274,7 +270,7 @@ void GameThread::notifyAllDeletedPlayer() {
 void GameThread::notifyNewOwner() {
     if (!_players.empty()) {
         auto new_owner = _players.front();
-        new_owner->notify(NOTIFICATION, NEW_OWNER_MSG);
+        new_owner->notify(NEW_OWNER, NEW_OWNER_MSG);
     }
 }
 

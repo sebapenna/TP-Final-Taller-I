@@ -60,8 +60,6 @@ Stage::Stage(std::string &config_file) {
     vector<GateData> gates_vec;
     try {
         gates_vec = config.loadGateData();
-        std::cout << "GATE" << std::endl;
-        std::cout << gates_vec.size() << std::endl;
     } catch(...) { } // No hay compuertas
 
     // Configuracion transmisores energia

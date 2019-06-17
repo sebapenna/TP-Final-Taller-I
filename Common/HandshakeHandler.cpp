@@ -99,8 +99,10 @@ size_t HandshakeHandler::joinGame(Protocol &connection, Lobby &lobby) {
         connection >> player_choice;  // Recibo eleccion, tambien podria ser nuevo refresh
         bool wrong_id = find(game_ids.begin(), game_ids.end(), player_choice) == game_ids.end();
 
-        while (wrong_id && player_choice != REFRESH)
+        while (wrong_id && player_choice != REFRESH) {
             errorLoop(ref(connection), player_choice);
+            wrong_id = find(game_ids.begin(), game_ids.end(), player_choice) == game_ids.end();
+        }
         connection << SUCCESS;
 
         if (player_choice != REFRESH)
@@ -235,26 +237,30 @@ void joinChoiceLoop(Protocol &connection, int16_t &choice) {
     }
 }
 
-void HandshakeHandler::getOptionsAndChoose(Protocol &connection) {
+bool HandshakeHandler::getOptionsAndChoose(Protocol &connection) {
     uint8_t choice = 0;
+    std::string server_msg;
+    uint8_t server_response;
+
     choiceLoop(ref(connection), choice);    // Mensaje bienvenida y eleccion crear o unir
+
     if (choice == CREATE_GAME) {
         choiceLoop(ref(connection), choice);    // Selecciono maximo jugadores
         choiceLoop(ref(connection), choice);    // Selecciono mapa
+        connection >> server_msg;   // Recibo informacion de lo sucedido
+        std::cout << server_msg;
+        connection >> server_response;  // Recibo SUCCESS
+        return true;
     } else {    // Join
         while (true) {  // Loop finaliza una vez que se pudo agregar jugador a la partida
             int16_t refresh;
             refreshLoop(ref(connection), refresh);
             joinChoiceLoop(ref(connection), refresh);
-            uint8_t server_response;
+            connection >> server_msg;   // Recibo informacion de lo sucedido
+            std::cout << server_msg;
             connection >> server_response;  // Recibo notificacion si se pudo unir a la partida
-            if (server_response == ERROR) {
-                std::string server_msg;
-                connection >> server_msg;   // Recibo informacion de lo sucedido
-                std::cout << server_msg;
-            } else {
-                return; // Se obtuvo SUCCESS (añadido a la partida)
-            }
+            if (server_response == SUCCESS)
+                return false; // Se obtuvo SUCCESS (añadido a la partida)
         }
     }
 }

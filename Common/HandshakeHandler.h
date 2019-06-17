@@ -25,7 +25,9 @@ struct HandshakeHandler {
 
     // Metodo para el cliente (jugador). Se encarga de recibir y enviar todos los datos necesarios
     // para que un nuevo jugador cree o se una a una partida.
-    static void getOptionsAndChoose(Protocol &connection);
+    // Retorna true si el jugador creo una partida y es el owner de la misma, false si se unio a
+    // una partida existente y debe esperar al owner para comenzar.
+    static bool getOptionsAndChoose(Protocol &connection);
 };
 
 

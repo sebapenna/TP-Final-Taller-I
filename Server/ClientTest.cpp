@@ -62,6 +62,9 @@ int main(int argc, char const *argv[]) {
         cout << "Conexion establecida"<<endl;
 
         HandshakeHandler::getOptionsAndChoose(std::ref(prot));
+        std::string msg;
+        uint8_t command = 1;
+
         std::thread input([&]() {    // Thread para cerrar servidor
             char c;
             do {
@@ -72,14 +75,16 @@ int main(int argc, char const *argv[]) {
             prot << *pdto.get();
             cout << "Enviado"<<endl;
         });
+
+        while (command != 0) {
+            prot >> msg;
+            std::cout << msg;
+            prot >> command;
+        }
+
+
+
         try {
-            std::string msg;
-            uint8_t command = 1;
-            while (command != 0) {
-                prot >> msg;
-                std::cout << msg;
-                prot >> command;
-            }
 
 
             shared_ptr<ProtocolDTO> dto_ptr;

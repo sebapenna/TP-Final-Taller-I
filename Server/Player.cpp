@@ -10,6 +10,10 @@
 #define SUCCESS  (uint8_t) 1
 #define ERROR   (uint8_t) 0
 
+#define HOW_TO_BEGIN_MSG "Partida creada. Ingrese 's' cuando desee comenzar o 'q' para salir.\n"
+#define WAIT_FOR_BEGIN_MSG  "Se a unido a la partida, espere a que owner la inicie. Presione 'q' "\
+"para salir.\n"
+
 #define COULDNT_JOIN_MSG   "No puso ser agregado a la partida indicada, intentelo de nuevo\n"
 
 using std::move;
@@ -21,17 +25,20 @@ SafeQueue<shared_ptr<Event>>& Player::handshake(Lobby &lobby) {
     if (player_choice == CREATE_GAME) {
         auto choices = HandshakeHandler::createGame(ref(_connection));
         auto queue = ref(lobby.createGame(this, choices.first, std::move(choices.second)));
+        _connection << HOW_TO_BEGIN_MSG; // Mensaje como iniciar al owner
+        _connection << SUCCESS;
         return ref(queue);
     } else {
         while (true) { // Loop finaliza cuando se pudo unir jugador a una partida
             try {
                 auto game_to_join_id = HandshakeHandler::joinGame(ref(_connection), ref(lobby));
                 auto queue = ref(lobby.joinGameIfOpenAndNotFull(this, game_to_join_id));
-                _connection << SUCCESS; // Notifico al jugador que se lo unio
+                _connection << WAIT_FOR_BEGIN_MSG; // Notifico a jugador que se unio
+                _connection << SUCCESS;
                 return ref(queue);
             } catch (CantJoinGameException &e) {
-                _connection << ERROR; // Notifico al jugador que no se lo unio
                 _connection << COULDNT_JOIN_MSG;
+                _connection << ERROR; // Notifico al jugador que no se lo unio
             }
         }
     }
