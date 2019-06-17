@@ -60,11 +60,12 @@ void WorldView::addView(std::shared_ptr<View> view) {
 }
 void WorldView::addRock(std::shared_ptr<RockView> rock) {
     if (rocks.count(rock->getId())) {
-        rocks[rock->getId()]->setDestRect(rock->getDst()->x, rock->getDst()->y, rock->getDst()->w, rock->getDst()->h);
-    } else {
-        rocks[rock->getId()] = rock;
+        int pass_type = rocks[rock->getId()]->getTypeRock();
+        rock->setTypeRock(pass_type);
     }
+    rocks[rock->getId()] = rock;
 }
+
 void WorldView::addGates(std::shared_ptr<GateView> gate) {
     gates[gate->getId()] = gate;
 }
