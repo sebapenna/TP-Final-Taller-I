@@ -38,11 +38,11 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
     } else if ((cname1 == ENERGY_BALL && cname2 == ENERGY_BALL) ||
             (cname2 == ENERGY_BALL && cname1 == ENERGY_BALL)) {
         contact->SetEnabled(false);
-    } else if ((cname1 == ENERGY_BALL || cname1 == ROCK || cname1 == CHELL) && cname2 == GATE) {
+    } else if ((cname1 == ENERGY_BALL || cname1 == ROCK) && cname2 == GATE) {
         auto gate = (Gate*) coll2;
         if (gate->isOpen())
             contact->SetEnabled(false); // Bola energia pasa compuerta abierta
-    } else if ((cname2 == ENERGY_BALL || cname2 == ROCK || cname2 == CHELL) && cname1 == GATE) {
+    } else if ((cname2 == ENERGY_BALL || cname2 == ROCK) && cname1 == GATE) {
         auto gate = (Gate*) coll1;
         if (gate->isOpen())
             contact->SetEnabled(false); // Bola energia pasa compuerta abierta
@@ -56,5 +56,17 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
         coll2->collideWith(coll1);
     } else if (cname1 == CHELL && cname2 == ROCK) {
         coll1->collideWith(coll2);
+    } else if (cname1 == CHELL && cname2 == GATE) {
+        auto gate = (Gate*) coll2;
+        if (gate->isOpen())
+            contact->SetEnabled(false);
+        else
+            coll1->collideWith(coll2);
+    } else if (cname2 == CHELL && cname1 == GATE) {
+        auto gate = (Gate*) coll1;
+        if (gate->isOpen())
+            contact->SetEnabled(false);
+        else
+            coll2->collideWith(coll1);
     }
 }

@@ -71,7 +71,7 @@ SafeQueue<shared_ptr<Event>> &Lobby::createGame(Player* player, const size_t &n_
     // se ve afectada, tan solo la creacion del Thread.
     std::lock_guard<std::mutex> lock(_m);
     // Id de la partida sera en base al tamaño del vector
-    auto game = std::make_shared<GameThread>(player, n_players, move(map_filename), _next_game_id);
+    auto game = std::make_shared<GameThread>(player, n_players, map_filename, _next_game_id);
     ++_next_game_id; // Actualizo proximo id
 
     // Elimino player del lobby

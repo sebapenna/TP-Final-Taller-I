@@ -11,7 +11,7 @@ block_rock:
     y: -2
   - width: 4 # roof
     height: 4
-    x: 44
+    x: 30
     y: 2 # *height + *length/2
 #  - width: *length # right_wall
 #    height: *height
@@ -24,18 +24,18 @@ block_rock:
 block_metal:
   - width: *length
     height: *length
-    x: 48
-    y: 2
+    x: 34
+    y: 4
   - width: *length
     height: *length
     x: -20
     y: 2
-#block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuadrado)
-#  - width: *length
-#    height: *length
-#    x: 50
-#    y: 0
-#    orientation: NE
+block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuadrado)
+  - width: *length
+    height: *length
+    x: 50
+    y: 0
+    orientation: NE
 #  - width: *length
 #    height: *length
 #    x: -10
@@ -53,7 +53,7 @@ block_metal:
 #    orientation: SO
 rock:
   - x: 20
-    y: 50
+    y: 60
 #  - x: -10
 #    y: 2
 #acid:
@@ -114,7 +114,7 @@ gate:
 #    orientation: H
 chell:
   - id: 0
-    x: -80
+    x: -0
     y: 2
   - id: 1
     x: 10

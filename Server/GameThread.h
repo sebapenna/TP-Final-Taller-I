@@ -29,7 +29,7 @@ private:
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
-    void run(std::string &&map_filename);
+    void run(std::string map_filename);
 
     void notifyAllNewPlayer();
 
@@ -43,7 +43,7 @@ private:
 
 public:
     // map_filename es el archivo yaml con la configuracion del map
-    GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
+    GameThread(Player* new_player, const size_t &max_players, std::string map_filename,
             const size_t &id);
 
     // Une jugador a la partida en caso de que no se haya llegado al limite de jugadores.
@@ -63,8 +63,6 @@ public:
     SafeQueue<std::shared_ptr<Event>>& getEventsQueue();
 
     bool isDead();
-
-    void setId(const size_t &id);
 
     bool openToNewPlayers();
 

@@ -3,6 +3,7 @@
 #include <Common/exceptions.h>
 #include <Server/Model/Obstacles/Rock.h>
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
+#include <Server/Model/Obstacles/Acid.h>
 
 Chell::Chell(const size_t &id, b2Body *body) : _id(id){
     _body = body;
@@ -301,7 +302,7 @@ void Chell::collideWith(Collidable *other) {
             default:    // Chell no se inclina
                 break;
         }
-    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK) {
+    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == GATE) {
         if (abs(_body->GetLinearVelocity().y) > DELTA_VEL ||
         abs(_body->GetLinearVelocity().x) > DELTA_VEL) {    // Verifico no sea velocidad error delta
             _hit_wall = true;
@@ -311,11 +312,11 @@ void Chell::collideWith(Collidable *other) {
 }
 
 void Chell::endCollitionWith(Collidable *other) {
-    if (other->getClassId() == METAL_DIAGONAL_BLOCK) {
+    auto cname = other->getClassId();
+    if (cname == METAL_DIAGONAL_BLOCK) {
         _tilt = NOT_TILTED;   // Deja de caminar en diagonal
         _body->SetGravityScale(CHELL_GRAVITY_SCALE);
-    } else if (other->getClassId() == ROCK_BLOCK || other->getClassId() == METAL_BLOCK ||
-    other->getClassId() == ROCK) {
+    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == ROCK ||  cname == GATE) {
         _hit_wall = false;
     }
 }

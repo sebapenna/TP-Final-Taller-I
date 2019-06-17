@@ -10,7 +10,7 @@
 #define NEW_PLAYER_ADDED_MSG    "Nuevo jugador agregado a la partida\n"
 #define PLAYER_DELETED_MSG    "Un jugador ha salido de la partida\n"
 #define NEW_OWNER_MSG   "Ahora sos el owner de la partida, ingresa 's' para comenzar la partida\n"
-#define OWNER_BEGAN_GAME   "Owner inicio la partida, comienza el envio de datos\n"
+#define OWNER_BEGAN_GAME   "Owner inicio la partida, presiona 's' para comenzar\n"
 
 #define NEW_OWNER (uint8_t)  2
 #define NOTIFICATION (uint8_t)  1
@@ -39,10 +39,9 @@ void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
     for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) {deletePlayer(id);});
 }
 
-void GameThread::run(std::string &&map_filename) {
+void GameThread::run(std::string map_filename) {
     try {
         Stage stage(map_filename);    // Creo stage en tiempo de espera al comienzo
-        _map_filename = move(map_filename); // todo: corregir - mover de aca
 
         // Loop esperando a que owner inicie la partida. Verifico haya jugadores conectados
         while (!_begin_game && !_empty_game && !_game_finished) {
@@ -119,30 +118,6 @@ void GameThread::run(std::string &&map_filename) {
                     sendToAllPlayers(dto);
                 }); // Envio DTO de objetos a eliminar
 
-
-
-
-
-
-//
-//                /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
-//                for (auto &player : _players) {
-//                    auto dto = DTOProcessor::createBeginDTO();
-////                    try {
-//                        player->send(dto);
-////                    } catch(FailedSendException& e) {   // Cliente desconectado
-////                        deletePlayer(player->id());
-////                    }
-//                }
-
-
-
-
-
-
-
-
-
                 // Sleep
                 auto stop = high_resolution_clock::now();
                 auto duration = duration_cast<milliseconds>(stop - start);
@@ -164,10 +139,10 @@ void GameThread::run(std::string &&map_filename) {
 
 // Todas los atributos se deben inicializar de esta manera antes del thread para ya estar
 // disponibles cuando el  mismo comienze su ejecucion y no haya invalid reads
-GameThread::GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
-        const size_t &id) : _game_finished(false), _empty_game(false), _begin_game(false),
-        _dead_thread(false), _max_players(max_players),
-        _id(id), _gameloop(&GameThread::run, this, move(map_filename)) {
+GameThread::GameThread(Player* new_player, const size_t &max_players, std::string map_filename,
+        const size_t &id) : _map_filename(map_filename), _game_finished(false),
+        _empty_game(false), _begin_game(false), _dead_thread(false), _max_players(max_players),
+        _id(id), _gameloop(&GameThread::run, this, map_filename) {
     addPlayerIfOpenToNewPlayersAndNotFull(new_player);
 }
 
@@ -209,10 +184,6 @@ void GameThread::deletePlayer(const size_t &id) {
         _empty_game = true;
         _game_finished = true;
     }
-}
-
-void GameThread::setId(const size_t &id) {
-    _id = id;
 }
 
 const size_t GameThread::id() const {
