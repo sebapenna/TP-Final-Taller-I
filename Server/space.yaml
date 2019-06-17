@@ -52,8 +52,8 @@ block_metal:
 #    y: 1
 #    orientation: SO
 rock:
-  - x: -60
-    y: 4
+  - x: 20
+    y: 50
 #  - x: -10
 #    y: 2
 #acid:
@@ -114,9 +114,12 @@ gate:
 #    orientation: H
 chell:
   - id: 0
-    x: 0
+    x: -80
     y: 2
   - id: 1
     x: 10
+    y: 1
+acid:
+  - x: -100
     y: 1
 
