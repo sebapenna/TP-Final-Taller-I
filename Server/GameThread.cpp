@@ -128,15 +128,15 @@ void GameThread::run(std::string &&map_filename) {
 
 
 
-//                /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
-//                for (auto &player : _players) {
-//                    auto dto = DTOProcessor::createBeginDTO();
-////                    try {
-//                        player->send(dto);
-////                    } catch(FailedSendException& e) {   // Cliente desconectado
-////                        deletePlayer(player->id());
-////                    }
-//                }
+                /* todo: SACAR!!!!!!!!!!!!!!!!!! USO BEGIN PARA CORTAR RECEPCION EN CLIENT TEST*/
+                for (auto &player : _players) {
+                    auto dto = DTOProcessor::createBeginDTO();
+//                    try {
+                        player->send(dto);
+//                    } catch(FailedSendException& e) {   // Cliente desconectado
+//                        deletePlayer(player->id());
+//                    }
+                }
 
 
 

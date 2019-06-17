@@ -10,6 +10,8 @@
 #define SUCCESS  (uint8_t) 1
 #define ERROR   (uint8_t) 0
 
+#define COULDNT_JOIN_MSG   "No puso ser agregado a la partida indicada, intentelo de nuevo\n"
+
 using std::move;
 using std::shared_ptr;
 using std::ref;
@@ -25,8 +27,12 @@ SafeQueue<shared_ptr<Event>>& Player::handshake(Lobby &lobby) {
             try {
                 auto game_to_join_id = HandshakeHandler::joinGame(ref(_connection), ref(lobby));
                 auto queue = ref(lobby.joinGameIfOpenAndNotFull(this, game_to_join_id));
+                _connection << SUCCESS; // Notifico al jugador que se lo unio
                 return ref(queue);
-            } catch (CantJoinGameException &e) { }  // No se pudo unir a la partida
+            } catch (CantJoinGameException &e) {
+                _connection << ERROR; // Notifico al jugador que no se lo unio
+                _connection << COULDNT_JOIN_MSG;
+            }
         }
     }
 }

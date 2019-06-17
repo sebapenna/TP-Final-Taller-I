@@ -61,7 +61,7 @@ void errorLoop(Protocol &connection, int16_t &player_choice) {
 }
 
 size_t HandshakeHandler::joinGame(Protocol &connection, Lobby &lobby) {
-    connection << HOW_TO_REFRESH_MSG;   // Mensaje seleccion partida
+    connection << HOW_TO_REFRESH_MSG;   // Mensaje como listar partidas
 
     int16_t player_choice;
     connection >> player_choice;
@@ -90,7 +90,7 @@ size_t HandshakeHandler::joinGame(Protocol &connection, Lobby &lobby) {
             else if (map_fname == CITY)
                 map_fname = "Ciudad";
             else if (map_fname == WOODS)
-                map_fname = "Bosque";
+                map_fname = "Bosque";k
             msg.append("\t- Id Partida: " + to_string(game_id) + " | Jugadores: " +
             to_string(players_joined) + "/" + to_string(max_players) + " | Mapa: " +
             map_fname + "\n");
@@ -202,27 +202,36 @@ void refreshLoop(Protocol &connection, int16_t &choice) {
 void joinChoiceLoop(Protocol &connection, int16_t &choice) {
     std::string server_msg, str_choice; // Buffer para mensaje servidor e input
     uint32_t n_games;
+    uint8_t server_response;
     while (choice == REFRESH) {
-        auto server_response = ERROR;    // Resteo respuesta en cada loop
-        while (server_response != SUCCESS) {
-            server_msg.clear(); // Limpio mensaje del servidor
-            str_choice.clear(); // Limpio entrada jugador
+        server_msg.clear(); // Limpio mensaje del servidor
+        str_choice.clear(); // Limpio entrada jugador
 
-            connection >> n_games;  // Recibo cantidad partidas disponibles
+        connection >> n_games;  // Recibo cantidad partidas disponibles
 
-            connection >> server_msg;   // Recibo mensaje escoger partida
+        connection >> server_msg;   // Recibo mensaje escoger partida
+        std::cout << server_msg;
+
+        for (size_t i = 0; i < n_games; ++i) {
+            connection >> server_msg;   // Recibo listado partidas
             std::cout << server_msg;
-
-            for (size_t i = 0; i < n_games; ++i) {
-                connection >> server_msg;   // Recibo listado partidas
-                std::cout << server_msg;
-            }
+        }
+        std::cin >> str_choice; // Leo input jugador y elimino salto del linea
+        str_choice.erase(remove(str_choice.begin(), str_choice.end(), '\n'), str_choice.end());
+        choice = (int16_t) std::stoi(str_choice);
+        connection << choice;   // Envio partida seleccionada
+        connection >> server_response;  // Obtengo ERROR o SUCCESS
+        while (server_response == ERROR) {
+            server_msg.clear();
+            str_choice.clear();
+            connection >> server_msg;
+            std::cout << server_msg;
             std::cin >> str_choice; // Leo input jugador y elimino salto del linea
             str_choice.erase(remove(str_choice.begin(), str_choice.end(), '\n'), str_choice.end());
             choice = (int16_t) std::stoi(str_choice);
             connection << choice;   // Envio partida seleccionada
             connection >> server_response;  // Obtengo ERROR o SUCCESS
-        }
+        } // todo: eliminar codigo repetido
     }
 }
 
@@ -233,8 +242,19 @@ void HandshakeHandler::getOptionsAndChoose(Protocol &connection) {
         choiceLoop(ref(connection), choice);    // Selecciono maximo jugadores
         choiceLoop(ref(connection), choice);    // Selecciono mapa
     } else {    // Join
-        int16_t refresh;
-        refreshLoop(ref(connection), refresh);
-        joinChoiceLoop(ref(connection), refresh);
+        while (true) {  // Loop finaliza una vez que se pudo agregar jugador a la partida
+            int16_t refresh;
+            refreshLoop(ref(connection), refresh);
+            joinChoiceLoop(ref(connection), refresh);
+            uint8_t server_response;
+            connection >> server_response;  // Recibo notificacion si se pudo unir a la partida
+            if (server_response == ERROR) {
+                std::string server_msg;
+                connection >> server_msg;   // Recibo informacion de lo sucedido
+                std::cout << server_msg;
+            } else {
+                return; // Se obtuvo SUCCESS (añadido a la partida)
+            }
+        }
     }
 }
