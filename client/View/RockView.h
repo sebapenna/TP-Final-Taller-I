@@ -12,11 +12,13 @@
 class RockView : public View {
 private:
     int id;
+    int type;
     Sprite rock;
 public:
     RockView(int id, SDL_Texture* texture, Renderer& renderer, int  x = 0, int y = 0);
     void draw(Camera& camera);
-
+    void setTypeRock(int type);
+    int getTypeRock();
     int getId() const;
 };
 

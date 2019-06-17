@@ -176,11 +176,14 @@ void SDL_Runner::run() {
                         auto newChell = (ChellDTO *) newItem;
                         auto chell2 = std::shared_ptr<ChellAnimationView>(new ChellAnimationView(newChell->getId(),
                                                              textureFactory.getTextureByName(chell_file_name), renderer));
-                        chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
-                        world.addChell(chell2);
                         if (newChell->getDeleteState() == DELETE) {
                             world.setChellState(newChell->getId(), ChellState::dying);
-                        } else if (newChell->getJumping() == JUMPING) {
+                            continue;
+                        } else {
+                            chell2->setDestRect(newChell->getX(), newChell->getY(), newChell->getWidth(), newChell->getHeight());
+                            world.addChell(chell2);
+                        }
+                        if (newChell->getJumping() == JUMPING) {
                             world.setChellState(newChell->getId(), ChellState::flying);
                         } else if (newChell->getMoving()) {
                             if (newChell->getDirection() == O_O) {
