@@ -90,7 +90,7 @@ size_t HandshakeHandler::joinGame(Protocol &connection, Lobby &lobby) {
             else if (map_fname == CITY)
                 map_fname = "Ciudad";
             else if (map_fname == WOODS)
-                map_fname = "Bosque";k
+                map_fname = "Bosque";
             msg.append("\t- Id Partida: " + to_string(game_id) + " | Jugadores: " +
             to_string(players_joined) + "/" + to_string(max_players) + " | Mapa: " +
             map_fname + "\n");
