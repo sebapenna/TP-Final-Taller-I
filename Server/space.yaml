@@ -75,8 +75,8 @@ gate:
     buttons_needed:
       - id: 0
 #      - id: 1
-#    energy_receiver_needed:
-#      - id: 0
+    energy_receiver_needed:
+      - id: 0
 #  - id: 1
 #    x: -60
 #    y: 1
@@ -85,33 +85,33 @@ gate:
 #    energy_receiver_needed:
 #      - id: 0
 #      - id: 1
-#energy_transmitter:
-#  - x: 70
-#    y: 1
-#    direction: N
-#  - x: -70
-#    y: 1
-#    direction: S
-#  - x: 0
-#    y: 1
-#    direction: E
-#  - x: 0
-#    y: 1
-#    direction: O
-#energy_receiver:
-#  - id: 0
-#    x: 80
-#    y: 1
-#  - id: 1
-#    x: -80
-#    y: 1
+energy_transmitter:
+  - x: 80
+    y: 2
+    direction: N
+  - x: -70
+    y: 2
+    direction: S
+  - x: -10
+    y: 2
+    direction: E
+  - x: 10
+    y: 2
+    direction: O
+energy_receiver:
+  - id: 0
+    x: 40
+    y: 2
+  - id: 1
+    x: -80
+    y: 2
 energy_barrier:
   - x: 90
-    y: 4
+    y: 1
     orientation: V
-#  - x: -90
-#    y: 1
-#    orientation: H
+  - x: -90
+    y: 1
+    orientation: H
 chell:
   - id: 0
     x: 0
@@ -129,6 +129,6 @@ acid:
   - x: -100
     y: 1
 cake:
-  x: 10
+  x: 80
   y: 2
 

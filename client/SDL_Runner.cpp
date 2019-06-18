@@ -28,6 +28,7 @@
 #include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterActivateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyBallDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -96,7 +97,7 @@ void SDL_Runner::run() {
                 case PROTOCOL_GATE_DATA: {
                     auto gateDTO = (GateDTO*) newItem;
                     auto gate = std::shared_ptr<GateView>(new GateView(gateDTO->getId(), textureFactory.getTextureByName(gate_file_name), renderer));
-                    gate.get()->setDestRect(gateDTO->getX(), gateDTO->getY(), gateDTO->getWidth()+1, gateDTO->getHeight());
+                    gate.get()->setDestRect(gateDTO->getX(), gateDTO->getY(), gateDTO->getWidth(), gateDTO->getHeight());
                     world.addGates(gate);
                     break;
                 }
@@ -126,7 +127,6 @@ void SDL_Runner::run() {
                             metalBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY() + j, CUT_LEN_BLOCKS, CUT_LEN_BLOCKS);
                             world.addView(metalBlock);
                         }
-
                     }
                     break;
                 }
@@ -210,6 +210,8 @@ void SDL_Runner::run() {
                             } else {
                                 world.setChellState(newChell->getId(), ChellState::runningRight);
                             }
+                        } else if (newChell->getShooting() == SHOOTING) {
+                            world.setChellState(newChell->getId(), ChellState::firing);
                         } else {
                             world.setChellState(newChell->getId(), ChellState::standing);
                         }
@@ -244,12 +246,24 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_ROCK_DATA: {
                         auto rockDTO = (RockDTO*)newItem;
-                        auto rock = std::shared_ptr<RockView>(new RockView(rockDTO->getId(), textureFactory.getTextureByName(bulletAndRock_filename), renderer));
-                        rock->setDestRect(rockDTO->getX(), rockDTO->getY(), rockDTO->getSideLength(), rockDTO->getSideLength());
-                        world.addRock(rock);
+                        if (rockDTO->getDeleteState() == DELETE) {
+                            world.removeRock(rockDTO->getId());
+                        } else {
+                            auto rock = std::shared_ptr<RockView>(new RockView(rockDTO->getId(), textureFactory.getTextureByName(bulletAndRock_filename), renderer));
+                            rock->setDestRect(rockDTO->getX(), rockDTO->getY(), rockDTO->getSideLength(), rockDTO->getSideLength());
+                            world.addRock(rock);
+                        }
                         break;
                     }
                     case PROTOCOL_ENERGY_BALL_DATA: {
+                        auto energyBallDTO = (EnergyBallDTO*) newItem;
+                        if (energyBallDTO->getDeleteState() == DELETE) {
+                            world.removeBall(energyBallDTO->getId());
+                        } else {
+                            auto ball = std::shared_ptr<EnergyBallView>(new EnergyBallView(energyBallDTO->getId(), textureFactory.getTextureByName(bulletAndRock_filename), renderer));
+                            ball->setDestRect(energyBallDTO->getX(), energyBallDTO->getY(), energyBallDTO->getRadius());
+                            world.addBall(ball);
+                        }
                         break;
                     }
                     case PROTOCOL_PORTAL_DATA: {

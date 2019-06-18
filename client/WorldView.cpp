@@ -33,6 +33,12 @@ void WorldView::draw() {
         }
     }
 
+    for (auto const& ball: balls) {
+        if (camera->isInCamera(ball.second->getDst())) {
+            ball.second->draw(*camera);
+        }
+    }
+
     for (auto const& transmitter: transmitters) {
         if (camera->isInCamera(transmitter.second->getDst())) {
             transmitter.second->draw(*camera);
@@ -50,6 +56,8 @@ void WorldView::draw() {
             button.second->draw(*camera);
         }
     }
+
+
     if (cake){
         cake->draw(*camera);
     }
@@ -63,6 +71,7 @@ void WorldView::draw() {
         }
     }
 }
+
 
 void WorldView::addView(std::shared_ptr<View> view) {
     views.push_back(view);
@@ -158,4 +167,17 @@ void WorldView::addTransmitter(std::shared_ptr<EnergyTransmitterView> transmitte
 
 void WorldView::activateTransmitter(int16_t id) {
     transmitters[id]->transmite();
+}
+
+void WorldView::addBall(std::shared_ptr<EnergyBallView> ball) {
+    // TO DO: si la bola ya existe, simplemente modificar la posicion..
+    balls[ball->getId()] = ball;
+}
+
+void WorldView::removeBall(int16_t id) {
+    balls.erase(id);
+}
+
+void WorldView::removeRock(int16_t id) {
+    rocks.erase(id);
 }

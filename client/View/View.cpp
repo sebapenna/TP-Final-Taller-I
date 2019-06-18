@@ -13,7 +13,12 @@ SDL_Rect* View::getDst() {
     return &dstSrc;
 }
 
-
+void View::setDestRect(int x, int y, int radius) {
+    dstSrc.x = convertMetersToPixelsPos(x - radius);
+    dstSrc.y = convertMetersToPixelsPos(-y - radius);
+    dstSrc.w = convertMetersToPixelsPos(radius * 2);
+    dstSrc.h = convertMetersToPixelsPos(radius * 2);
+}
 // Ahora x, y es izq, inferior
 void View::setDestRect(int x, int y, int w, int h) {
     position.set(convertMetersToPixelsPos(x + w / 2), convertMetersToPixelsPos(-y - h)); // -h/2
