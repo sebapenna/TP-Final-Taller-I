@@ -44,7 +44,10 @@ void WorldView::draw() {
             button.second->draw(*camera);
         }
     }
-    cake->draw(*camera);
+    if (cake){
+        cake->draw(*camera);
+    }
+
     for(auto const& chell: chells) {
         if (camera->isInCamera(chell.second->getDst())) {
             chell.second->draw(*camera);
