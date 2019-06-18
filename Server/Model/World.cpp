@@ -102,6 +102,14 @@ void World::step() {
     stepGates();
     stepChells();
     stepRocks();
+    for (auto & chell : _want_to_kill) {
+        _want_to_kill.erase(remove_if(_want_to_kill.begin(), _want_to_kill.end(),
+                [this](size_t &id) {  // Borro si se alejo de cake o murio
+            auto chell = getChell(id);
+            return (chell) ? !chell->reachedCake(): true;
+        }), _want_to_kill.end());
+    }
+//    if (conditionToKill())
 }
 
 void World::stepGates() {
@@ -513,8 +521,8 @@ Cake *World::getCake() const {
 }
 
 bool World::allChellsOnCake() {
-    // Verifico si todos los chells llegaron a Cake
-    return (_chells.size() == _cake->getChellsInContact());
+    // Verifico si todos los chells llegaron a Cake y quieren matar
+    return (_chells.size() == _cake->getChellsInContact() == _want_to_kill.size());
 }
 
 bool World::killLastingChell() {
@@ -529,5 +537,14 @@ bool World::killLastingChell() {
         }
     }
     return false;
+}
+
+void World::killLastingChell(const size_t &kiler_id) {
+    auto chell = getChell(kiler_id);
+    if (chell->reachedCake()) {
+        // Agrego solamente si no habia sido previamente agregado y llego a Cake
+        if (std::find(_want_to_kill.begin(), _want_to_kill.end(), kiler_id) == _want_to_kill.end())
+            _want_to_kill.push_back(kiler_id);
+    }
 }
 

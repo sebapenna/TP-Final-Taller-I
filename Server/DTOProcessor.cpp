@@ -27,6 +27,11 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
         case PROTOCOL_STOP:
             chell->stopMovement();
             break;
+        case PROTOCOL_COMMIT_SUICIDE:
+            chell->kill();
+            break;
+        case PROTOCOL_KILL_MISSING_CHELL:
+            world->killLastingChell();
         case PROTOCOL_SHOOT_PORTAL:
             // todo: DISPARAR PORTAL
             break;
@@ -47,12 +52,12 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
     }
 }
 
-std::shared_ptr<ProtocolDTO> DTOProcessor::createDTO(const size_t &player_id) {
+std::shared_ptr<ProtocolDTO> DTOProcessor::createPlayerIdDTO(const size_t &player_id) {
     return std::make_shared<PlayerChellIdDTO>(player_id);
 }
 
-shared_ptr<ProtocolDTO>DTOProcessor::createDTO(const size_t &object_id,
-        const uint8_t &object_class_id) {
+shared_ptr<ProtocolDTO>DTOProcessor::createDeletedDTO(const size_t &object_id,
+                                                      const uint8_t &object_class_id) {
     return std::move(WorldObjectDTOTranslator::translate(object_id, object_class_id));
 }
 

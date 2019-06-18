@@ -32,6 +32,7 @@ private:
     std::vector<EnergyReceiver*> _energy_receivers;
     std::vector<EnergyTransmitter*> _energy_transmitters;
     std::vector<EnergyBall*> _energy_balls;
+    std::vector<size_t> _want_to_kill;  // ids chells que quiere matar chell que no llego a cake
     Cake*   _cake;
     // _portals ?
     // _pin_tools ?
@@ -50,7 +51,7 @@ private:
     std::vector<MetalDiagonalBlock*> _metal_diagonal_blocks;
     std::vector<MetalBlock*> _metal_blocks;
     std::vector<EnergyBarrier*> _energy_barriers;
-
+    // todo: UN SOLO VECTOR COLLIDABLE? => va a necesitar getX getY getWidth getHeight
 
     // box_width y box_height seran los valores que se usaran en setAsBox
     b2Body *createStaticBox(const float &x, const float &y, const float &box_half_width,
@@ -163,6 +164,12 @@ public:
     // posible matar a una chell, ya sea porque todas estan alli o porque mas de una chell no
     // alcanzo cake.
     bool killLastingChell();
+
+    // Indica que chell del id indicado decidio matar a la chell que no llego a la cake.
+    // Internamente se verifica si dicha chell esta verdaderamente en el lugar de la cake y en
+    // tal caso se lo agregara al vector _want_to_kill. En caso de que la chell se aleje de la
+    // cake su id sera borrado de las chells que quieren eliminar la chell restante.
+    void killLastingChell(const size_t& kiler_id);
 };
 
 

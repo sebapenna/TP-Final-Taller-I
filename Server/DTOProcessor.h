@@ -25,10 +25,11 @@ public:
     }
 
     // Genera el DTO para enviar el id del player indicado
-    static std::shared_ptr<ProtocolDTO> createDTO(const size_t& player_id);
+    static std::shared_ptr<ProtocolDTO> createPlayerIdDTO(const size_t &player_id);
 
     // Genera el DTO para los elementos eliminados en base al id de la clase y el id del objeto
-    std::shared_ptr<ProtocolDTO> createDTO(const size_t& object_id, const uint8_t& object_class_id);
+    std::shared_ptr<ProtocolDTO> createDeletedDTO(const size_t &object_id,
+                                                  const uint8_t &object_class_id);
 
     // Genera el DTO para notificar el comienzo del juego
     static std::shared_ptr<ProtocolDTO> createBeginDTO();

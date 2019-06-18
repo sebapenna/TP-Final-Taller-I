@@ -74,7 +74,7 @@ void GameThread::run(std::string map_filename) {
             // Notifico a cada jugador su id
             std::vector<size_t> to_delete;
             for_each(_players.begin(), _players.end(), [this, &to_delete](Player* &player) {
-                auto player_id_dto = DTOProcessor::createDTO(player->id());
+                auto player_id_dto = DTOProcessor::createPlayerIdDTO(player->id());
                 try {
                     player->send(player_id_dto);
                 } catch(FailedSendException& e) {   // Cliente desconectado

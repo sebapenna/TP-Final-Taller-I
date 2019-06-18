@@ -172,6 +172,6 @@ std::vector<std::shared_ptr<ProtocolDTO>> Stage::getUpdatedDTO() {
 std::vector<std::shared_ptr<ProtocolDTO>> Stage::getDeletedDTO() {
     vector<shared_ptr<ProtocolDTO>> output;
     for (auto &obj_delete : _world->getObjectsToDelete())
-        output.push_back(_processor.createDTO(obj_delete.first, obj_delete.second));
+        output.push_back(_processor.createDeletedDTO(obj_delete.first, obj_delete.second));
     return std::move(output);
 }

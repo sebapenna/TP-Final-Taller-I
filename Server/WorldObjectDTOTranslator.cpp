@@ -28,6 +28,8 @@
 #include <Common/ProtocolTranslator/DataDTO/GateStateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/PinToolDTO.h>
+#include <Server/Model/Cake.h>
+#include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
 #include "WorldObjectDTOTranslator.h"
 #include "PositionTranslator.h"
 
@@ -154,6 +156,12 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
                     (2 * CHELL_HALF_WIDTH), (2 * CHELL_HALF_HEIGHT), obj->movementDirection(),
                     obj->tilt(), moving, jumping, shooting, carring_rock, DONT_DELETE); // No borrar
         }
+        case CAKE: {
+            auto obj = (Cake*) collidable;
+            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
+                    CAKE_HALF_LEN);
+            return make_shared<CakeDTO>(new_pos.first, new_pos.second, (2 * CAKE_HALF_LEN));
+        }
         case PORTAL: {
             // todo: PORTAL GETTERS
         }
@@ -165,7 +173,8 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
             return nullptr;
     }
 
-    // todo: collidabel metodo getX getY /getWidth / getHeight => ENCAPSULO Y ELIMINO REPTEAD NEWPOS
+    // todo: collidable metodo getX getY /getWidth / getHeight => ENCAPSULO Y ELIMINO REPTEAD
+    //  NEWPOS
 }
 
 std::shared_ptr<ProtocolDTO>
