@@ -20,6 +20,7 @@
 #include <Common/exceptions.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/CommitSuicideDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/KillMissingChellDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/LiftRockDTO.h>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "Common/ProtocolTranslator/PlayerActionsDTO/MoveLeftDTO.h"
@@ -116,6 +117,11 @@ int main(int argc, char** argv){
                         }
                         case SDLK_k: {
                             std::shared_ptr<ProtocolDTO> dto(new KillMissingChellDTO());
+                            blockingQueue.push(dto);
+                            break;
+                        }
+                        case SDLK_e: {
+                            std::shared_ptr<ProtocolDTO> dto(new LiftRockDTO(0));
                             blockingQueue.push(dto);
                             break;
                         }
