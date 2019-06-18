@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <memory>
 #include "World.h"
+#include "RayCastCallback.h"
 
 using std::remove_if;
 using std::vector;
@@ -547,4 +548,39 @@ void World::killLastingChell(const size_t &killer_id) {
             _want_to_kill.push_back(killer_id);
     }
 }
+
+void
+World::shootPortal(const size_t &chell_id, const float &x, const float &y, const int16_t &color) {
+    auto chell = getChell(chell_id);
+    if (!chell)
+        return;
+    float newx = x, newy = y;   // Por default mismo valor que punto inicio
+    if (chell->getX() < x)
+        newx = x + RAY_DISTANCE;    // Disparo a derecha
+    else if (chell->getX() > x)
+        newx = x - RAY_DISTANCE;    // Disparo a izquierda
+    if (chell->getY() < y)
+        newy = y + RAY_DISTANCE;    // Disparo arriba
+    else if (chell->getY() > y)
+        newy = y - RAY_DISTANCE;    // Disparo abajo
+    RayCastCallback callback;
+    b2Vec2 point1(x, y);
+    b2Vec2 point2(newx, newy);   // todo: to macro
+    _world->RayCast(&callback, point1, point2);
+    if (callback.m_fixture) {
+        auto collidable = (Collidable*) callback.m_fixture->GetUserData();
+        auto cname = collidable->getClassId();
+        if (cname == METAL_BLOCK || cname == METAL_DIAGONAL_BLOCK) { // Choco con bloque de metal
+
+        }
+    }
+}
+
+void World::createPortal(const float &x, const float &y, const int16_t &color) {
+    auto body = createStaticBox(x, y , CAKE_HALF_LEN, CAKE_HALF_LEN, CAKE_FRICTION);
+    auto cake = new Cake(body);
+    body->SetUserData(cake);
+    _cake = cake;
+}
+
 

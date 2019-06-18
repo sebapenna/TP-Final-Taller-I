@@ -36,6 +36,8 @@
 using std::make_shared;
 
 std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *collidable , bool initial_data) {
+    if (!collidable)
+        return nullptr;
     auto cname = collidable->getClassId();
     switch (cname) {
         case ROCK_BLOCK: {

@@ -100,6 +100,13 @@
 #define CAKE_HALF_LEN   2
 #define CAKE_FRICTION   0
 
+/* Configuracion Portal */
+#define PORTAL_WIDTH    1
+#define PORTAL_LENGTH 2
+
+/* Configuracion disparo */
+#define RAY_DISTANCE    30
+
 /* Class Names*/
 #define ENERGY_RECEIVER (uint8_t) 0
 #define ENERGY_TRANSMITTER (uint8_t) 1

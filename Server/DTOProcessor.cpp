@@ -4,6 +4,7 @@
 #include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
 #include <Common/exceptions.h>
 #include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h>
 #include "DTOProcessor.h"
 
 using std::vector;
@@ -34,9 +35,12 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
         case PROTOCOL_KILL_MISSING_CHELL:
             world->killLastingChell(chell_id);
             break;
-        case PROTOCOL_SHOOT_PORTAL:
-            // todo: DISPARAR PORTAL
+        case PROTOCOL_SHOOT_PORTAL: {
+            auto p_dto = (ShootPortalDTO *) dto;
+            
+            chell->shootPortal(p_dto->getX(), p_dto->getY(), p_dto->getColor());
             break;
+        }
         case PROTOCOL_SHOOT_PIN_TOOL:
             // todo: DISPARAR PIN TOOL
             break;

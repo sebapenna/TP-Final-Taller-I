@@ -35,8 +35,6 @@ public:
     void endCollitionWith(Collidable *other) override;
 
     bool actedDuringStep() override;
-
-    void bounce(Collidable *other);
 };
 
 

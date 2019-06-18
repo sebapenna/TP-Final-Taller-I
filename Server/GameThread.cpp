@@ -31,7 +31,8 @@ void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
     std::vector<size_t> to_delete;
     for_each(_players.begin(), _players.end(), [this, &dto, &to_delete] (Player* &player) {
         try {
-            player->send(dto);
+            if (dto)    // Verifico no sea nullptr
+                player->send(dto);
         } catch(FailedSendException& e) { // Medida seguridad, almaceno ids de clientes desonectados
             to_delete.push_back(player->id());
         }

@@ -35,7 +35,7 @@ add_library(portal-src
         Model/WorldObjectsStorage.cpp Model/WorldObjectsStorage.h
         WorldObjectDTOTranslator.cpp WorldObjectDTOTranslator.h
         PositionTranslator.cpp PositionTranslator.h
-        Event.cpp Event.h ../Common/HandshakeHandler.cpp ../Common/HandshakeHandler.h Model/Cake.cpp Model/Cake.h)
+        Event.cpp Event.h ../Common/HandshakeHandler.cpp ../Common/HandshakeHandler.h Model/Cake.cpp Model/Cake.h Model/RayCastCallback.cpp Model/RayCastCallback.h)
 
 target_link_libraries(portal-src common-src Box2D yaml-parser pthread)
 

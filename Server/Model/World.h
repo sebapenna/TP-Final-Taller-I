@@ -164,6 +164,10 @@ public:
     // tal caso se lo agregara al vector _want_to_kill. En caso de que la chell se aleje de la
     // cake su id sera borrado de las chells que quieren eliminar la chell restante.
     void killLastingChell(const size_t& kiler_id);
+
+    void shootPortal(const size_t& chell_id, const float& x, const float& y, const int16_t& color);
+
+    void createPortal(const float& x, const float& y, const int16_t& color);
 };
 
 

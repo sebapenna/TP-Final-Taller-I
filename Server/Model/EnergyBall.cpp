@@ -65,8 +65,6 @@ void EnergyBall::collideWith(Collidable *other) {
         _dead = true;
     } else if (cname == ENERGY_TRANSMITTER && _lifetime != 0) {
         _dead = true;    // Verifico que no colisiona cuando se crea la bola
-    } else if (cname == METAL_BLOCK ||  cname == METAL_DIAGONAL_BLOCK)  {
-//        bounce(other);
     } else if (cname == GATE) {
         auto gate = (Gate*) other;
         if (!gate->isOpen())
@@ -93,50 +91,3 @@ bool EnergyBall::actedDuringStep() {
     }
     return false;
 }
-
-//void EnergyBall::bounce(Collidable *other) {
-//    auto velx = _body->GetLinearVelocity().x;
-//    auto vely = _body->GetLinearVelocity().y;
-//    float new_velx, new_vely;
-//    if (other->getClassId() == METAL_BLOCK) {   // Rebote en sup. plana es setear velocidad opuesta
-//        new_velx = velx * -1;
-//        new_vely = vely * -1;
-//    } else {    // METAL_DIAGONAL_BLOCK
-//        auto block  = (MetalDiagonalBlock*) other;
-//        auto orientation  = block->getOrientation();
-//        if (velx == 0 && vely < 0) {
-//            if (orientation == O_NE || O_NO) {
-//                new_vely = 0;
-//                (orientation == O_NE) ? (new_velx = -1 * vely) : (new_velx = vely);
-//            } else {    // O_SE || O_SO
-//                new_velx = 0;
-//                new_vely = -1 * vely;
-//            }
-//        } else if (velx == 0 && vely > 0) {
-//            if (orientation == O_SE || O_SO) {
-//                new_vely = 0;
-//                (orientation == O_SO) ? (new_velx = -1 * vely) : (new_velx = vely);
-//            } else {    // O_NE || O_NO
-//                new_velx = 0;
-//                new_vely = -1 * vely;
-//            }
-//        } else if (velx > 0 && vely == 0) {
-//            if (orientation == O_NO || O_SO) {
-//                new_velx = 0;
-//                (orientation == O_SO) ? (new_vely = -1 * velx) : (new_vely = velx);
-//            } else {    // O_NE || O_SE
-//                new_velx = -1 * velx;
-//                new_vely = 0;
-//            }
-//        } else if (velx < 0 && vely == 0) {
-//            if (orientation == O_NO || O_SO) {
-//                new_velx = 0;
-//                (orientation == O_SO) ? (new_vely = -1 * velx) : (new_vely = velx);
-//            } else {    // O_NE || O_SE
-//                new_velx = -1 * velx;
-//                new_vely = 0;
-//            }
-//        }
-//    }
-//    _body->SetLinearVelocity({new_velx, new_vely});
-//}

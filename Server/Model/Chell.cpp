@@ -5,6 +5,9 @@
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
 #include <Server/Model/Obstacles/Acid.h>
 
+#define BLUE_PORTAL (int16_t) 0
+#define ORANGE_PORTAL  (int16_t) 1
+
 Chell::Chell(const size_t &id, b2Body *body) : _id(id){
     _body = body;
     _move_state = MOVE_STOP;
@@ -266,5 +269,3 @@ bool Chell::reachedCake() {
 void Chell::kill() {
     _dead = true;
 }
-
-
