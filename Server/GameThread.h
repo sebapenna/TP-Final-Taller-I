@@ -2,6 +2,7 @@
 #define PORTAL_GAMETHREAD_H
 
 #include <Common/SafeQueue.h>
+#include <Common/ProtectedBlockingQueue.h>
 #include <list>
 #include <vector>
 #include <thread>

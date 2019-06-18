@@ -2,29 +2,29 @@
 // Created by jonathanmedina on 05/06/19.
 //
 
-#include <Common/ProtocolTranslator/ChellDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ChellDTO.h>
 #include <iostream>
-#include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PlayerChellIdDTO.h>
 #include <client/View/DiagonalBlockMetalView.h>
 #include <client/View/AcidView.h>
 #include <client/View/RockView.h>
-#include <Common/ProtocolTranslator/ButtonDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ButtonDTO.h>
 #include <client/View/ButtonView.h>
-#include <Common/ProtocolTranslator/ButtonStateDTO.h>
-#include <Common/ProtocolTranslator/GateDTO.h>
-#include <Common/ProtocolTranslator/GateStateDTO.h>
-#include <Common/ProtocolTranslator/AcidDTO.h>
-#include <Common/ProtocolTranslator/RockBlockDTO.h>
-#include <Common/ProtocolTranslator/MetalBlockDTO.h>
-#include <Common/ProtocolTranslator/MetalDiagonalBlockDTO.h>
-#include <Common/ProtocolTranslator/RockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ButtonStateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/GateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/GateStateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/AcidDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/MetalBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/MetalDiagonalBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockDTO.h>
 #include <Server/Model/constants.h>
 #include <client/View/BackgroundView.h>
-#include <Common/ProtocolTranslator/EnergyBarrierDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyBarrierDTO.h>
 #include <client/View/EnergyBarrierView.h>
-#include <Common/ProtocolTranslator/EnergyReceiverDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverDTO.h>
 #include <client/View/EnergyReceiverView.h>
-#include <Common/ProtocolTranslator/EnergyReceiverActivateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"

@@ -17,6 +17,7 @@ private:
     bool _carrying_rock = false, _previously_carrying = false;
     bool _shooting = false;
     bool _hit_wall = false;
+    bool _reached_cake = false;
 
     // Evita volver a aplicar un impulso en el mismo sentido
     bool movementInXAlreadyApplied();
@@ -91,6 +92,12 @@ public:
     // PRE: haber utilizado isMoving para verificar que se este moviendo (por default enviara O_E
     // aunque no se este moviendo)
     uint8_t movementDirection();
+
+    bool reachedCake();
+
+    // Mata a la chell, ya sea por suicidio o porque todas las otras chell llegaron a cake menos
+    // esta y decidieron matarla.
+    void kill();
 };
 
 

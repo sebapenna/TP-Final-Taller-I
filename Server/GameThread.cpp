@@ -25,6 +25,7 @@ using std::cout;
 using std::endl;
 using std::for_each;
 using std::shared_ptr;
+using std::cerr;
 
 void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
     std::vector<size_t> to_delete;
@@ -45,7 +46,7 @@ void GameThread::run(std::string map_filename) {
 
         // Loop esperando a que owner inicie la partida. Verifico haya jugadores conectados
         while (!_begin_game && !_empty_game && !_game_finished) {
-//            std::this_thread::sleep_for(seconds(20)); //todo:volver a poner
+            std::this_thread::sleep_for(seconds(20)); // Duermo thread esperando el inicio
             auto event = _events_queue.getTopAndPop();
             if (event != nullptr)
                 switch (event->getProtocolId()) {
@@ -130,10 +131,10 @@ void GameThread::run(std::string map_filename) {
         _dead_thread = true; // Registro que se llego al fin del thread
     } catch(const std::exception& e) {
         _dead_thread = true; // Registro que se llego al fin del thread
-        cout << e.what();
+        cerr << "Game Thread: " << e.what();
     } catch(...) {
         _dead_thread = true; // Registro que se llego al fin del thread
-        cout << UnknownException().what();
+        cerr << "Game Thread: " << UnknownException().what();
     }
 }
 

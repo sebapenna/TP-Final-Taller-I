@@ -6,6 +6,7 @@
 #define WAITING_QUEUE_SIZE  10
 
 using std::cout;
+using std::cerr;
 using std::endl;
 using std::move;
 using std::shared_ptr;
@@ -14,15 +15,21 @@ using std::make_shared;
 
 
 void Lobby::runEraserThread() {
-    _connection_closed = false;
-    while (!_connection_closed) {
-        // Duermo therad para evitar constantemente buscar partidas eliminadas
-        std::unique_lock<std::mutex> lck(_mtx_sleep);
-        _cv.wait_for(lck, std::chrono::minutes(1), [this]{return _connection_closed;});
+    try {
+        _connection_closed = false;
+        while (!_connection_closed) {
+            // Duermo therad para evitar constantemente buscar partidas eliminadas
+            std::unique_lock<std::mutex> lck(_mtx_sleep);
+            _cv.wait_for(lck, std::chrono::minutes(1), [this]{return _connection_closed;});
 
-        _games.erase(std::remove_if(_games.begin(), _games.end(), [](shared_ptr<GameThread> game) {
-            return (game->isDead()) ? (game->endGameAndJoin(), true) : false;
-        }), _games.end());
+            _games.erase(std::remove_if(_games.begin(), _games.end(), [](shared_ptr<GameThread> game) {
+                return (game->isDead()) ? (game->endGameAndJoin(), true) : false;
+            }), _games.end());
+        }
+    } catch(const exception& e) {
+        cerr << "Hilo controlador de juegos finalizados: " << e.what();
+    } catch(...) {
+        cerr << "Hilo controlador de juegos finalizados: " << UnknownException().what();
     }
 }
 
@@ -60,7 +67,9 @@ void Lobby::run() {
 
             cout << "Nuevo jugador conectado, creando partida..."<<endl;
         }
-    } catch(const CantConnectException& e) { }  // Socket aceptador cerrado
+    } catch(const CantConnectException& e) {
+        cout << "Socket aceptador cerrado\n";
+    }  // Socket aceptador cerrado
 }
 
 SafeQueue<shared_ptr<Event>> &Lobby::createGame(Player* player, const size_t &n_players,

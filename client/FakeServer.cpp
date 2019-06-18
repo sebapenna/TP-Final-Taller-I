@@ -2,22 +2,22 @@
 // Created by jonathanmedina on 05/06/19.
 //
 
-#include <Common/ProtocolTranslator/ChellDTO.h>
-#include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
-#include <Common/ProtocolTranslator/MoveRightDTO.h>
-#include <Common/ProtocolTranslator/ButtonDTO.h>
-#include <Common/ProtocolTranslator/ButtonStateDTO.h>
-#include <Common/ProtocolTranslator/GateDTO.h>
-#include <Common/ProtocolTranslator/RockDTO.h>
-#include <Common/ProtocolTranslator/MetalBlockDTO.h>
-#include <Common/ProtocolTranslator/RockBlockDTO.h>
-#include <Common/ProtocolTranslator/GateStateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ChellDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PlayerChellIdDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/MoveRightDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ButtonDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ButtonStateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/GateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/MetalBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/GateStateDTO.h>
 #include <Server/Model/constants.h>
-#include <Common/ProtocolTranslator/MetalDiagonalBlockDTO.h>
-#include <Common/ProtocolTranslator/EnergyBarrierDTO.h>
-#include <Common/ProtocolTranslator/EnergyReceiverActivateDTO.h>
-#include <Common/ProtocolTranslator/EnergyReceiverDTO.h>
-#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/MetalDiagonalBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyBarrierDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverDTO.h>
+#include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 

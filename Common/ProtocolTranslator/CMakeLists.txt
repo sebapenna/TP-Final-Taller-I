@@ -5,33 +5,34 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_library(protocol-translator
         ProtocolTranslator.cpp ProtocolTranslator.h
-        MoveLeftDTO.cpp
-        MoveRightDTO.cpp
-        JumpDTO.cpp
-        StopDTO.cpp
-        ShootPortalDTO.cpp
-        ShootPinToolDTO.cpp
-        LiftRockDTO.cpp
-        DropRockDTO.cpp
-        PlayerChellIdDTO.cpp
-        RockBlockDTO.cpp RockBlockDTO.h
-        MetalBlockDTO.cpp MetalBlockDTO.h
-        MetalDiagonalBlockDTO.cpp MetalDiagonalBlockDTO.h
-        EnergyTransmitterDTO.cpp EnergyTransmitterDTO.h
-        EnergyReceiverDTO.cpp EnergyReceiverDTO.h
-        AcidDTO.cpp AcidDTO.h
-        ButtonDTO.cpp ButtonDTO.h
-        GateDTO.cpp GateDTO.h
-        EnergyBarrierDTO.cpp EnergyBarrierDTO.h
-        RockDTO.cpp RockDTO.h
-        EnergyBallDTO.cpp EnergyBallDTO.h
-        PortalDTO.cpp PortalDTO.h
-        PinToolDTO.cpp PinToolDTO.h
-        ChellDTO.cpp ChellDTO.h
-        ButtonStateDTO.cpp ButtonStateDTO.h
-        EnergyTransmitterActivateDTO.cpp EnergyTransmitterActivateDTO.h
-        EnergyReceiverActivateDTO.cpp EnergyReceiverActivateDTO.h
-        GateStateDTO.cpp GateStateDTO.h
-        ConnectionDTO/QuitDTO.cpp ConnectionDTO/QuitDTO.h ConnectionDTO/BeginDTO.cpp ConnectionDTO/BeginDTO.h)
+        PlayerActionsDTO/MoveLeftDTO.cpp
+        PlayerActionsDTO/MoveRightDTO.cpp
+        PlayerActionsDTO/JumpDTO.cpp
+        PlayerActionsDTO/StopDTO.cpp
+        PlayerActionsDTO/ShootPortalDTO.cpp
+        PlayerActionsDTO/ShootPinToolDTO.cpp
+        PlayerActionsDTO/LiftRockDTO.cpp
+        PlayerActionsDTO/DropRockDTO.cpp
+        DataDTO/PlayerChellIdDTO.cpp
+        DataDTO/RockBlockDTO.cpp DataDTO/RockBlockDTO.h
+        DataDTO/MetalBlockDTO.cpp DataDTO/MetalBlockDTO.h
+        DataDTO/MetalDiagonalBlockDTO.cpp DataDTO/MetalDiagonalBlockDTO.h
+        DataDTO/EnergyTransmitterDTO.cpp DataDTO/EnergyTransmitterDTO.h
+        DataDTO/EnergyReceiverDTO.cpp DataDTO/EnergyReceiverDTO.h
+        DataDTO/AcidDTO.cpp DataDTO/AcidDTO.h
+        DataDTO/ButtonDTO.cpp DataDTO/ButtonDTO.h
+        DataDTO/GateDTO.cpp DataDTO/GateDTO.h
+        DataDTO/EnergyBarrierDTO.cpp DataDTO/EnergyBarrierDTO.h
+        DataDTO/RockDTO.cpp DataDTO/RockDTO.h
+        DataDTO/EnergyBallDTO.cpp DataDTO/EnergyBallDTO.h
+        DataDTO/PortalDTO.cpp DataDTO/PortalDTO.h
+        DataDTO/PinToolDTO.cpp DataDTO/PinToolDTO.h
+        DataDTO/ChellDTO.cpp DataDTO/ChellDTO.h
+        DataDTO/ButtonStateDTO.cpp DataDTO/ButtonStateDTO.h
+        DataDTO/EnergyTransmitterActivateDTO.cpp DataDTO/EnergyTransmitterActivateDTO.h
+        DataDTO/EnergyReceiverActivateDTO.cpp DataDTO/EnergyReceiverActivateDTO.h
+        DataDTO/GateStateDTO.cpp DataDTO/GateStateDTO.h
+        GameStateDTO/QuitDTO.cpp GameStateDTO/QuitDTO.h
+        GameStateDTO/BeginDTO.cpp GameStateDTO/BeginDTO.h DataDTO/CakeDTO.cpp DataDTO/CakeDTO.h PlayerActionsDTO/CommitSuicideDTO.cpp PlayerActionsDTO/CommitSuicideDTO.h PlayerActionsDTO/KillMissingChellDTO.cpp PlayerActionsDTO/KillMissingChellDTO.h)
 
 

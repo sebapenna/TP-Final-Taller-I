@@ -9,7 +9,7 @@
 #include <memory>
 #include <Common/ProtocolTranslator/ProtocolDTO.h>
 #include <Server/WorldObjectDTOTranslator.h>
-#include <Common/ProtocolTranslator/RockBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockBlockDTO.h>
 
 using std::cout;
 using std::endl;

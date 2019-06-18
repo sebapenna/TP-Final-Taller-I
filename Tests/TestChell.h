@@ -45,6 +45,8 @@ CPPUNIT_TEST_SUITE( TestChell );
         CPPUNIT_TEST( testAddedToUpdateVectorAfterJumping );
         CPPUNIT_TEST( testAddedToUpdateVectorAfterLandingOnGround );
         CPPUNIT_TEST( testAddedToDeleteVectorAfterDead );
+        CPPUNIT_TEST( testIgnoreCollitionWithOtherChell );
+        CPPUNIT_TEST( testIgnoreCollitionWithEnergyBarrier );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -722,6 +724,31 @@ public:
             }
         }
         CPPUNIT_ASSERT(deleted);
+        cout << "OK";
+    }
+
+    void testIgnoreCollitionWithOtherChell() {
+        cout << endl << "TEST ignorar contacto con otras chell: ";
+        float chell2_x = chell_init_x + 10, chell2_y = chell_init_y;
+        world->createChell(chell2_x, chell2_y);
+        auto chell2 = world->getChell(1);
+        chell->move_right();
+        chell2->move_left(); // Las hago mover en centido contrario
+        CPPUNIT_ASSERT_LESS(chell2->getX(), chell->getX());  // Una paso a la otra
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            world->step();}
+        CPPUNIT_ASSERT_LESS(chell->getX(), chell2->getX());  // Una paso a la otra
+        cout << "OK";
+    }
+
+    void testIgnoreCollitionWithEnergyBarrier() {
+        cout << endl << "TEST ignorar contacto con barrera energia: ";
+        float barrier_x = chell_init_x + 10, barrier_y = BARRIER_HALF_LENGTH;
+        world->createEnergyBarrier(barrier_x, barrier_y, O_V);
+        chell->move_right();
+        for (int i = 0; i < STEP_ITERATIONS; i++) {
+            world->step();}
+        CPPUNIT_ASSERT_GREATER(barrier_x, chell->getX());  // Chell paso barrier
         cout << "OK";
     }
 };

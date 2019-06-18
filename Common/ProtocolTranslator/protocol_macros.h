@@ -210,8 +210,19 @@
 #define PROTOCOL_QUIT   (int16_t)   27
 #define QUIT_ARGS  0
 
-
 #define PROTOCOL_BEGIN   (int16_t)   28
 #define BEGIN_ARGS  0
+
+#define PROTOCOL_COMMIT_SUICIDE   (int16_t)   29
+#define COMMIT_SUICIDE_ARGS  0
+
+#define PROTOCOL_KILL_MISSING_CHELL   (int16_t)   30
+#define KILL_MISSING_CHELL_ARGS  0
+
+#define PROTOCOL_CAKE_DATA   (int16_t)   31
+#define CAKE_ARGS  3
+#define CAKE_X_POS  2
+#define CAKE_Y_POS  3
+#define CAKE_SIDE_LENGTH_POS  4
 
 #endif //PORTAL_PROTOCOL_MACROS_H

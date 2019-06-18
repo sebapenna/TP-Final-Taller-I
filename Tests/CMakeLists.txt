@@ -19,3 +19,9 @@ add_executable(tests
         TestPositionTranslator.h TestWorldObjectDTOTranslator.h)
 
 target_link_libraries(tests cppunit portal-src common-src)
+
+
+add_executable(client
+        ../Tests/ClientTest.cpp TestCake.h)
+
+target_link_libraries(client portal-src)

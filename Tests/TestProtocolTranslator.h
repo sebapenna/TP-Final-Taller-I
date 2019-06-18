@@ -6,35 +6,38 @@
 #include <memory>
 #include <cppunit/extensions/HelperMacros.h>
 #include <Common/ProtocolTranslator/ProtocolTranslator.h>
-#include <Common/ProtocolTranslator/MoveLeftDTO.h>
-#include <Common/ProtocolTranslator/MoveRightDTO.h>
-#include <Common/ProtocolTranslator/JumpDTO.h>
-#include <Common/ProtocolTranslator/StopDTO.h>
-#include <Common/ProtocolTranslator/ShootPortalDTO.h>
-#include <Common/ProtocolTranslator/ShootPinToolDTO.h>
-#include <Common/ProtocolTranslator/LiftRockDTO.h>
-#include <Common/ProtocolTranslator/DropRockDTO.h>
-#include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
-#include <Common/ProtocolTranslator/RockBlockDTO.h>
-#include <Common/ProtocolTranslator/MetalBlockDTO.h>
-#include <Common/ProtocolTranslator/MetalDiagonalBlockDTO.h>
-#include <Common/ProtocolTranslator/EnergyTransmitterDTO.h>
-#include <Common/ProtocolTranslator/EnergyReceiverDTO.h>
-#include <Common/ProtocolTranslator/AcidDTO.h>
-#include <Common/ProtocolTranslator/ButtonDTO.h>
-#include <Common/ProtocolTranslator/GateDTO.h>
-#include <Common/ProtocolTranslator/EnergyBarrierDTO.h>
-#include <Common/ProtocolTranslator/RockDTO.h>
-#include <Common/ProtocolTranslator/EnergyBallDTO.h>
-#include <Common/ProtocolTranslator/PortalDTO.h>
-#include <Common/ProtocolTranslator/PinToolDTO.h>
-#include <Common/ProtocolTranslator/ChellDTO.h>
-#include <Common/ProtocolTranslator/ButtonStateDTO.h>
-#include <Common/ProtocolTranslator/EnergyTransmitterActivateDTO.h>
-#include <Common/ProtocolTranslator/EnergyReceiverActivateDTO.h>
-#include <Common/ProtocolTranslator/GateStateDTO.h>
-#include <Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h>
-#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/MoveLeftDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/MoveRightDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/JumpDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/StopDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPinToolDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/LiftRockDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/DropRockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PlayerChellIdDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/MetalBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/MetalDiagonalBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/AcidDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ButtonDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/GateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyBarrierDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyBallDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PinToolDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ChellDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/ButtonStateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterActivateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/GateStateDTO.h>
+#include <Common/ProtocolTranslator/GameStateDTO/QuitDTO.h>
+#include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/CommitSuicideDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/KillMissingChellDTO.h>
 
 using std::cout;
 using std::endl;
@@ -101,6 +104,12 @@ CPPUNIT_TEST_SUITE( TestProtocolTranslator );
         CPPUNIT_TEST(testTranslateQuitData);
         CPPUNIT_TEST(testTranslateBeginDTO);
         CPPUNIT_TEST(testTranslateBeginData);
+        CPPUNIT_TEST(testTranslateCommitSuicideDTO);
+        CPPUNIT_TEST(testTranslateCommitSuicideData);
+        CPPUNIT_TEST(testTranslateKillMissingChellDTO);
+        CPPUNIT_TEST(testTranslateKillMissingChellData);
+        CPPUNIT_TEST(testTranslateCakeDTO);
+        CPPUNIT_TEST(testTranslateCakeData);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -948,6 +957,74 @@ public:
         auto p = ProtocolTranslator::translate(v);
         auto dto = (BeginDTO*) p.get();
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BEGIN, dto->getClassId());
+        cout << "OK";
+    }
+    
+    void testTranslateCommitSuicideDTO() {
+        cout << endl << "TEST traducir CommitSuicideDTO a datos: ";
+        shared_ptr<ProtocolDTO> pdto(new CommitSuicideDTO());
+        int vec_size = ProtocolTranslator::translate(pdto.get(), output);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_COMMIT_SUICIDE, output.at(PROTOCOL_ID_POS));
+        CPPUNIT_ASSERT_EQUAL(COMMIT_SUICIDE_ARGS + extra_data, vec_size);
+        cout << "OK";
+    }
+
+    void testTranslateCommitSuicideData() {
+        cout << endl << "TEST traducir datos CommitSuicide a DTO: ";
+        vector<int16_t> v;
+        v.push_back(PROTOCOL_COMMIT_SUICIDE);
+        v.push_back(COMMIT_SUICIDE_ARGS);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (CommitSuicideDTO*) p.get();
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_COMMIT_SUICIDE, dto->getClassId());
+        cout << "OK";
+    }
+    
+    void testTranslateKillMissingChellDTO() {
+        cout << endl << "TEST traducir KillMissingChellDTO a datos: ";
+        shared_ptr<ProtocolDTO> pdto(new KillMissingChellDTO());
+        int vec_size = ProtocolTranslator::translate(pdto.get(), output);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_KILL_MISSING_CHELL, output.at(PROTOCOL_ID_POS));
+        CPPUNIT_ASSERT_EQUAL(KILL_MISSING_CHELL_ARGS + extra_data, vec_size);
+        cout << "OK";
+    }
+
+    void testTranslateKillMissingChellData() {
+        cout << endl << "TEST traducir datos KillMissingChell a DTO: ";
+        vector<int16_t> v;
+        v.push_back(PROTOCOL_KILL_MISSING_CHELL);
+        v.push_back(KILL_MISSING_CHELL_ARGS);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (KillMissingChellDTO*) p.get();
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_KILL_MISSING_CHELL, dto->getClassId());
+        cout << "OK";
+    }
+    
+    void testTranslateCakeDTO() {
+        cout << endl << "TEST traducir CakeDTO a datos: ";
+        shared_ptr<ProtocolDTO> pdto(new CakeDTO(5,2,3));
+        int vec_size = ProtocolTranslator::translate(pdto.get(), output);
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_CAKE_DATA, output.at(PROTOCOL_ID_POS));
+        CPPUNIT_ASSERT_EQUAL(CAKE_ARGS + extra_data, vec_size);
+        CPPUNIT_ASSERT_EQUAL((int16_t) 5, output[CAKE_X_POS]);
+        CPPUNIT_ASSERT_EQUAL((int16_t) 2, output[CAKE_Y_POS]);
+        CPPUNIT_ASSERT_EQUAL((int16_t) 3, output[CAKE_SIDE_LENGTH_POS]);
+    }
+
+    void testTranslateCakeData() {
+        cout << endl << "TEST traducir datos Cake a DTO: ";
+        vector<int16_t> v;
+        v.push_back(PROTOCOL_CAKE_DATA);
+        v.push_back(CAKE_ARGS);
+        v.push_back(5);
+        v.push_back(2);
+        v.push_back(3);
+        auto p = ProtocolTranslator::translate(v);
+        auto dto = (CakeDTO*) p.get();
+        CPPUNIT_ASSERT_EQUAL(PROTOCOL_CAKE_DATA, dto->getClassId());
+        CPPUNIT_ASSERT_EQUAL((int16_t) 5, dto->getX());
+        CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getY());
+        CPPUNIT_ASSERT_EQUAL((int16_t) 3, dto->getSideLength());
         cout << "OK";
     }
     

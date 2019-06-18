@@ -19,6 +19,7 @@
 using std::move;
 using std::shared_ptr;
 using std::ref;
+using std::cerr;
 
 SafeQueue<shared_ptr<Event>>& Player::handshake(Lobby &lobby) {
     auto player_choice = HandshakeHandler::getPlayerChoice(ref(_connection));
@@ -56,10 +57,13 @@ void Player::run(Lobby &lobby) {
             events_queue.get().push(std::move(p));    // Encolo evento y id de player
         }
     } catch (FailedRecvException& e) {         // Se podria cerrar la conexion voluntariamente
+        cerr << "Player Receiver Thread: " << e.what();
         _connected = false;
     } catch (const exception& e) {
+        cerr << "Player Receiver Thread: " << e.what();
         _connected = false;
-        std::cout << e.what();
+    } catch (...) {
+        cerr << "Player Receiver Thread: " << UnknownException().what();
     }
 }
 

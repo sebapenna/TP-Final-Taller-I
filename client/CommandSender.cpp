@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include <Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h>
-#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
+#include <Common/ProtocolTranslator/GameStateDTO/QuitDTO.h>
+#include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
 #include "CommandSender.h"
 #define START_GAME 's'
 #define QUIT_GAME 'q'

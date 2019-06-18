@@ -68,5 +68,10 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
             contact->SetEnabled(false);
         else
             coll2->collideWith(coll1);
+    } else if (cname1 == CHELL && cname2 == CHELL) {
+        contact->SetEnabled(false);
+    } else if ((cname1 == CHELL && cname2 == ENERGY_BARRIER) ||
+    (cname1 == ENERGY_BARRIER && cname2 == CHELL)) {
+        contact->SetEnabled(false);
     }
 }

@@ -1,4 +1,4 @@
-# Install script for directory: /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I/Box2D
+# Install script for directory: /home/seba/Escritorio/Portal/Box2D
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

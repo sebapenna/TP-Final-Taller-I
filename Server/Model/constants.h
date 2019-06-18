@@ -94,6 +94,11 @@
 /* Configuracion Energy Barrier */
 #define BARRIER_HALF_LENGTH  4
 #define BARRIER_HALF_WIDTH   1
+#define BARRIER_FRICTION    0
+
+/* Configuracion Cake */
+#define CAKE_HALF_LEN   2
+#define CAKE_FRICTION   0
 
 /* Class Names*/
 #define ENERGY_RECEIVER (uint8_t) 0
@@ -113,17 +118,5 @@
 #define PIN_TOOL_RAY    (uint8_t) 14
 #define PIN_TOOL    (uint8_t) 15
 #define CAKE    (uint8_t) 16
-
-/* Path YAML */
-//#ifdef DEBUG_MODE
-//    #define YAML_TEST_PATH "./"
-//#elif
-//#define YAML_TEST_PATH "/etc/portal/"
-//#endif
-// gcc -DDEBUG_MODE
-
-#define YAML_TEST_PATH "/home/seba/Escritorio/Portal/Tests/"
-
-#define YAML_PATH   "/home/seba/Escritorio/Portal/Server/"
 
 #endif //TP_FINAL_CONSTANTES_H

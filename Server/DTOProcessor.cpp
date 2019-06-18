@@ -1,7 +1,7 @@
-#include <Common/ProtocolTranslator/RockBlockDTO.h>
-#include <Common/ProtocolTranslator/PlayerChellIdDTO.h>
-#include <Common/ProtocolTranslator/RockDTO.h>
-#include <Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockBlockDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PlayerChellIdDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/RockDTO.h>
+#include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
 #include <Common/exceptions.h>
 #include "DTOProcessor.h"
 

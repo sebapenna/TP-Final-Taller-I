@@ -228,8 +228,6 @@ void Chell::move() {
         }
         b2Vec2 impulse(x_impulse, y_impulse);
         _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
-//        if (_previous_tilt != NOT_TILTED/* && _tilt == NOT_TILTED*/)
-//            _body->SetTransform(_body->GetWorldCenter(), 0);
     }
     updateJumpState();
 }
@@ -302,12 +300,14 @@ void Chell::collideWith(Collidable *other) {
             default:    // Chell no se inclina
                 break;
         }
-    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == GATE) {
+    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == GATE || cname == CAKE) {
         if (abs(_body->GetLinearVelocity().y) > DELTA_VEL ||
         abs(_body->GetLinearVelocity().x) > DELTA_VEL) {    // Verifico no sea velocidad error delta
             _hit_wall = true;
             _move_state = MOVE_STOP;    // Freno cuando colisiona con bloque (saltando o caminando)
         }
+        if (cname == CAKE)
+            _reached_cake = true;
     }
 }
 
@@ -316,8 +316,20 @@ void Chell::endCollitionWith(Collidable *other) {
     if (cname == METAL_DIAGONAL_BLOCK) {
         _tilt = NOT_TILTED;   // Deja de caminar en diagonal
         _body->SetGravityScale(CHELL_GRAVITY_SCALE);
-    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == ROCK ||  cname == GATE) {
+    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == ROCK) {
         _hit_wall = false;
+    } else if (cname == CAKE) {
+        _hit_wall = false;
+        _reached_cake = false;
     }
 }
+
+bool Chell::reachedCake() {
+    return _reached_cake;
+}
+
+void Chell::kill() {
+    _dead = true;
+}
+
 

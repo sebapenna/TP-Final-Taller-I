@@ -10,6 +10,7 @@
 #include "EnergyBlocks/EnergyTransmitter.h"
 #include "Server/Model/EnergyBall.h"
 #include "Server/Model/ContactListener.h"
+#include "Cake.h"
 #include <Server/Model/GroundBlocks/RockBlock.h>
 #include <Server/Model/Obstacles/Acid.h>
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
@@ -31,6 +32,7 @@ private:
     std::vector<EnergyReceiver*> _energy_receivers;
     std::vector<EnergyTransmitter*> _energy_transmitters;
     std::vector<EnergyBall*> _energy_balls;
+    Cake*   _cake;
     // _portals ?
     // _pin_tools ?
     // todo: YAML::Node _config => configuracion de constants.h
@@ -90,13 +92,16 @@ public:
 
     // POST [PARA TODOS LOS GETTERS DE PUNTEROS]: no continuar utilizando el puntero devuelto
     // posterior a un step, ya que podria haber sido eliminado por alguna accion, volver a utilizar
-    // el metodo para verificar su existencia.
+    // el metodo para verificar su existencia. En caso de id no existir o cuerpo haber sido
+    // eliminado se retornara nullptr
     Chell *getChell(const size_t &id);
     Rock *getRock(const size_t& id);
     Button *getButton(const size_t& id);
     Gate *getGate(const size_t& id);
     EnergyReceiver *getEnergyReceiver(const size_t& id);
     EnergyBall *getEnergyBall(const size_t& id);
+
+    Cake *getCake() const;
 
     const std::vector<Chell *> &getChells() const;
     const std::vector<Rock *> &getRocks() const;
@@ -147,6 +152,17 @@ public:
     void createEnergyBall(EnergyTransmitter *energy_transm);
 
     void createEnergyBarrier(const float& x, const float& y, const uint8_t& direction);
+
+    void createCake(const float& x, const float& y);
+
+    bool allChellsOnCake();
+
+    // Matar a chell que no alcanzo cake.
+    // Se encarga de verificar si todas las chell menos una llegaron a cake y en caso de ser asi,
+    // la mata. Retorna true si se elimino a la unica chell que no estaba en cake, false si no es
+    // posible matar a una chell, ya sea porque todas estan alli o porque mas de una chell no
+    // alcanzo cake.
+    bool killLastingChell();
 };
 
 

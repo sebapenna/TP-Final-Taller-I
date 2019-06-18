@@ -13,10 +13,10 @@ block_rock:
     height: 4
     x: 30
     y: 2 # *height + *length/2
-#  - width: *length # right_wall
-#    height: *height
-#    x: 101   # *width + *length
-#    y: 0
+  - width: *length # right_wall
+    height: *height
+    x: 100   # *width + *length
+    y: 30
 #  - width: *length # left_wall
 #    height: *height
 #    x: -1
@@ -52,7 +52,7 @@ block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuad
 #    y: 1
 #    orientation: SO
 rock:
-  - x: 20
+  - x: 10
     y: 60
 #  - x: -10
 #    y: 2
@@ -74,17 +74,17 @@ gate:
     y: 4
     buttons_needed:
       - id: 0
-#      - id: 1
-#    energy_receiver_needed:
-#      - id: 0
-#  - id: 1
-#    x: -60
-#    y: 1
-#    buttons_needed:
-#      - id: 1
-#    energy_receiver_needed:
-#      - id: 0
-#      - id: 1
+      - id: 1
+    energy_receiver_needed:
+      - id: 0
+  - id: 1
+    x: -60
+    y: 1
+    buttons_needed:
+      - id: 1
+    energy_receiver_needed:
+      - id: 0
+      - id: 1
 #energy_transmitter:
 #  - x: 70
 #    y: 1

@@ -29,6 +29,7 @@ private:
     static void energyTransmitterActivate(const ProtocolDTO *dto, std::vector<int16_t> &output);
     static void energyReceiverActivate(const ProtocolDTO *dto, std::vector<int16_t> &output);
     static void gateState(const ProtocolDTO *dto, std::vector<int16_t> &output);
+    static void cakeData(const ProtocolDTO *dto, std::vector<int16_t> &output);
 
 public:
     // PRE: output debe ser un vector vacio para almacenar correctamente los

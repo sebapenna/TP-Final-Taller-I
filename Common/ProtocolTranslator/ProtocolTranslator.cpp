@@ -1,36 +1,39 @@
 #include <Common/ProtocolTranslator/protocol_macros.h>
 #include "ProtocolTranslator.h"
-#include "ShootPortalDTO.h"
-#include "ShootPinToolDTO.h"
-#include "LiftRockDTO.h"
-#include "MoveLeftDTO.h"
-#include "MoveRightDTO.h"
-#include "StopDTO.h"
-#include "JumpDTO.h"
-#include "DropRockDTO.h"
-#include "PlayerChellIdDTO.h"
-#include "RockBlockDTO.h"
-#include "MetalBlockDTO.h"
-#include "MetalDiagonalBlockDTO.h"
-#include "EnergyTransmitterDTO.h"
-#include "EnergyReceiverDTO.h"
-#include "AcidDTO.h"
-#include "ButtonDTO.h"
-#include "GateDTO.h"
-#include "EnergyBarrierDTO.h"
-#include "RockDTO.h"
-#include "EnergyBallDTO.h"
-#include "PortalDTO.h"
-#include "PinToolDTO.h"
-#include "ChellDTO.h"
-#include "ButtonStateDTO.h"
-#include "EnergyTransmitterActivateDTO.h"
-#include "EnergyReceiverActivateDTO.h"
-#include "GateStateDTO.h"
-#include "Common/ProtocolTranslator/ConnectionDTO/QuitDTO.h"
-#include "Common/ProtocolTranslator/ConnectionDTO/BeginDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/ShootPinToolDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/LiftRockDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/MoveLeftDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/MoveRightDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/StopDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/JumpDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/DropRockDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/PlayerChellIdDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/RockBlockDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/MetalBlockDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/MetalDiagonalBlockDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/EnergyTransmitterDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/EnergyReceiverDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/AcidDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/ButtonDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/GateDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/EnergyBarrierDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/RockDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/EnergyBallDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/PortalDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/PinToolDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/ChellDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/ButtonStateDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/EnergyTransmitterActivateDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/GateStateDTO.h"
+#include "Common/ProtocolTranslator/GameStateDTO/QuitDTO.h"
+#include "Common/ProtocolTranslator/GameStateDTO/BeginDTO.h"
+#include "Common/ProtocolTranslator/DataDTO/CakeDTO.h"
 #include <vector>
 #include <iostream>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/CommitSuicideDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/KillMissingChellDTO.h>
 
 using std::vector;
 using std::move;
@@ -44,112 +47,155 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &outpu
         case PROTOCOL_BEGIN:
             output.push_back(BEGIN_ARGS);
             break;
+
         case PROTOCOL_QUIT:
             output.push_back(QUIT_ARGS);
             break;
+
+        case PROTOCOL_KILL_MISSING_CHELL:
+            output.push_back(KILL_MISSING_CHELL_ARGS);
+            break;
+
+
+        case PROTOCOL_COMMIT_SUICIDE:
+            output.push_back(COMMIT_SUICIDE_ARGS);
+            break;
+
         case PROTOCOL_MOVE_LEFT:
             output.push_back(MOVE_LEFT_ARGS);
             break;  // No tiene mas datos a agregar
+
         case PROTOCOL_MOVE_RIGHT:
             output.push_back(MOVE_RIGHT_ARGS);
             break;  // No tiene mas datos a agregar
+
         case PROTOCOL_JUMP:
             output.push_back(JUMP_ARGS);
             break;  // No tiene mas datos a agregar
+
         case PROTOCOL_STOP:
             output.push_back(STOP_ARGS);
             break;  // No tiene mas datos a agregar
+
         case PROTOCOL_SHOOT_PORTAL:
             output.push_back(SHOOT_PORTAL_ARGS);
             shootPortal(dto, output);
             break;
+
         case PROTOCOL_SHOOT_PIN_TOOL:
             output.push_back(SHOOT_PT_ARGS);
             shootPinTool(dto, output);
             break;
+
         case PROTOCOL_LIFT_ROCK:
             output.push_back(LIFT_ROCK_ARGS);
             liftRock(dto, output);
             break;
+
         case PROTOCOL_DROP_ROCK:
             output.push_back(DROP_ROCK_ARGS);
             break;  // No tiene mas datos a agregar
+
         case PROTOCOL_PLAYER_CHELL_ID:
             output.push_back(PLAYER_CHELL_ID_ARGS);
             playerChellId(dto, output);
             break;
+
         case PROTOCOL_ROCK_BLOCK_DATA:
             output.push_back(ROCK_BLOCK_ARGS);
             rockBlockData(dto, output);
             break;
+
         case PROTOCOL_METAL_BLOCK_DATA:
             output.push_back(METAL_BLOCK_ARGS);
             metalBlockData(dto, output);
             break;
+
         case PROTOCOL_METAL_DIAGONAL_BLOCK_DATA:
             output.push_back(METAL_DIAG_BLOCK_ARGS);
             metalDiagonalBlockData(dto, output);
             break;
+
         case PROTOCOL_ENERGY_TRANSMITTER_DATA:
             output.push_back(ENRG_TRANSM_ARGS);
             energyTransmitterData(dto, output);
             break;
+
         case PROTOCOL_ENERGY_RECEIVER_DATA:
             output.push_back(ENRG_RECVR_ARGS);
             energyReceiverData(dto, output);
             break;
+
         case PROTOCOL_ACID_DATA:
             output.push_back(ACID_ARGS);
             acidData(dto ,output);
             break;
+
         case PROTOCOL_BUTTON_DATA:
             output.push_back(BUTTON_ARGS);
             buttonData(dto, output);
             break;
+
         case PROTOCOL_GATE_DATA:
             output.push_back(GATE_ARGS);
             gateData(dto, output);
             break;
+
         case PROTOCOL_ENERGY_BARRIER_DATA:
             output.push_back(ENRG_BARRIER_ARGS);
             energyBarrierData(dto, output);
             break;
+
         case PROTOCOL_ROCK_DATA:
             output.push_back(ROCK_ARGS);
             rockData(dto, output);
             break;
+
         case PROTOCOL_ENERGY_BALL_DATA:
             output.push_back(ENRG_BALL_ARGS);
             energyBallData(dto, output);
             break;
+
         case PROTOCOL_PORTAL_DATA:
             output.push_back(PORTAL_ARGS);
             portalData(dto, output);
             break;
+
         case PROTOCOL_PIN_TOOL_DATA:
             output.push_back(PIN_TOOL_ARGS);
             pinToolData(dto, output);
             break;
+
         case PROTOCOL_CHELL_DATA:
             output.push_back(CHELL_ARGS);
             chellData(dto ,output);
             break;
+
+        case PROTOCOL_CAKE_DATA:
+            output.push_back(CAKE_ARGS);
+            cakeData(dto, output);
+            break;
+
         case PROTOCOL_BUTTON_CHANGE_STATE:
             output.push_back(BUTTON_CHANGE_ARGS);
             buttonState(dto, output);
             break;
+
         case PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE:
             output.push_back(ENRG_TRANSM_ACTV_ARGS);
             energyTransmitterActivate(dto, output);
             break;
+
         case PROTOCOL_ENERGY_RECEIVER_ACTIVATE:
             output.push_back(ENRG_RECVR_ACTV_ARGS);
             energyReceiverActivate(dto, output);
             break;
+
         case PROTOCOL_GATE_CHANGE_STATE:
             output.push_back(GATE_CHANGE_ARGS);
             gateState(dto, output);
             break;
+
         default:    // Comando no existente en el protocolo
             output.clear(); // Elimino ID incorrecto
             return -1;
@@ -166,6 +212,12 @@ shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &inp
 
         case PROTOCOL_QUIT:
             return make_shared<QuitDTO>();
+
+        case PROTOCOL_COMMIT_SUICIDE:
+            return make_shared<CommitSuicideDTO>();
+            
+        case PROTOCOL_KILL_MISSING_CHELL:
+            return make_shared<KillMissingChellDTO>();
 
         case PROTOCOL_MOVE_LEFT:
             return make_shared<MoveLeftDTO>();
@@ -259,6 +311,10 @@ shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &inp
                     input[CHELL_DIRECTION_POS], input[CHELL_TILTED_POS], input[CHELL_MOVING_POS],
                     input[CHELL_JUMPING_POS], input[CHELL_SHOOTING_POS],
                     input[CHELL_CARRYING_ROCK_POS], input[CHELL_DELETE_STATE_POS]);
+
+        case PROTOCOL_CAKE_DATA:
+            return make_shared<CakeDTO>(input[CAKE_X_POS], input[CAKE_Y_POS],
+                    input[CAKE_SIDE_LENGTH_POS]);
 
         case PROTOCOL_BUTTON_CHANGE_STATE:
             return make_shared<ButtonStateDTO>(input[BUTTON_CHANGE_ID_POS],
@@ -456,4 +512,11 @@ void ProtocolTranslator::gateState(const ProtocolDTO *dto, std::vector<int16_t> 
     auto p_dto = (GateStateDTO*) dto;
     output.push_back(p_dto->getId());
     output.push_back(p_dto->getState());
+}
+
+void ProtocolTranslator::cakeData(const ProtocolDTO *dto, std::vector<int16_t> &output) {
+    auto p_dto = (CakeDTO*) dto;
+    output.push_back(p_dto->getX());
+    output.push_back(p_dto->getY());
+    output.push_back(p_dto->getSideLength());
 }

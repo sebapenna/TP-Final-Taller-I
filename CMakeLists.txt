@@ -14,6 +14,8 @@ set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
 
 set(YAML_CPP_BUILD_TESTS OFF)
 set(YAML_CPP_BUILD_TOOLS OFF)
+set(YAML_CPP_BUILD_CONTRIB OFF)
+set(YAML_CPP_BUILD_INSTALL OFF)
 
 add_subdirectory(Box2D)
 add_subdirectory(Yaml)

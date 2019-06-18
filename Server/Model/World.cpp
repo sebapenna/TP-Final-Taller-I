@@ -9,7 +9,6 @@
 #include <yaml-cpp/yaml.h>
 #include <algorithm>
 #include <memory>
-#include <iostream>
 #include "World.h"
 
 using std::remove_if;
@@ -103,7 +102,6 @@ void World::step() {
     stepGates();
     stepChells();
     stepRocks();
-
 }
 
 void World::stepGates() {
@@ -429,11 +427,19 @@ void World::createEnergyBarrier(const float &x, const float &y,
         default:    // No existe este caso
             break;
     }
-    auto body = createStaticBox(x, y , half_width, half_height, 0);   // Friction = 0
+    auto body = createStaticBox(x, y , half_width, half_height, BARRIER_FRICTION);
     auto e_barrier = new EnergyBarrier(x, y, 2 * half_width, 2 * half_height);
     body->SetUserData(e_barrier);
     _energy_barriers.push_back(e_barrier);
 }
+
+void World::createCake(const float &x, const float &y) {
+    auto body = createStaticBox(x, y , CAKE_HALF_LEN, CAKE_HALF_LEN, CAKE_FRICTION);
+    auto cake = new Cake(body);
+    body->SetUserData(cake);
+    _cake = cake;
+}
+
 
 const vector<Collidable *> &World::getObjectsToUpdate() const {
     return _objects_to_update;
@@ -502,4 +508,26 @@ const vector<EnergyBarrier *> &World::getEnergyBarriers() const {
     return _energy_barriers;
 }
 
+Cake *World::getCake() const {
+    return _cake;
+}
+
+bool World::allChellsOnCake() {
+    // Verifico si todos los chells llegaron a Cake
+    return (_chells.size() == _cake->getChellsInContact());
+}
+
+bool World::killLastingChell() {
+    if (allChellsOnCake()) // Todas las chells se encuentra en cake
+        return false;
+    if ((_chells.size() - _cake->getChellsInContact()) == 1) {  // Todas menos una alcanzaron
+        for (auto &chell : _chells) {
+            if (!chell->reachedCake()) {
+                chell->kill();
+                return true;
+            }
+        }
+    }
+    return false;
+}
 

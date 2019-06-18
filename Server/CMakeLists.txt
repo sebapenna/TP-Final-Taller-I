@@ -35,7 +35,7 @@ add_library(portal-src
         Model/WorldObjectsStorage.cpp Model/WorldObjectsStorage.h
         WorldObjectDTOTranslator.cpp WorldObjectDTOTranslator.h
         PositionTranslator.cpp PositionTranslator.h
-        Event.cpp Event.h ../Common/HandshakeHandler.cpp ../Common/HandshakeHandler.h)
+        Event.cpp Event.h ../Common/HandshakeHandler.cpp ../Common/HandshakeHandler.h Model/Cake.cpp Model/Cake.h)
 
 target_link_libraries(portal-src common-src Box2D yaml-parser pthread)
 
@@ -44,9 +44,3 @@ add_executable(server
         ServerMain.cpp)
 
 target_link_libraries(server portal-src)
-
-# todo : eliminar client test
-add_executable(client
-        ClientTest.cpp)
-
-target_link_libraries(client portal-src)

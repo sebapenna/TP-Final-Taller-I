@@ -11,10 +11,13 @@
 
 using std::cout;
 using std::endl;
+using std::cerr;
 
 int main(int argc, char const *argv[]) {
-    if (argc != N_ARGS)
-        throw WrongArgumentException();
+    if (argc != N_ARGS) {
+        cerr << WrongArgumentException().what();
+        return ERROR;
+    }
     try {
         Lobby lobby(argv[PORT_POS]);
 
@@ -33,10 +36,10 @@ int main(int argc, char const *argv[]) {
 
         exit.join();
     } catch(const exception& e) {
-        cout << e.what();
+        cerr << "Server Main: " << e.what();
         return ERROR;
     } catch(...) {
-        cout << UnknownException().what();
+        cerr << "Server Main: "  << UnknownException().what();
         return ERROR;
     }
     return SUCCESS;
