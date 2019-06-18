@@ -152,76 +152,10 @@ int Chell::calculateXImpulse() {
     return impulse_factor * MOVE_FORCE;
 }
 
-bool Chell::movementInYAlreadyApplied() {
-    float vel_y = _body->GetLinearVelocity().y;
-    if (_tilt == EAST) {
-        if (_move_state == MOVE_RIGHT && vel_y < 0)    // Moviendo hacia derecha
-            return true;
-        if (_move_state == MOVE_LEFT && vel_y > 0)  // Moviendo hacia izquierda
-            return true;
-        return (_move_state == MOVE_STOP && vel_y == 0 && !_hit_wall);    // Cuerpo quieto
-    } else { // tilt == WEST
-        if (_move_state == MOVE_RIGHT && vel_y > 0)    // Moviendo hacia derecha
-            return true;
-        if (_move_state == MOVE_LEFT && vel_y < 0)  // Moviendo hacia izquierda
-            return true;
-        return (_move_state == MOVE_STOP && vel_y == 0 && !_hit_wall);    // Cuerpo quieto
-    }
-}
-
-int Chell::calculateYImpulse() {
-    if (movementInYAlreadyApplied()) // _move_state no se modifico
-        return 0;
-    float vel_y = _body->GetLinearVelocity().y;
-    int impulse_factor = 0;
-    // Cuando se mueve en un sentido factor sera el doble, para frenarlo y
-    // luego seguir moviendose en sentido contrario
-    if (_tilt == WEST) {
-        switch (_move_state) {
-            case MOVE_RIGHT:
-                (vel_y < 0) ? (impulse_factor = 2) : (impulse_factor = 1);
-                break;
-            case MOVE_LEFT:
-                (vel_y > 0) ? (impulse_factor = -2) : (impulse_factor = -1);
-                break;
-            default: // No existe este caso
-                break;
-        }
-    } else {    // _tilt = EAST
-        switch (_move_state) {
-            case MOVE_RIGHT:
-                (vel_y > 0) ? (impulse_factor = -2) : (impulse_factor = -1);
-                break;
-            case MOVE_LEFT:
-                (vel_y < 0) ? (impulse_factor = 2) : (impulse_factor = 1);
-                break;
-            default: // No existe este caso
-                break;
-        }
-    }
-    if (_move_state == MOVE_STOP) { // Ambos casos igual
-        if (vel_y > 0)
-            impulse_factor = -1;
-        else if (vel_y < 0)
-            impulse_factor = 1;
-    }
-    return impulse_factor * MOVE_FORCE;
-}
-
 void Chell::move() {
-    int x_impulse = 0, y_impulse = 0;
-    x_impulse = calculateXImpulse();
-    if (_tilt != NOT_TILTED) {
-        if (_jump) {
-            _body->SetGravityScale(CHELL_GRAVITY_SCALE);    // Normalizo gravedad
-            _jump = false;
-            y_impulse = JUMP_FORCE * 1.5;  // Aplico mas fuerza por friccion
-        } else {
-            y_impulse = calculateYImpulse();
-        }
-        b2Vec2 impulse(x_impulse, y_impulse);
-        _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
-    } else {
+    if (_tilt == NOT_TILTED) {
+        int x_impulse = 0, y_impulse = 0;
+        x_impulse = calculateXImpulse();
         if (_jump) {
             _jump = false;
             y_impulse = JUMP_FORCE;
@@ -269,38 +203,37 @@ void Chell::collideWith(Collidable *other) {
     if (cname == ROCK) {
         auto rock = (Rock*) other;
         float head_pos = this->getY() + CHELL_HALF_HEIGHT;
-        // Verifico esta por encima de chell y cayendo
-        if (rock->getY() > head_pos && rock->getVelocityY() != 0) {
+        if (rock->getY() > head_pos && rock->getVelocityY() != 0)   // Encima de chell y cayendo
             _dead = true;
-        } else {
+        else
             _hit_wall = true;
-//            _move_state = MOVE_STOP;    // Freno cuando colisiona con bloque (saltando o caminando)
-        }
     } else if (cname == ACID || cname == ENERGY_BALL) {
         _dead = true;
     } else if (cname == METAL_DIAGONAL_BLOCK) {
-        if (_hit_wall)
-            return;
+        _hit_wall = true;
         auto block = (MetalDiagonalBlock*) other;
+        auto diff_x = abs(getX() - block->getX());
         switch (block->getOrientation()) {
             case O_NE:
                 if (_body->GetLinearVelocity().x < 0 ||
-                        abs(_body->GetLinearVelocity().y) > DELTA_VEL) {    // De costado o arriba
-                    _tilt = EAST;
-                    _body->SetGravityScale(0);  // No debe caer por gravedad
+                        (abs(_body->GetLinearVelocity().y) > DELTA_VEL && diff_x < CHELL_HALF_WIDTH)) {
+                    // De costado o arriba
+                    _tilt = EAST;   //todo: lo mismo es O_NO
                 }
                 break;
             case O_NO:
-                if (_body->GetLinearVelocity().x > 0 ||
-                    abs(_body->GetLinearVelocity().y) > DELTA_VEL) {    // De costado o arriba
+                if (_body->GetLinearVelocity().x > 0 || abs(_body->GetLinearVelocity().y) >
+                DELTA_VEL) {    // De costado o arriba
                     _tilt = WEST;
-                    _body->SetGravityScale(0);  // No debe caer por gravedad
+                    _body->ApplyLinearImpulse({-2 * MOVE_FORCE, 0},
+                                              _body->GetWorldCenter(), true);
                 }
                 break;
             default:    // Chell no se inclina
                 break;
         }
-    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == GATE || cname == CAKE) {
+    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == GATE || cname == CAKE ||
+    cname == ENERGY_RECEIVER || cname == ENERGY_TRANSMITTER) {
         if (abs(_body->GetLinearVelocity().y) > DELTA_VEL ||
         abs(_body->GetLinearVelocity().x) > DELTA_VEL) {    // Verifico no sea velocidad error delta
             _hit_wall = true;
@@ -314,9 +247,11 @@ void Chell::collideWith(Collidable *other) {
 void Chell::endCollitionWith(Collidable *other) {
     auto cname = other->getClassId();
     if (cname == METAL_DIAGONAL_BLOCK) {
+        if (_tilt != NOT_TILTED)
+            _body->SetLinearVelocity({0,0});
         _tilt = NOT_TILTED;   // Deja de caminar en diagonal
-        _body->SetGravityScale(CHELL_GRAVITY_SCALE);
-    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == ROCK) {
+    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == ROCK ||
+    cname == ENERGY_RECEIVER || cname == ENERGY_TRANSMITTER) {
         _hit_wall = false;
     } else if (cname == CAKE) {
         _hit_wall = false;

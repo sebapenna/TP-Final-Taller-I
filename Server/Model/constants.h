@@ -87,7 +87,7 @@
 #define ENERGY_BALL_MAX_LIFETIME 5
 
 /* Configuracion Bloques */
-#define METAL_DIAG_BLOC_FRICTION    100
+#define METAL_DIAG_BLOC_FRICTION    0
 #define BLOCK_FRICTION  0
 #define BLOCK_DENSITY   1
 

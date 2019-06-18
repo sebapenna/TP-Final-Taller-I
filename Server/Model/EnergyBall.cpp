@@ -1,5 +1,6 @@
 #include "EnergyBall.h"
 #include <Server/Model/constants.h>
+#include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
 
 EnergyBall::EnergyBall(const size_t &id, b2Body *body, uint8_t direction) : _id(id) {
     _body = body;
@@ -56,13 +57,15 @@ size_t EnergyBall::getId() const {
 }
 
 void EnergyBall::collideWith(Collidable *other) {
-    auto c_name = other->getClassId();
-    if (c_name == ROCK_BLOCK || c_name == ACID || c_name == BUTTON ||
-        c_name == ROCK || c_name == ENERGY_RECEIVER || c_name == CHELL ||
-        c_name == PIN_TOOL) {
+    auto cname = other->getClassId();
+    if (cname == ROCK_BLOCK || cname == ACID || cname == BUTTON ||
+        cname == ROCK || cname == ENERGY_RECEIVER || cname == CHELL ||
+        cname == PIN_TOOL) {
         _dead = true;
-    } else if (c_name == ENERGY_TRANSMITTER && _lifetime != 0) {
+    } else if (cname == ENERGY_TRANSMITTER && _lifetime != 0) {
         _dead = true;    // Verifico que no colisiona cuando se crea la bola
+    } else if (cname == METAL_BLOCK ||  cname == METAL_DIAGONAL_BLOCK)  {
+//        bounce(other);
     }
 }
 
@@ -85,3 +88,50 @@ bool EnergyBall::actedDuringStep() {
     }
     return false;
 }
+
+//void EnergyBall::bounce(Collidable *other) {
+//    auto velx = _body->GetLinearVelocity().x;
+//    auto vely = _body->GetLinearVelocity().y;
+//    float new_velx, new_vely;
+//    if (other->getClassId() == METAL_BLOCK) {   // Rebote en sup. plana es setear velocidad opuesta
+//        new_velx = velx * -1;
+//        new_vely = vely * -1;
+//    } else {    // METAL_DIAGONAL_BLOCK
+//        auto block  = (MetalDiagonalBlock*) other;
+//        auto orientation  = block->getOrientation();
+//        if (velx == 0 && vely < 0) {
+//            if (orientation == O_NE || O_NO) {
+//                new_vely = 0;
+//                (orientation == O_NE) ? (new_velx = -1 * vely) : (new_velx = vely);
+//            } else {    // O_SE || O_SO
+//                new_velx = 0;
+//                new_vely = -1 * vely;
+//            }
+//        } else if (velx == 0 && vely > 0) {
+//            if (orientation == O_SE || O_SO) {
+//                new_vely = 0;
+//                (orientation == O_SO) ? (new_velx = -1 * vely) : (new_velx = vely);
+//            } else {    // O_NE || O_NO
+//                new_velx = 0;
+//                new_vely = -1 * vely;
+//            }
+//        } else if (velx > 0 && vely == 0) {
+//            if (orientation == O_NO || O_SO) {
+//                new_velx = 0;
+//                (orientation == O_SO) ? (new_vely = -1 * velx) : (new_vely = velx);
+//            } else {    // O_NE || O_SE
+//                new_velx = -1 * velx;
+//                new_vely = 0;
+//            }
+//        } else if (velx < 0 && vely == 0) {
+//            if (orientation == O_NO || O_SO) {
+//                new_velx = 0;
+//                (orientation == O_SO) ? (new_vely = -1 * velx) : (new_vely = velx);
+//            } else {    // O_NE || O_SE
+//                new_velx = -1 * velx;
+//                new_vely = 0;
+//            }
+//        }
+//    }
+//    _body->SetLinearVelocity({new_velx, new_vely});
+//}

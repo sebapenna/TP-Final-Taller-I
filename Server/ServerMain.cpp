@@ -23,7 +23,6 @@ int main(int argc, char const *argv[]) {
 
         cout << "Lobby creado, disponible a conexiones..."<<endl;
 
-
         std::thread exit([&]() {    // Thread para cerrar servidor
             char c;
             do {

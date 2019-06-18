@@ -49,6 +49,21 @@ World::~World() {
     delete _world;
 }
 
+World &World::operator=(World &&other) {
+    if (&other == this)
+        return *this;
+    _width = other._width;
+    _height = other._height;
+    _world = other._world;
+    _contact_listener = other._contact_listener;
+
+    other._width = -1;
+    other._height = -1;
+    other._world = nullptr;
+    other._contact_listener = nullptr;
+    return *this;
+}
+
 /************************ Getters ************************/
 size_t World::getWidth() const {
     return _width;
@@ -117,11 +132,13 @@ void World::step() {
     if (inConditionToKillMissingChell()) {
         for (int i = 0; i < _chells.size(); ++i) {
             auto chell = _chells[i];
-            if (!chell->reachedCake()) {    // Elimino chell que no estaba en Cake
-                _world->DestroyBody(chell->getBody());
-                _objects_to_delete.emplace_back(i, chell->getClassId());
-                delete chell;
-                _chells[i] = nullptr;
+            if (chell) {
+                if (!chell->reachedCake()) {    // Elimino chell que no estaba en Cake
+                    _world->DestroyBody(chell->getBody());
+                    _objects_to_delete.emplace_back(i, chell->getClassId());
+                    delete chell;
+                    _chells[i] = nullptr;
+                }
             }
         }
     }
@@ -416,6 +433,7 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
     b2FixtureDef fixture;
     fixture.shape = &shape;
     fixture.density = ENRG_BALL_DENSITY;
+    fixture.restitution = 1;
 
     b2Body *body = _world->CreateBody(&body_def);
 
@@ -470,21 +488,6 @@ const vector<Collidable *> &World::getObjectsToUpdate() const {
 
 const vector<std::pair<size_t, uint8_t>> &World::getObjectsToDelete() const {
     return _objects_to_delete;
-}
-
-World &World::operator=(World &&other) {
-    if (&other == this)
-        return *this;
-    _width = other._width;
-    _height = other._height;
-    _world = other._world;
-    _contact_listener = other._contact_listener;
-
-    other._width = -1;
-    other._height = -1;
-    other._world = nullptr;
-    other._contact_listener = nullptr;
-    return *this;
 }
 
 const vector<Chell *> &World::getChells() const {

@@ -52,7 +52,7 @@ block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuad
 #    y: 1
 #    orientation: SO
 rock:
-  - x: 10
+  - x: 16
     y: 60
 #  - x: -10
 #    y: 2
@@ -105,10 +105,10 @@ gate:
 #  - id: 1
 #    x: -80
 #    y: 1
-#energy_barrier:
-#  - x: 90
-#    y: 1
-#    orientation: V
+energy_barrier:
+  - x: 90
+    y: 4
+    orientation: V
 #  - x: -90
 #    y: 1
 #    orientation: H
@@ -117,12 +117,18 @@ chell:
     x: 0
     y: 2
   - id: 1
-    x: 10
-    y: 1
+    x: -5
+    y: 2
+  - id: 2
+    x: -10
+    y: 2
+  - id: 3
+    x: 2
+    y: 2
 acid:
   - x: -100
     y: 1
 cake:
-  x: 80
+  x: 10
   y: 2
 

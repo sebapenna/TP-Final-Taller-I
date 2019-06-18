@@ -65,10 +65,10 @@ void Lobby::run() {
             ++_next_player_id;  // Incremento hacia proximo a id
             _players_in_lobby.push_back(new_player);
 
-            cout << "Nuevo jugador conectado, creando partida..."<<endl;
+            cout << "Nuevo jugador conectado"<<endl;
         }
     } catch(const CantConnectException& e) {
-        cout << "Socket aceptador cerrado\n";
+        cerr << "Socket aceptador cerrado\n";
     }  // Socket aceptador cerrado
 }
 

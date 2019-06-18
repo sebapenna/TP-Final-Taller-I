@@ -45,8 +45,8 @@ void GameThread::run(std::string map_filename) {
         Stage stage(map_filename);    // Creo stage en tiempo de espera al comienzo
 
         // Loop esperando a que owner inicie la partida. Verifico haya jugadores conectados
-        while (!_begin_game && !_empty_game && !_game_finished) {
-            std::this_thread::sleep_for(seconds(20)); // Duermo thread esperando el inicio
+        while (!_begin_game && !_empty_game && !_game_finished) {   //todo:activar
+//            std::this_thread::sleep_for(seconds(20)); // Duermo thread esperando el inicio
             auto event = _events_queue.getTopAndPop();
             if (event != nullptr)
                 switch (event->getProtocolId()) {
@@ -151,12 +151,10 @@ bool GameThread::addPlayerIfOpenToNewPlayersAndNotFull(Player *new_player) {
     lock_guard<mutex> lock(_m);
 
     // Maximo de jugadores alcanzado o partida ya comenzo
-    if (_players.size() >= _max_players || _begin_game) {
-
+    if (_players.size() >= _max_players || _begin_game)
         return false;
-    }
-    new_player->setId(_players.size());
 
+    new_player->setId(_players.size());
     if (new_player->id() != 0)   // No notifico cuando es el primer jugador
         notifyAllNewPlayer();
 
@@ -170,8 +168,7 @@ void GameThread::deletePlayer(const size_t &id) {
 
     _players.remove_if([this, &id](Player* p) {
         if (!_begin_game && p->id() > id) {
-            // Actualizo ids mientras busco elemento, en caso de juego aun no inciado
-            p->setId(p->id() - 1);
+            p->setId(p->id() - 1); // Actualizo ids mientras busco, en caso de juego aun no inciado
             return false;
         }
         return (p->id() == id) ? (p->disconnectAndJoin(), delete p, p = nullptr, true) : false;

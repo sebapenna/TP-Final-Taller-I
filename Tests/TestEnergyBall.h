@@ -23,6 +23,10 @@ CPPUNIT_TEST_SUITE(TestEnergyBall);
         CPPUNIT_TEST(testContactWithClosedGate);
         CPPUNIT_TEST(testAddedToUpdateVectorAfterMoving);
         CPPUNIT_TEST(testAddedToDeleteVectorAfterDead);
+        CPPUNIT_TEST(testContactWithMetalBlockFromLeft);
+        CPPUNIT_TEST(testContactWithMetalBlockFromRight);
+        CPPUNIT_TEST(testContactWithMetalBlockFromAbove);
+        CPPUNIT_TEST(testContactWithMetalBlockFromBelow);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -31,11 +35,11 @@ private:
     float e_transm_x = 0, e_transm_y = 2;
 
 public:
-    void setUp() {
+    void setUp() override {
         world = new World(width, height);
     }
 
-    void tearDown() {
+    void tearDown() override {
         delete world;
     }
 
@@ -369,6 +373,90 @@ public:
             }
         }
         CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
+        cout << "OK";
+    }
+
+    void testContactWithMetalBlockFromLeft() {
+        cout << endl << "TEST rebotar en bloque metal, cara izquierda: ";
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        world->createMetalBlock(4, 4, (e_transm_x + 15), 2);
+        releaseEnergyBall();
+        auto energy_ball = world->getEnergyBall(0);
+        auto last_x = energy_ball->getX();
+        bool bounced = false;
+        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+            world->step();
+            energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
+            if (energy_ball) {
+                if (last_x > energy_ball->getX())   // Si x mayor a la actual, reboto
+                    bounced = true;
+                last_x = energy_ball->getX();   // Actualizo ultima posicion
+            }
+        }
+        CPPUNIT_ASSERT(bounced);
+        cout << "OK";
+    }
+
+    void testContactWithMetalBlockFromRight() {
+        cout << endl << "TEST rebotar en bloque metal, cara derecha: ";
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
+        world->createMetalBlock(4, 4, (e_transm_x - 15), 2);
+        releaseEnergyBall();
+        auto energy_ball = world->getEnergyBall(0);
+        auto last_x = energy_ball->getX();
+        bool bounced = false;
+        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+            world->step();
+            energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
+            if (energy_ball) {
+                if (last_x < energy_ball->getX())  // Si x menor a la actual, reboto
+                    bounced = true;
+                last_x = energy_ball->getX();   // Actualizo ultima posicion
+            }
+        }
+        CPPUNIT_ASSERT(bounced);
+        cout << "OK";
+    }
+
+    void testContactWithMetalBlockFromAbove() {
+        cout << endl << "TEST rebotar en bloque metal, cara superior: ";
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
+        world->createMetalBlock(4, 4, (e_transm_x), (e_transm_y - 15));
+        releaseEnergyBall();
+        auto energy_ball = world->getEnergyBall(0);
+        auto last_y = energy_ball->getY();
+        bool bounced = false;
+        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+            world->step();
+            energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
+            if (energy_ball) {
+                if (last_y < energy_ball->getY())  // Si y menor a la actual, reboto
+                    bounced = true;
+                last_y = energy_ball->getY();   // Actualizo ultima posicion
+            }
+        }
+        CPPUNIT_ASSERT(bounced);
+        cout << "OK";
+    }
+
+    void testContactWithMetalBlockFromBelow() {
+        cout << endl << "TEST rebotar en bloque metal, cara inferior: ";
+        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
+        world->createMetalBlock(4, 4, (e_transm_x), (e_transm_y + 15));
+        releaseEnergyBall();
+        auto energy_ball = world->getEnergyBall(0);
+        auto last_y = energy_ball->getY();
+        bool bounced = false;
+        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+            world->step();
+            energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
+            if (energy_ball) {
+                if (last_y > energy_ball->getY())  // Si y mayor a la actual, reboto
+                    bounced = true;
+                last_y = energy_ball->getY();   // Actualizo ultima posicion
+            }
+        }
+        CPPUNIT_ASSERT(bounced);
         cout << "OK";
     }
 };

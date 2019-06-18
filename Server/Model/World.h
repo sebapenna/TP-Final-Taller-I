@@ -33,7 +33,7 @@ private:
     std::vector<EnergyTransmitter*> _energy_transmitters;
     std::vector<EnergyBall*> _energy_balls;
     std::vector<size_t> _want_to_kill;  // ids chells que quiere matar chell que no llego a cake
-    Cake*   _cake;
+    Cake*   _cake = nullptr;
     // _portals ?
     // _pin_tools ?
     // todo: YAML::Node _config => configuracion de constants.h
