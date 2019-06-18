@@ -531,11 +531,11 @@ const vector<EnergyBarrier *> &World::getEnergyBarriers() const {
 }
 
 void World::killLastingChell(const size_t &killer_id) {
-    auto chell = getChell(kiler_id);
+    auto chell = getChell(killer_id);
     if (chell->reachedCake()) {
         // Agrego solamente si no habia sido previamente agregado y llego a Cake
-        if (std::find(_want_to_kill.begin(), _want_to_kill.end(), kiler_id) == _want_to_kill.end())
-            _want_to_kill.push_back(kiler_id);
+        if (std::find(_want_to_kill.begin(), _want_to_kill.end(), killer_id) == _want_to_kill.end())
+            _want_to_kill.push_back(killer_id);
     }
 }
 
