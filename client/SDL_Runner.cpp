@@ -126,7 +126,6 @@ void SDL_Runner::run() {
                             metalBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY() + j, CUT_LEN_BLOCKS, CUT_LEN_BLOCKS);
                             world.addView(metalBlock);
                         }
-
                     }
                     break;
                 }
@@ -210,6 +209,8 @@ void SDL_Runner::run() {
                             } else {
                                 world.setChellState(newChell->getId(), ChellState::runningRight);
                             }
+                        } else if (newChell->getShooting() == SHOOTING) {
+                            world.setChellState(newChell->getId(), ChellState::firing);
                         } else {
                             world.setChellState(newChell->getId(), ChellState::standing);
                         }
