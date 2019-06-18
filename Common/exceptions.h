@@ -42,6 +42,12 @@ struct FailedRecvException : public exception {
     }
 };
 
+struct CloseConnectionException : public exception {
+    const char * what() const throw() override {
+        return "El socket ha sido cerrado.\n";
+    }
+};
+
 struct WrongArgumentException : public exception {
     const char * what() const throw() override {
         return "Error: argumentos invalidos.\n";

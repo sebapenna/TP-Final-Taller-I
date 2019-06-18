@@ -23,6 +23,7 @@ void TextureFactory::init(Renderer& renderer) {
     textures["bulletAndRock"] = loadTexture(std::string("assets/textures/bulletAndRock.png"), renderer);
     textures["acidAndButtons"] = loadTexture(std::string("assets/textures/acidAndButtons.png"), renderer);
     textures["background"] = loadTexture(std::string("assets/backgroundImage/background.png"), renderer);
+    textures["cake"] = loadTexture(std::string("assets/textures/cake.png"), renderer);
 }
 
 SDL_Texture *TextureFactory::getTextureByName(std::string &name) {
