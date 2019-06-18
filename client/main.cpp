@@ -125,8 +125,8 @@ int main(int argc, char** argv){
                     std::shared_ptr<ProtocolDTO> dto(new StopDTO());
                     blockingQueue.push(dto);
                 }
-                //usleep(100);
             }
+            //SDL_Delay(10);
         }
         protocol.disconnect();
         sdlRunner.join();

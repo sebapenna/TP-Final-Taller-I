@@ -111,7 +111,7 @@ void SDL_Runner::run() {
                         for (int j = 0; j<rockBlockDTO->getHeight(); j+=CUT_LEN_BLOCKS) {
                             auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
                             rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY()+j, CUT_LEN_BLOCKS, CUT_LEN_BLOCKS);
-                            world.addView(rockBlock);
+                            world.addView(rockBlock);    
                         }
                     }
                     break;
@@ -267,5 +267,6 @@ void SDL_Runner::run() {
         renderer.clearRender();
         world.draw();
         renderer.render();
+        //SDL_Delay(5);
     }
 }
