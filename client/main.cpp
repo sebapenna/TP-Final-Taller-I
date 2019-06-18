@@ -18,6 +18,8 @@
 #include <zconf.h>
 #include <Common/HandshakeHandler.h>
 #include <Common/exceptions.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/CommitSuicideDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/KillMissingChellDTO.h>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "Common/ProtocolTranslator/PlayerActionsDTO/MoveLeftDTO.h"
@@ -105,6 +107,16 @@ int main(int argc, char** argv){
                             std::shared_ptr<ProtocolDTO> dto(new QuitDTO());
                             blockingQueue.push(dto);
                             done = true;
+                            break;
+                        }
+                        case SDLK_o: {
+                            std::shared_ptr<ProtocolDTO> dto(new CommitSuicideDTO());
+                            blockingQueue.push(dto);
+                            break;
+                        }
+                        case SDLK_k: {
+                            std::shared_ptr<ProtocolDTO> dto(new KillMissingChellDTO());
+                            blockingQueue.push(dto);
                             break;
                         }
 
