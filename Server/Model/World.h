@@ -68,6 +68,8 @@ private:
     void stepChells();
     void stepRocks();
 
+    bool inConditionToKillMissingChell();
+
 public:
     World(const size_t &width, const size_t &height);
 
@@ -82,7 +84,9 @@ public:
     World& operator=(World& other) = delete;
 
     // Step del world. Aplica todas las acciones ante asignadas a los distintos objetos.
-    // Vacia las estructuras de elementos actualizados/eliminados antes de realizar el step.
+    // Vacia las estructuras de elementos actualizados/eliminados antes de realizar el step. Se
+    // encarga de evaluar si es posible eliminar la unica chell que no esta en cake, si las demas
+    // chells asi lo hubiesen decidido y eliminarla.
     void step();
 
 
@@ -101,8 +105,6 @@ public:
     Gate *getGate(const size_t& id);
     EnergyReceiver *getEnergyReceiver(const size_t& id);
     EnergyBall *getEnergyBall(const size_t& id);
-
-    Cake *getCake() const;
 
     const std::vector<Chell *> &getChells() const;
     const std::vector<Rock *> &getRocks() const;
@@ -155,15 +157,6 @@ public:
     void createEnergyBarrier(const float& x, const float& y, const uint8_t& direction);
 
     void createCake(const float& x, const float& y);
-
-    bool allChellsOnCake();
-
-    // Matar a chell que no alcanzo cake.
-    // Se encarga de verificar si todas las chell menos una llegaron a cake y en caso de ser asi,
-    // la mata. Retorna true si se elimino a la unica chell que no estaba en cake, false si no es
-    // posible matar a una chell, ya sea porque todas estan alli o porque mas de una chell no
-    // alcanzo cake.
-    bool killLastingChell();
 
     // Indica que chell del id indicado decidio matar a la chell que no llego a la cake.
     // Internamente se verifica si dicha chell esta verdaderamente en el lugar de la cake y en

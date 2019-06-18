@@ -19,6 +19,8 @@ class TestCake : public CppUnit::TestFixture {
         CPPUNIT_TEST(testDontKillWhenNotAllReachedCake);
         CPPUNIT_TEST(testDontKillWhenNoneReachedCake);
         CPPUNIT_TEST(testDontKillWhenAllReachedCake);
+        CPPUNIT_TEST(testRemoveFromWantToKillWhenLeavingCake);
+        CPPUNIT_TEST(testLeavesCakeReturnsAndKills);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -49,7 +51,7 @@ public:
         bool reached_cake = false;
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
-            if (world->allChellsOnCake())
+            if (chell->reachedCake())
                 reached_cake = true;
         }
         CPPUNIT_ASSERT(reached_cake);
@@ -63,8 +65,9 @@ public:
         chell->move_right();
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
+        auto chell2 = world->getChell(1);
         CPPUNIT_ASSERT(chell->reachedCake());
-        CPPUNIT_ASSERT(!world->allChellsOnCake());
+        CPPUNIT_ASSERT(!chell2->reachedCake());
         cout << "OK";
     }
 
@@ -81,7 +84,8 @@ public:
         chell3->move_right();
         for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT(world->allChellsOnCake());
+        CPPUNIT_ASSERT(chell2->reachedCake());
+        CPPUNIT_ASSERT(chell3->reachedCake());
         cout << "OK";
     }
 
@@ -98,8 +102,11 @@ public:
         auto n_bodies = world->getWorld()->GetBodyCount();
         for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT(!world->allChellsOnCake());
-        CPPUNIT_ASSERT(world->killLastingChell());  // Se pudo eliminar chell restante
+        CPPUNIT_ASSERT(chell->reachedCake());
+        CPPUNIT_ASSERT(chell2->reachedCake());
+        CPPUNIT_ASSERT(!chell3->reachedCake());
+        world->killLastingChell(0); // Indico que chells de id 0 y 1 quieren matar a la restante
+        world->killLastingChell(1);
         world->step();  // Permito que se aplique 'asesinato'
         chell = world->getChell(0);
         chell2 = world->getChell(1);
@@ -122,12 +129,15 @@ public:
         auto n_bodies = world->getWorld()->GetBodyCount();
         for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT(!world->allChellsOnCake());
-        CPPUNIT_ASSERT(!world->killLastingChell());  // // No se elimino
-        world->step();  // Permito que se aplique posible 'asesinato'
-        chell = world->getChell(0);
         auto chell2 = world->getChell(1);
         auto chell3 = world->getChell(2);
+        CPPUNIT_ASSERT(chell->reachedCake());
+        CPPUNIT_ASSERT(!chell2->reachedCake());
+        CPPUNIT_ASSERT(!chell3->reachedCake());
+        world->killLastingChell(0); // Indico que chells de id 0 y 1 quieren matar a la restante
+        world->killLastingChell(1);
+        world->step();  // Permito que se aplique posible 'asesinato'
+        chell = world->getChell(0);
         // Verifico no se elimino
         CPPUNIT_ASSERT(chell);
         CPPUNIT_ASSERT(chell2);
@@ -145,12 +155,18 @@ public:
         auto n_bodies = world->getWorld()->GetBodyCount();
         for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT(!world->allChellsOnCake());
-        CPPUNIT_ASSERT(!world->killLastingChell());  // No se elimino
-        world->step();  // Permito que se aplique posible 'asesinato'
-        chell = world->getChell(0);
         auto chell2 = world->getChell(1);
         auto chell3 = world->getChell(2);
+        CPPUNIT_ASSERT(!chell->reachedCake());
+        CPPUNIT_ASSERT(!chell2->reachedCake());
+        CPPUNIT_ASSERT(!chell3->reachedCake());
+        world->killLastingChell(0); // Indico que chells de id 0, 1 y 2 quieren matar a la restante
+        world->killLastingChell(1);
+        world->killLastingChell(2);
+        world->step();  // Permito que se aplique posible 'asesinato'
+        chell = world->getChell(0);
+        chell2 = world->getChell(1);
+        chell3 = world->getChell(2);
         // Verifico no se elimino
         CPPUNIT_ASSERT(chell);
         CPPUNIT_ASSERT(chell2);
@@ -173,8 +189,12 @@ public:
         chell3->move_right();
         for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
             world->step();
-        CPPUNIT_ASSERT(world->allChellsOnCake());
-        CPPUNIT_ASSERT(!world->killLastingChell());  // No se elimino
+        CPPUNIT_ASSERT(chell->reachedCake());
+        CPPUNIT_ASSERT(chell2->reachedCake());
+        CPPUNIT_ASSERT(chell3->reachedCake());
+        world->killLastingChell(0); // Indico que chells de id 0,1 y 2 quieren matar a la restante
+        world->killLastingChell(1);
+        world->killLastingChell(2);
         world->step();  // Permito que se aplique posible 'asesinato'
         chell = world->getChell(0);
         chell2 = world->getChell(1);
@@ -183,7 +203,70 @@ public:
         CPPUNIT_ASSERT(chell);
         CPPUNIT_ASSERT(chell2);
         CPPUNIT_ASSERT(chell3);
-        CPPUNIT_ASSERT_EQUAL(n_bodies, world->getWorld()->GetBodyCount());   // Chell ya no existe
+        CPPUNIT_ASSERT_EQUAL(n_bodies, world->getWorld()->GetBodyCount());
+        cout << "OK";
+    }
+
+    void testRemoveFromWantToKillWhenLeavingCake() {
+        cout << endl << "TEST chell es eliminada de las que quieren matar cuando se aleja de "
+                        "cake: ";
+        float chell2_x = chell_init_x - 20, chell2_y = chell_init_y;
+        float chell3_x = chell_init_x - 30, chell3_y = chell_init_y;
+        world->createChell(chell2_x, chell2_y);
+        world->createChell(chell3_x, chell3_y);
+        auto n_bodies = world->getWorld()->GetBodyCount();
+        auto chell2 = world->getChell(1);
+        auto chell3 = world->getChell(2);
+        chell->move_right();
+        chell2->move_right();
+        for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(chell->reachedCake());
+        CPPUNIT_ASSERT(chell2->reachedCake());
+        CPPUNIT_ASSERT(!chell3->reachedCake());
+        world->killLastingChell(0); // Indico que chell de id 0  quieren matar a la restante
+        chell->move_left(); // Alejo chell de cake
+        for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(!chell->reachedCake());
+        world->killLastingChell(1); // Chell 2 quiere matar
+        world->step();  // Si ambos chells siguieran en cake se eliminaria chell3
+        CPPUNIT_ASSERT(chell);
+        CPPUNIT_ASSERT(chell2);
+        CPPUNIT_ASSERT(chell3);
+        CPPUNIT_ASSERT_EQUAL(n_bodies, world->getWorld()->GetBodyCount());
+        cout << "OK";
+    }
+
+    void testLeavesCakeReturnsAndKills() {
+        cout << endl << "TEST chell se aleja de cake, vuelve y decide matar: ";
+        float chell2_x = chell_init_x - 20, chell2_y = chell_init_y;
+        float chell3_x = chell_init_x - 30, chell3_y = chell_init_y;
+        world->createChell(chell2_x, chell2_y);
+        world->createChell(chell3_x, chell3_y);
+        auto n_bodies = world->getWorld()->GetBodyCount();
+        auto chell2 = world->getChell(1);
+        auto chell3 = world->getChell(2);
+        chell->move_right();
+        chell2->move_right();
+        for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
+            world->step();
+        world->killLastingChell(0); // Indico que chell de id 0  quiere matar a la restante
+        chell->move_left(); // Alejo chell de cake
+        for (int i = 0; i < 3 * STEP_ITERATIONS; i++)
+            world->step();
+        world->killLastingChell(1); // Chell 2 quiere matar
+        chell->move_right();
+        for (int i = 0; i < 5 * STEP_ITERATIONS; i++)
+            world->step();
+        CPPUNIT_ASSERT(chell->reachedCake());
+        world->killLastingChell(0); // Indico que chell de id 0 quiere matar a la restante
+        world->step();  // Permito que se aplique posible 'asesinato'
+        chell3 = world->getChell(2);
+        CPPUNIT_ASSERT(chell);
+        CPPUNIT_ASSERT(chell2);
+        CPPUNIT_ASSERT(!chell3);    // Chell3 eliminada
+        CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }
 };

@@ -29,6 +29,6 @@ void Cake::endCollitionWith(Collidable *other) {
         --_chells_in_contact;   // Chell dejo posicion de cake
 }
 
-size_t Cake::getChellsInContact() const {
+size_t Cake::getNumberOfChellsInContact() const {
     return _chells_in_contact;
 }

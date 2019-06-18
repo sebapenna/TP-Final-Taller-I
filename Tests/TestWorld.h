@@ -34,8 +34,6 @@ public:
         CPPUNIT_ASSERT_EQUAL(world->getWidth(), width);
         cout << "OK";
     }
-
-    // todo: TEST DETECTEDUPDATES VECTOR
 };
 
 #endif //PORTAL_TESTWORLD_H

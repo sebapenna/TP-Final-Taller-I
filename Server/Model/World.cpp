@@ -89,6 +89,12 @@ b2World *World::getWorld() const {
 
 
 /************************ Step ************************/
+bool World::inConditionToKillMissingChell() {
+    if (_chells.size() == 1)    // Tengo solo un chell
+        return false;
+    return (_want_to_kill.size() == (_chells.size() - 1));
+}
+
 void World::step() {
     // Vacio estructuras de objetos actualizados/eliminados durante step
     _objects_to_update.clear();
@@ -102,14 +108,22 @@ void World::step() {
     stepGates();
     stepChells();
     stepRocks();
-    for (auto & chell : _want_to_kill) {
-        _want_to_kill.erase(remove_if(_want_to_kill.begin(), _want_to_kill.end(),
-                [this](size_t &id) {  // Borro si se alejo de cake o murio
-            auto chell = getChell(id);
-            return (chell) ? !chell->reachedCake(): true;
-        }), _want_to_kill.end());
+    _want_to_kill.erase(remove_if(_want_to_kill.begin(), _want_to_kill.end(),
+            [this](size_t &id) {  // Borro si se alejo de cake o murio
+        auto chell = getChell(id);
+        return (chell) ? !chell->reachedCake(): true;
+    }), _want_to_kill.end());
+    if (inConditionToKillMissingChell()) {
+        for (int i = 0; i < _chells.size(); ++i) {
+            auto chell = _chells[i];
+            if (!chell->reachedCake()) {    // Elimino chell que no estaba en Cake
+                _world->DestroyBody(chell->getBody());
+                _objects_to_delete.emplace_back(i, chell->getClassId());
+                delete chell;
+                _chells[i] = nullptr;
+            }
+        }
     }
-//    if (conditionToKill())
 }
 
 void World::stepGates() {
@@ -516,30 +530,7 @@ const vector<EnergyBarrier *> &World::getEnergyBarriers() const {
     return _energy_barriers;
 }
 
-Cake *World::getCake() const {
-    return _cake;
-}
-
-bool World::allChellsOnCake() {
-    // Verifico si todos los chells llegaron a Cake y quieren matar
-    return (_chells.size() == _cake->getChellsInContact() == _want_to_kill.size());
-}
-
-bool World::killLastingChell() {
-    if (allChellsOnCake()) // Todas las chells se encuentra en cake
-        return false;
-    if ((_chells.size() - _cake->getChellsInContact()) == 1) {  // Todas menos una alcanzaron
-        for (auto &chell : _chells) {
-            if (!chell->reachedCake()) {
-                chell->kill();
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
-void World::killLastingChell(const size_t &kiler_id) {
+void World::killLastingChell(const size_t &killer_id) {
     auto chell = getChell(kiler_id);
     if (chell->reachedCake()) {
         // Agrego solamente si no habia sido previamente agregado y llego a Cake

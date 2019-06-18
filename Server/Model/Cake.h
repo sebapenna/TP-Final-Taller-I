@@ -18,7 +18,7 @@ public:
     float getX();
     float getY();
 
-    size_t getChellsInContact() const;
+    size_t getNumberOfChellsInContact() const;
 
     bool actedDuringStep() override;
 

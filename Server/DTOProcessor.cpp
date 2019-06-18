@@ -31,7 +31,8 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
             chell->kill();
             break;
         case PROTOCOL_KILL_MISSING_CHELL:
-            world->killLastingChell();
+            world->killLastingChell(chell_id);
+            break;
         case PROTOCOL_SHOOT_PORTAL:
             // todo: DISPARAR PORTAL
             break;
