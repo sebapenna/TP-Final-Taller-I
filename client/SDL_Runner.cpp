@@ -96,7 +96,7 @@ void SDL_Runner::run() {
                 case PROTOCOL_GATE_DATA: {
                     auto gateDTO = (GateDTO*) newItem;
                     auto gate = std::shared_ptr<GateView>(new GateView(gateDTO->getId(), textureFactory.getTextureByName(gate_file_name), renderer));
-                    gate.get()->setDestRect(gateDTO->getX(), gateDTO->getY(), gateDTO->getWidth()+1, gateDTO->getHeight());
+                    gate.get()->setDestRect(gateDTO->getX(), gateDTO->getY(), gateDTO->getWidth(), gateDTO->getHeight());
                     world.addGates(gate);
                     break;
                 }
