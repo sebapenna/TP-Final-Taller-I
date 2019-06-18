@@ -33,6 +33,12 @@ void WorldView::draw() {
         }
     }
 
+    for (auto const& transmitter: transmitters) {
+        if (camera->isInCamera(transmitter.second->getDst())) {
+            transmitter.second->draw(*camera);
+        }
+    }
+
     for (auto const& receiver: receivers) {
         if (camera->isInCamera(receiver.second->getDst())) {
             receiver.second->draw(*camera);
@@ -144,4 +150,12 @@ void WorldView::activateReceiver(int16_t id) {
 
 void WorldView::addCake(std::shared_ptr<CakeView> cake) {
     this->cake = cake;
+}
+
+void WorldView::addTransmitter(std::shared_ptr<EnergyTransmitterView> transmitter) {
+    transmitters[transmitter->getId()] = transmitter;
+}
+
+void WorldView::activateTransmitter(int16_t id) {
+    transmitters[id]->transmite();
 }

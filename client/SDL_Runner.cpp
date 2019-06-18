@@ -26,6 +26,8 @@
 #include <client/View/EnergyReceiverView.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterActivateDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -136,6 +138,10 @@ void SDL_Runner::run() {
                     break;
                 }
                 case PROTOCOL_ENERGY_TRANSMITTER_DATA: {
+                    auto energyTransmitterDTO = (EnergyTransmitterDTO*) newItem;
+                    auto energyTransmitter = std::shared_ptr<EnergyTransmitterView>(new EnergyTransmitterView(energyTransmitterDTO->getId(), textureFactory.getTextureByName(block_file_name), renderer, energyTransmitterDTO->getDirection()));
+                    energyTransmitter->setDestRect(energyTransmitterDTO->getX(), energyTransmitterDTO->getY(), energyTransmitterDTO->getSideLength(), energyTransmitterDTO->getSideLength());
+                    world.addTransmitter(energyTransmitter);
                     break;
                 }
                 case PROTOCOL_ENERGY_RECEIVER_DATA: {
@@ -253,6 +259,8 @@ void SDL_Runner::run() {
                         break;
                     }
                     case PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE: {
+                        auto energyTransmitterActivateDTO = (EnergyTransmitterActivateDTO*) newItem;
+                        world.activateTransmitter(energyTransmitterActivateDTO->getId());
                         break;
                     }
                     case PROTOCOL_ENERGY_RECEIVER_ACTIVATE: {

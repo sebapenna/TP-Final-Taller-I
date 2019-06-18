@@ -17,6 +17,7 @@
 #include <client/View/BackgroundView.h>
 #include <client/View/EnergyReceiverView.h>
 #include <client/View/CakeView.h>
+#include <client/View/EnergyTransmitterView.h>
 
 class WorldView {
 private:
@@ -25,6 +26,7 @@ private:
     std::map<int, std::shared_ptr<GateView>> gates;
     std::map<int, std::shared_ptr<ButtonView>> buttons;
     std::map<int, std::shared_ptr<RockView>> rocks;
+    std::map<int, std::shared_ptr<EnergyTransmitterView>> transmitters;
     std::map<int, std::shared_ptr<EnergyReceiverView>> receivers;
     std::shared_ptr<CakeView> cake;
     std::shared_ptr<BackgroundView> background;
@@ -51,6 +53,8 @@ public:
     void addReceiver(std::shared_ptr<EnergyReceiverView> block);
     void activateReceiver(int16_t id);
     void addCake(std::shared_ptr<CakeView> cake);
+    void addTransmitter(std::shared_ptr<EnergyTransmitterView> transmitter);
+    void activateTransmitter(int16_t id);
 };
 
 
