@@ -3,38 +3,54 @@ world:  # Centrado en x=0, y=width/2
   width: &width  1000
   height: &height 60
 box_side_length: &length 4 # Alto/Ancho box en Box2D (metros)
-# x, y: posicion central
+# x, y: posicion central (excepto diagonal)
+cake:
+  x: 150
+  y: 2
+chell:
+  - id: 0
+    x: 0
+    y: 2
+  - id: 1
+    x: -5
+    y: 2
+  - id: 2
+    x: -10
+    y: 2
+  - id: 3
+    x: 2
+    y: 2
 block_rock:
   - width: *width  # floor
     height: 4
     x: 0
     y: -2
-  - width: 4 # roof
-    height: 4
-    x: 30
-    y: 2 # *height + *length/2
+  - width: *length
+    height: *length
+    x: 14
+    y: 2
   - width: *length # right_wall
     height: *height
-    x: 100   # *width + *length
-    y: 30
-#  - width: *length # left_wall
-#    height: *height
-#    x: -1
-#    y: 0
+    x: 200   # *width + *length
+    y: 16
+  - width: 10
+    height: *length
+    x: -102
+    y: 16
 block_metal:
+  - width: 40
+    height: *length
+    x: -90
+    y: 2
   - width: *length
     height: *length
-    x: 34
-    y: 4
-  - width: *length
-    height: *length
-    x: -20
+    x: 10
     y: 2
 block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuadrado)
   - width: *length
     height: *length
-    x: 50
-    y: 0
+    x: -92
+    y: 4
     orientation: NE
 #  - width: *length
 #    height: *length
@@ -52,8 +68,8 @@ block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuad
 #    y: 1
 #    orientation: SO
 rock:
-  - x: 16
-    y: 60
+  - x: -120
+    y: 4
 #  - x: -10
 #    y: 2
 #acid:
@@ -63,18 +79,18 @@ rock:
 #    y: 1
 button:
   - id: 0
-    x: -60
+    x: -120
     y: 1
-#  - id: 1
-#    x: -50
-#    y: 1
+  - id: 1
+    x: 25
+    y: 1
 gate:
   - id: 0
-    x: -50
+    x: 60
     y: 4
     buttons_needed:
       - id: 0
-#      - id: 1
+      - id: 1
     energy_receiver_needed:
       - id: 0
 #  - id: 1
@@ -86,49 +102,33 @@ gate:
 #      - id: 0
 #      - id: 1
 energy_transmitter:
-  - x: 80
-    y: 2
-    direction: N
-  - x: -70
-    y: 2
-    direction: S
-  - x: -10
-    y: 2
+#  - x: 90
+#    y: 2
+#    direction: N
+#  - x: -114
+#    y: 16
+#    direction: S
+  - x: -105
+    y: 6
     direction: E
-  - x: 10
-    y: 2
+  - x: -75
+    y: 6
     direction: O
 energy_receiver:
   - id: 0
-    x: 40
-    y: 2
+    x: -90
+    y: 16
   - id: 1
-    x: -80
+    x: -150
     y: 2
 energy_barrier:
-  - x: 90
-    y: 1
+  - x: 80
+    y: 4
     orientation: V
-  - x: -90
-    y: 1
+  - x: -118
+    y: 16
     orientation: H
-chell:
-  - id: 0
-    x: 0
-    y: 2
-  - id: 1
-    x: -5
-    y: 2
-  - id: 2
-    x: -10
-    y: 2
-  - id: 3
-    x: 2
-    y: 2
 acid:
-  - x: -100
+  - x: 35
     y: 1
-cake:
-  x: 80
-  y: 2
 

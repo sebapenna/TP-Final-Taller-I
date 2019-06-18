@@ -55,6 +55,7 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &outpu
         case PROTOCOL_KILL_MISSING_CHELL:
             output.push_back(KILL_MISSING_CHELL_ARGS);
             break;
+
         case PROTOCOL_COMMIT_SUICIDE:
             output.push_back(COMMIT_SUICIDE_ARGS);
             break;
