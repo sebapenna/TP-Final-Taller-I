@@ -1,6 +1,7 @@
 #include "EnergyBall.h"
 #include <Server/Model/constants.h>
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
+#include <Server/Model/Obstacles/Gate.h>
 
 EnergyBall::EnergyBall(const size_t &id, b2Body *body, uint8_t direction) : _id(id) {
     _body = body;
@@ -66,6 +67,10 @@ void EnergyBall::collideWith(Collidable *other) {
         _dead = true;    // Verifico que no colisiona cuando se crea la bola
     } else if (cname == METAL_BLOCK ||  cname == METAL_DIAGONAL_BLOCK)  {
 //        bounce(other);
+    } else if (cname == GATE) {
+        auto gate = (Gate*) other;
+        if (!gate->isOpen())
+            _dead = true;
     }
 }
 

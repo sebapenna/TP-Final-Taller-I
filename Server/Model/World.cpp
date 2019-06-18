@@ -433,7 +433,7 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
     b2FixtureDef fixture;
     fixture.shape = &shape;
     fixture.density = ENRG_BALL_DENSITY;
-    fixture.restitution = 1;
+    fixture.restitution = 1;    // Debe rebotar contra ciertos cuerpos
 
     b2Body *body = _world->CreateBody(&body_def);
 

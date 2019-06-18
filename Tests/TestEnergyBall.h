@@ -27,6 +27,7 @@ CPPUNIT_TEST_SUITE(TestEnergyBall);
         CPPUNIT_TEST(testContactWithMetalBlockFromRight);
         CPPUNIT_TEST(testContactWithMetalBlockFromAbove);
         CPPUNIT_TEST(testContactWithMetalBlockFromBelow);
+//        CPPUNIT_TEST(testContactWithMetalDiagonalBlockNEFromLeft);
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -292,12 +293,12 @@ public:
 
         int n_bodies = world->getWorld()->GetBodyCount();
         bool gate_ignored = false;
+
         for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
             world->step();
             // Verifico que bola paso la compuerta
             // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
-            if ((n_bodies == world->getWorld()->GetBodyCount()) &&
-            (e_ball->getX() > gate_x))
+            if ((n_bodies == world->getWorld()->GetBodyCount()) && (e_ball->getX() > gate_x))
                 gate_ignored = true;
         }
 
@@ -308,7 +309,7 @@ public:
 
 
     void testContactWithClosedGate() {
-        cout << endl << "TEST chocar con compuerta cerrada: ";
+        cout << endl << "TEST destruir al chocar con compuerta cerrada: ";
 
         world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
         releaseEnergyBall();
@@ -320,11 +321,13 @@ public:
         world->createGate(gate_x, gate_y, {0}, {});
         auto gate = world->getGate(0);
 
+        auto n_bodies = world->getWorld()->GetBodyCount();
         for (int i = 0; i < 2 * STEP_ITERATIONS; ++i)
             world->step();
 
         CPPUNIT_ASSERT(!gate->isOpen());
-        CPPUNIT_ASSERT_LESS(gate_x, e_ball->getX());
+        CPPUNIT_ASSERT(!world->getEnergyBall(0));
+        CPPUNIT_ASSERT_LESS(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }
 
@@ -459,6 +462,34 @@ public:
         CPPUNIT_ASSERT(bounced);
         cout << "OK";
     }
+
+
+// todo: test rebote con todos los bloques diagonal
+
+
+//    void testContactWithMetalDiagonalBlockNEFromLeft() {
+//        cout << endl << "TEST rebotar en bloque diagonal metal NE, cara derecha: ";
+//        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+//        world->createMetalDiagonalBlock(4, 4, (e_transm_x + 15), 0, O_NO);
+//        releaseEnergyBall();
+//        auto energy_ball = world->getEnergyBall(0);
+////        auto last_x = energy_ball->getX();
+////        bool bounced = false;
+//        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+//            world->step();
+//            energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
+//            std::cout << "y: "<<energy_ball->getY() << " x: "<<energy_ball->getX()<<endl;
+//
+////            if (energy_ball) {
+////                if (last_x > energy_ball->getX())   // Si x mayor a la actual, reboto
+////                    bounced = true;
+////                last_x = energy_ball->getX();   // Actualizo ultima posicion
+////            }
+//        }
+////        CPPUNIT_ASSERT(bounced);
+//        cout << "OK";
+//    }
 };
+
 
 #endif //PORTAL_TESTENERGYBALL_H
