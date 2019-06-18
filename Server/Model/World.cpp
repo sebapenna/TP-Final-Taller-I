@@ -44,6 +44,7 @@ World::~World() {
     deletePointerVector<MetalDiagonalBlock*>(_metal_diagonal_blocks);
     deletePointerVector<MetalBlock*>(_metal_blocks);
     deletePointerVector<EnergyBarrier*>(_energy_barriers);
+    delete _cake;
     delete _contact_listener;
     delete _world;
 }
@@ -529,6 +530,11 @@ const vector<MetalBlock *> &World::getMetalBlocks() const {
 const vector<EnergyBarrier *> &World::getEnergyBarriers() const {
     return _energy_barriers;
 }
+
+Cake *World::getCake() const {
+    return _cake;
+}
+
 
 void World::killLastingChell(const size_t &killer_id) {
     auto chell = getChell(killer_id);

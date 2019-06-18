@@ -16,6 +16,6 @@ add_library(yaml-parser
         EnergyTransmitterData.cpp EnergyTransmitterData.h
         EnergyReceiverData.cpp EnergyReceiverData.h
         EnergyBarrierData.cpp EnergyBarrierData.h
-        ChellData.cpp ChellData.h)
+        ChellData.cpp ChellData.h CakeData.cpp CakeData.h)
 
 target_link_libraries(yaml-parser yaml-cpp)

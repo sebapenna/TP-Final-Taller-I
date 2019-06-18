@@ -20,7 +20,7 @@ public:
     int createDTOs(const std::vector<T> &input, std::vector<std::shared_ptr<ProtocolDTO>> &output,
                           bool initial_data = false) {
         for (auto &collidable : input)
-            output.push_back(std::move(WorldObjectDTOTranslator::translate(collidable, initial_data)));
+            createDTO(collidable, ref(output), initial_data);
         return output.size();
     }
 
@@ -33,6 +33,9 @@ public:
 
     // Genera el DTO para notificar el comienzo del juego
     static std::shared_ptr<ProtocolDTO> createBeginDTO();
+
+    static void createDTO(Collidable* collidable,
+            std::vector<std::shared_ptr<ProtocolDTO>> &output, bool initial_data = false);
 
 };
 

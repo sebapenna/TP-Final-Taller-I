@@ -105,6 +105,7 @@ public:
     Gate *getGate(const size_t& id);
     EnergyReceiver *getEnergyReceiver(const size_t& id);
     EnergyBall *getEnergyBall(const size_t& id);
+    Cake *getCake() const;
 
     const std::vector<Chell *> &getChells() const;
     const std::vector<Rock *> &getRocks() const;

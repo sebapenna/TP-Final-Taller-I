@@ -151,3 +151,8 @@ vector<ChellData> YamlParser::loadChellData() {
     }
     return std::move(chell_data_vector);
 }
+
+CakeData YamlParser::loadCakeData() {
+    return {_config["cake"]["x"].as<float>(),
+            _config["cake"]["y"].as<float>()};
+}

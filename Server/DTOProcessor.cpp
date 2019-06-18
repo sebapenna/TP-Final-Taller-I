@@ -3,6 +3,7 @@
 #include <Common/ProtocolTranslator/DataDTO/RockDTO.h>
 #include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
 #include <Common/exceptions.h>
+#include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
 #include "DTOProcessor.h"
 
 using std::vector;
@@ -64,4 +65,9 @@ shared_ptr<ProtocolDTO>DTOProcessor::createDeletedDTO(const size_t &object_id,
 
 std::shared_ptr<ProtocolDTO> DTOProcessor::createBeginDTO() {
     return std::make_shared<BeginDTO>();
+}
+
+void DTOProcessor::createDTO(Collidable *collidable, vector<shared_ptr<ProtocolDTO>> &output,
+        bool initial_data) {
+    output.push_back(std::move(WorldObjectDTOTranslator::translate(collidable, initial_data)));
 }

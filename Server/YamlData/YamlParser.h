@@ -16,6 +16,7 @@
 #include "EnergyReceiverData.h"
 #include "EnergyBarrierData.h"
 #include "ChellData.h"
+#include "CakeData.h"
 
 class YamlParser {
 private:
@@ -49,6 +50,8 @@ public:
     std::vector<EnergyBarrierData> loadEnergyBarrierData();
 
     std::vector<ChellData> loadChellData();
+
+    CakeData loadCakeData();
 };
 
 

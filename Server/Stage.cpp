@@ -1,6 +1,5 @@
 #include<vector>
 #include "Stage.h"
-#include "WorldObjectDTOTranslator.h"
 #include "DTOProcessor.h"
 
 using std::vector;
@@ -19,6 +18,8 @@ Stage::Stage(std::string &config_file) {
     WorldData world_data = config.loadWorldData();
     // Configuracion largo box
     size_t box_side_length = config.loadBoxSize();
+
+    CakeData cake_data = config.loadCakeData();
 
     // Configuracion bloques roca
     vector<RockBlockData> rock_blocks_vec;
@@ -85,9 +86,10 @@ Stage::Stage(std::string &config_file) {
         _available_chells = config.loadChellData();
     } catch(...) { } // No hay chells
 
-
     /******************** Inicializo World *********************/
     _world = new World(world_data.getWidth(), world_data.getHeight());
+
+    _world->createCake(cake_data.getX(), cake_data.getY());
 
     for_each(rock_blocks_vec.begin(), rock_blocks_vec.end(), [this](RockBlockData &e) {
        _world->createRockBlock(e.getWidth(), e.getHeight(), e.getX(), e.getY());
@@ -152,6 +154,7 @@ vector<shared_ptr<ProtocolDTO>> Stage::getInitialConfiguration() {
     _processor.createDTOs<EnergyBarrier *>(_world->getEnergyBarriers(), output, true);
     _processor.createDTOs<Chell *>(_world->getChells(), output, true);
     _processor.createDTOs<Rock *>(_world->getRocks(), output, true);
+    _processor.createDTO(_world->getCake(), output, true);
     return move(output);
 }
 
