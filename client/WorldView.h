@@ -18,6 +18,7 @@
 #include <client/View/EnergyReceiverView.h>
 #include <client/View/CakeView.h>
 #include <client/View/EnergyTransmitterView.h>
+#include <client/View/EnergyBallView.h>
 
 class WorldView {
 private:
@@ -28,6 +29,7 @@ private:
     std::map<int, std::shared_ptr<RockView>> rocks;
     std::map<int, std::shared_ptr<EnergyTransmitterView>> transmitters;
     std::map<int, std::shared_ptr<EnergyReceiverView>> receivers;
+    std::map<int, std::shared_ptr<EnergyBallView>> balls;
     std::shared_ptr<CakeView> cake;
     std::shared_ptr<BackgroundView> background;
     Camera* camera;
@@ -49,12 +51,15 @@ public:
     void makeChellTiltedRight(int16_t id);
     void makeChellNotTilted(int16_t id);
     void addRock(std::shared_ptr<RockView> rock);
+    void removeRock(int16_t id);
     void setBackground(std::shared_ptr<BackgroundView> background);
     void addReceiver(std::shared_ptr<EnergyReceiverView> block);
     void activateReceiver(int16_t id);
     void addCake(std::shared_ptr<CakeView> cake);
     void addTransmitter(std::shared_ptr<EnergyTransmitterView> transmitter);
     void activateTransmitter(int16_t id);
+    void addBall(std::shared_ptr<EnergyBallView> ball);
+    void removeBall(int16_t id);
 };
 
 

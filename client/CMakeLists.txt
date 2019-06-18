@@ -59,7 +59,7 @@ add_library(sdldemo
         CommandSender.cpp
         CommandSender.h
         CommandReceiver.cpp
-        CommandReceiver.h View/CakeView.cpp View/CakeView.h)
+        CommandReceiver.h View/CakeView.cpp View/CakeView.h View/EnergyBallView.cpp View/EnergyBallView.h)
 
 
 

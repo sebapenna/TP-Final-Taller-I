@@ -834,6 +834,33 @@ View/DiagonalBlockMetalView.cpp.s:
 	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/DiagonalBlockMetalView.cpp.s
 .PHONY : View/DiagonalBlockMetalView.cpp.s
 
+View/EnergyBallView.o: View/EnergyBallView.cpp.o
+
+.PHONY : View/EnergyBallView.o
+
+# target to build an object file
+View/EnergyBallView.cpp.o:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/EnergyBallView.cpp.o
+.PHONY : View/EnergyBallView.cpp.o
+
+View/EnergyBallView.i: View/EnergyBallView.cpp.i
+
+.PHONY : View/EnergyBallView.i
+
+# target to preprocess a source file
+View/EnergyBallView.cpp.i:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/EnergyBallView.cpp.i
+.PHONY : View/EnergyBallView.cpp.i
+
+View/EnergyBallView.s: View/EnergyBallView.cpp.s
+
+.PHONY : View/EnergyBallView.s
+
+# target to generate assembly for a file
+View/EnergyBallView.cpp.s:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/EnergyBallView.cpp.s
+.PHONY : View/EnergyBallView.cpp.s
+
 View/EnergyBarrierView.o: View/EnergyBarrierView.cpp.o
 
 .PHONY : View/EnergyBarrierView.o
@@ -1136,6 +1163,9 @@ help:
 	@echo "... View/DiagonalBlockMetalView.o"
 	@echo "... View/DiagonalBlockMetalView.i"
 	@echo "... View/DiagonalBlockMetalView.s"
+	@echo "... View/EnergyBallView.o"
+	@echo "... View/EnergyBallView.i"
+	@echo "... View/EnergyBallView.s"
 	@echo "... View/EnergyBarrierView.o"
 	@echo "... View/EnergyBarrierView.i"
 	@echo "... View/EnergyBarrierView.s"
