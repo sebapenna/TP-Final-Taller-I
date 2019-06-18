@@ -11,7 +11,7 @@
 
 class CakeView : public View {
 private:
-    AnimatedSprite cake;
+    Sprite cake;
 public:
     CakeView(SDL_Texture* texture, Renderer& renderer, int x = 0, int y = 0);
     void draw(Camera& camera);

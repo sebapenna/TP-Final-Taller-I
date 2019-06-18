@@ -108,18 +108,23 @@ void SDL_Runner::run() {
                 case PROTOCOL_ROCK_BLOCK_DATA: {
                     auto rockBlockDTO = (RockBlockDTO*) newItem;
                     for(int i=0; i<rockBlockDTO->getWidth(); i+=CUT_LEN_BLOCKS) {
-                        auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
-                        rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY(), CUT_LEN_BLOCKS, rockBlockDTO->getHeight());
-                        world.addView(rockBlock);
+                        for (int j = 0; j<rockBlockDTO->getHeight(); j+=CUT_LEN_BLOCKS) {
+                            auto rockBlock = std::shared_ptr<BlockRockView>(new BlockRockView(textureFactory.getTextureByName(block_file_name), renderer));
+                            rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY()+j, CUT_LEN_BLOCKS, CUT_LEN_BLOCKS);
+                            world.addView(rockBlock);
+                        }
                     }
                     break;
                 }
                 case PROTOCOL_METAL_BLOCK_DATA: {
                     auto metalBlockDTO = (MetalBlockDTO*) newItem;
                     for(int i=0; i<metalBlockDTO->getWidth(); i+=CUT_LEN_BLOCKS) {
-                        auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
-                        metalBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY(), CUT_LEN_BLOCKS, metalBlockDTO->getHeight());
-                        world.addView(metalBlock);
+                        for (int j = 0; j<metalBlockDTO->getHeight(); j+=CUT_LEN_BLOCKS) {
+                            auto metalBlock = std::shared_ptr<BlockMetalView>(new BlockMetalView(textureFactory.getTextureByName(block_file_name), renderer));
+                            metalBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY() + j, CUT_LEN_BLOCKS, CUT_LEN_BLOCKS);
+                            world.addView(metalBlock);
+                        }
+
                     }
                     break;
                 }

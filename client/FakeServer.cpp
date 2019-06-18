@@ -18,6 +18,7 @@
 #include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyReceiverDTO.h>
 #include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 
@@ -29,12 +30,6 @@ FakeServer::FakeServer(ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> &blo
 }
 
 void FakeServer::run() {
-    /*for (int startX = -2000; startX<7000; startX+=128) {
-        for (int startY = -2000; startY<7000; startY+=128) {
-            safeQueue.push((void*) new RockBlockDTO(startX, startY, 128, 128));
-        }
-        //safeQueue.push((void*) new MetalBlockDTO(startX, 400, 128,128));
-    }*/
     int x=0;
     std::shared_ptr<ProtocolDTO>dto(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
     safeQueue.push(dto);
@@ -53,6 +48,10 @@ void FakeServer::run() {
     safeQueue.push(dto7);
     std::shared_ptr<ProtocolDTO>dto8(new MetalBlockDTO(-50,0,300,4));
     safeQueue.push(dto8);
+    std::shared_ptr<ProtocolDTO>dto33(new MetalBlockDTO(25, 4, 4, 150));
+    safeQueue.push(dto33);
+    std::shared_ptr<ProtocolDTO>dto34(new CakeDTO(20, 4, CAKE_HALF_LEN*2));
+    safeQueue.push(dto34);
     /*
     std::shared_ptr<ProtocolDTO>dto8(new RockDTO(1, 500, 400, 128, DONT_DELETE));
     safeQueue.push(dto8);*/
