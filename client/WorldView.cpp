@@ -12,7 +12,6 @@ WorldView::~WorldView() {
     }
 }
 
-
 void WorldView::draw() {
     if (camera == nullptr) return;
     background->draw(*camera);
@@ -45,6 +44,7 @@ void WorldView::draw() {
             button.second->draw(*camera);
         }
     }
+    cake->draw(*camera);
     for(auto const& chell: chells) {
         if (camera->isInCamera(chell.second->getDst())) {
             chell.second->draw(*camera);
@@ -58,6 +58,7 @@ void WorldView::draw() {
 void WorldView::addView(std::shared_ptr<View> view) {
     views.push_back(view);
 }
+
 void WorldView::addRock(std::shared_ptr<RockView> rock) {
     if (rocks.count(rock->getId())) {
         int pass_type = rocks[rock->getId()]->getTypeRock();
@@ -138,3 +139,6 @@ void WorldView::activateReceiver(int16_t id) {
     receivers[id]->activate();
 }
 
+void WorldView::addCake(std::shared_ptr<CakeView> cake) {
+    this->cake = cake;
+}

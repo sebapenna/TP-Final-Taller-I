@@ -157,19 +157,19 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-client/CMakeFiles/sdl-hello.dir/rule:
-	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/sdl-hello.dir/rule
-.PHONY : client/CMakeFiles/sdl-hello.dir/rule
+client/CMakeFiles/client_sdl.dir/rule:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f CMakeFiles/Makefile2 client/CMakeFiles/client_sdl.dir/rule
+.PHONY : client/CMakeFiles/client_sdl.dir/rule
 
 # Convenience name for target.
-sdl-hello: client/CMakeFiles/sdl-hello.dir/rule
+client_sdl: client/CMakeFiles/client_sdl.dir/rule
 
-.PHONY : sdl-hello
+.PHONY : client_sdl
 
 # fast build rule for target.
-sdl-hello/fast:
-	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdl-hello.dir/build.make client/CMakeFiles/sdl-hello.dir/build
-.PHONY : sdl-hello/fast
+client_sdl/fast:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/client_sdl.dir/build.make client/CMakeFiles/client_sdl.dir/build
+.PHONY : client_sdl/fast
 
 # Convenience name for target.
 client/CMakeFiles/sdldemo.dir/rule:
@@ -753,6 +753,33 @@ View/ButtonView.cpp.s:
 	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/ButtonView.cpp.s
 .PHONY : View/ButtonView.cpp.s
 
+View/CakeView.o: View/CakeView.cpp.o
+
+.PHONY : View/CakeView.o
+
+# target to build an object file
+View/CakeView.cpp.o:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/CakeView.cpp.o
+.PHONY : View/CakeView.cpp.o
+
+View/CakeView.i: View/CakeView.cpp.i
+
+.PHONY : View/CakeView.i
+
+# target to preprocess a source file
+View/CakeView.cpp.i:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/CakeView.cpp.i
+.PHONY : View/CakeView.cpp.i
+
+View/CakeView.s: View/CakeView.cpp.s
+
+.PHONY : View/CakeView.s
+
+# target to generate assembly for a file
+View/CakeView.cpp.s:
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdldemo.dir/build.make client/CMakeFiles/sdldemo.dir/View/CakeView.cpp.s
+.PHONY : View/CakeView.cpp.s
+
 View/ChellAnimationView.o: View/ChellAnimationView.cpp.o
 
 .PHONY : View/ChellAnimationView.o
@@ -1002,7 +1029,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdl-hello.dir/build.make client/CMakeFiles/sdl-hello.dir/main.cpp.o
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/client_sdl.dir/build.make client/CMakeFiles/client_sdl.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -1011,7 +1038,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdl-hello.dir/build.make client/CMakeFiles/sdl-hello.dir/main.cpp.i
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/client_sdl.dir/build.make client/CMakeFiles/client_sdl.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -1020,7 +1047,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/sdl-hello.dir/build.make client/CMakeFiles/sdl-hello.dir/main.cpp.s
+	cd /home/jonathanmedina/Desktop/TPDENUEVO/TP-Final-Taller-I && $(MAKE) -f client/CMakeFiles/client_sdl.dir/build.make client/CMakeFiles/client_sdl.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 # Help Target
@@ -1031,7 +1058,7 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
-	@echo "... sdl-hello"
+	@echo "... client_sdl"
 	@echo "... sdldemo"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
@@ -1100,6 +1127,9 @@ help:
 	@echo "... View/ButtonView.o"
 	@echo "... View/ButtonView.i"
 	@echo "... View/ButtonView.s"
+	@echo "... View/CakeView.o"
+	@echo "... View/CakeView.i"
+	@echo "... View/CakeView.s"
 	@echo "... View/ChellAnimationView.o"
 	@echo "... View/ChellAnimationView.i"
 	@echo "... View/ChellAnimationView.s"

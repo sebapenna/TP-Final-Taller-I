@@ -74,7 +74,6 @@ void FakeServer::run() {
             //safeQueue.push((void *) new ButtonStateDTO(1, PRESSED));
             std::shared_ptr<ProtocolDTO>dto9(new ChellDTO(1, x, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, WEST, NOT_TILTED, MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
             safeQueue.push(dto9);
-
             /*std::shared_ptr<ProtocolDTO>dto11(new GateStateDTO(1, OPEN));
             std::shared_ptr<ProtocolDTO>dto10(new ButtonStateDTO(1, PRESSED));
             safeQueue.push(dto10);

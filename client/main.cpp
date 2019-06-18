@@ -17,6 +17,7 @@
 #include <Common/ProtocolTranslator/GameStateDTO/QuitDTO.h>
 #include <zconf.h>
 #include <Common/HandshakeHandler.h>
+#include <Common/exceptions.h>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "Common/ProtocolTranslator/PlayerActionsDTO/MoveLeftDTO.h"
@@ -27,6 +28,8 @@
 #include "CommandReceiver.h"
 #include "CommandSender.h"
 
+#define KNOWN_ERROR 1
+#define UNKNOWN_ERROR 2
 int main(int argc, char** argv){
     try {
         // Chell turning around
@@ -113,17 +116,20 @@ int main(int argc, char** argv){
                 //usleep(100);
             }
         }
+        protocol.disconnect();
         sdlRunner.join();
         blockingQueue.setFinishedAdding();
 
         clientSender.join();
         clientReceiver.join();
-
-        //server.join();
-
+        /*server.join();
+*/
         return 0;
     } catch (std::exception& e) {
-        std::cout << e.what() << std::endl;
-        return 1;
+        std::cerr << e.what() << std::endl;
+        return KNOWN_ERROR;
+    }  catch(...) {
+        std::cout << UnknownException().what();
+        return UNKNOWN_ERROR;
     }
 }

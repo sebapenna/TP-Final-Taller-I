@@ -16,6 +16,8 @@
 #include <client/View/RockView.h>
 #include <client/View/BackgroundView.h>
 #include <client/View/EnergyReceiverView.h>
+#include <client/View/CakeView.h>
+
 class WorldView {
 private:
     std::vector<std::shared_ptr<View>> views;
@@ -24,6 +26,7 @@ private:
     std::map<int, std::shared_ptr<ButtonView>> buttons;
     std::map<int, std::shared_ptr<RockView>> rocks;
     std::map<int, std::shared_ptr<EnergyReceiverView>> receivers;
+    std::shared_ptr<CakeView> cake;
     std::shared_ptr<BackgroundView> background;
     Camera* camera;
 public:
@@ -47,6 +50,7 @@ public:
     void setBackground(std::shared_ptr<BackgroundView> background);
     void addReceiver(std::shared_ptr<EnergyReceiverView> block);
     void activateReceiver(int16_t id);
+    void addCake(std::shared_ptr<CakeView> cake);
 };
 
 

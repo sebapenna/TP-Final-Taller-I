@@ -58,7 +58,13 @@ void Socket::send(const void *src, int src_size) {
     char *aux = (char *) src;
     while (bytes_tot < src_size) {
         int bytes_act = ::send(descriptor, &aux[bytes_tot], src_size, MSG_NOSIGNAL);
-        (bytes_act > 0) ? bytes_tot += bytes_act : throw FailedSendException();
+        if (bytes_act > 0) {
+            bytes_tot += bytes_act;
+        } else if (bytes_act == 0) {
+            throw CloseConnectionException();
+        } else {
+            throw FailedSendException();
+        }
     }
 }
 
@@ -66,7 +72,9 @@ void Socket::recv(void *dest, int recv_bytes) {
     int bytes_recvd = 0;
     while (bytes_recvd < recv_bytes) {
         bytes_recvd = ::recv(descriptor, dest, recv_bytes, MSG_NOSIGNAL);
-        if (bytes_recvd <= 0)
+        if (bytes_recvd == 0)
+            throw CloseConnectionException();
+        else if (bytes_recvd < 0)
             throw FailedRecvException();
     }
 }
