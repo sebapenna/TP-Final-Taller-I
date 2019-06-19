@@ -4,6 +4,8 @@
 #include <thread>
 
 class Thread {
+private:
+    void runWithTry();
 public:
 	Thread();
 
@@ -15,7 +17,7 @@ public:
 	void join();
 	
 	// This is the method that needs to be overrided to allow 
-	// the thread to bind to it. 
+	// the thread to bind to it.
 	virtual void run() = 0;
 	
 	// We need to use this so we use inherance

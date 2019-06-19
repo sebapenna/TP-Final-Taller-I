@@ -181,3 +181,7 @@ void WorldView::removeBall(int16_t id) {
 void WorldView::removeRock(int16_t id) {
     rocks.erase(id);
 }
+
+void WorldView::obtainXY(int &x, int &y, int x_m, int y_m) {
+    
+}

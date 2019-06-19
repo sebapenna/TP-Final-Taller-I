@@ -21,6 +21,8 @@ void View::setDestRect(int x, int y, int radius) {
 }
 // Ahora x, y es izq, inferior
 void View::setDestRect(int x, int y, int w, int h) {
+    // MULTIPLICAR POR EL ANCHO DE LA PANTALLA. Y EL ALTO
+    // MULTIPLICAR POR ANCHO Y DIVIDIR POR UNA CONSTANTE DE AJUSTE.
     position.set(convertMetersToPixelsPos(x + w / 2), convertMetersToPixelsPos(-y - h)); // -h/2
     dstSrc.x = convertMetersToPixelsPos(x);
     dstSrc.y = convertMetersToPixelsPos(-y-h);
@@ -40,6 +42,9 @@ Position &View::getPosition() {
 }
 
 int View::convertMetersToPixelsPos(int meters) {
+    // TENGO DOS FUNCIONES, SI NO ESTA
+    // return meters * h * METERS_TO_PIXELS_POS
+    // min(meters * h * METERS_TO_PIXELS_POS, meters * w * METERS_TO_PIXELS_POS)
     return meters*METERS_TO_PIXELS_POS;
 }
 
