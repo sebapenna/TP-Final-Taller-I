@@ -1,0 +1,41 @@
+gravity_x: 0
+gravity_y: -10
+FPS:  30
+velocity_iterations: 8
+position_iterations: 3
+move_force: 1500
+jump_force: 2000
+
+half_block_len: &len  2
+
+chell_half_width: *len
+chell_half_height: *len
+chell_density:  5
+chell_gravity_scale:  5
+
+rock_half_len: *len
+rock_density: 1000000
+
+acid_half_height: 1
+
+button_half_width:  *len
+button_half_height: 1
+
+gate_half_width: *len
+gate_half_height: 4 # 2 * len
+
+enrg_block_half_len:  *len  # Ancho y alto por ser cuerpo cuadrado
+time_to_release:  10  # Tiempo que demora en liberar bola de energia
+
+enrg_ball_radius: *len
+enrg_ball_density:  1
+enrg_ball_force:  100
+enrg_ball_lifetime: 5
+
+barrier_half_len: 4 # 2 * len
+barrier_half_width: 1
+
+cake_half_len:  *len  #cuerpo cuadrado
+
+porta_half_width: 1
+portal_half_height: *len

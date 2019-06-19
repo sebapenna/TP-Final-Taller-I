@@ -2,9 +2,9 @@
 #include "PortalDTO.h"
 
 PortalDTO::PortalDTO(const int16_t &id, const int16_t &x, const int16_t &y, const int16_t &width,
-                     const int16_t &height, const int16_t &colour, const int16_t &delete_state) :
-                     _id(id), _x(x), _y(y), _width(width), _height(height), _colour(colour),
-                     _delete_state(delete_state) { }
+                     const int16_t &height, const int16_t& tilt, const int16_t &colour,
+                     const int16_t &delete_state) : _id(id), _x(x), _y(y), _width(width),
+                     _height(height), _colour(colour), _tilt(tilt), _delete_state(delete_state) { }
 
 int16_t PortalDTO::getClassId() const {
     return PROTOCOL_PORTAL_DATA;
@@ -36,4 +36,8 @@ const int16_t PortalDTO::getColour() const {
 
 const int16_t PortalDTO::getDeleteState() const {
     return _delete_state;
+}
+
+const int16_t PortalDTO::getTilt() const {
+    return _tilt;
 }

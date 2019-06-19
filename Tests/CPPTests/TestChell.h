@@ -79,7 +79,7 @@ public:
 
     void testTeletransport() {
         cout << endl <<  "TEST teletransportar: ";
-        chell->teletransport(5,5);
+        chell->teleport(5, 5);
         CPPUNIT_ASSERT_EQUAL(chell->getX(), (float) 5);
         CPPUNIT_ASSERT_EQUAL(chell->getY(), (float) 5);
         cout << "OK";
@@ -87,7 +87,7 @@ public:
 
     void testFall() {
         cout << endl << "TEST caer con gravedad: ";
-        chell->teletransport(0, 4); // Elevo a chell para que caiga
+        chell->teleport(0, 4); // Elevo a chell para que caiga
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
         float y_diff = chell->getY() - chell_init_y;
@@ -460,7 +460,7 @@ public:
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NE);
         float new_x = ground_x;
         float new_y = ground_y + b_height / 2 + CHELL_HALF_HEIGHT;
-        chell->teletransport(new_x, new_y);
+        chell->teleport(new_x, new_y);
         chell->move_right();
         for (int i = 1; i < 200; i++) {
             world->step();
@@ -485,7 +485,7 @@ public:
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NO);
         float new_x = ground_x;
         float new_y = ground_y + b_height / 2 + CHELL_HALF_HEIGHT;
-        chell->teletransport(new_x, new_y);
+        chell->teleport(new_x, new_y);
         chell->move_left();
         for (int i = 1; i < 200; i++) {
             world->step();

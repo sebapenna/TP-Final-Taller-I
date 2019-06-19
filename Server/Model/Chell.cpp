@@ -5,13 +5,11 @@
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
 #include <Server/Model/Obstacles/Acid.h>
 
-#define BLUE_PORTAL (int16_t) 0
-#define ORANGE_PORTAL  (int16_t) 1
-
 Chell::Chell(const size_t &id, b2Body *body) : _id(id), _body(body), _move_state(MOVE_STOP),
 _jump_state(ON_GROUND), _previous_jump_state(ON_GROUND), _jump(false), _dead(false),
 _previously_dead(false), _carrying_rock(false), _previously_carrying(false), _shooting(false),
-_hit_wall(false), _reached_cake(false), _previous_tilt(NOT_TILTED), _tilt(NOT_TILTED) {
+_hit_wall(false), _reached_cake(false), _teleporting(false),_previous_tilt(NOT_TILTED),
+_tilt(NOT_TILTED) {
     _previous_x = _body->GetPosition().x;
     _previous_y = _body->GetPosition().y;
     _portals.first = nullptr;   // Seteo a null ambos portales
@@ -91,7 +89,7 @@ void Chell::stopMovement() {
     _move_state = MOVE_STOP;
 }
 
-void Chell::teletransport(float x, float y) {
+void Chell::teleport(float x, float y) {
     b2Vec2 new_pos(x,y);
     _body->SetTransform(new_pos, 0);
 }
@@ -241,6 +239,18 @@ void Chell::collideWith(Collidable *other) {
         }
         if (cname == CAKE)
             _reached_cake = true;
+    } else if (cname == PORTAL) {
+        if (!_teleporting) {
+            auto portal = (Portal *) other;
+            float newx = portal->x();
+            float newy = portal->y();
+            float new_velx = getX() * portal->normal().x;
+            float new_vely = getY() * portal->normal().y;
+            teleport(newx, newy);
+            _body->SetLinearVelocity({new_velx, new_vely});
+        } else {
+            _teleporting = false;   // Atraveso portal de salida
+        }
     }
 }
 
@@ -256,6 +266,9 @@ void Chell::endCollitionWith(Collidable *other) {
     } else if (cname == CAKE) {
         _hit_wall = false;
         _reached_cake = false;
+    } else if(cname == PORTAL) {
+        if (!_teleporting)
+            _teleporting = true;    // Fin contacto implica que se esta teletransportando
     }
 }
 
@@ -269,7 +282,7 @@ void Chell::kill() {
 
 int Chell::setNewPortal(Portal *portal) {
     size_t old_portal_id = -1;
-    if (portal->color() == ORANGE_PORTAL) {
+    if (portal->colour() == ORANGE_PORTAL) {
        if (_portals.first)
             old_portal_id = _portals.first->id();
         _portals.first = portal;

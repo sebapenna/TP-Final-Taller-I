@@ -19,6 +19,7 @@ private:
     bool _shooting;
     bool _hit_wall;
     bool _reached_cake;
+    bool _teleporting;
     // Par de portales: primero sera el naranja y el segundo el azul.
     std::pair<Portal*, Portal*> _portals;
 
@@ -56,7 +57,7 @@ public:
     // En la simulacion del step el cuerpo avanzara en un primer step por el impulso ya adquirido
     void stopMovement();
 
-    void teletransport(float x, float y);
+    void teleport(float x, float y);
 
     // Metodo a llamar para que se aplique el movimiento seteado previamente
     void move();

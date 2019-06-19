@@ -38,6 +38,10 @@
 #define NOT_CARRYING   (int16_t)    0
 #define CARRYING    (int16_t)   1
 
+#define STRAIGHT (int16_t)  0
+#define LEFT    (int16_t)   1
+#define RIGHT    (int16_t)   2
+
 /********************************** MENSAJES PROTOCOLO ***************************/
 #define PROTOCOL_MOVE_LEFT   (int16_t) 0
 #define MOVE_LEFT_ARGS  0
@@ -157,9 +161,10 @@
 #define PORTAL_Y_POS   (PORTAL_X_POS + 1)
 #define PORTAL_WIDTH_POS   (PORTAL_Y_POS + 1)
 #define PORTAL_HEIGHT_POS   (PORTAL_WIDTH_POS + 1)
-#define PORTAL_COLOUR_POS   (PORTAL_HEIGHT_POS + 1)
+#define PORTAL_TILT_POS   (PORTAL_HEIGHT_POS + 1)
+#define PORTAL_COLOUR_POS   (PORTAL_TILT_POS + 1)
 #define PORTAL_DELETE_STATE_POS   (PORTAL_COLOUR_POS + 1)
-#define PORTAL_ARGS 7
+#define PORTAL_ARGS 8
 
 #define PROTOCOL_PIN_TOOL_DATA   (int16_t) 20
 #define PIN_TOOL_ID_POS   2
@@ -167,8 +172,9 @@
 #define PIN_TOOL_Y_POS   (PIN_TOOL_X_POS + 1)
 #define PIN_TOOL_WIDTH_POS   (PIN_TOOL_Y_POS + 1)
 #define PIN_TOOL_HEIGHT_POS   (PIN_TOOL_WIDTH_POS + 1)
-#define PIN_TOOL_DELETE_STATE_POS   (PIN_TOOL_HEIGHT_POS + 1)
-#define PIN_TOOL_ARGS    6
+#define PIN_TOOL_TILT_POS   (PIN_TOOL_HEIGHT_POS + 1)
+#define PIN_TOOL_DELETE_STATE_POS   (PIN_TOOL_TILT_POS + 1)
+#define PIN_TOOL_ARGS    7
 
 #define PROTOCOL_CHELL_DATA  (int16_t) 21
 #define CHELL_ID_POS   2

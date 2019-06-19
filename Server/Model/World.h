@@ -154,6 +154,8 @@ public:
 
     const std::vector<std::pair<size_t, uint8_t>> &getObjectsToDelete() const;
 
+    const std::map<size_t, Portal *> &getPortals() const;
+
 
     /******************************* Creacion Objetos **********************************/
     // PRE [PARA AMBOS CREATE BLOCK[: width y height son ancho y alto del cuerpo completo
@@ -199,7 +201,7 @@ public:
     // cake su id sera borrado de las chells que quieren eliminar la chell restante.
     void killLastingChell(const size_t &kiler_id);
 
-    void shootPortal(const size_t &chell_id, const float &x, const float &y, const int16_t &color);
+    void shootPortal(const size_t &chell_id, const float &dest_x, const float &dest_y, const int16_t &color);
 
     // Angulo sera 0 si no hay que rotar cuerpo (colision con pared recta), 45 para rotar cuerpo
     // hacia izquierda y -45 para rotar hacia derecha (ambos casos colision cara diagonal)

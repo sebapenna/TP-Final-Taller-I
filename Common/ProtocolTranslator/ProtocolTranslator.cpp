@@ -297,12 +297,13 @@ shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &inp
         case PROTOCOL_PORTAL_DATA:
             return make_shared<PortalDTO>(input[PORTAL_ID_POS], input[PORTAL_X_POS],
                     input[PORTAL_Y_POS], input[PORTAL_WIDTH_POS], input[PORTAL_HEIGHT_POS],
-                    input[PORTAL_COLOUR_POS], input[PORTAL_DELETE_STATE_POS]);
+                    input[PORTAL_TILT_POS], input[PORTAL_COLOUR_POS],
+                    input[PORTAL_DELETE_STATE_POS]);
 
         case PROTOCOL_PIN_TOOL_DATA:
             return make_shared<PinToolDTO>(input[PIN_TOOL_ID_POS], input[PIN_TOOL_X_POS],
                     input[PIN_TOOL_Y_POS], input[PIN_TOOL_WIDTH_POS], input[PIN_TOOL_HEIGHT_POS],
-                    input[PIN_TOOL_DELETE_STATE_POS]);
+                    input[PIN_TOOL_TILT_POS], input[PIN_TOOL_DELETE_STATE_POS]);
 
         case PROTOCOL_CHELL_DATA:
             return make_shared<ChellDTO>(input[CHELL_ID_POS], input[CHELL_X_POS],
@@ -460,6 +461,7 @@ void ProtocolTranslator::portalData(const ProtocolDTO *dto, std::vector<int16_t>
     output.push_back(p_dto->getY());
     output.push_back(p_dto->getWidth());
     output.push_back(p_dto->getHeight());
+    output.push_back(p_dto->getTilt());
     output.push_back(p_dto->getColour());
     output.push_back(p_dto->getDeleteState());
 }
@@ -471,6 +473,7 @@ void ProtocolTranslator::pinToolData(const ProtocolDTO *dto, vector<int16_t> &ou
     output.push_back(p_dto->getY());
     output.push_back(p_dto->getWidth());
     output.push_back(p_dto->getHeight());
+    output.push_back(p_dto->getTilt());
     output.push_back(p_dto->getDeleteState());
 }
 

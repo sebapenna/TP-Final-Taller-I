@@ -5,16 +5,11 @@
 
 class PortalDTO: public ProtocolDTO {
 private:
-    const int16_t _id;
-    const int16_t _x;
-    const int16_t _y;
-    const int16_t _width;
-    const int16_t _height;
-    const int16_t _colour;
-    const int16_t _delete_state;
+    const int16_t _id, _x, _y, _width, _height, _colour, _tilt, _delete_state;
 public:
     PortalDTO(const int16_t& id, const int16_t& x, const int16_t& y, const int16_t& width,
-            const int16_t& height,  const int16_t& colour, const int16_t& delete_state);
+            const int16_t& height, const int16_t& tilt, const int16_t& colour, const int16_t&
+            delete_state);
 
     ~PortalDTO() override = default;
 
@@ -33,6 +28,8 @@ public:
     const int16_t getColour() const;
 
     const int16_t getDeleteState() const;
+
+    const int16_t getTilt() const;
 };
 
 

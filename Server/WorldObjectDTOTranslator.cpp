@@ -165,7 +165,11 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
             return make_shared<CakeDTO>(new_pos.first, new_pos.second, (2 * CAKE_HALF_LEN));
         }
         case PORTAL: {
-            // todo: PORTAL GETTERS
+            auto obj = (Portal*) collidable;
+            auto new_pos = PositionTranslator::translate(cname, obj->x(), obj->y(),
+                                                         obj->getWidth(), obj->getHeight());
+            return make_shared<PortalDTO>(obj->id(), new_pos.first, new_pos.second,
+                    obj->getWidth(), obj->getHeight(), obj->tilt(), obj->colour(), DONT_DELETE);
         }
         case PIN_TOOL: {
             // todo: PIN TOOL GETTERS
@@ -190,9 +194,9 @@ WorldObjectDTOTranslator::translate(const size_t &object_id, const uint8_t &obje
         case ENERGY_BALL:
             return make_shared<EnergyBallDTO>(object_id, 0, 0, 0, DELETE);
         case PORTAL:
-            return make_shared<PortalDTO>(object_id, 0, 0, 0, 0, 0, DELETE);
+            return make_shared<PortalDTO>(object_id, 0, 0, 0, 0, 0, 0, DELETE);
         case PIN_TOOL:
-            return make_shared<PinToolDTO>(object_id, 0, 0, 0, 0, DELETE);
+            return make_shared<PinToolDTO>(object_id, 0, 0, 0, 0, 0, DELETE);
         default:    // Comando incorrecto
             return nullptr;
     }

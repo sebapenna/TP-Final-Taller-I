@@ -407,8 +407,7 @@ void World::createEnergyReceiver(const float &x, const float &y) {
     _energy_receivers.push_back(e_recv);
 }
 
-void World::createEnergyTransmitter(const float &x, const float &y,
-                                    const uint8_t &direction) {
+void World::createEnergyTransmitter(const float &x, const float &y, const uint8_t &direction) {
     auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN);
     // id se incrementa con tamaño del vector de transmitters
     auto *e_transm = new EnergyTransmitter(_energy_transmitters.size(), body, direction);
@@ -551,6 +550,10 @@ const vector<EnergyBarrier *> &World::getEnergyBarriers() const {
     return _energy_barriers;
 }
 
+const std::map<size_t, Portal *> &World::getPortals() const {
+    return _portals;
+}
+
 Cake *World::getCake() const {
     return _cake;
 }
@@ -566,34 +569,38 @@ void World::killLastingChell(const size_t &killer_id) {
 }
 
 void
-World::shootPortal(const size_t &chell_id, const float &x, const float &y, const int16_t &color) {
+World::shootPortal(const size_t &chell_id, const float &dest_x, const float &dest_y,
+        const int16_t &color) {
     auto chell = getChell(chell_id);
     if (!chell)
         return;
     float origin_x = chell->getX(), origin_y = chell->getY();   // Default posicion de la chell
-    if (x <= (chell->getX() - CHELL_HALF_WIDTH)) {
-        origin_x = chell->getX() - CHELL_HALF_WIDTH;    // Centro borde izquierdo chell
-    } else if (x >= (chell->getX() + CHELL_HALF_WIDTH)) {
-        origin_x = chell->getX() + CHELL_HALF_WIDTH;    // Centro borde derecho chell
-    } else if (y >= chell->getY() + CHELL_HALF_HEIGHT) {
-        origin_y = chell->getY() + CHELL_HALF_HEIGHT;
-    } else if (y <= (chell->getY() - CHELL_HALF_HEIGHT)) {
-        origin_y = chell->getY() - CHELL_HALF_HEIGHT;
-    }
+    // Agrego en todos los casos un delta para que punto no colisione con cuerpo propio
+//    if (dest_x <= (chell->getX() - CHELL_HALF_WIDTH)) {
+//        origin_x = chell->getX() - CHELL_HALF_WIDTH - 1;    // Centro borde izquierdo chell
+//    } else if (dest_x >= (chell->getX() + CHELL_HALF_WIDTH)) {
+//        origin_x = chell->getX() + CHELL_HALF_WIDTH + 0.1;    // Centro borde derecho chell
+//    } else if (dest_y >= chell->getY() + CHELL_HALF_HEIGHT) {
+//        origin_y = chell->getY() + CHELL_HALF_HEIGHT + 0.1;
+//    } else if (dest_y <= (chell->getY() - CHELL_HALF_HEIGHT)) {
+//        origin_y = chell->getY() - CHELL_HALF_HEIGHT - 0.1;
+//    }
     RayCastCallback callback;
     b2Vec2 point1(origin_x, origin_y);
-    b2Vec2 point2(x, y);
+    b2Vec2 point2(dest_x, dest_y);
     _world->RayCast(&callback, point1, point2);
     if (callback.m_fixture) {
         auto collidable = (Collidable *) callback.m_fixture->GetBody()->GetUserData();
         auto cname = collidable->getClassId();
         if (cname == METAL_BLOCK || cname == METAL_DIAGONAL_BLOCK) { // Choco con bloque de metal
-            int angle = 0;  // Default portal derecho, defino angulo en base a normal
+            int angle = 0;  // Default portal vertical, defino angulo en base a normal
             auto normal = callback.m_normal;
             if ((normal.x > 0 && normal.y > 0) || (normal.x < 0 && normal.y < 0))
                 angle = 45;    // Portal inclinado (rotado hacia izquierda)
             else if ((normal.x > 0 && normal.y < 0) || (normal.x < 0 && normal.y > 0))
                 angle = -45;   // Portal inclinado (rotado hacia derecha)
+            else if ((normal.x == 0 && normal.y > 0) || (normal.x == 0 && normal.y < 0))
+                angle = 90; // Cuerpo horizontal
             auto portal = createPortal(callback.m_point.x, callback.m_point.y, callback.m_normal,
                     color, angle);
             auto old_portal_id = chell->setNewPortal(portal);
@@ -605,15 +612,21 @@ World::shootPortal(const size_t &chell_id, const float &x, const float &y, const
 
 Portal* World::createPortal(const float &x, const float &y, b2Vec2 normal, const int16_t &color,
                              const int &angle) {
-    auto body = createStaticBox(x, y, CAKE_HALF_LEN, CAKE_HALF_LEN);
+    float half_width = PORTAL_HALF_WIDTH, half_height = PORTAL_HALF_HEIGHT;
+    if (angle == 90) {  // Cuerpo horizontal
+        half_width = PORTAL_HALF_HEIGHT;
+        half_height = PORTAL_HALF_WIDTH;
+    }
+    auto body = createStaticBox(x, y, half_width, half_height);
     auto radians = angle * b2_pi / 180;
     body->SetTransform(body->GetPosition(), radians);   // Realizo posible transformacion
 
     size_t next_id = 0;
     if (!_portals.empty())
         next_id = _portals.end()->first;    // Obtengo id del ultimo portal (mayor id)
-    auto portal = new Portal(next_id, body, normal, color);
+    auto portal = new Portal(next_id, body, normal, color, 2 * half_width, 2 * half_height);
     body->SetUserData(portal);
     _portals.insert({next_id, portal});
     return portal;
 }
+

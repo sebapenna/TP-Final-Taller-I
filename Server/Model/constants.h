@@ -82,9 +82,6 @@
 #define ENRG_BALL_FORCE 100
 #define ENERGY_BALL_MAX_LIFETIME 5
 
-/* Configuracion Bloques */
-#define BLOCK_DENSITY   1
-
 /* Configuracion Energy Barrier */
 #define BARRIER_HALF_LENGTH  4
 #define BARRIER_HALF_WIDTH   1
@@ -93,9 +90,10 @@
 #define CAKE_HALF_LEN   2
 
 /* Configuracion Portal */
-#define PORTAL_WIDTH    1
-#define PORTAL_LENGTH 2
+#define PORTAL_HALF_WIDTH    1
+#define PORTAL_HALF_HEIGHT 2
 
+/* Inclinacion Portal */
 #define STRAIGHT    (int16_t) 0
 #define LEFT    (int16_t)   1
 #define RIGHT    (int16_t)   2
@@ -113,11 +111,9 @@
 #define ENERGY_BARRIER (uint8_t) 9
 #define CHELL   (uint8_t) 10
 #define ENERGY_BALL (uint8_t) 11
-#define PORTAL_RAY  (uint8_t) 12
-#define PORTAL  (uint8_t) 13
-#define PIN_TOOL_RAY    (uint8_t) 14
-#define PIN_TOOL    (uint8_t) 15
-#define CAKE    (uint8_t) 16
+#define PORTAL  (uint8_t) 12
+#define PIN_TOOL    (uint8_t) 13
+#define CAKE    (uint8_t) 14
 
 
 #endif //TP_FINAL_CONSTANTES_H
