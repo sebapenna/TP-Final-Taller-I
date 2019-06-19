@@ -21,6 +21,9 @@
 #include <Common/ProtocolTranslator/PlayerActionsDTO/CommitSuicideDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/KillMissingChellDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/LiftRockDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/DropRockDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPinToolDTO.h>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "Common/ProtocolTranslator/PlayerActionsDTO/MoveLeftDTO.h"
@@ -33,6 +36,7 @@
 
 #define KNOWN_ERROR 1
 #define UNKNOWN_ERROR 2
+#define DELAY 1
 int main(int argc, char** argv){
     try {
         // Chell turning around
@@ -85,7 +89,35 @@ int main(int argc, char** argv){
                     break;
                 } else if (e.type == SDL_MOUSEBUTTONDOWN) {
                     if (e.button.button == SDL_BUTTON_LEFT) {
-                        //chell.fire();
+                        int x_m;
+                        int y_m;
+                        SDL_GetMouseState(&x_m, &y_m);
+
+                        int x;
+                        int y;
+                        sdlRunner.getRealPos(x, y, x_m, y_m);
+                        std::shared_ptr<ProtocolDTO> dto(new ShootPortalDTO(BLUE_PORTAL, x, y));
+                        blockingQueue.push(dto);
+                    } else if (e.button.button == SDL_BUTTON_RIGHT) {
+                        int x_m;
+                        int y_m;
+                        SDL_GetMouseState(&x_m, &y_m);
+
+                        int x;
+                        int y;
+                        sdlRunner.getRealPos(x, y, x_m, y_m);
+                        std::shared_ptr<ProtocolDTO> dto(new ShootPortalDTO(ORANGE_PORTAL, x, y));
+                        blockingQueue.push(dto);
+                    } else if (e.button.button == SDL_BUTTON_MIDDLE) {
+                        int x_m;
+                        int y_m;
+                        SDL_GetMouseState(&x_m, &y_m);
+
+                        int x;
+                        int y;
+                        sdlRunner.getRealPos(x, y, x_m, y_m);
+                        std::shared_ptr<ProtocolDTO> dto(new ShootPinToolDTO(x, y));
+                        blockingQueue.push(dto);
                     }
                 } else if (e.type == SDL_KEYDOWN) {
                     switch (e.key.keysym.sym) {
@@ -125,6 +157,11 @@ int main(int argc, char** argv){
                             blockingQueue.push(dto);
                             break;
                         }
+                        case SDLK_f: {
+                            std::shared_ptr<ProtocolDTO> dto(new DropRockDTO());
+                            blockingQueue.push(dto);
+                            break;
+                        }
 
                     }
                 } else if (e.type == SDL_KEYUP) {
@@ -132,7 +169,7 @@ int main(int argc, char** argv){
                     blockingQueue.push(dto);
                 }
             }
-            //SDL_Delay(10);
+            SDL_Delay(1);
         }
         protocol.disconnect();
         sdlRunner.join();
