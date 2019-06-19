@@ -61,7 +61,7 @@ public:
     void addBall(std::shared_ptr<EnergyBallView> ball);
     void removeBall(int16_t id);
 
-    void obtainXY(int &x, int &y, int x_m, int y_m);
+    void obtainXY(int &x, int &y, int x_m, int y_m, Renderer& renderer);
 };
 
 
