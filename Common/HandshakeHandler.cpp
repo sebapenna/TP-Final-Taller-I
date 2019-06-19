@@ -34,14 +34,14 @@
 #ifdef DEBUG_MODE
     #define SPACE "Config/space.yaml"
 #else
-    #define SPACE "/etc/Pörtal/Server/space.yaml"
+    #define SPACE "/etc/Pörtal/Server/space.yaml"   // todo IF NOT DEBUF CON TODOS LOS ARCHIVOS
 #endif
 
 #define CITY_ID (uint8_t) 1
-#define CITY "city.yaml"
+#define CITY "Config/city.yaml"
 
 #define WOODS_ID (uint8_t) 2
-#define WOODS "woods.yaml"
+#define WOODS "Config/woods.yaml"
 
 #define MAP_IDS SPACE_ID, CITY_ID, WOODS_ID // Listado de todos los ids
 
