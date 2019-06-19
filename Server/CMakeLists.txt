@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(Portal)
 
-#SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
-
 include_directories(..)
 add_subdirectory(YamlData)
 

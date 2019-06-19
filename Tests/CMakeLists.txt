@@ -5,23 +5,23 @@ SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -Wall  -Werror -pedantic -pe
 
 add_executable(tests
         TestMain.cpp
-        TestWorld.h
-        TestChell.h
-        TestYamlParser.h
-        TestRock.h
-        TestButton.h
-        TestGate.h
-        TestEnergyReceiver.h
-        TestEnergyBallAndEnergyTransmitter.h
-        TestEnergyBallAndEnergyReceiver.h
-        TestEnergyBall.h
-        TestProtocolTranslator.h
-        TestPositionTranslator.h TestWorldObjectDTOTranslator.h)
+        CPPTests/TestWorld.h
+        CPPTests/TestChell.h
+        CPPTests/TestYamlParser.h
+        CPPTests/TestRock.h
+        CPPTests/TestButton.h
+        CPPTests/TestGate.h
+        CPPTests/TestEnergyReceiver.h
+        CPPTests/TestEnergyBallAndEnergyTransmitter.h
+        CPPTests/TestEnergyBallAndEnergyReceiver.h
+        CPPTests/TestEnergyBall.h
+        CPPTests/TestProtocolTranslator.h
+        CPPTests/TestPositionTranslator.h CPPTests/TestWorldObjectDTOTranslator.h)
 
 target_link_libraries(tests cppunit portal-src common-src)
 
 
 add_executable(client
-        ../Tests/ClientTest.cpp TestCake.h)
+        ../Tests/ClientTest.cpp CPPTests/TestCake.h CPPTests/TestPortal.h)
 
 target_link_libraries(client portal-src)

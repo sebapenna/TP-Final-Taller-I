@@ -3,6 +3,7 @@
 
 #include <Box2D/Box2D.h>
 #include "Collidable.h"
+#include "Portal.h"
 
 class Chell: public Collidable {
 private:
@@ -11,13 +12,15 @@ private:
     uint8 _move_state;
     uint8 _jump_state, _previous_jump_state;
     bool _jump, _dead;
-    bool _previously_dead = false;
+    bool _previously_dead;
     float _previous_x, _previous_y;
     int16_t _tilt, _previous_tilt; // Guardo estado previo para identificar cambio
-    bool _carrying_rock = false, _previously_carrying = false;
-    bool _shooting = false;
-    bool _hit_wall = false;
-    bool _reached_cake = false;
+    bool _carrying_rock, _previously_carrying;
+    bool _shooting;
+    bool _hit_wall;
+    bool _reached_cake;
+    // Par de portales: primero sera el naranja y el segundo el azul.
+    std::pair<Portal*, Portal*> _portals;
 
     // Evita volver a aplicar un impulso en el mismo sentido
     bool movementInXAlreadyApplied();
@@ -92,6 +95,11 @@ public:
     // Mata a la chell, ya sea por suicidio o porque todas las otras chell llegaron a cake menos
     // esta y decidieron matarla.
     void kill();
+
+    // Asigna nuevo portal a chell. En caso de que chell ya tuviese un portal del mismo color
+    // realizará el cambio de portal y retornara el id del viejo (para asi poder ser destruido).
+    // Si no tenia un portal del color del nuevo retornara -1.
+    int setNewPortal(Portal *portal);
 };
 
 

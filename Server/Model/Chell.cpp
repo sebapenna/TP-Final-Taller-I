@@ -8,17 +8,14 @@
 #define BLUE_PORTAL (int16_t) 0
 #define ORANGE_PORTAL  (int16_t) 1
 
-Chell::Chell(const size_t &id, b2Body *body) : _id(id){
-    _body = body;
-    _move_state = MOVE_STOP;
-    _jump_state = ON_GROUND;
-    _previous_jump_state = ON_GROUND;
-    _jump = false;
-    _dead = false;
-    _previous_tilt = NOT_TILTED;
-    _tilt = NOT_TILTED;
+Chell::Chell(const size_t &id, b2Body *body) : _id(id), _body(body), _move_state(MOVE_STOP),
+_jump_state(ON_GROUND), _previous_jump_state(ON_GROUND), _jump(false), _dead(false),
+_previously_dead(false), _carrying_rock(false), _previously_carrying(false), _shooting(false),
+_hit_wall(false), _reached_cake(false), _previous_tilt(NOT_TILTED), _tilt(NOT_TILTED) {
     _previous_x = _body->GetPosition().x;
     _previous_y = _body->GetPosition().y;
+    _portals.first = nullptr;   // Seteo a null ambos portales
+    _portals.second = nullptr;
 }
 
 const size_t Chell::getId() const {
@@ -268,4 +265,18 @@ bool Chell::reachedCake() {
 
 void Chell::kill() {
     _dead = true;
+}
+
+int Chell::setNewPortal(Portal *portal) {
+    size_t old_portal_id = -1;
+    if (portal->color() == ORANGE_PORTAL) {
+       if (_portals.first)
+            old_portal_id = _portals.first->id();
+        _portals.first = portal;
+    } else {
+        if (_portals.second)
+            old_portal_id = _portals.second->id();
+        _portals.second = portal;
+    }
+    return old_portal_id;
 }

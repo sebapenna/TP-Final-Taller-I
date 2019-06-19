@@ -23,6 +23,7 @@ add_subdirectory(client)
 
 file(COPY Server/Config DESTINATION ./)
 file(COPY client/assets DESTINATION ./)
+file(COPY Tests/test.yaml DESTINATION ./)   # Archivo yaml para tests
 #file(COPY client/assets DESTINATION ./)
 ## EJEMPLOS DE COPIA DE ARCHIVOS LOCALES
 #file(COPY assets DESTINATION ./)

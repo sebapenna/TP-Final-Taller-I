@@ -60,12 +60,10 @@
 /* Coniguracion Acid */
 #define ACID_HALF_WIDTH  HALF_BOX_LEN
 #define ACID_HALF_HEIGHT  1
-#define ACID_FRICTION    100    // Cuerpo se frene en acido
 
 /* Configuracion Button */
 #define BUTTON_HALF_WIDTH  HALF_BOX_LEN
-#define BUTTON_HALF_HEIGHT  0.6
-#define BUTTON_FRICTION    0
+#define BUTTON_HALF_HEIGHT  1
 
 #define NOT_ACTIVATED   (uint8_t) 0
 #define ACTIVATED (uint8_t) 1
@@ -73,11 +71,9 @@
 /* Configuracion Gate */
 #define GATE_HALF_WIDTH  HALF_BOX_LEN
 #define GATE_HALF_HEIGHT  (2 * GATE_HALF_WIDTH)
-#define GATE_FRICTION    0
 
 /* Configuracion Energy Receiver y Energy Transmitter */
 #define ENRG_BLOCK_HALF_LEN  HALF_BOX_LEN // Largo de medio lado del recvr/transmitter (cuerpos cuadrados)
-#define ENRG_BLOCK_FRICTION    0
 #define TIME_TO_RELEASE 10  // Tiempo tras que libera bola energia el transmisor
 
 /* Configuracion Energy Ball */
@@ -87,22 +83,22 @@
 #define ENERGY_BALL_MAX_LIFETIME 5
 
 /* Configuracion Bloques */
-#define METAL_DIAG_BLOC_FRICTION    0
-#define BLOCK_FRICTION  0
 #define BLOCK_DENSITY   1
 
 /* Configuracion Energy Barrier */
 #define BARRIER_HALF_LENGTH  4
 #define BARRIER_HALF_WIDTH   1
-#define BARRIER_FRICTION    0
 
 /* Configuracion Cake */
 #define CAKE_HALF_LEN   2
-#define CAKE_FRICTION   0
 
 /* Configuracion Portal */
 #define PORTAL_WIDTH    1
 #define PORTAL_LENGTH 2
+
+#define STRAIGHT    (int16_t) 0
+#define LEFT    (int16_t)   1
+#define RIGHT    (int16_t)   2
 
 /* Class Names*/
 #define ENERGY_RECEIVER (uint8_t) 0

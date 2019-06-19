@@ -2,7 +2,7 @@
 #define PORTAL_TESTYAMLPARSER_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include "../Server/YamlData/YamlParser.h"
+#include "Server/YamlData/YamlParser.h"
 #include "Server/Model/constants.h"
 #include <string>
 
@@ -35,7 +35,7 @@ private:
 public:
     void setUp() {
 #ifdef DEBUG_MODE
-        parser = new YamlParser("./test.yaml");
+        parser = new YamlParser("../test.yaml");
 #else
         parser = new YamlParser("/etc/portal-game/server/test.yaml");
 #endif

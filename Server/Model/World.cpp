@@ -9,8 +9,10 @@
 #include <yaml-cpp/yaml.h>
 #include <algorithm>
 #include <memory>
+#include <iostream>
 #include "World.h"
 #include "RayCastCallback.h"
+#include "Portal.h"
 
 using std::remove_if;
 using std::vector;
@@ -45,6 +47,10 @@ World::~World() {
     deletePointerVector<MetalDiagonalBlock*>(_metal_diagonal_blocks);
     deletePointerVector<MetalBlock*>(_metal_blocks);
     deletePointerVector<EnergyBarrier*>(_energy_barriers);
+    for_each(_portals.begin(), _portals.end(), [](std::pair<size_t, Portal *> p) {
+        delete p.second;
+        p.second = nullptr;
+    });
     delete _cake;
     delete _contact_listener;
     delete _world;
@@ -106,11 +112,42 @@ b2World *World::getWorld() const {
 
 
 /************************ Step ************************/
+void World::updateChellsWantingToKill() {
+    _want_to_kill.erase(remove_if(_want_to_kill.begin(), _want_to_kill.end(), [this](size_t &id) {
+        // Borro si se alejo de cake o murio
+        auto chell = getChell(id);
+        return (chell) ? !chell->reachedCake(): true;
+    }), _want_to_kill.end());
+}
+
 bool World::inConditionToKillMissingChell() {
     if (_chells.size() == 1)    // Tengo solo un chell
         return false;
     return (_want_to_kill.size() == (_chells.size() - 1));
 }
+
+void World::killChell() {
+    if (inConditionToKillMissingChell())
+        for (int i = 0; i < _chells.size(); ++i)
+            if (auto chell = _chells[i])
+                if (!chell->reachedCake()) {    // Elimino chell que no estaba en Cake
+                    _world->DestroyBody(chell->getBody());
+                    _objects_to_delete.emplace_back(i, chell->getClassId());
+                    delete chell;
+                    _chells[i] = nullptr;
+                }
+}
+
+void World::deleteOldPortals() {
+    for (auto &id : _portals_to_delete) {
+        auto portal = _portals[id];
+        _world->DestroyBody(portal->getBody());
+        _objects_to_delete.emplace_back(id, portal->getClassId());
+        delete portal;
+        _portals.erase(id);
+    }
+}
+
 
 void World::step() {
     // Vacio estructuras de objetos actualizados/eliminados durante step
@@ -125,24 +162,9 @@ void World::step() {
     stepGates();
     stepChells();
     stepRocks();
-    _want_to_kill.erase(remove_if(_want_to_kill.begin(), _want_to_kill.end(),
-            [this](size_t &id) {  // Borro si se alejo de cake o murio
-        auto chell = getChell(id);
-        return (chell) ? !chell->reachedCake(): true;
-    }), _want_to_kill.end());
-    if (inConditionToKillMissingChell()) {
-        for (int i = 0; i < _chells.size(); ++i) {
-            auto chell = _chells[i];
-            if (chell) {
-                if (!chell->reachedCake()) {    // Elimino chell que no estaba en Cake
-                    _world->DestroyBody(chell->getBody());
-                    _objects_to_delete.emplace_back(i, chell->getClassId());
-                    delete chell;
-                    _chells[i] = nullptr;
-                }
-            }
-        }
-    }
+    updateChellsWantingToKill();
+    killChell();
+    deleteOldPortals();
 }
 
 void World::stepGates() {
@@ -230,9 +252,8 @@ void World::stepRocks() {
 }
 
 /************************ Create Bodies ************************/
-b2Body *World::createStaticBox(const float &x, const float &y,
-        const float &box_half_width, const float &box_half_height,
-        const float &friction) {
+b2Body *World::createStaticBox(const float &x, const float &y, const float &box_half_width,
+                               const float &box_half_height, const float &friction) {
     b2BodyDef body_def;
     body_def.position.Set(x, y);
     body_def.type = b2_staticBody;
@@ -243,7 +264,6 @@ b2Body *World::createStaticBox(const float &x, const float &y,
     b2FixtureDef fixture;
     fixture.shape = &shape;
     fixture.friction = friction;
-
     b2Body *body = _world->CreateBody(&body_def);
 
     body->CreateFixture(&fixture);
@@ -275,7 +295,7 @@ b2Body *World::createDynamicBox(const float &x, const float &y,
 
 void World::createRockBlock(const float &width, const float &height,
         const float &x, const float &y) {
-    auto body = createStaticBox(x, y, width / 2, height / 2, BLOCK_FRICTION);
+    auto body = createStaticBox(x, y, width / 2, height / 2);
     auto rock_block = new RockBlock(x, y, width, height);
     body->SetUserData(rock_block);
     _rock_blocks.push_back(rock_block);
@@ -283,7 +303,7 @@ void World::createRockBlock(const float &width, const float &height,
 
 void World::createMetalBlock(const float &width, const float &height,
         const float &x, const float &y) {
-    auto body = createStaticBox(x, y , width/2, height/2, BLOCK_FRICTION);
+    auto body = createStaticBox(x, y, width / 2, height / 2);
     auto metal_block = new MetalBlock(x, y, width, height);
     body->SetUserData(metal_block);
     _metal_blocks.push_back(metal_block);
@@ -330,7 +350,7 @@ void World::createMetalDiagonalBlock(const float &width, const float &height,
 
     b2FixtureDef fixture;
     fixture.shape = &shape;
-    fixture.friction = METAL_DIAG_BLOC_FRICTION;
+    fixture.friction = 0;
 
     body->CreateFixture(&fixture);
 
@@ -349,16 +369,14 @@ void World::createRock(const float &x, const float &y) {
 }
 
 void World::createAcid(const float &x, const float &y) {
-    auto body = createStaticBox(x, y, ACID_HALF_WIDTH, ACID_HALF_HEIGHT,
-            ACID_FRICTION);
+    auto body = createStaticBox(x, y, ACID_HALF_WIDTH, ACID_HALF_HEIGHT);
     auto acid = new Acid(x, y);
     body->SetUserData(acid);   // Suficiente que sea una macro
     _acids.push_back(acid);
 }
 
 void World::createButton(const float &x, const float &y) {
-   auto body = createStaticBox(x, y, BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT,
-           BUTTON_FRICTION);
+   auto body = createStaticBox(x, y, BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT);
     // id se incrementa con tamaño del vector de botones
     auto *button = new Button(_buttons.size(), x, y);
    body->SetUserData(button);
@@ -367,8 +385,7 @@ void World::createButton(const float &x, const float &y) {
 
 void World::createGate(const float &x, const float &y, const std::vector<size_t> &buttons_needed,
                        const std::vector<size_t> &energy_receiver_needed) {
-    auto body = createStaticBox(x, y, GATE_HALF_WIDTH, GATE_HALF_HEIGHT,
-            GATE_FRICTION);
+    auto body = createStaticBox(x, y, GATE_HALF_WIDTH, GATE_HALF_HEIGHT);
     // id se incrementa con tamaño del vector de gates
     auto *gate = new Gate(_gates.size(), x, y);
 
@@ -383,7 +400,7 @@ void World::createGate(const float &x, const float &y, const std::vector<size_t>
 }
 
 void World::createEnergyReceiver(const float &x, const float &y) {
-    auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_FRICTION);
+    auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN);
     // id se incrementa con tamaño del vector de receivers
     auto e_recv = new EnergyReceiver(_energy_receivers.size(), x, y);
     body->SetUserData(e_recv);
@@ -392,8 +409,7 @@ void World::createEnergyReceiver(const float &x, const float &y) {
 
 void World::createEnergyTransmitter(const float &x, const float &y,
                                     const uint8_t &direction) {
-    auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN,
-                                ENRG_BLOCK_FRICTION);
+    auto body = createStaticBox(x, y, ENRG_BLOCK_HALF_LEN, ENRG_BLOCK_HALF_LEN);
     // id se incrementa con tamaño del vector de transmitters
     auto *e_transm = new EnergyTransmitter(_energy_transmitters.size(), body, direction);
     body->SetUserData(e_transm);
@@ -469,14 +485,14 @@ void World::createEnergyBarrier(const float &x, const float &y,
         default:    // No existe este caso
             break;
     }
-    auto body = createStaticBox(x, y , half_width, half_height, BARRIER_FRICTION);
+    auto body = createStaticBox(x, y, half_width, half_height);
     auto e_barrier = new EnergyBarrier(x, y, 2 * half_width, 2 * half_height);
     body->SetUserData(e_barrier);
     _energy_barriers.push_back(e_barrier);
 }
 
 void World::createCake(const float &x, const float &y) {
-    auto body = createStaticBox(x, y , CAKE_HALF_LEN, CAKE_HALF_LEN, CAKE_FRICTION);
+    auto body = createStaticBox(x, y, CAKE_HALF_LEN, CAKE_HALF_LEN);
     auto cake = new Cake(body);
     body->SetUserData(cake);
     _cake = cake;
@@ -564,27 +580,40 @@ World::shootPortal(const size_t &chell_id, const float &x, const float &y, const
     } else if (y <= (chell->getY() - CHELL_HALF_HEIGHT)) {
         origin_y = chell->getY() - CHELL_HALF_HEIGHT;
     }
-
-
-
     RayCastCallback callback;
     b2Vec2 point1(origin_x, origin_y);
     b2Vec2 point2(x, y);
     _world->RayCast(&callback, point1, point2);
     if (callback.m_fixture) {
-        auto collidable = (Collidable*) callback.m_fixture->GetUserData();
+        auto collidable = (Collidable *) callback.m_fixture->GetBody()->GetUserData();
         auto cname = collidable->getClassId();
         if (cname == METAL_BLOCK || cname == METAL_DIAGONAL_BLOCK) { // Choco con bloque de metal
-
+            int angle = 0;  // Default portal derecho, defino angulo en base a normal
+            auto normal = callback.m_normal;
+            if ((normal.x > 0 && normal.y > 0) || (normal.x < 0 && normal.y < 0))
+                angle = 45;    // Portal inclinado (rotado hacia izquierda)
+            else if ((normal.x > 0 && normal.y < 0) || (normal.x < 0 && normal.y > 0))
+                angle = -45;   // Portal inclinado (rotado hacia derecha)
+            auto portal = createPortal(callback.m_point.x, callback.m_point.y, callback.m_normal,
+                    color, angle);
+            auto old_portal_id = chell->setNewPortal(portal);
+            if (old_portal_id != -1)
+                _portals_to_delete.push_back(old_portal_id);    // Portal a eliminar en step
         }
     }
 }
 
-void World::createPortal(const float &x, const float &y, const int16_t &color) {
-    auto body = createStaticBox(x, y , CAKE_HALF_LEN, CAKE_HALF_LEN, CAKE_FRICTION);
-    auto cake = new Cake(body);
-    body->SetUserData(cake);
-    _cake = cake;
+Portal* World::createPortal(const float &x, const float &y, b2Vec2 normal, const int16_t &color,
+                             const int &angle) {
+    auto body = createStaticBox(x, y, CAKE_HALF_LEN, CAKE_HALF_LEN);
+    auto radians = angle * b2_pi / 180;
+    body->SetTransform(body->GetPosition(), radians);   // Realizo posible transformacion
+
+    size_t next_id = 0;
+    if (!_portals.empty())
+        next_id = _portals.end()->first;    // Obtengo id del ultimo portal (mayor id)
+    auto portal = new Portal(next_id, body, normal, color);
+    body->SetUserData(portal);
+    _portals.insert({next_id, portal});
+    return portal;
 }
-
-
