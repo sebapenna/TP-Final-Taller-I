@@ -44,8 +44,8 @@ block_metal:
     y: 2
   - width: *length
     height: *length
-    x: 10
-    y: 2
+    x: -96
+    y: 6
 block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuadrado)
   - width: *length
     height: *length
@@ -101,19 +101,19 @@ gate:
 #    energy_receiver_needed:
 #      - id: 0
 #      - id: 1
-energy_transmitter:
-#  - x: 90
-#    y: 2
-#    direction: N
-#  - x: -114
-#    y: 16
-#    direction: S
-  - x: -105
-    y: 6
-    direction: E
-  - x: -75
-    y: 6
-    direction: O
+#energy_transmitter:
+##  - x: 90
+##    y: 2
+##    direction: N
+##  - x: -114
+##    y: 16
+##    direction: S
+#  - x: -105
+#    y: 6
+#    direction: E
+#  - x: -75
+#    y: 6
+#    direction: O
 energy_receiver:
   - id: 0
     x: -90

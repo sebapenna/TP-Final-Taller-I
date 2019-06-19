@@ -39,7 +39,7 @@ int main(int argc, char** argv){
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
         std::string title("Portal");
 
-        Protocol protocol("localhost", "8080");
+        Protocol protocol("localhost", argv[1]);
 
         HandshakeHandler::getOptionsAndChoose(protocol); // Obtengo mensajes de bienvenidas, opciones, etc
         // Tirar dos threads, uno que lea la entrada, y otro que espere a lo que le responde el server.

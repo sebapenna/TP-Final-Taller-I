@@ -30,7 +30,12 @@
 #define SELECT_GAME_MSG "Ingrese el id de una de las siguientes partidas:\n"
 
 #define SPACE_ID (uint8_t) 0   // todo: nombres mapas / CREAR MAPAS
-#define SPACE "space.yaml"
+
+#ifdef DEBUG_MODE
+    #define SPACE "Config/space.yaml"
+#else
+    #define SPACE "/etc/Pörtal/Server/space.yaml"
+#endif
 
 #define CITY_ID (uint8_t) 1
 #define CITY "city.yaml"
@@ -176,7 +181,11 @@ void choiceLoop(Protocol &connection, uint8_t &choice) {
         std::cout << server_msg;
         std::cin >> str_choice; // Leo input jugador y elimino salto del linea
         str_choice.erase(remove(str_choice.begin(), str_choice.end(), '\n'), str_choice.end());
-        choice = (uint8_t) std::stoi(str_choice);
+        try {
+            choice = (uint8_t) std::stoi(str_choice);
+        } catch (...) {
+            std::cout << "ERROR";   // todo: try - catch
+        }
 
         connection << choice;   // Envio eleccion
         connection >> server_response;  // Obtengo ERROR o SUCCESS

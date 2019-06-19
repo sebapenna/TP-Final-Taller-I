@@ -64,7 +64,7 @@
 
 /* Configuracion Button */
 #define BUTTON_HALF_WIDTH  HALF_BOX_LEN
-#define BUTTON_HALF_HEIGHT  1
+#define BUTTON_HALF_HEIGHT  0.6
 #define BUTTON_FRICTION    0
 
 #define NOT_ACTIVATED   (uint8_t) 0
@@ -103,9 +103,6 @@
 /* Configuracion Portal */
 #define PORTAL_WIDTH    1
 #define PORTAL_LENGTH 2
-
-/* Configuracion disparo */
-#define RAY_DISTANCE    30
 
 /* Class Names*/
 #define ENERGY_RECEIVER (uint8_t) 0

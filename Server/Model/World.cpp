@@ -554,18 +554,22 @@ World::shootPortal(const size_t &chell_id, const float &x, const float &y, const
     auto chell = getChell(chell_id);
     if (!chell)
         return;
-    float newx = x, newy = y;   // Por default mismo valor que punto inicio
-    if (chell->getX() < x)
-        newx = x + RAY_DISTANCE;    // Disparo a derecha
-    else if (chell->getX() > x)
-        newx = x - RAY_DISTANCE;    // Disparo a izquierda
-    if (chell->getY() < y)
-        newy = y + RAY_DISTANCE;    // Disparo arriba
-    else if (chell->getY() > y)
-        newy = y - RAY_DISTANCE;    // Disparo abajo
+    float origin_x = chell->getX(), origin_y = chell->getY();   // Default posicion de la chell
+    if (x <= (chell->getX() - CHELL_HALF_WIDTH)) {
+        origin_x = chell->getX() - CHELL_HALF_WIDTH;    // Centro borde izquierdo chell
+    } else if (x >= (chell->getX() + CHELL_HALF_WIDTH)) {
+        origin_x = chell->getX() + CHELL_HALF_WIDTH;    // Centro borde derecho chell
+    } else if (y >= chell->getY() + CHELL_HALF_HEIGHT) {
+        origin_y = chell->getY() + CHELL_HALF_HEIGHT;
+    } else if (y <= (chell->getY() - CHELL_HALF_HEIGHT)) {
+        origin_y = chell->getY() - CHELL_HALF_HEIGHT;
+    }
+
+
+
     RayCastCallback callback;
-    b2Vec2 point1(x, y);
-    b2Vec2 point2(newx, newy);   // todo: to macro
+    b2Vec2 point1(origin_x, origin_y);
+    b2Vec2 point2(x, y);
     _world->RayCast(&callback, point1, point2);
     if (callback.m_fixture) {
         auto collidable = (Collidable*) callback.m_fixture->GetUserData();

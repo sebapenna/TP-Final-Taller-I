@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(Portal)
 
-SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
+#SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11" )
 
 include_directories(..)
 add_subdirectory(YamlData)
@@ -40,7 +40,4 @@ add_library(portal-src
 target_link_libraries(portal-src common-src Box2D yaml-parser pthread)
 
 
-add_executable(server
-        ServerMain.cpp)
 
-target_link_libraries(server portal-src)

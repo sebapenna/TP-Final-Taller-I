@@ -34,7 +34,11 @@ private:
 
 public:
     void setUp() {
-        parser = new YamlParser("test.yaml");
+#ifdef DEBUG_MODE
+        parser = new YamlParser("./test.yaml");
+#else
+        parser = new YamlParser("/etc/portal-game/server/test.yaml");
+#endif
     }
 
     void tearDown() {

@@ -20,7 +20,7 @@ void Lobby::runEraserThread() {
         while (!_connection_closed) {
             // Duermo therad para evitar constantemente buscar partidas eliminadas
             std::unique_lock<std::mutex> lck(_mtx_sleep);
-            _cv.wait_for(lck, std::chrono::minutes(1), [this]{return _connection_closed;});
+            _cv.wait_for(lck, std::chrono::milliseconds(500), [this]{return _connection_closed;});
 
             _games.erase(std::remove_if(_games.begin(), _games.end(), [](shared_ptr<GameThread> game) {
                 return (game->isDead()) ? (game->endGameAndJoin(), true) : false;

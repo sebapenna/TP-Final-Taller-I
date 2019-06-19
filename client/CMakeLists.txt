@@ -67,12 +67,6 @@ add_library(sdldemo
 #message("Agregando '${PROJECT_BINARY_DIR}' como directorio de includes")
 #include_directories(${PROJECT_BINARY_DIR})
 
-add_executable (client_sdl
-  main.cpp)
-
-
-
-target_link_libraries(client_sdl sdldemo portal-src common-src SDL2 SDL2_image pthread SDL2_mixer)
-
-install(FILES assets/textures/acidAndButtons.png assets/textures/block.png assets/textures/bulletAndRock.png
-        assets/textures/chell.png assets/textures/gates.png assets/backgroundImage/background.png  assets/textures/cake.png DESTINATION ${CMAKE_BINARY_DIR})
+#install(FILES assets/textures/acidAndButtons.png assets/textures/block.png
+#assets/textures/bulletAndRock.png
+ #
