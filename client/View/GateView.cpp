@@ -23,6 +23,7 @@ void GateView::draw(Camera &camera) {
         if (gate.done()) {
             this->state = GateState::closed;
             gate.setState(AnimationState::oneTime);
+            this->gate.setTimePerSprite(4);
         }
     }
 }
@@ -34,6 +35,7 @@ int GateView::getId() const {
 void GateView::close() {
     gate.setState(AnimationState::revert);
     this->state = GateState::isClosingBack;
+    this->gate.setTimePerSprite(1);
 }
 
 void GateView::open() {

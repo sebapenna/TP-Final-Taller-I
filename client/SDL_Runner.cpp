@@ -349,5 +349,5 @@ void SDL_Runner::run() {
 }
 
 void SDL_Runner::getRealPos(int &x, int &y, int x_m, int y_m) {
-    world.obtainXY(x, y, x_m, y_m);
+    world.obtainXY(x, y, x_m, y_m, renderer);
 }
