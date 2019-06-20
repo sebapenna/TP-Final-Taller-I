@@ -1,12 +1,13 @@
 #include "Gate.h"
 
-Gate::Gate(const size_t &id, const float& x, const float& y) :_id(id), _x(x), _y(y) { }
+Gate::Gate(const size_t &id, const float& x, const float& y, const float& width,
+           const float& height) :_id(id), _x(x), _y(y), _width(width), _height(height) { }
 
 bool Gate::isOpen() {
     return _open;
 }
 
-const size_t Gate::getId() const {
+const size_t Gate::id() const {
     return _id;
 }
 
@@ -34,7 +35,7 @@ void Gate::updateState() {
     _open = true;   // Estaban todos activos
 }
 
-const uint8_t Gate::getClassId() {
+const uint8_t Gate::classId() {
     return GATE;
 }
 
@@ -54,11 +55,18 @@ bool Gate::actedDuringStep() {
     return false;
 }
 
-
-const float Gate::getX() const {
+const float Gate::x() {
     return _x;
 }
 
-const float Gate::getY() const {
+const float Gate::y() {
     return _y;
+}
+
+const float Gate::width() {
+    return _width;
+}
+
+const float Gate::height() {
+    return _height;
 }

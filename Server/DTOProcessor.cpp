@@ -37,8 +37,7 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
             break;
         case PROTOCOL_SHOOT_PORTAL: {
             auto p_dto = (ShootPortalDTO *) dto;
-
-//            chell->shootPortal(p_dto->getX(), p_dto->getY(), p_dto->getColor());
+            world->shootPortal(chell_id, p_dto->getX(), p_dto->getY(), p_dto->getColor());
             break;
         }
         case PROTOCOL_SHOOT_PIN_TOOL:

@@ -11,31 +11,36 @@ private:
     float _previous_x, _previous_y;
     bool _previously_dead = false;  // Guardo estado previo para identificar cambio
     bool _dead = false;
+    const float _width, _height;
 
 public:
-    explicit Rock(const size_t &id, b2Body *body);
+    explicit Rock(const size_t &id, b2Body *body, const float& width, const float& height);
 
-    float getX();
-
-    float getY();
-
-    float getVelocityY();
+    float velocityY();
 
     b2Body *getBody() const;
 
     bool isDead() const;
 
-    const size_t getId() const;
+    const size_t id() const;
 
     void teletransport(float x, float y);
 
-    const uint8_t getClassId() override;
+    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
 
     bool actedDuringStep() override;
+
+    const float x() override;
+
+    const float y() override;
+
+    const float width() override;
+
+    const float height() override;
 };
 
 

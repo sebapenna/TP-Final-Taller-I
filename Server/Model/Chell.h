@@ -8,20 +8,21 @@
 class Chell: public Collidable {
 private:
     const size_t _id;
+    const float _width, _height;
     b2Body *_body;
     uint8 _move_state;
     uint8 _jump_state, _previous_jump_state;
-    bool _jump, _dead;
-    bool _previously_dead;
+    bool _jump, _dead, _previously_dead;
     float _previous_x, _previous_y;
     int16_t _tilt, _previous_tilt; // Guardo estado previo para identificar cambio
     bool _carrying_rock, _previously_carrying;
     bool _shooting;
     bool _hit_wall;
     bool _reached_cake;
-    bool _teleporting;
+    bool _teleported = false;
     // Par de portales: primero sera el naranja y el segundo el azul.
     std::pair<Portal*, Portal*> _portals;
+    Portal *_portal_to_use = nullptr; // Portal por el cual teletransportar, podria no ser propio
 
     // Evita volver a aplicar un impulso en el mismo sentido
     bool movementInXAlreadyApplied();
@@ -31,13 +32,9 @@ private:
     int calculateXImpulse();
 
 public:
-    Chell(const size_t &id, b2Body *body);
+    Chell(const size_t &id, b2Body *body, const float& width, const float& height);
 
-    const size_t getId() const;
-
-    float getX();
-
-    float getY();
+    const size_t id() const;
 
     // Indica la orientacion de chell.
     // WEST: inclinado hacia izquierda
@@ -59,12 +56,14 @@ public:
 
     void teleport(float x, float y);
 
+    bool ifTeleportedSetDone();
+
     // Metodo a llamar para que se aplique el movimiento seteado previamente
     void move();
 
     bool isDead();
 
-    const uint8_t getClassId() override;
+    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
 
@@ -99,8 +98,17 @@ public:
 
     // Asigna nuevo portal a chell. En caso de que chell ya tuviese un portal del mismo color
     // realizará el cambio de portal y retornara el id del viejo (para asi poder ser destruido).
-    // Si no tenia un portal del color del nuevo retornara -1.
+    // Si no tenia un portal del color del nuevo retornara -1. Se encarga de setear el portal de
+    // salida al nuevo portal, en caso de que la chell ya tuviese un primer portal.
     int setNewPortal(Portal *portal);
+
+    const float x() override;
+
+    const float y() override;
+
+    const float width() override;
+
+    const float height() override;
 };
 
 

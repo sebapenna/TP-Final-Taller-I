@@ -411,8 +411,8 @@ public:
             world->step(); // Step donde se crea EnergyBall
         auto energy_ball = world->getEnergyBall(0);
 
-        auto new_pos = PositionTranslator::translate(ENERGY_BALL, energy_ball->getX(),
-                energy_ball->getY(), ENRG_BALL_RADIUS);
+        auto new_pos = PositionTranslator::translate(ENERGY_BALL, energy_ball->x(),
+                energy_ball->y(), ENRG_BALL_RADIUS);
 
 
         auto iter = world->getEnergyBall(0);

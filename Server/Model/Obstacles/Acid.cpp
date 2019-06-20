@@ -1,9 +1,10 @@
 #include "Acid.h"
 #include <Server/Model/constants.h>
 
-Acid::Acid(const float &x, const float &y) : _x(x), _y(y) { }
+Acid::Acid(const float &x, const float &y, const float &width, const float &height) : _x(x), _y(y),
+_width(width), _height(height) { }
 
-const uint8_t Acid::getClassId() {
+const uint8_t Acid::classId() {
     return ACID;
 }
 
@@ -19,10 +20,18 @@ bool Acid::actedDuringStep() {
     return false;     // No realiza ninguna accion durante step
 }
 
-const float Acid::getX() const {
+const float Acid::x() {
     return _x;
 }
 
-const float Acid::getY() const {
+const float Acid::y() {
     return _y;
+}
+
+const float Acid::width() {
+    return _width;
+}
+
+const float Acid::height() {
+    return _height;
 }

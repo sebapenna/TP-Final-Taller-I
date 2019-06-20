@@ -5,7 +5,7 @@ Portal::Portal(const size_t&  id, b2Body *body, const b2Vec2 normal, const int16
                const float& width, const float& height) :
 _body(body), _normal(normal), _color(color), _id(id), _width(width), _height(height) { }
 
-const uint8_t Portal::getClassId() {
+const uint8_t Portal::classId() {
     return PORTAL;
 }
 
@@ -50,14 +50,30 @@ const float Portal::getHeight() const {
     return _height;
 }
 
-const float Portal::x() const {
+const b2Vec2 &Portal::normal() const {
+    return _normal;
+}
+
+void Portal::setExitPortal(Portal *other) {
+    _exit_portal = other;
+}
+
+Portal *Portal::exitPortal() const {
+    return _exit_portal;
+}
+
+const float Portal::x() {
     return _body->GetPosition().x;
 }
 
-const float Portal::y() const {
+const float Portal::y() {
     return _body->GetPosition().y;
 }
 
-const b2Vec2 &Portal::normal() const {
-    return _normal;
+const float Portal::width() {
+    return _width;
+}
+
+const float Portal::height() {
+    return _height;
 }

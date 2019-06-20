@@ -1,9 +1,10 @@
 #include "Cake.h"
 #include "constants.h"
 
-Cake::Cake(b2Body *body) : _body(body), _chells_in_contact(0) { }
+Cake::Cake(b2Body *body, const float& width, const float& height) : _body(body),
+_width(width), _height(height), _chells_in_contact(0) { }
 
-const uint8_t Cake::getClassId() {
+const uint8_t Cake::classId() {
     return CAKE;
 }
 
@@ -20,15 +21,27 @@ bool Cake::actedDuringStep() {
 }
 
 void Cake::collideWith(Collidable *other) {
-    if (other->getClassId() == CHELL)
+    if (other->classId() == CHELL)
         ++_chells_in_contact;   // Chell llego a cake
 }
 
 void Cake::endCollitionWith(Collidable *other) {
-    if (other->getClassId() == CHELL)
+    if (other->classId() == CHELL)
         --_chells_in_contact;   // Chell dejo posicion de cake
 }
 
-size_t Cake::getNumberOfChellsInContact() const {
-    return _chells_in_contact;
+const float Cake::x() {
+    return _body->GetPosition().x;
+}
+
+const float Cake::y() {
+    return _body->GetPosition().y;
+}
+
+const float Cake::width() {
+    return 0;
+}
+
+const float Cake::height() {
+    return 0;
 }

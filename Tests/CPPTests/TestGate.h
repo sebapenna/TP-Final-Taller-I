@@ -159,9 +159,9 @@ public:
         auto updated_vec = world->getObjectsToUpdate();
         size_t id = 0;
         for (auto &updated : updated_vec) {
-            if (updated->getClassId() == GATE){
+            if (updated->classId() == GATE){
                 auto updated_gate = (Gate*) updated;
-                CPPUNIT_ASSERT_EQUAL(id, updated_gate->getId());
+                CPPUNIT_ASSERT_EQUAL(id, updated_gate->id());
                 CPPUNIT_ASSERT(updated_gate->isOpen());
                 ++id;
             }
@@ -185,9 +185,9 @@ public:
         auto updated_vec = world->getObjectsToUpdate();
         size_t id = 0;
         for (auto &updated : updated_vec) {
-            if (updated->getClassId() == GATE){
+            if (updated->classId() == GATE){
                 auto updated_gate = (Gate*) updated;
-                CPPUNIT_ASSERT_EQUAL(id, updated_gate->getId());
+                CPPUNIT_ASSERT_EQUAL(id, updated_gate->id());
                 CPPUNIT_ASSERT(!updated_gate->isOpen());
                 ++id;
             }

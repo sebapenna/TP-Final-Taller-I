@@ -61,7 +61,7 @@ public:
         auto energy_ball = world->getEnergyBall(0);
 
         float wall_width = 4, wall_height = 10;
-        float wall_x = energy_ball->getX() + ENRG_BALL_RADIUS + wall_width;
+        float wall_x = energy_ball->x() + ENRG_BALL_RADIUS + wall_width;
         float wall_y = wall_height / 2;
         // Creo pared donde colisionar la bola
         world->createRockBlock(wall_width, wall_height, wall_x, wall_y);
@@ -88,8 +88,8 @@ public:
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
-        float acid_x = energy_ball->getX();
-        float acid_y = energy_ball->getY() - ENRG_BALL_RADIUS - ACID_HALF_HEIGHT - 1;
+        float acid_x = energy_ball->x();
+        float acid_y = energy_ball->y() - ENRG_BALL_RADIUS - ACID_HALF_HEIGHT - 1;
 
         // Creo acido donde colisionar la bola
         world->createAcid(acid_x, acid_y);
@@ -114,8 +114,8 @@ public:
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
-        float button_x = energy_ball->getX();
-        float button_y = energy_ball->getY() - ENRG_BALL_RADIUS - BUTTON_HALF_HEIGHT - 1;
+        float button_x = energy_ball->x();
+        float button_y = energy_ball->y() - ENRG_BALL_RADIUS - BUTTON_HALF_HEIGHT - 1;
 
         // Creo boton donde colisionar la bola
         world->createButton(button_x, button_y);
@@ -142,8 +142,8 @@ public:
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
-        float rock_x = energy_ball->getX();
-        float rock_y = energy_ball->getY() - ENRG_BALL_RADIUS - ROCK_HALF_LEN - 1;
+        float rock_x = energy_ball->x();
+        float rock_y = energy_ball->y() - ENRG_BALL_RADIUS - ROCK_HALF_LEN - 1;
 
         // Creo roca donde colisionar la bola
         world->createRock(rock_x, rock_y);
@@ -170,8 +170,8 @@ public:
         releaseEnergyBall();
         auto e_ball = world->getEnergyBall(0);
 
-        float e_transm_2_x = e_ball->getX();
-        float e_transm_2_y = e_ball->getY() - ENRG_BALL_RADIUS - ENRG_BLOCK_HALF_LEN- 1;
+        float e_transm_2_x = e_ball->x();
+        float e_transm_2_y = e_ball->y() - ENRG_BALL_RADIUS - ENRG_BLOCK_HALF_LEN- 1;
 
         // Creo tranmisor donde colisionar la bola
         world->createEnergyTransmitter(e_transm_2_x, e_transm_2_y, O_E);
@@ -199,8 +199,8 @@ public:
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
-        float chell_x = energy_ball->getX() + ENRG_BALL_RADIUS + CHELL_HALF_WIDTH + 1;
-        float chell_y = energy_ball->getY();
+        float chell_x = energy_ball->x() + ENRG_BALL_RADIUS + CHELL_HALF_WIDTH + 1;
+        float chell_y = energy_ball->y();
 
         // Creo chell donde colisionar la bola
         world->createChell(chell_x, chell_y);
@@ -233,7 +233,7 @@ public:
         auto e_ball_2 = world->getEnergyBall(1); // Bola de transm2
 
         // Verifico bola 1 esta a la izquierda de la bola 2
-        CPPUNIT_ASSERT(e_ball_1->getX() < e_ball_2->getX());
+        CPPUNIT_ASSERT(e_ball_1->x() < e_ball_2->x());
 
         int n_bodies = world->getWorld()->GetBodyCount();
         bool balls_ignored = false;
@@ -242,7 +242,7 @@ public:
             // Verifico que una bola paso a la otra
             // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
             if ((n_bodies == world->getWorld()->GetBodyCount()) &&
-            (e_ball_1->getX() > e_ball_2->getX()))
+            (e_ball_1->x() > e_ball_2->x()))
                     balls_ignored = true;
         }
 
@@ -267,7 +267,7 @@ public:
             // Verifico que bola paso la barrera
             // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
             if ((n_bodies == world->getWorld()->GetBodyCount()) &&
-            (e_ball->getX() > barrier_x))
+            (e_ball->x() > barrier_x))
                 barrier_ignored = true;
         }
 
@@ -286,7 +286,7 @@ public:
         auto button  = world->getButton(0);
         button->activate(); // Activo boton
 
-        float gate_x = e_ball->getX() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
+        float gate_x = e_ball->x() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
         float gate_y = GATE_HALF_HEIGHT;
         world->createGate(gate_x, gate_y, {0}, {});
         auto gate = world->getGate(0);
@@ -298,7 +298,7 @@ public:
             world->step();
             // Verifico que bola paso la compuerta
             // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
-            if ((n_bodies == world->getWorld()->GetBodyCount()) && (e_ball->getX() > gate_x))
+            if ((n_bodies == world->getWorld()->GetBodyCount()) && (e_ball->x() > gate_x))
                 gate_ignored = true;
         }
 
@@ -316,7 +316,7 @@ public:
         auto e_ball = world->getEnergyBall(0); // Bola de transm1
         world->createButton(100, 100); // Boton para abrir gate
 
-        float gate_x = e_ball->getX() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
+        float gate_x = e_ball->x() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
         float gate_y = GATE_HALF_HEIGHT;
         world->createGate(gate_x, gate_y, {0}, {});
         auto gate = world->getGate(0);
@@ -345,8 +345,8 @@ public:
         CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
         // Verifico energ ball correcta
         auto update_e_ball = (EnergyBall*) world->getObjectsToUpdate().at(0);
-        CPPUNIT_ASSERT_EQUAL(e_transm_y, update_e_ball->getY());
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, update_e_ball->getId());
+        CPPUNIT_ASSERT_EQUAL(e_transm_y, update_e_ball->y());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, update_e_ball->id());
         cout << "OK";
     }
 
@@ -358,8 +358,8 @@ public:
         CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
-        float rock_x = energy_ball->getX() + ENRG_BALL_RADIUS + ROCK_HALF_LEN + 1;
-        float rock_y = energy_ball->getY();
+        float rock_x = energy_ball->x() + ENRG_BALL_RADIUS + ROCK_HALF_LEN + 1;
+        float rock_y = energy_ball->y();
         world->createRockBlock(100, 4, 0, -2); // Superficie donde apoyar roca
         // Creo roca donde colisionar la bola
         world->createRock(rock_x, rock_y);
@@ -385,15 +385,15 @@ public:
         world->createMetalBlock(4, 4, (e_transm_x + 15), 2);
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
-        auto last_x = energy_ball->getX();
+        auto last_x = energy_ball->x();
         bool bounced = false;
         for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
             world->step();
             energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
             if (energy_ball) {
-                if (last_x > energy_ball->getX())   // Si x mayor a la actual, reboto
+                if (last_x > energy_ball->x())   // Si x mayor a la actual, reboto
                     bounced = true;
-                last_x = energy_ball->getX();   // Actualizo ultima posicion
+                last_x = energy_ball->x();   // Actualizo ultima posicion
             }
         }
         CPPUNIT_ASSERT(bounced);
@@ -406,15 +406,15 @@ public:
         world->createMetalBlock(4, 4, (e_transm_x - 15), 2);
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
-        auto last_x = energy_ball->getX();
+        auto last_x = energy_ball->x();
         bool bounced = false;
         for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
             world->step();
             energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
             if (energy_ball) {
-                if (last_x < energy_ball->getX())  // Si x menor a la actual, reboto
+                if (last_x < energy_ball->x())  // Si x menor a la actual, reboto
                     bounced = true;
-                last_x = energy_ball->getX();   // Actualizo ultima posicion
+                last_x = energy_ball->x();   // Actualizo ultima posicion
             }
         }
         CPPUNIT_ASSERT(bounced);
@@ -427,15 +427,15 @@ public:
         world->createMetalBlock(4, 4, (e_transm_x), (e_transm_y - 15));
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
-        auto last_y = energy_ball->getY();
+        auto last_y = energy_ball->y();
         bool bounced = false;
         for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
             world->step();
             energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
             if (energy_ball) {
-                if (last_y < energy_ball->getY())  // Si y menor a la actual, reboto
+                if (last_y < energy_ball->y())  // Si y menor a la actual, reboto
                     bounced = true;
-                last_y = energy_ball->getY();   // Actualizo ultima posicion
+                last_y = energy_ball->y();   // Actualizo ultima posicion
             }
         }
         CPPUNIT_ASSERT(bounced);
@@ -448,15 +448,15 @@ public:
         world->createMetalBlock(4, 4, (e_transm_x), (e_transm_y + 15));
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
-        auto last_y = energy_ball->getY();
+        auto last_y = energy_ball->y();
         bool bounced = false;
         for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
             world->step();
             energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
             if (energy_ball) {
-                if (last_y > energy_ball->getY())  // Si y mayor a la actual, reboto
+                if (last_y > energy_ball->y())  // Si y mayor a la actual, reboto
                     bounced = true;
-                last_y = energy_ball->getY();   // Actualizo ultima posicion
+                last_y = energy_ball->y();   // Actualizo ultima posicion
             }
         }
         CPPUNIT_ASSERT(bounced);
@@ -473,17 +473,17 @@ public:
 //        world->createMetalDiagonalBlock(4, 4, (e_transm_x + 15), 0, O_NO);
 //        releaseEnergyBall();
 //        auto energy_ball = world->getEnergyBall(0);
-////        auto last_x = energy_ball->getX();
+////        auto last_x = energy_ball->x();
 ////        bool bounced = false;
 //        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
 //            world->step();
 //            energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
-//            std::cout << "y: "<<energy_ball->getY() << " x: "<<energy_ball->getX()<<endl;
+//            std::cout << "y: "<<energy_ball->y() << " x: "<<energy_ball->x()<<endl;
 //
 ////            if (energy_ball) {
-////                if (last_x > energy_ball->getX())   // Si x mayor a la actual, reboto
+////                if (last_x > energy_ball->x())   // Si x mayor a la actual, reboto
 ////                    bounced = true;
-////                last_x = energy_ball->getX();   // Actualizo ultima posicion
+////                last_x = energy_ball->x();   // Actualizo ultima posicion
 ////            }
 //        }
 ////        CPPUNIT_ASSERT(bounced);

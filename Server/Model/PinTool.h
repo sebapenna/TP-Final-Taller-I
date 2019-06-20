@@ -5,7 +5,7 @@
 
 class PinTool: public Collidable {
 public:
-    const uint8_t getClassId() override;
+    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
 

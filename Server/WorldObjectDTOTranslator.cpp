@@ -38,110 +38,86 @@ using std::make_shared;
 std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *collidable , bool initial_data) {
     if (!collidable)
         return nullptr;
-    auto cname = collidable->getClassId();
+    auto cname = collidable->classId();
+    auto new_pos = PositionTranslator::translate(cname, collidable->x(), collidable->y(),
+            collidable->width() / 2, collidable->height() / 2);
     switch (cname) {
         case ROCK_BLOCK: {
             auto obj = (RockBlock *) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                    obj->getWidth() / 2, obj->getHeight() / 2);
-            return make_shared<RockBlockDTO>(new_pos.first, new_pos.second, obj->getWidth(),
-                                             obj->getHeight());
+            return make_shared<RockBlockDTO>(new_pos.first, new_pos.second, obj->width(),
+                                             obj->height());
         }
         case METAL_BLOCK: {
             auto obj = (MetalBlock *) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                         obj->getWidth() / 2, obj->getHeight() / 2);
-            return make_shared<MetalBlockDTO>(new_pos.first, new_pos.second, obj->getWidth(),
-                                             obj->getHeight());
+            return make_shared<MetalBlockDTO>(new_pos.first, new_pos.second, obj->width(),
+                                             obj->height());
         }
         case METAL_DIAGONAL_BLOCK: {
             auto obj = (MetalDiagonalBlock *) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                         obj->getWidth() / 2, obj->getHeight() / 2);
-            // todo: tomo height como largo de cada cara (corregir y agregar width y height a DTO)
             return make_shared<MetalDiagonalBlockDTO>(new_pos.first, new_pos.second,
-                    obj->getWidth(), obj->getOrientation());
+                    obj->width(), obj->getOrientation());
         }
         case ENERGY_TRANSMITTER: {
             auto obj = (EnergyTransmitter*) collidable;
             if (initial_data) {
-                auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                             ENRG_BLOCK_HALF_LEN);
-                return make_shared<EnergyTransmitterDTO>(obj->getId(), new_pos.first,
-                        new_pos.second, (2 * ENRG_BLOCK_HALF_LEN), obj->getDirection());
+                return make_shared<EnergyTransmitterDTO>(obj->id(), new_pos.first,
+                        new_pos.second, obj->width(), obj->getDirection());
             }
-            return make_shared<EnergyTransmitterActivateDTO>(obj->getId()); // Se activo
+            return make_shared<EnergyTransmitterActivateDTO>(obj->id()); // Se activo
 
         }
         case ENERGY_RECEIVER: {
             auto obj = (EnergyReceiver*) collidable;
             if (initial_data) {
-                auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                             ENRG_BLOCK_HALF_LEN);
-                return make_shared<EnergyReceiverDTO>(obj->getId(), new_pos.first, new_pos.second,
-                                                      (2 * ENRG_BLOCK_HALF_LEN));
+                return make_shared<EnergyReceiverDTO>(obj->id(), new_pos.first, new_pos.second,
+                                                      obj->width());
             }
-            return make_shared<EnergyReceiverActivateDTO>(obj->getId()); // Se activo
+            return make_shared<EnergyReceiverActivateDTO>(obj->id()); // Se activo
 
         }
         case ACID: {
             auto obj = (Acid *) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                         ACID_HALF_WIDTH, ACID_HALF_HEIGHT);
-            return make_shared<AcidDTO>(new_pos.first, new_pos.second, (2 * ACID_HALF_WIDTH),
-                                        (2 * ACID_HALF_HEIGHT));
+            return make_shared<AcidDTO>(new_pos.first, new_pos.second, obj->width(), obj->height());
         }
         case BUTTON: {
             auto obj = (Button *) collidable;
             if (initial_data) {
-                auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                             BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT);
-                return make_shared<ButtonDTO>(obj->getId(), new_pos.first, new_pos.second,
-                        (2 * BUTTON_HALF_WIDTH), (2 * BUTTON_HALF_HEIGHT));
+                return make_shared<ButtonDTO>(obj->id(), new_pos.first, new_pos.second,
+                        obj->width(), obj->height());
             }
             auto state = NOT_ACTIVATED; // Se registro cambio de estado
             if (obj->isActivated())
                 state = ACTIVATED;
-            return make_shared<ButtonStateDTO>(obj->getId(), state);
+            return make_shared<ButtonStateDTO>(obj->id(), state);
         }
         case GATE: {
             auto obj = (Gate *) collidable;
             if (initial_data) {
-                auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                             GATE_HALF_WIDTH, GATE_HALF_HEIGHT);
-                return make_shared<GateDTO>(obj->getId(), new_pos.first, new_pos.second,
-                                            (2 * GATE_HALF_WIDTH), (2 * GATE_HALF_HEIGHT));
+                return make_shared<GateDTO>(obj->id(), new_pos.first, new_pos.second,
+                                            obj->width(), obj->height());
             }
             auto state = CLOSED;
             if (obj->isOpen())
                 state = OPEN;
-            return make_shared<GateStateDTO>(obj->getId(), state);
+            return make_shared<GateStateDTO>(obj->id(), state);
         }
         case ENERGY_BARRIER: {
             auto obj = (EnergyBarrier*) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                    obj->getWidth() / 2, obj->getHeight() / 2);
-            return make_shared<EnergyBarrierDTO>(new_pos.first, new_pos.second, obj->getWidth(),
-                    obj->getHeight());
+            return make_shared<EnergyBarrierDTO>(new_pos.first, new_pos.second, obj->width(),
+                    obj->height());
         }
         case ROCK: {
             auto obj = (Rock*) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                         ROCK_HALF_LEN);
-            return make_shared<RockDTO>(obj->getId(), new_pos.first, new_pos.second,
-                    2 * ROCK_HALF_LEN, DONT_DELETE);   // Cuerpo no debe ser eliminado
+            return make_shared<RockDTO>(obj->id(), new_pos.first, new_pos.second,
+                    obj->width(), DONT_DELETE);   // Cuerpo no debe ser eliminado
         }
         case ENERGY_BALL: {
             auto obj = (EnergyBall*) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                         ENRG_BALL_RADIUS);
-            return make_shared<EnergyBallDTO>(obj->getId(), new_pos.first, new_pos.second,
-                    ENRG_BALL_RADIUS, DONT_DELETE); // Cuerpo no debe ser eliminado
+            return make_shared<EnergyBallDTO>(obj->id(), new_pos.first, new_pos.second,
+                    obj->width() / 2, DONT_DELETE); // Cuerpo no debe ser eliminado
         }
         case CHELL: {
             auto obj = (Chell*) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                                                         CHELL_HALF_WIDTH, CHELL_HALF_HEIGHT);
             auto moving = NOT_MOVING;
             if (obj->isMoving())
                 moving = MOVING;
@@ -154,22 +130,18 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
             auto carring_rock = NOT_CARRYING;
             if (obj->isCarryingRock())
                 carring_rock = CARRYING;
-            return make_shared<ChellDTO>(obj->getId(), new_pos.first, new_pos.second,
-                    (2 * CHELL_HALF_WIDTH), (2 * CHELL_HALF_HEIGHT), obj->movementDirection(),
+            return make_shared<ChellDTO>(obj->id(), new_pos.first, new_pos.second,
+                    obj->width(), obj->height(), obj->movementDirection(),
                     obj->tilt(), moving, jumping, shooting, carring_rock, DONT_DELETE); // No borrar
         }
         case CAKE: {
             auto obj = (Cake*) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->getX(), obj->getY(),
-                    CAKE_HALF_LEN);
-            return make_shared<CakeDTO>(new_pos.first, new_pos.second, (2 * CAKE_HALF_LEN));
+            return make_shared<CakeDTO>(new_pos.first, new_pos.second, obj->width());
         }
         case PORTAL: {
             auto obj = (Portal*) collidable;
-            auto new_pos = PositionTranslator::translate(cname, obj->x(), obj->y(),
-                                                         obj->getWidth(), obj->getHeight());
             return make_shared<PortalDTO>(obj->id(), new_pos.first, new_pos.second,
-                    obj->getWidth(), obj->getHeight(), obj->tilt(), obj->colour(), DONT_DELETE);
+                    obj->width(), obj->height(), obj->tilt(), obj->colour(), DONT_DELETE);
         }
         case PIN_TOOL: {
             // todo: PIN TOOL GETTERS
@@ -178,9 +150,6 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
             // No existe este caso
             return nullptr;
     }
-
-    // todo: collidable metodo getX getY /getWidth / getHeight => ENCAPSULO Y ELIMINO REPTEAD
-    //  NEWPOS
 }
 
 std::shared_ptr<ProtocolDTO>

@@ -65,6 +65,22 @@ void errorLoop(Protocol &connection, int16_t &player_choice) {
     connection >> player_choice;
 }
 
+template <class T>
+void readInput(T &choice) {
+    std::string str_choice;
+    bool ok = false;
+    while (!ok) {
+        try {
+            std::cin >> str_choice; // Leo input jugador y elimino salto del linea
+            str_choice.erase(remove(str_choice.begin(), str_choice.end(), '\n'), str_choice.end());
+            choice = (T) std::stoi(str_choice);
+            ok = true;
+        } catch (...) {
+            std::cout << "Formato incorrecto. Intente de nuevo\n";
+        }
+    }
+}
+
 size_t HandshakeHandler::joinGame(Protocol &connection, Lobby &lobby) {
     connection << HOW_TO_REFRESH_MSG;   // Mensaje como listar partidas
 
@@ -179,14 +195,7 @@ void choiceLoop(Protocol &connection, uint8_t &choice) {
 
         connection >> server_msg;
         std::cout << server_msg;
-        std::cin >> str_choice; // Leo input jugador y elimino salto del linea
-        str_choice.erase(remove(str_choice.begin(), str_choice.end(), '\n'), str_choice.end());
-        try {
-            choice = (uint8_t) std::stoi(str_choice);
-        } catch (...) {
-            std::cout << "ERROR";   // todo: try - catch
-        }
-
+        readInput<uint8_t>(choice);
         connection << choice;   // Envio eleccion
         connection >> server_response;  // Obtengo ERROR o SUCCESS
     }
@@ -201,10 +210,7 @@ void refreshLoop(Protocol &connection, int16_t &choice) {
 
         connection >> server_msg;
         std::cout << server_msg;
-        std::cin >> str_choice; // Leo input jugador y elimino salto del linea
-        str_choice.erase(remove(str_choice.begin(), str_choice.end(), '\n'), str_choice.end());
-        choice = (int16_t) std::stoi(str_choice);
-
+        readInput<int16_t>(choice);
         connection << choice;   // Envio eleccion
         connection >> server_response;  // Obtengo ERROR o SUCCESS
     }
@@ -227,9 +233,7 @@ void joinChoiceLoop(Protocol &connection, int16_t &choice) {
             connection >> server_msg;   // Recibo listado partidas
             std::cout << server_msg;
         }
-        std::cin >> str_choice; // Leo input jugador y elimino salto del linea
-        str_choice.erase(remove(str_choice.begin(), str_choice.end(), '\n'), str_choice.end());
-        choice = (int16_t) std::stoi(str_choice);
+        readInput<int16_t>(choice);
         connection << choice;   // Envio partida seleccionada
         connection >> server_response;  // Obtengo ERROR o SUCCESS
         while (server_response == ERROR) {
@@ -237,9 +241,7 @@ void joinChoiceLoop(Protocol &connection, int16_t &choice) {
             str_choice.clear();
             connection >> server_msg;
             std::cout << server_msg;
-            std::cin >> str_choice; // Leo input jugador y elimino salto del linea
-            str_choice.erase(remove(str_choice.begin(), str_choice.end(), '\n'), str_choice.end());
-            choice = (int16_t) std::stoi(str_choice);
+            readInput<int16_t>(choice);
             connection << choice;   // Envio partida seleccionada
             connection >> server_response;  // Obtengo ERROR o SUCCESS
         } // todo: eliminar codigo repetido

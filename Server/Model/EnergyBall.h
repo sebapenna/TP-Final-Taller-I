@@ -12,29 +12,35 @@ private:
     float _lifetime = 0;
     float _previous_x, _previous_y;
     bool _dead = false, _previously_dead = false;
+    const float _radius;
 
 public:
-    EnergyBall(const size_t &id, b2Body *body, uint8_t direction);
+    EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius);
 
     void updateLifetime();
 
     bool isDead();
 
-    size_t getId() const;
+    size_t id() const;
 
     b2Body *getBody() const;
 
-    const float getX();
-
-    const float getY();
-
-    const uint8_t getClassId() override;
+    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
 
     void endCollitionWith(Collidable *other) override;
 
     bool actedDuringStep() override;
+
+    const float x() override;
+
+    const float y() override;
+
+    // Utilizar a los metodos width y height retornara el diametro de la bola
+    const float width() override;
+    const float height() override;
+
 };
 
 

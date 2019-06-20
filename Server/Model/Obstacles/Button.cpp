@@ -2,7 +2,8 @@
 #include <iostream>
 #include "Button.h"
 
-Button::Button(const size_t &id, const float& x, const float& y) : _id(id), _x(x), _y(y) { }
+Button::Button(const size_t &id, const float& x, const float& y, const float& width,
+               const float& height) : _id(id), _x(x), _y(y), _width(width), _height(height) { }
 
 void Button::activate() {
     ++_bodies_on_it;
@@ -24,22 +25,22 @@ void Button::updateState() {
         _state = NOT_ACTIVATED;
 }
 
-size_t Button::getId() const {
+size_t Button::id() const {
     return _id;
 }
 
-const uint8_t Button::getClassId() {
+const uint8_t Button::classId() {
     return BUTTON;
 }
 
 void Button::collideWith(Collidable *other) {
-    auto c_name = other->getClassId();
+    auto c_name = other->classId();
     if (c_name == ROCK || c_name == CHELL)
         activate();
 }
 
 void Button::endCollitionWith(Collidable *other) {
-    auto c_name = other->getClassId();
+    auto c_name = other->classId();
     if (c_name == ROCK || c_name == CHELL)
         deactivate();
 }
@@ -52,10 +53,18 @@ bool Button::actedDuringStep() {
     return false;
 }
 
-const float Button::getX() const {
+const float Button::x() {
     return _x;
 }
 
-const float Button::getY() const {
+const float Button::y() {
     return _y;
+}
+
+const float Button::width() {
+    return _width;
+}
+
+const float Button::height() {
+    return _height;
 }

@@ -3,7 +3,8 @@
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
 #include <Server/Model/Obstacles/Gate.h>
 
-EnergyBall::EnergyBall(const size_t &id, b2Body *body, uint8_t direction) : _id(id) {
+EnergyBall::EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius) :
+_id(id), _radius(radius) {
     _body = body;
     int x_impulse = 0, y_impulse = 0;
     switch (direction) {
@@ -37,15 +38,7 @@ bool EnergyBall::isDead() {
     return (_dead || diff_time < TIME_STEP);
 }
 
-const float EnergyBall::getX() {
-    return _body->GetPosition().x;
-}
-
-const float EnergyBall::getY() {
-    return _body->GetPosition().y;
-}
-
-const uint8_t EnergyBall::getClassId() {
+const uint8_t EnergyBall::classId() {
     return ENERGY_BALL;
 }
 
@@ -53,12 +46,27 @@ b2Body *EnergyBall::getBody() const {
     return _body;
 }
 
-size_t EnergyBall::getId() const {
+size_t EnergyBall::id() const {
     return _id;
+}
+const float EnergyBall::x() {
+    return _body->GetPosition().x;
+}
+
+const float EnergyBall::y() {
+    return _body->GetPosition().y;
+}
+
+const float EnergyBall::width() {
+    return _radius * 2;
+}
+
+const float EnergyBall::height() {
+    return _radius * 2;
 }
 
 void EnergyBall::collideWith(Collidable *other) {
-    auto cname = other->getClassId();
+    auto cname = other->classId();
     if (cname == ROCK_BLOCK || cname == ACID || cname == BUTTON ||
         cname == ROCK || cname == ENERGY_RECEIVER || cname == CHELL ||
         cname == PIN_TOOL) {
@@ -91,3 +99,4 @@ bool EnergyBall::actedDuringStep() {
     }
     return false;
 }
+

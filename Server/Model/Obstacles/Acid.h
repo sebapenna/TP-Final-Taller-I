@@ -5,11 +5,11 @@
 
 class Acid: public Collidable {
 private:
-    const float _x, _y;
+    const float _x, _y, _width, _height;
 public:
-    Acid(const float& x, const float& y);
+    Acid(const float& x, const float& y, const float& width, const float& height);
 
-    const uint8_t getClassId() override;
+    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
 
@@ -17,9 +17,13 @@ public:
 
     bool actedDuringStep() override;
 
-    const float getX() const;
+    const float x() override;
 
-    const float getY() const;
+    const float y() override;
+
+    const float width() override;
+
+    const float height() override;
 };
 
 

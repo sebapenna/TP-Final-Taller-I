@@ -70,10 +70,10 @@ block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuad
 rock:
   - x: -120
     y: 4
-  - x: 25
-    y: 50
-  - x: -120
-    y: 30
+#  - x: 25
+#    y: 50
+#  - x: -120
+#    y: 30
 #  - x: -10
 #    y: 2
 #acid:
@@ -95,8 +95,8 @@ gate:
     buttons_needed:
       - id: 0
       - id: 1
-    energy_receiver_needed:
-      - id: 0
+#    energy_receiver_needed:
+#      - id: 0
 #  - id: 1
 #    x: -60
 #    y: 1

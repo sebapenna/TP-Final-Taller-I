@@ -11,21 +11,22 @@ private:
     float32 _time_elapsed = 0;
     bool _changed_state = false;    // Booleano para indicar camibo de estado durante step
     size_t _id;
+    const float _width, _height;
 
 public:
-    explicit EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction);
+    explicit EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction,
+            const float& width, const float& height);
 
     // Le indica a world si debe crear una EnergyBall
     bool releaseEnergyBall();
+
+    size_t id() const;
 
     b2Body *getBody() const;
 
     uint8_t getDirection() const;
 
-
-    size_t getId() const;
-
-    const uint8_t getClassId() override;
+    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
 
@@ -33,9 +34,13 @@ public:
 
     bool actedDuringStep() override;
 
-    float getX();
+    const float x() override;
 
-    float getY();
+    const float y() override;
+
+    const float width() override;
+
+    const float height() override;
 };
 
 

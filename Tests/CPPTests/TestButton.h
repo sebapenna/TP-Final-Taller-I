@@ -131,7 +131,7 @@ public:
             world->step();
         CPPUNIT_ASSERT(button1->isActivated());
         auto rock = world->getRock(0);
-        float diff_x = abs(button1_x - rock->getX());
+        float diff_x = abs(button1_x - rock->x());
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x); // Verifico posicion de la roca
         cout << "OK";
     }
@@ -166,7 +166,7 @@ public:
             world->step();
         CPPUNIT_ASSERT(button1->isActivated());
         auto chell = world->getChell(0);
-        float diff_x = abs(button1_x - chell->getX());
+        float diff_x = abs(button1_x - chell->x());
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x); // Verifico posicion de la roca
         cout << "OK";
     }
@@ -190,7 +190,7 @@ public:
         }
         CPPUNIT_ASSERT(button_act);    // Boton se activo en algun momento
         CPPUNIT_ASSERT(!button1->isActivated());    // Finalizo el contacto
-        CPPUNIT_ASSERT_GREATER(button1_x, chell->getX()); // Paso la roca
+        CPPUNIT_ASSERT_GREATER(button1_x, chell->x()); // Paso la roca
         cout << "OK";
     }
 
@@ -201,7 +201,7 @@ public:
         world->step();
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
         auto update_button = (Button*) world->getObjectsToUpdate().at(0);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, update_button->getId());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, update_button->id());
         CPPUNIT_ASSERT(update_button->isActivated());
         cout << "OK";
     }
@@ -215,7 +215,7 @@ public:
         world->step();
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
         auto update_button = (Button*) world->getObjectsToUpdate().at(0);
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, update_button->getId());
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, update_button->id());
         CPPUNIT_ASSERT(!update_button->isActivated());
         cout << "OK";
     }

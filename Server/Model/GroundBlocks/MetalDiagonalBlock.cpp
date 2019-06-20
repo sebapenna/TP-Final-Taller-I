@@ -9,7 +9,7 @@ const uint8_t MetalDiagonalBlock::getOrientation() const {
     return _orientation;
 }
 
-const uint8_t MetalDiagonalBlock::getClassId() {
+const uint8_t MetalDiagonalBlock::classId() {
     return METAL_DIAGONAL_BLOCK;
 }
 
@@ -25,18 +25,18 @@ bool MetalDiagonalBlock::actedDuringStep() {
     return false;   // Nunca realiza accion durante un step
 }
 
-const float MetalDiagonalBlock::getX() const {
+const float MetalDiagonalBlock::x() {
     return _x;
 }
 
-const float MetalDiagonalBlock::getY() const {
+const float MetalDiagonalBlock::y() {
     return _y;
 }
 
-const float MetalDiagonalBlock::getWidth() const {
+const float MetalDiagonalBlock::width() {
     return _width;
 }
 
-const float MetalDiagonalBlock::getHeight() const {
+const float MetalDiagonalBlock::height() {
     return _height;
 }

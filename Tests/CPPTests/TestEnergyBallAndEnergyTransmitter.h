@@ -69,8 +69,8 @@ public:
         auto energy_ball = world->getEnergyBall(0);
 
         CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(1)); // No existe otra bola
-        CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getX());
-        CPPUNIT_ASSERT_GREATEREQUAL(new_y, energy_ball->getY());
+        CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->x());
+        CPPUNIT_ASSERT_GREATEREQUAL(new_y, energy_ball->y());
         cout << "OK";
     }
 
@@ -90,8 +90,8 @@ public:
         auto energy_ball = world->getEnergyBall(0);
 
         CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(1)); // No existe otra bola
-        CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->getX());
-        CPPUNIT_ASSERT_LESSEQUAL(new_y, energy_ball->getY());
+        CPPUNIT_ASSERT_EQUAL(e_transm_x, energy_ball->x());
+        CPPUNIT_ASSERT_LESSEQUAL(new_y, energy_ball->y());
         cout << "OK";
     }
 
@@ -111,8 +111,8 @@ public:
         auto energy_ball = world->getEnergyBall(0);
 
         CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(1)); // No existe otra bola
-        CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getY());
-        CPPUNIT_ASSERT_GREATEREQUAL(new_x, energy_ball->getX());
+        CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->y());
+        CPPUNIT_ASSERT_GREATEREQUAL(new_x, energy_ball->x());
         cout << "OK";
     }
 
@@ -131,8 +131,8 @@ public:
         float new_x = e_transm_x - dist_transm_to_enrgball;
         auto energy_ball = world->getEnergyBall(0);
         CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(1)); // No existe otra bola
-        CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->getY());
-        CPPUNIT_ASSERT_LESSEQUAL(new_x, energy_ball->getX());
+        CPPUNIT_ASSERT_EQUAL(e_transm_y, energy_ball->y());
+        CPPUNIT_ASSERT_LESSEQUAL(new_x, energy_ball->x());
         cout << "OK";
     }
 
@@ -167,13 +167,13 @@ public:
         releaseEnergyBall();
 
         auto energy_ball = world->getEnergyBall(0);
-        float previous_pos_y = energy_ball->getY();
-        float previous_pos_x = energy_ball->getX();
+        float previous_pos_y = energy_ball->y();
+        float previous_pos_x = energy_ball->x();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step();  // Permito avanzar a la bola de energia
 
-            CPPUNIT_ASSERT_GREATER(previous_pos_y, energy_ball->getY());
-        CPPUNIT_ASSERT_EQUAL(previous_pos_x, energy_ball->getX());
+            CPPUNIT_ASSERT_GREATER(previous_pos_y, energy_ball->y());
+        CPPUNIT_ASSERT_EQUAL(previous_pos_x, energy_ball->x());
         cout << "OK";
     }
 
@@ -184,13 +184,13 @@ public:
         releaseEnergyBall();
 
         auto energy_ball = world->getEnergyBall(0);
-        float previous_pos_y = energy_ball->getY();
-        float previous_pos_x = energy_ball->getX();
+        float previous_pos_y = energy_ball->y();
+        float previous_pos_x = energy_ball->x();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Permito avanzar a la bola de energia
 
-        CPPUNIT_ASSERT_LESS(previous_pos_y, energy_ball->getY());
-        CPPUNIT_ASSERT_EQUAL(previous_pos_x, energy_ball->getX());
+        CPPUNIT_ASSERT_LESS(previous_pos_y, energy_ball->y());
+        CPPUNIT_ASSERT_EQUAL(previous_pos_x, energy_ball->x());
         cout << "OK";
     }
 
@@ -201,13 +201,13 @@ public:
         releaseEnergyBall();
 
         auto energy_ball = world->getEnergyBall(0);
-        float previous_pos_x = energy_ball->getX();
+        float previous_pos_x = energy_ball->x();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Permito avanzar a la bola de energia
 
-        float diff_y = energy_ball->getY() - e_transm_y;
+        float diff_y = energy_ball->y() - e_transm_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
-        CPPUNIT_ASSERT_GREATER(previous_pos_x, energy_ball->getX());
+        CPPUNIT_ASSERT_GREATER(previous_pos_x, energy_ball->x());
         cout << "OK";
     }
 
@@ -218,13 +218,13 @@ public:
         releaseEnergyBall();
 
         auto energy_ball = world->getEnergyBall(0);
-        float previous_pos_x = energy_ball->getX();
+        float previous_pos_x = energy_ball->x();
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step();  // Permito avanzar a la bola de energia
 
-        float diff_y = energy_ball->getY() - e_transm_y;
+        float diff_y = energy_ball->y() - e_transm_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
-        CPPUNIT_ASSERT_LESS(previous_pos_x, energy_ball->getX());
+        CPPUNIT_ASSERT_LESS(previous_pos_x, energy_ball->x());
         cout << "OK";
     }
 
@@ -236,12 +236,12 @@ public:
 
         auto energy_ball = world->getEnergyBall(0);
         float y_step = 0;
-        float init_y = energy_ball->getY();
+        float init_y = energy_ball->y();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
             if (y_step == 0)
-                y_step = energy_ball->getY() - init_y;
-            float diff_y = abs(y_step * i) - abs(energy_ball->getY());
+                y_step = energy_ball->y() - init_y;
+            float diff_y = abs(y_step * i) - abs(energy_ball->y());
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         }
         cout << "OK";
@@ -255,12 +255,12 @@ public:
 
         auto energy_ball = world->getEnergyBall(0);
         float y_step = 0;
-        float init_y = energy_ball->getY();
+        float init_y = energy_ball->y();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
             if (y_step == 0)
-                y_step = energy_ball->getY() - init_y;
-            float diff_y = abs(y_step * i) - abs(energy_ball->getY());
+                y_step = energy_ball->y() - init_y;
+            float diff_y = abs(y_step * i) - abs(energy_ball->y());
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         }
         cout << "OK";
@@ -274,12 +274,12 @@ public:
 
         auto energy_ball = world->getEnergyBall(0);
         float x_step = 0;
-        float init_x = energy_ball->getX();
+        float init_x = energy_ball->x();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
             if (x_step == 0)
-                x_step = energy_ball->getX() - init_x;
-            float diff_x = abs(x_step * i) - abs(energy_ball->getX());
+                x_step = energy_ball->x() - init_x;
+            float diff_x = abs(x_step * i) - abs(energy_ball->x());
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
         }
         cout << "OK";
@@ -293,12 +293,12 @@ public:
 
         auto energy_ball = world->getEnergyBall(0);
         float x_step = 0;
-        float init_x = energy_ball->getX();
+        float init_x = energy_ball->x();
         for (int i = 0; i < STEP_ITERATIONS; i++) {
             world->step();
             if (x_step == 0)
-                x_step = energy_ball->getX() - init_x;
-            float diff_x = abs(x_step * i) - abs(energy_ball->getX());
+                x_step = energy_ball->x() - init_x;
+            float diff_x = abs(x_step * i) - abs(energy_ball->x());
             CPPUNIT_ASSERT_LESS(DELTA_POS, diff_x);
         }
         cout << "OK";
@@ -327,7 +327,7 @@ public:
         auto updated_transm = (EnergyTransmitter*) world->getObjectsToUpdate().at(0);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
         // Verifico es transmisor correcto
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, updated_transm->getId());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, updated_transm->id());
         CPPUNIT_ASSERT_EQUAL(O_E, updated_transm->getDirection());
         cout << "OK";
     }

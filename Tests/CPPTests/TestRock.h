@@ -49,12 +49,12 @@ public:
         cout << endl << endl << "TEST ROCK";
         cout << endl << "TEST crear correctamente: ";
         CPPUNIT_ASSERT_EQUAL(init_n_bodies, world->getWorld()->GetBodyCount());
-        CPPUNIT_ASSERT_EQUAL(rock1_x, rock1->getX());
-        CPPUNIT_ASSERT_EQUAL(rock1_y, rock1->getY());
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, rock1->getId());
-        CPPUNIT_ASSERT_EQUAL(rock2_x, rock2->getX());
-        CPPUNIT_ASSERT_EQUAL(rock2_y, rock2->getY());
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, rock2->getId());
+        CPPUNIT_ASSERT_EQUAL(rock1_x, rock1->x());
+        CPPUNIT_ASSERT_EQUAL(rock1_y, rock1->y());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, rock1->id());
+        CPPUNIT_ASSERT_EQUAL(rock2_x, rock2->x());
+        CPPUNIT_ASSERT_EQUAL(rock2_y, rock2->y());
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, rock2->id());
         cout << "OK";
     }
 
@@ -62,8 +62,8 @@ public:
         cout << endl << "TEST cae con gravedad: ";
         for (int i = 0; i < 200; i++)
             world->step();
-        float y_diff = rock2->getY() - ROCK_HALF_LEN;
-        float x_diff = rock2->getX() - rock2_x;
+        float y_diff = rock2->y() - ROCK_HALF_LEN;
+        float x_diff = rock2->x() - rock2_x;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, x_diff);
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, y_diff);
         cout << "OK";
@@ -73,8 +73,8 @@ public:
         cout << endl << "TEST queda quieta sobre una superficie: ";
         for (int i = 0; i < STEP_ITERATIONS; i++)
             world->step();
-        float y_diff = rock1->getY() - rock1_y;
-        float x_diff = rock1->getX() - rock1_x;
+        float y_diff = rock1->y() - rock1_y;
+        float x_diff = rock1->x() - rock1_x;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, x_diff);
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, y_diff);
         cout << "OK";
@@ -106,8 +106,8 @@ public:
         for (int i = 0; i < STEP_ITERATIONS; ++i)
             world->step(); // Step donde se crea EnergyBall
 
-        float pre_contact_pos_y = rock1->getY();
-        float pre_contact_pos_x = rock1->getX();
+        float pre_contact_pos_y = rock1->y();
+        float pre_contact_pos_x = rock1->x();
 
         int n_bodies = world->getWorld()->GetBodyCount();
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
@@ -119,8 +119,8 @@ public:
                 world->getWorld()->GetBodyCount() < n_bodies)
                 ball_deleted = true;    // Bola colisiono con pared
         }
-        CPPUNIT_ASSERT_EQUAL(pre_contact_pos_x, rock1->getX());
-        float diff_y = pre_contact_pos_y - rock1->getY();
+        CPPUNIT_ASSERT_EQUAL(pre_contact_pos_x, rock1->x());
+        float diff_y = pre_contact_pos_y - rock1->y();
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         CPPUNIT_ASSERT(ball_deleted);
         cout << "OK";
@@ -139,8 +139,8 @@ public:
         CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
         // Verifico roca correcta
         auto update_rock = (Rock*) world->getObjectsToUpdate().at(0);
-        CPPUNIT_ASSERT_EQUAL(rock2_x, update_rock->getX());
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, update_rock->getId());
+        CPPUNIT_ASSERT_EQUAL(rock2_x, update_rock->x());
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, update_rock->id());
         cout << "OK";
     }
 

@@ -10,10 +10,11 @@ private:
     uint8_t _state = NOT_ACTIVATED;
     bool _activated = false;
     const size_t _id;
-    const float _x, _y;
+    const float _x, _y, _width, _height;
 
 public:
-    explicit EnergyReceiver(const size_t& id, const float& x, const float& y);
+    explicit EnergyReceiver(const size_t& id, const float& x, const float& y, const float& width,
+            const float& height);
 
     void activate();
 
@@ -21,9 +22,9 @@ public:
 
     void updateState();
 
-    const size_t getId() const;
+    const size_t id() const;
 
-    const uint8_t getClassId() override;
+    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
 
@@ -31,9 +32,13 @@ public:
 
     bool actedDuringStep() override;
 
-    const float getX() const;
+    const float x() override;
 
-    const float getY() const;
+    const float y() override;
+
+    const float width() override;
+
+    const float height() override;
 };
 
 

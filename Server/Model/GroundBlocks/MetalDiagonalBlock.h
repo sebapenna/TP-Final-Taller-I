@@ -18,7 +18,7 @@ public:
 
     const uint8_t getOrientation() const;
 
-    const uint8_t getClassId() override;
+    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
 
@@ -26,13 +26,13 @@ public:
 
     bool actedDuringStep() override;
 
-    const float getX() const;
+    const float x() override;
 
-    const float getY() const;
+    const float y() override;
 
-    const float getWidth() const;
+    const float width() override;
 
-    const float getHeight() const;
+    const float height() override;
 };
 
 

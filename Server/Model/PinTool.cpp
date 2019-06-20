@@ -1,7 +1,7 @@
 #include "PinTool.h"
 #include <Server/Model/constants.h>
 
-const uint8_t PinTool::getClassId() {
+const uint8_t PinTool::classId() {
     return PIN_TOOL;
 }
 

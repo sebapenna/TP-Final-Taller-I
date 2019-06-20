@@ -1,8 +1,9 @@
 #include "EnergyTransmitter.h"
 #include <Server/Model/constants.h>
 
-EnergyTransmitter::EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction) :
-_body(body), _direction(direction), _id(id) { }
+EnergyTransmitter::EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction,
+        const float& width, const float& height) : _body(body), _direction(direction), _id(id),
+        _width(width), _height(height) { }
 
 bool EnergyTransmitter::releaseEnergyBall() {
     _time_elapsed += TIME_STEP;
@@ -22,7 +23,7 @@ uint8_t EnergyTransmitter::getDirection() const {
     return _direction;
 }
 
-const uint8_t EnergyTransmitter::getClassId() {
+const uint8_t EnergyTransmitter::classId() {
     return ENERGY_TRANSMITTER;
 }
 
@@ -42,14 +43,22 @@ bool EnergyTransmitter::actedDuringStep() {
     return false;
 }
 
-size_t EnergyTransmitter::getId() const {
+size_t EnergyTransmitter::id() const {
     return _id;
 }
 
-float EnergyTransmitter::getX() {
+const float EnergyTransmitter::x() {
     return _body->GetPosition().x;
 }
 
-float EnergyTransmitter::getY() {
+const float EnergyTransmitter::y() {
     return _body->GetPosition().y;
+}
+
+const float EnergyTransmitter::width() {
+    return _width;
+}
+
+const float EnergyTransmitter::height() {
+    return _height;
 }

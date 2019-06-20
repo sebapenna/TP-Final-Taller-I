@@ -4,7 +4,7 @@
 EnergyBarrier::EnergyBarrier(const float &x, const float &y, const float &width,
                              const float &height) : _x(x), _y(y), _width(width), _height(height) { }
 
-const uint8_t EnergyBarrier::getClassId() {
+const uint8_t EnergyBarrier::classId() {
     return ENERGY_BARRIER;
 }
 
@@ -21,18 +21,18 @@ bool EnergyBarrier::actedDuringStep() {
     return false;     // No realiza ninguna accion durante step
 }
 
-const float EnergyBarrier::getX() const {
+const float EnergyBarrier::x() {
     return _x;
 }
 
-const float EnergyBarrier::getY() const {
+const float EnergyBarrier::y() {
     return _y;
 }
 
-const float EnergyBarrier::getWidth() const {
+const float EnergyBarrier::width() {
     return _width;
 }
 
-const float EnergyBarrier::getHeight() const {
+const float EnergyBarrier::height() {
     return _height;
 }

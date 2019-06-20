@@ -1,6 +1,7 @@
 #include <iostream>
 #include "ContactListener.h"
 #include "constants.h"
+#include "Chell.h"
 #include <Server/Model/Collidable.h>
 #include <Server/Model/Obstacles/Gate.h>
 
@@ -29,8 +30,8 @@ void ContactListener::EndContact(b2Contact *contact) {
 void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
     auto coll1 = (Collidable*) contact->GetFixtureA()->GetBody()->GetUserData();
     auto coll2 = (Collidable*) contact->GetFixtureB()->GetBody()->GetUserData();
-    auto cname1 = coll1->getClassId();
-    auto cname2 = coll2->getClassId();
+    auto cname1 = coll1->classId();
+    auto cname2 = coll2->classId();
     if (cname1 == ENERGY_BARRIER && (cname2 == ENERGY_BALL || cname2 == CHELL)) {
         contact->SetEnabled(false);
     } else if ((cname2 == ENERGY_BARRIER) && (cname1 == ENERGY_BALL || cname1 == CHELL)) {
@@ -73,5 +74,15 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
     } else if ((cname1 == CHELL && cname2 == ENERGY_BARRIER) ||
     (cname1 == ENERGY_BARRIER && cname2 == CHELL)) {
         contact->SetEnabled(false);
+    } else if (cname1 == CHELL && cname2 == PORTAL) {
+        auto chell = (Chell*) coll1;
+        if (chell->ifTeleportedSetDone()) // Contacto se debe a que es punto de salida
+            contact->SetEnabled(false); // Ignoro contacto con portal salida
+    } else if (cname2 == CHELL && cname1 == PORTAL) {
+        auto chell = (Chell*) coll2;
+        if (chell->ifTeleportedSetDone())  // Contacto se debe a que es punto de salida
+            contact->SetEnabled(false); // Ignoro contacto con portal salida
     }
 }
+
+// todo: refactor de los if/else

@@ -3,8 +3,9 @@
 #include <Server/Model/Portal.h>
 #include <Server/Model/PinTool.h>
 
-EnergyReceiver::EnergyReceiver(const size_t &id, const float& x, const float& y) : _id(id), _x(x),
-_y(y) { }
+EnergyReceiver::EnergyReceiver(const size_t &id, const float& x, const float& y, const float& width,
+                               const float& height) : _id(id), _x(x), _y(y), _width(width),
+                               _height(height) { }
 
 void EnergyReceiver::activate() {
     _state = ACTIVATED;
@@ -19,12 +20,12 @@ void EnergyReceiver::updateState() {
         _activated = true;
 }
 
-const uint8_t EnergyReceiver::getClassId() {
+const uint8_t EnergyReceiver::classId() {
     return ENERGY_RECEIVER;
 }
 
 void EnergyReceiver::collideWith(Collidable *other) {
-    if (other->getClassId() == ENERGY_BALL)
+    if (other->classId() == ENERGY_BALL)
         this->activate();   // Se activa receptor
 }
 
@@ -40,14 +41,22 @@ bool EnergyReceiver::actedDuringStep() {
     return false;
 }
 
-const size_t EnergyReceiver::getId() const {
+const size_t EnergyReceiver::id() const {
     return _id;
 }
 
-const float EnergyReceiver::getX() const {
+const float EnergyReceiver::x() {
     return _x;
 }
 
-const float EnergyReceiver::getY() const {
+const float EnergyReceiver::y() {
     return _y;
+}
+
+const float EnergyReceiver::width() {
+    return _width;
+}
+
+const float EnergyReceiver::height() {
+    return _height;
 }

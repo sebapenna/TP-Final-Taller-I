@@ -11,9 +11,9 @@ float32
 RayCastCallback::ReportFixture(b2Fixture *fixture, const b2Vec2 &point, const b2Vec2 &normal,
                                float32 fraction) {
     auto collidable = (Collidable*) fixture->GetBody()->GetUserData();
-    if (collidable->getClassId() == CHELL)
-        return 1;   // Retornar uno implica continuar con el disparo y actuar como que no colisiono
-    if (collidable->getClassId() == GATE) {
+    if (collidable->classId() == CHELL)
+        return 1;   // Retornar uno implica continuar con el disparo e ignorar chell
+    if (collidable->classId() == GATE) {
         auto gate = (Gate*) collidable;
         if (gate->isOpen())
             return 1;   // Continua el disparo

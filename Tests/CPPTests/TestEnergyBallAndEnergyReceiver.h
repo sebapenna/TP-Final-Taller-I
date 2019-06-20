@@ -168,8 +168,8 @@ public:
         auto updated_transm = (EnergyReceiver*) world->getObjectsToUpdate().at(0);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
         // Verifico es transmisor correcto
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, updated_transm->getId());
-        CPPUNIT_ASSERT_EQUAL(ENERGY_RECEIVER, updated_transm->getClassId());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, updated_transm->id());
+        CPPUNIT_ASSERT_EQUAL(ENERGY_RECEIVER, updated_transm->classId());
         cout << "OK";
     }
 };
