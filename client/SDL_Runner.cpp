@@ -14,6 +14,7 @@
 #include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterActivateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PinToolDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -179,6 +180,31 @@ void SDL_Runner::addEnergyBall(EnergyBallDTO *energyBallDTO, std::string &file_n
     }
 }
 
+void SDL_Runner::addPortal(PortalDTO *portalDTO, std::string &file_name) {
+    if (portalDTO->getDeleteState() == DELETE) {
+        world.removePortal(portalDTO->getId());
+    } else {
+        std::shared_ptr<View> portal;
+        if (portalDTO->getColour() == BLUE_PORTAL) {
+            portal = std::make_shared<PortalBlueView>(textureFactory.getTextureByName(file_name), renderer, portalDTO->getTilt());
+        } else {
+            portal = std::make_shared<PortalOrangeView>(textureFactory.getTextureByName(file_name), renderer, portalDTO->getTilt());
+        }
+        portal->setDestRect(portalDTO->getX(), portalDTO->getY(), portalDTO->getWidth(), portalDTO->getHeight());
+        world.addPortal(portalDTO->getId(), portal);
+    }
+}
+
+void SDL_Runner::addPinTool(PinToolDTO *pinToolDTO, std::string &file_name) {
+    if (pinToolDTO->getDeleteState() == DELETE) {
+        world.removePinTool(pinToolDTO->getId());
+    } else {
+        auto pinTool = std::make_shared<PinToolView>(pinToolDTO->getId(), textureFactory.getTextureByName(file_name), renderer, pinToolDTO->getTilt());
+        pinTool->setDestRect(pinToolDTO->getX(), pinToolDTO->getY(), pinToolDTO->getWidth(), pinToolDTO->getHeight());
+        world.addPinTool(pinTool);
+    }
+}
+
 void SDL_Runner::run() {
     std::string chell_file_name("chell");
     std::string block_file_name("block");
@@ -188,6 +214,8 @@ void SDL_Runner::run() {
     std::string cake_file_name("cake");
     std::string background("background");
     std::string portal_file_name("portal");
+    std::string pintool_file_name("pintool");
+
     bool done_receiving = false;
     while (!done_receiving) {
         auto aux = safeQueue.getTopAndPop();
@@ -309,21 +337,12 @@ void SDL_Runner::run() {
                     }
                     case PROTOCOL_PORTAL_DATA: {
                         auto portalDTO = (PortalDTO*) newItem;
-                        if (portalDTO->getDeleteState() == DELETE) {
-                            world.removePortal(portalDTO->getId());
-                        } else {
-                            std::shared_ptr<View> portal;
-                            if (portalDTO->getColour() == BLUE_PORTAL) {
-                                portal = std::make_shared<PortalBlueView>(portalDTO->getId(), textureFactory.getTextureByName(portal_file_name), renderer, portalDTO->getTilt());
-                            } else {
-                                portal = std::make_shared<PortalOrangeView>(portalDTO->getId(), textureFactory.getTextureByName(portal_file_name), renderer, portalDTO->getTilt());
-                            }
-                            portal->setDestRect(portalDTO->getX(), portalDTO->getY(), portalDTO->getWidth(), portalDTO->getHeight());
-                            world.addPortal(portalDTO->getId(), portal);
-                        }
+                        this->addPortal(portalDTO, portal_file_name);
                         break;
                     }
                     case PROTOCOL_PIN_TOOL_DATA: {
+                        auto pinToolDTO = (PinToolDTO*) newItem;
+                        this->addPinTool(pinToolDTO, pintool_file_name);
                         break;
                     }
                     case PROTOCOL_ENERGY_TRANSMITTER_ACTIVATE: {

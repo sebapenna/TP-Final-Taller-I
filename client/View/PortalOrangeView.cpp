@@ -5,9 +5,9 @@
 #include <Server/Model/constants.h>
 #include "PortalOrangeView.h"
 
-PortalOrangeView::PortalOrangeView(int id, SDL_Texture *texture, Renderer &renderer, int16_t tilted, int x, int y) :
-View(x, y), id(id),
-portal(texture, renderer, 209, 210, 77, 234, 4, 4, 1, 0, AnimationState::onRepeat), tilted(tilted) {
+PortalOrangeView::PortalOrangeView(SDL_Texture *texture, Renderer &renderer, int16_t tilted, int x, int y) :
+View(x, y),
+portal(texture, renderer, 210, 210, 77, 234, 4, 4, 1, 0, AnimationState::onRepeat), tilted(tilted) {
 }
 
 void PortalOrangeView::draw(Camera &camera) {
@@ -18,8 +18,4 @@ void PortalOrangeView::draw(Camera &camera) {
     } else if (tilted == RIGHT) {
         portal.drawMovingSprite(camera, this->getDst(), -45);
     }
-}
-
-int PortalOrangeView::getId() const {
-    return id;
 }

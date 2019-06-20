@@ -10,14 +10,12 @@
 enum PortalColor {BLUE, ORANGE};
 class PortalBlueView : public View {
 private:
-    int id;
     AnimatedSprite portal;
     int16_t tilted;
 public:
-    PortalBlueView(int id, SDL_Texture* texture, Renderer& renderer, int16_t tilted, int x = 0, int y = 0);
+    PortalBlueView(SDL_Texture* texture, Renderer& renderer, int16_t tilted, int x = 0, int y = 0);
     void draw(Camera& camera);
 
-    int getId() const;
 };
 
 

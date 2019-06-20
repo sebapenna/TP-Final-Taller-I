@@ -23,6 +23,8 @@
 #include <Common/ProtocolTranslator/DataDTO/ButtonStateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/GateStateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyBallDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PinToolDTO.h>
 #include "ComponentsSDL/Renderer.h"
 #include "TextureFactory.h"
 #include "../Common/SafeQueue.h"
@@ -55,6 +57,9 @@ private:
     void setButtonState(ButtonStateDTO* buttonStateDTO);
     void setGateState(GateStateDTO* gateStateDTO);
     void addEnergyBall(EnergyBallDTO* energyBallDTO, std::string& file_name);
+    void addPortal(PortalDTO* portalDTO, std::string& file_name);
+    void addPinTool(PinToolDTO* pinToolDTO, std::string& file_name);
+
 public:
     SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue, bool& done);
     void getRealPos(int& x, int& y, int x_m, int y_m);

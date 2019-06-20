@@ -63,6 +63,12 @@ void WorldView::draw() {
         }
     }
 
+    for (auto const& pintool: pintools) {
+        if (camera->isInCamera(pintool.second->getDst())) {
+            pintool.second->draw(*camera);
+        }
+    }
+
     if (cake){
         cake->draw(*camera);
     }
@@ -195,8 +201,14 @@ void WorldView::addPortal(int16_t id, std::shared_ptr<View> portal) {
     portals[id] = portal;
 }
 
-
 void WorldView::removePortal(int16_t id) {
     portals.erase(id);
 }
 
+void WorldView::addPinTool(std::shared_ptr<PinToolView> pintool) {
+    pintools[pintool->getId()] = pintool;
+}
+
+void WorldView::removePinTool(int16_t id) {
+    pintools.erase(id);
+}

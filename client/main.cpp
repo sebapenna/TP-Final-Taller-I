@@ -67,9 +67,9 @@ int main(int argc, char** argv){
 
         ClientSender clientSender(protocol, blockingQueue, done);
         clientSender.start();
-
         ClientReceiver clientReceiver(protocol, safeQueue, done);
         clientReceiver.start();
+
         SDL_Runner sdlRunner(title, safeQueue, done);
         sdlRunner.start();
 
@@ -90,7 +90,6 @@ int main(int argc, char** argv){
                         int x_m;
                         int y_m;
                         SDL_GetMouseState(&x_m, &y_m);
-
                         int x;
                         int y;
                         sdlRunner.getRealPos(x, y, x_m, y_m);
@@ -158,6 +157,11 @@ int main(int argc, char** argv){
                         case SDLK_f: {
                             std::shared_ptr<ProtocolDTO> dto(new DropRockDTO());
                             blockingQueue.push(dto);
+                            break;
+                        }
+                        case SDLK_r: {
+                            //std::shared_ptr<ProtocolDTO> dto(new ResetDTO());
+                            //blockingQueue.push(dto);
                             break;
                         }
 
