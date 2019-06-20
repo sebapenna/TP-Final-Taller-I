@@ -12,6 +12,8 @@
 #include "Server/Model/ContactListener.h"
 #include "Cake.h"
 #include "Portal.h"
+#include "RayCastCallback.h"
+#include "PinTool.h"
 #include <Server/Model/GroundBlocks/RockBlock.h>
 #include <Server/Model/Obstacles/Acid.h>
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
@@ -35,8 +37,9 @@ private:
     std::vector<EnergyBall *> _energy_balls;
     std::vector<size_t> _want_to_kill;  // ids chells que quiere matar chell que no llego a cake
     Cake *_cake = nullptr;
-    std::map<size_t, Portal*> _portals;
-    // _pin_tools ?
+    // Mapa que contiene pin tools y portales, ambos obejtos disparables. El incremento de ids no
+    // diferenciara los unos de los otros.
+    std::map<size_t, Collidable*> _shootables;
     // todo: YAML::Node _config => configuracion de constants.h
 
     // Vector de objetos que modificaron su estado/posicion durante step
@@ -45,11 +48,11 @@ private:
     // Vector de pares con los datos <id, classId> de los elementos a eliminar
     std::vector<std::pair<size_t, uint8_t>> _objects_to_delete;
 
-    // Vector de id de aquellos portales que las chells decidieron eliminar o cambiaron por
-    // nuevos portales y deberan ser eliminados durante step.
-    std::vector<size_t> _portals_to_delete;
-    // Vector de portales creados previo a step que deben almacenarse en objects_to_update
-    std::vector<Portal*> _new_portals;
+    // Vector de id de aquellos portales/pin tools que las chells decidieron eliminar o cambiaron
+    // por nuevos portales/pin tools y deberan ser eliminados durante step.
+    std::vector<size_t> _shootables_to_delete;
+    // Vector de portales y pintools creados previo a step que deben moverser a objects_to_update
+    std::vector<Collidable*> _new_shootables;
 
     /* Atributos para evitar leaks */
     ContactListener *_contact_listener;
@@ -58,10 +61,9 @@ private:
     std::vector<MetalDiagonalBlock *> _metal_diagonal_blocks;
     std::vector<MetalBlock *> _metal_blocks;
     std::vector<EnergyBarrier *> _energy_barriers;
-    // todo: UN SOLO VECTOR COLLIDABLE? => va a necesitar getX getY getWidth getHeight
+    // todo: UN SOLO VECTOR COLLIDABLE?
 
-    // box_width y box_height seran los valores que se usaran en setAsBox. Setea friccion en 0
-    // por default
+    // box_width y box_height seran los valores que se usaran en setAsBox. Friccion 0 por default
     b2Body *createStaticBox(const float &x, const float &y, const float &box_half_width,
                             const float &box_half_height, const float &friction = 0);
 
@@ -82,7 +84,18 @@ private:
 
     void stepRocks();
 
+    void stepPinTools();
+
     bool inConditionToKillMissingChell();
+
+    Portal* createPortal(const float &x, const float &y, b2Vec2 normal, const int16_t &color);
+
+    PinTool* createPinTool(const float& x, const float& y);
+
+    // Retorna true en caso de que el disparo colisiono sobre una superficie en la cual se puede
+    // crear el objeto que genera el disparo, false en el caso contrario.
+    bool shotHitMetal(RayCastCallback &callback, Chell *chell, const float &dest_x,
+                      const float &dest_y);
 
 public:
     World(const size_t &width, const size_t &height);
@@ -156,7 +169,7 @@ public:
 
     const std::vector<std::pair<size_t, uint8_t>> &getObjectsToDelete() const;
 
-    const std::map<size_t, Portal *> &getPortals() const;
+    const std::map<size_t, Collidable*> &getShootables() const;
 
 
     /******************************* Creacion Objetos **********************************/
@@ -203,12 +216,9 @@ public:
     // cake su id sera borrado de las chells que quieren eliminar la chell restante.
     void killLastingChell(const size_t &kiler_id);
 
+    // Realiza el disparo del portal y en caso de colisionar con una superficie de metal genera
+    // el portal
     void shootPortal(const size_t &chell_id, const float &dest_x, const float &dest_y, const int16_t &color);
-
-    // Angulo sera 0 si no hay que rotar cuerpo (colision con pared recta), 45 para rotar cuerpo
-    // hacia izquierda y -45 para rotar hacia derecha (ambos casos colision cara diagonal)
-    Portal * createPortal(const float &x, const float &y, b2Vec2 normal, const int16_t &color,
-                          const int &angle);
 
     // Actualiza los ids de las chells que quieren matar a otra chell y las quita del listado en
     // caso que ya no esten en condiciones de matar a otra;
@@ -220,9 +230,12 @@ public:
 
 
     // Elimina aquellos portales que ya no son utilizados por las disintas chell
-    void deleteOldPortals();
+    void deleteOldShootables();
 
     void resetPortals(const size_t &chell_id);
+
+    // Realiza el disparo del pin tool y en caso de colisionar con una superficie de metal lo crea
+    void shootPinTool(const size_t &chell_id, const float &dest_x, const float &dest_y);
 };
 
 

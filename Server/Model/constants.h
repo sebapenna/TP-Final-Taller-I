@@ -98,6 +98,11 @@
 #define LEFT    (int16_t)   1
 #define RIGHT    (int16_t)   2
 
+/* Configuracion PinTool */
+#define PIN_TOOL_HALF_WIDTH 0.25
+#define PIN_TOOL_HALF_HEIGHT    0.25
+#define PIN_TOOL_LIFETIME   20
+
 /* Class Names*/
 #define ENERGY_RECEIVER (uint8_t) 0
 #define ENERGY_TRANSMITTER (uint8_t) 1

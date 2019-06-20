@@ -36,3 +36,5 @@ const float EnergyBarrier::width() {
 const float EnergyBarrier::height() {
     return _height;
 }
+
+EnergyBarrier::~EnergyBarrier() = default;

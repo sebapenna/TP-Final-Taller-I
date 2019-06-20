@@ -61,8 +61,8 @@ public:
         float w = 4, h = 4, x = 20, y = 2;
         world->createMetalBlock(w, h, x, y);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getPortals().size());
-        auto portal = world->getPortals().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
+        auto portal = (Portal*) world->getShootables().at(0);
         CPPUNIT_ASSERT_EQUAL(y, portal->y());
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, portal->colour());
         CPPUNIT_ASSERT_LESS(x, portal->x());
@@ -74,8 +74,8 @@ public:
         float w = 4, h = 4, x = -20, y = 2;
         world->createMetalBlock(w, h, x, y);
         world->shootPortal(0, -30, 2, ORANGE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getPortals().size());
-        auto portal = world->getPortals().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
+        auto portal = (Portal*) world->getShootables().at(0);
         CPPUNIT_ASSERT_EQUAL(y, portal->y());
         CPPUNIT_ASSERT_EQUAL(ORANGE_PORTAL, portal->colour());
         CPPUNIT_ASSERT_GREATER(x, portal->x());
@@ -87,8 +87,8 @@ public:
         float w = 4, h = 4, x = 0, y = 20;
         world->createMetalBlock(w, h, x, y);
         world->shootPortal(0, 0, 30, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getPortals().size());
-        auto portal = world->getPortals().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
+        auto portal = (Portal*) world->getShootables().at(0);
         CPPUNIT_ASSERT_EQUAL(x, portal->x());
         CPPUNIT_ASSERT_LESS(y, portal->y());
         cout << "OK";
@@ -100,8 +100,8 @@ public:
         world->createChell(0, 50);  // Coloco chell en el aire para disparar debajo
         world->createMetalBlock(w, h, x, y);
         world->shootPortal(1, 0, -30, BLUE_PORTAL); // Chell 1 dispara
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getPortals().size());
-        auto portal = world->getPortals().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
+        auto portal = (Portal*) world->getShootables().at(0);
         CPPUNIT_ASSERT_EQUAL(x, portal->x());
         CPPUNIT_ASSERT_GREATER(y, portal->y());
         cout << "OK";
@@ -113,7 +113,7 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->createRockBlock(w, h, x - 10, y);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 
@@ -123,7 +123,7 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->createRock(x - 10, y);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 
@@ -133,7 +133,7 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->createAcid(x - 10, y);    // Hardcodeo acido vertical (irreal en juego)
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 
@@ -143,7 +143,7 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->createButton(x - 10, y);  // Hardcodeo boton vertical (irreal en juego)
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 
@@ -153,7 +153,7 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->createEnergyReceiver(x - 10, y);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 
@@ -163,7 +163,7 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->createEnergyTransmitter(x - 10, y, O_E);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 
@@ -173,7 +173,7 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->createEnergyBarrier(x - 10, 4, O_V);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 
@@ -184,8 +184,8 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->createChell(x2, y);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getPortals().size());
-        auto portal = world->getPortals().at(0);    // Se creo portal sobre bloque metal detras
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
+        auto portal = (Portal*) world->getShootables().at(0);    // Se creo portal sobre bloque metal detras
         CPPUNIT_ASSERT_EQUAL(y, portal->y());
         CPPUNIT_ASSERT_GREATER(x2, portal->x());
         cout << "OK";
@@ -198,7 +198,7 @@ public:
         world->createButton(-100, y);  // Hardcodeo boton vertical (irreal en juego)
         world->createGate(x - 10, 4, {0}, {});
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 
@@ -213,8 +213,8 @@ public:
         button->activate();
         world->step();  // Permito se active button y abra gate
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
-        auto portal = world->getPortals().at(0);
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getPortals().size());
+        auto portal = (Portal*) world->getShootables().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
         CPPUNIT_ASSERT_LESS(DELTA_POS, abs(y - portal->y()));
         CPPUNIT_ASSERT_GREATER(x2, portal->x());
         cout << "OK";
@@ -226,8 +226,8 @@ public:
         world->createMetalBlock(w, h, x, y);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         world->shootPortal(0, 30, 2, ORANGE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getPortals().size());
-        auto portal = world->getPortals().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
+        auto portal = (Portal*) world->getShootables().at(0);
         CPPUNIT_ASSERT_EQUAL(y, portal->y());
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, portal->colour());
         CPPUNIT_ASSERT_LESS(x, portal->x());
@@ -241,9 +241,9 @@ public:
         world->createMetalBlock(w, h, -1 * x, y);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         world->shootPortal(0, -30, 2, ORANGE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 2, world->getPortals().size());
-        auto blue_portal = world->getPortals().at(0);
-        auto orange_portal = world->getPortals().at(1);
+        CPPUNIT_ASSERT_EQUAL((size_t) 2, world->getShootables().size());
+        auto blue_portal = (Portal*) world->getShootables().at(0);
+        auto orange_portal = (Portal*) world->getShootables().at(1);
 
         CPPUNIT_ASSERT_EQUAL(y, blue_portal->y());
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, blue_portal->colour());
@@ -275,9 +275,9 @@ public:
 
         world->step();  // En step se eliminan portales viejos
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 3, world->getPortals().size());
-        auto orange_portal = world->getPortals().at(3); // Nuevo portal tiene id 2
-        auto other_chell_portal = world->getPortals().at(1);
+        CPPUNIT_ASSERT_EQUAL((size_t) 3, world->getShootables().size());
+        auto orange_portal = (Portal*) world->getShootables().at(3); // Nuevo portal tiene id 2
+        auto other_chell_portal = (Portal*) world->getShootables().at(1);
 
 
         CPPUNIT_ASSERT_GREATER(chell_y, orange_portal->y());
@@ -308,9 +308,9 @@ public:
 
         world->step();  // En step se eliminan portales viejos
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 3, world->getPortals().size());
-        auto blue_portal = world->getPortals().at(3); // Nuevo portal tiene id 2
-        auto other_chell_portal = world->getPortals().at(1);
+        CPPUNIT_ASSERT_EQUAL((size_t) 3, world->getShootables().size());
+        auto blue_portal = (Portal*) world->getShootables().at(3); // Nuevo portal tiene id 2
+        auto other_chell_portal = (Portal*) world->getShootables().at(1);
 
         CPPUNIT_ASSERT_GREATER(chell_y, blue_portal->y());
         CPPUNIT_ASSERT_LESS((float) 20, blue_portal->y());
@@ -329,9 +329,9 @@ public:
         world->createChell(x2, y);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         world->shootPortal(1, -30, 2, BLUE_PORTAL);
-        CPPUNIT_ASSERT_EQUAL((size_t) 2, world->getPortals().size());
-        auto portal1 = world->getPortals().at(0);
-        auto portal2 = world->getPortals().at(0);
+        CPPUNIT_ASSERT_EQUAL((size_t) 2, world->getShootables().size());
+        auto portal1 = (Portal*) world->getShootables().at(0);
+        auto portal2 = (Portal*) world->getShootables().at(0);
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, portal1->colour());
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, portal2->colour());
         cout << "OK";
@@ -349,7 +349,7 @@ public:
         world->resetPortals(0); // Reseteo portales
         world->step();  // Se eliminan en step
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
     }
 

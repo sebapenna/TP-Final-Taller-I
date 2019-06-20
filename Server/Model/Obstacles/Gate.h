@@ -18,6 +18,8 @@ public:
     explicit Gate(const size_t &id, const float& x, const float& y, const float& width,
             const float& height);
 
+    ~Gate() override;
+
     const size_t id() const;
 
     bool isOpen();

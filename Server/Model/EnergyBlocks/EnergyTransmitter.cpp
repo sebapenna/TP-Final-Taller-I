@@ -62,3 +62,5 @@ const float EnergyTransmitter::width() {
 const float EnergyTransmitter::height() {
     return _height;
 }
+
+EnergyTransmitter::~EnergyTransmitter()  = default;

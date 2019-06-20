@@ -75,3 +75,5 @@ float Rock::velocityY() {
     return _body->GetLinearVelocity().y;
 }
 
+Rock::~Rock() = default;
+

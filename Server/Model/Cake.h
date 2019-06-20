@@ -14,6 +14,8 @@ private:
 public:
     explicit Cake(b2Body *body, const float& width, const float& height);
 
+    ~Cake() override;
+
     const uint8_t classId() override;
 
     float getX();

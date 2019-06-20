@@ -70,3 +70,5 @@ const float Gate::width() {
 const float Gate::height() {
     return _height;
 }
+
+Gate::~Gate() = default;

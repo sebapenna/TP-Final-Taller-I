@@ -14,6 +14,8 @@ private:
 public:
     RockBlock(const float& x, const float& y, const float& width, const float& height);
 
+    ~RockBlock() override;
+
     const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;

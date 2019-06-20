@@ -16,6 +16,8 @@ public:
     explicit MetalDiagonalBlock(const float& x, const float& y, const float& width, const float&
     height, uint8_t orientation);
 
+    ~MetalDiagonalBlock() override;
+
     const uint8_t getOrientation() const;
 
     const uint8_t classId() override;

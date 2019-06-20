@@ -14,6 +14,8 @@ private:
 public:
     MetalBlock(const float& x, const float& y, const float& width, const float& height);
 
+    ~MetalBlock() override;
+
     const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;

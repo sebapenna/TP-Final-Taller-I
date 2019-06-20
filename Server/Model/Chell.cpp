@@ -118,28 +118,6 @@ void Chell::kill() {
     _dead = true;
 }
 
-int Chell::setNewPortal(Portal *portal) {
-    int old_portal_id = -1;
-    if (portal->colour() == ORANGE_PORTAL) {    // Nuevo portal naranja
-        if (_portals.first)
-            old_portal_id = _portals.first->id();
-        if (_portals.second) {
-            portal->setExitPortal(_portals.second);  // Seteo portal de salida
-            _portals.second->setExitPortal(portal);
-        }
-        _portals.first = portal;
-    } else {    // Nuevo portal azul
-        if (_portals.second)
-            old_portal_id = _portals.second->id();
-        if (_portals.first) {
-            portal->setExitPortal(_portals.first);  // Seteo portal de salida
-            _portals.first->setExitPortal(portal);
-        }
-        _portals.second = portal;
-    }
-    return old_portal_id;
-}
-
 void Chell::updateJumpState() {
     float vel_y = _body->GetLinearVelocity().y;
     switch (_jump_state) {
@@ -223,10 +201,10 @@ void Chell::move() {
 }
 
 bool Chell::actedDuringStep() {
-    if (_previously_dead != _dead) {
-        _previously_dead = _dead;   // Chell murio en ultimo step
-        return true;
-    }
+//    if (_previously_dead != _dead) {
+//        _previously_dead = _dead;   // Chell murio en ultimo step
+//        return true;
+//    }
     // Calculo diferencia para evitar detectar cambio de posicion menor a delta
     float diff_x = abs(_previous_x - _body->GetPosition().x);
     float diff_y = abs(_previous_y - _body->GetPosition().y);
@@ -339,6 +317,28 @@ bool Chell::ifTeleportedSetDone() {
     return false;
 }
 
+int Chell::setNewPortal(Portal *portal) {
+    int old_portal_id = -1;
+    if (portal->colour() == ORANGE_PORTAL) {    // Nuevo portal naranja
+        if (_portals.first)
+            old_portal_id = _portals.first->id();
+        if (_portals.second) {
+            portal->setExitPortal(_portals.second);  // Seteo portal de salida
+            _portals.second->setExitPortal(portal);
+        }
+        _portals.first = portal;
+    } else {    // Nuevo portal azul
+        if (_portals.second)
+            old_portal_id = _portals.second->id();
+        if (_portals.first) {
+            portal->setExitPortal(_portals.first);  // Seteo portal de salida
+            _portals.first->setExitPortal(portal);
+        }
+        _portals.second = portal;
+    }
+    return old_portal_id;
+}
+
 std::pair<size_t, size_t> Chell::resetPortals() {
     auto ids = std::make_pair(-1, -1);
     if (_portals.first) {   // Portal naranja
@@ -351,3 +351,13 @@ std::pair<size_t, size_t> Chell::resetPortals() {
     }
     return std::move(ids);
 }
+
+int Chell::setNewPinTool(PinTool *pintool) {
+    int old_pintool_id = -1;
+    if (_pintool)
+        old_pintool_id = _pintool->id();
+    _pintool = pintool;
+    return old_pintool_id;
+}
+
+Chell::~Chell() = default;

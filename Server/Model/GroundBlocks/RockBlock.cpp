@@ -35,3 +35,5 @@ const float RockBlock::width() {
 const float RockBlock::height() {
     return _height;
 }
+
+RockBlock::~RockBlock() = default;

@@ -78,3 +78,5 @@ const float Portal::width() {
 const float Portal::height() {
     return _height;
 }
+
+Portal::~Portal()  = default;

@@ -17,6 +17,8 @@ private:
 public:
     EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius);
 
+    ~EnergyBall() override;
+
     void updateLifetime();
 
     bool isDead();

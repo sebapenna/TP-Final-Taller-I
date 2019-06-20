@@ -17,6 +17,8 @@ public:
     explicit Button(const size_t &id, const float& x, const float& y, const float& width,
             const float& height);
 
+    ~Button() override;
+
     void activate();
 
     void deactivate();

@@ -16,6 +16,8 @@ private:
 public:
     explicit Rock(const size_t &id, b2Body *body, const float& width, const float& height);
 
+    ~Rock() override;
+
     float velocityY();
 
     b2Body *getBody() const;

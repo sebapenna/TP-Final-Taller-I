@@ -4,6 +4,7 @@
 #include <Box2D/Box2D.h>
 #include "Collidable.h"
 #include "Portal.h"
+#include "PinTool.h"
 
 class Chell: public Collidable {
 private:
@@ -23,6 +24,7 @@ private:
     // Par de portales: primero sera el naranja y el segundo el azul.
     std::pair<Portal*, Portal*> _portals;
     Portal *_portal_to_use = nullptr; // Portal por el cual teletransportar, podria no ser propio
+    PinTool *_pintool = nullptr;
 
     // Evita volver a aplicar un impulso en el mismo sentido
     bool movementInXAlreadyApplied();
@@ -33,6 +35,8 @@ private:
 
 public:
     Chell(const size_t &id, b2Body *body, const float& width, const float& height);
+
+    ~Chell() override;
 
     const size_t id() const;
 
@@ -101,6 +105,8 @@ public:
     // Si no tenia un portal del color del nuevo retornara -1. Se encarga de setear el portal de
     // salida al nuevo portal, en caso de que la chell ya tuviese un primer portal.
     int setNewPortal(Portal *portal);
+
+    int setNewPinTool(PinTool *pintool);
 
     // Elimina los portales de la chell. En caso de tener previamente portales retornara un par
     // con el id del portal naranja en el primer indice y el azul en el segundo. Si no tuviese

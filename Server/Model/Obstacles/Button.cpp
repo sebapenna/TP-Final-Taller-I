@@ -68,3 +68,5 @@ const float Button::width() {
 const float Button::height() {
     return _height;
 }
+
+Button::~Button() = default;

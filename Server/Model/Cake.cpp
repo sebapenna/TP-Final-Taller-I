@@ -45,3 +45,5 @@ const float Cake::width() {
 const float Cake::height() {
     return 0;
 }
+
+Cake::~Cake() = default;

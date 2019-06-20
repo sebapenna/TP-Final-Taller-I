@@ -9,6 +9,8 @@ private:
 public:
     EnergyBarrier(const float& x, const float& y, const float& width, const float& height);
 
+    ~EnergyBarrier() override;
+
     const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;

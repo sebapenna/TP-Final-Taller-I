@@ -6,11 +6,11 @@
 
 class PinToolDTO: public ProtocolDTO {
 private:
-    const int16_t _id, _x, _y, _width, _height, _delete_state, _tilt;
+    const int16_t _id, _x, _y, _width, _height, _delete_state;
 
 public:
     PinToolDTO(const int16_t& id, const int16_t& x, const int16_t& y, const
-    int16_t& width, const int16_t& height, const int16_t& tilt, const int16_t& delete_state);
+    int16_t& width, const int16_t& height, const int16_t& delete_state);
 
     ~PinToolDTO() override = default;
 
@@ -27,8 +27,6 @@ public:
     const int16_t getHeight() const;
 
     const int16_t getDeleteState() const;
-
-    const int16_t getTilt() const;
 };
 
 

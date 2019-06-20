@@ -5,6 +5,8 @@
 
 class Collidable {
 public:
+    virtual ~Collidable() = default;
+
     virtual const uint8_t classId() = 0;
 
     // Indica si durante el step el objeto realizo alguna accion

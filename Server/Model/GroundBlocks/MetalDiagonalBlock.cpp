@@ -44,3 +44,5 @@ const float MetalDiagonalBlock::height() {
 const float MetalDiagonalBlock::getCenterX() {
     return _x + _width / 2;
 }
+
+MetalDiagonalBlock::~MetalDiagonalBlock() = default;

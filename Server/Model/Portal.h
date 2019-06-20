@@ -20,6 +20,8 @@ public:
     Portal(const size_t&  id, b2Body *body, const b2Vec2 normal, const int16_t color,
             const float& width, const float& height);
 
+    ~Portal() override;
+
     void collideWith(Collidable *other) override;
 
     const uint8_t classId() override;

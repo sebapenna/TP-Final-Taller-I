@@ -29,6 +29,8 @@ _id(id), _radius(radius) {
     _previous_y = _body->GetPosition().y;
 }
 
+EnergyBall::~EnergyBall()  = default;
+
 void EnergyBall::updateLifetime() {
     _lifetime += TIME_STEP;
 }
@@ -99,4 +101,5 @@ bool EnergyBall::actedDuringStep() {
     }
     return false;
 }
+
 

@@ -37,3 +37,5 @@ const float MetalBlock::width() {
 const float MetalBlock::height() {
     return _height;
 }
+
+MetalBlock::~MetalBlock() = default;

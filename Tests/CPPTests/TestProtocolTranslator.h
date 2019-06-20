@@ -732,7 +732,7 @@ public:
     
     void testTranslatePinToolDTO() {
         cout << endl << "TEST traducir PinToolDTO a datos: ";
-        shared_ptr<ProtocolDTO> dto(new PinToolDTO(4, -2, 0, 4, 5, RIGHT, DELETE));
+        shared_ptr<ProtocolDTO> dto(new PinToolDTO(4, -2, 0, 4, 5, DELETE));
         int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_PIN_TOOL_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(PIN_TOOL_ID_POS));
@@ -740,7 +740,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(PIN_TOOL_Y_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(PIN_TOOL_WIDTH_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, output.at(PIN_TOOL_HEIGHT_POS));
-        CPPUNIT_ASSERT_EQUAL((int16_t) RIGHT, output.at(PIN_TOOL_TILT_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) DELETE, output.at(PIN_TOOL_DELETE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(PIN_TOOL_ARGS + extra_data, vec_size);
         cout << "OK";
@@ -756,7 +755,6 @@ public:
         v.push_back(10);
         v.push_back(2);
         v.push_back(3);
-        v.push_back(LEFT);
         v.push_back(DONT_DELETE);
         auto p = ProtocolTranslator::translate(v);
         auto dto = (PinToolDTO*) p.get();
@@ -766,7 +764,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) 3, dto->getHeight());
-        CPPUNIT_ASSERT_EQUAL((int16_t) LEFT, dto->getTilt());
         CPPUNIT_ASSERT_EQUAL(DONT_DELETE, dto->getDeleteState());
         cout << "OK";
     }

@@ -60,3 +60,5 @@ const float EnergyReceiver::width() {
 const float EnergyReceiver::height() {
     return _height;
 }
+
+EnergyReceiver::~EnergyReceiver() = default;

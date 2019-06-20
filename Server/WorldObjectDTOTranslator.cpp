@@ -146,7 +146,9 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
                     DONT_DELETE);
         }
         case PIN_TOOL: {
-            // todo: PIN TOOL GETTERS
+            auto obj = (PinTool*) collidable;
+            return make_shared<PinToolDTO>(obj->id(), obj->x(), obj->y(), obj->width(),
+                    obj->height(), DONT_DELETE);
         }
         default:
             // No existe este caso
@@ -167,7 +169,7 @@ WorldObjectDTOTranslator::translate(const size_t &object_id, const uint8_t &obje
         case PORTAL:
             return make_shared<PortalDTO>(object_id, 0, 0, 0, 0, 0, 0, DELETE);
         case PIN_TOOL:
-            return make_shared<PinToolDTO>(object_id, 0, 0, 0, 0, 0, DELETE);
+            return make_shared<PinToolDTO>(object_id, 0, 0, 0, 0, DELETE);
         default:    // Comando incorrecto
             return nullptr;
     }

@@ -17,6 +17,8 @@ public:
     explicit EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction,
             const float& width, const float& height);
 
+    ~EnergyTransmitter() override;
+
     // Le indica a world si debe crear una EnergyBall
     bool releaseEnergyBall();
 

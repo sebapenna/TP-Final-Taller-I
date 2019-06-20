@@ -35,3 +35,5 @@ const float Acid::width() {
 const float Acid::height() {
     return _height;
 }
+
+Acid::~Acid() = default;

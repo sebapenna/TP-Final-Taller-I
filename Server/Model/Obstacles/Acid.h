@@ -9,6 +9,8 @@ private:
 public:
     Acid(const float& x, const float& y, const float& width, const float& height);
 
+    ~Acid() override;
+
     const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;

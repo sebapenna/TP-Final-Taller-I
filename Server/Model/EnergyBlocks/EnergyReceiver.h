@@ -16,6 +16,8 @@ public:
     explicit EnergyReceiver(const size_t& id, const float& x, const float& y, const float& width,
             const float& height);
 
+    ~EnergyReceiver() override;
+
     void activate();
 
     bool isActivated();
