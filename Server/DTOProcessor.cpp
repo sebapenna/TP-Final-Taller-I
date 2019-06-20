@@ -40,6 +40,9 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
             world->shootPortal(chell_id, p_dto->getX(), p_dto->getY(), p_dto->getColor());
             break;
         }
+        case PROTOCOL_RESET_PORTALS:
+            world->resetPortals(chell_id);
+            break;
         case PROTOCOL_SHOOT_PIN_TOOL:
             // todo: DISPARAR PIN TOOL
             break;

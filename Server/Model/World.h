@@ -48,6 +48,8 @@ private:
     // Vector de id de aquellos portales que las chells decidieron eliminar o cambiaron por
     // nuevos portales y deberan ser eliminados durante step.
     std::vector<size_t> _portals_to_delete;
+    // Vector de portales creados previo a step que deben almacenarse en objects_to_update
+    std::vector<Portal*> _new_portals;
 
     /* Atributos para evitar leaks */
     ContactListener *_contact_listener;
@@ -219,6 +221,8 @@ public:
 
     // Elimina aquellos portales que ya no son utilizados por las disintas chell
     void deleteOldPortals();
+
+    void resetPortals(const size_t &chell_id);
 };
 
 

@@ -220,7 +220,8 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) (2 * ACID_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * ACID_HALF_HEIGHT), dto->getHeight());
+        // Redondeo porque altura acido podria ser menor a 1
+        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * ACID_HALF_HEIGHT), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, dto->getClassId());
 
         new_pos = PositionTranslator::translate(ACID, x2, y2, ACID_HALF_WIDTH, ACID_HALF_HEIGHT);
@@ -230,7 +231,7 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) (2 * ACID_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * ACID_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * ACID_HALF_HEIGHT), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, dto->getClassId());
         cout << "OK";
     }
@@ -252,7 +253,7 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BUTTON_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BUTTON_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * BUTTON_HALF_HEIGHT), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BUTTON_DATA, dto->getClassId());
 
         new_pos = PositionTranslator::translate(BUTTON, x2, y2, BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT);
@@ -263,7 +264,7 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BUTTON_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BUTTON_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * BUTTON_HALF_HEIGHT), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BUTTON_DATA, dto->getClassId());
         cout << "OK";
     }

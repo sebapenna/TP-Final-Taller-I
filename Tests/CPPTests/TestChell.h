@@ -13,7 +13,6 @@ using std::endl;
 class TestChell : public CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE( TestChell );
         CPPUNIT_TEST( testCreateChell );
-        CPPUNIT_TEST( testTeletransport );
         CPPUNIT_TEST( testFall );
         CPPUNIT_TEST( testMoveRight );
         CPPUNIT_TEST( testMoveLeft );
@@ -77,21 +76,14 @@ public:
         cout << "OK";
     }
 
-    void testTeletransport() {
-        cout << endl <<  "TEST teletransportar: ";
-        chell->teleport(5, 5);
-        CPPUNIT_ASSERT_EQUAL(chell->x(), (float) 5);
-        CPPUNIT_ASSERT_EQUAL(chell->y(), (float) 5);
-        cout << "OK";
-    }
-
     void testFall() {
         cout << endl << "TEST caer con gravedad: ";
-        chell->teleport(0, 4); // Elevo a chell para que caiga
+        world->createChell(10, 10); // Creo chell en aire
+        auto chell2 = world->getChell(1);
         for (int i = 0; i < 2 * STEP_ITERATIONS; i++)
             world->step();
-        float y_diff = chell->y() - chell_init_y;
-        float x_diff = chell->x() - chell_init_x;
+        float y_diff = chell2->y() - 2;
+        float x_diff = chell2->x() - 10;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, x_diff);
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, y_diff);
         cout << "OK";
@@ -460,13 +452,14 @@ public:
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NE);
         float new_x = ground_x;
         float new_y = ground_y + b_height / 2 + CHELL_HALF_HEIGHT;
-        chell->teleport(new_x, new_y);
-        chell->move_right();
+        world->createChell(new_x, new_y);
+        auto chell2 = world->getChell(1);
+        chell2->move_right();
         for (int i = 1; i < 200; i++) {
             world->step();
-            CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell->x());
+            CPPUNIT_ASSERT_GREATEREQUAL(chell_init_x, chell2->x());
         }
-        float diff_y = chell->y() - chell_init_y;
+        float diff_y = chell2->y() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         cout << "OK";
     }
@@ -485,12 +478,13 @@ public:
         world->createMetalDiagonalBlock(b_width, b_height, b_x, b_y, O_NO);
         float new_x = ground_x;
         float new_y = ground_y + b_height / 2 + CHELL_HALF_HEIGHT;
-        chell->teleport(new_x, new_y);
-        chell->move_left();
+        world->createChell(new_x, new_y);
+        auto chell2 = world->getChell(1);
+        chell2->move_left();
         for (int i = 1; i < 200; i++) {
             world->step();
             if (abs(chell->x()) > DELTA_POS) // Evito falla por delta
-                CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell->x());
+                CPPUNIT_ASSERT_LESSEQUAL(chell_init_x, chell2->x());
         }
         float diff_y = chell->y() - chell_init_y;
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);

@@ -59,11 +59,11 @@
 
 /* Coniguracion Acid */
 #define ACID_HALF_WIDTH  HALF_BOX_LEN
-#define ACID_HALF_HEIGHT  0.5
+#define ACID_HALF_HEIGHT  0.25
 
 /* Configuracion Button */
 #define BUTTON_HALF_WIDTH  HALF_BOX_LEN
-#define BUTTON_HALF_HEIGHT  0.5
+#define BUTTON_HALF_HEIGHT  0.25
 
 #define NOT_ACTIVATED   (uint8_t) 0
 #define ACTIVATED (uint8_t) 1

@@ -32,6 +32,7 @@ CPPUNIT_TEST_SUITE( TestPortal );
         CPPUNIT_TEST( testChangeOrangePortalForOneChell );
         CPPUNIT_TEST( testChangeBluePortalForOneChell );
         CPPUNIT_TEST( testTwoChellsCreatingPortals );
+        CPPUNIT_TEST( testResetPortals );
     CPPUNIT_TEST_SUITE_END();
 
 private:
@@ -333,6 +334,22 @@ public:
         auto portal2 = world->getPortals().at(0);
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, portal1->colour());
         CPPUNIT_ASSERT_EQUAL(BLUE_PORTAL, portal2->colour());
+        cout << "OK";
+    }
+
+    void testResetPortals() {
+        cout << endl << "TEST resetear portales de chell: ";
+        float w = 4, h = 4, x = 20, y = 2;
+        world->createMetalBlock(w, h, x, y);
+        world->createMetalBlock(w, h, -1 * x, y);
+        world->shootPortal(0, 30, 2, BLUE_PORTAL);
+        world->shootPortal(0, -30, 2, ORANGE_PORTAL);
+
+        world->step();
+        world->resetPortals(0); // Reseteo portales
+        world->step();  // Se eliminan en step
+
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getPortals().size());
         cout << "OK";
     }
 

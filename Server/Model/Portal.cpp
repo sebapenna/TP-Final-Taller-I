@@ -23,9 +23,9 @@ void Portal::endCollitionWith(Collidable *other) {
 
 const int16_t Portal::tilt() {
     if ((_normal.x > 0 && _normal.y > 0) || (_normal.x < 0 && _normal.y < 0))
-        return LEFT;    // Portal inclinado (rotado hacia izquierda)
+        return RIGHT;    // Portal inclinado (rotado hacia izquierda)
     else if ((_normal.x > 0 && _normal.y < 0) || (_normal.x < 0 && _normal.y > 0))
-        return RIGHT;   // Portal inclinado (rotado hacia derecha)
+        return LEFT;   // Portal inclinado (rotado hacia derecha)
     else
         return STRAIGHT;    // Portal derecho
 }

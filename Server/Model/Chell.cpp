@@ -175,6 +175,7 @@ int Chell::calculateXImpulse() {
     if (movementInXAlreadyApplied()) // _move_state no se modifico
         return 0;
     float vel_x = _body->GetLinearVelocity().x;
+    float vel_y = _body->GetLinearVelocity().y;
     int impulse_factor = 0;
     // Mover en sentido contrario tendra factor doble, para frenar y continuar movimiento
     switch (_move_state) {
@@ -185,8 +186,9 @@ int Chell::calculateXImpulse() {
             (vel_x > 0) ? (impulse_factor = -2) : (impulse_factor = -1);
             break;
         case MOVE_STOP:
-            if (_jump_state == ON_GROUND)   // Stop en superficie frena cuerpo
-                _body->SetLinearVelocity({0, 0});
+            if (_jump_state == ON_GROUND) {   // Stop en superficie frena cuerpo, mantengo vely
+                _body->SetLinearVelocity({0, vel_y});
+            }
             if (_jump_state == JUMPED) {    // En el aire realiza impulso, no frena cuerpo
                 if (vel_x > 0)
                     impulse_factor = -1;
@@ -335,4 +337,17 @@ bool Chell::ifTeleportedSetDone() {
         return true;
     }
     return false;
+}
+
+std::pair<size_t, size_t> Chell::resetPortals() {
+    auto ids = std::make_pair(-1, -1);
+    if (_portals.first) {   // Portal naranja
+        ids.first = _portals.first->id();
+        _portals.first = nullptr;
+    }
+    if (_portals.second) {  // Portal azul
+        ids.second = _portals.second->id();
+        _portals.second = nullptr;
+    }
+    return std::move(ids);
 }

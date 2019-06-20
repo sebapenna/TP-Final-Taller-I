@@ -102,6 +102,11 @@ public:
     // salida al nuevo portal, en caso de que la chell ya tuviese un primer portal.
     int setNewPortal(Portal *portal);
 
+    // Elimina los portales de la chell. En caso de tener previamente portales retornara un par
+    // con el id del portal naranja en el primer indice y el azul en el segundo. Si no tuviese
+    // alguno o ambos portales retornara -1 en cada posicion.
+    std::pair<size_t,size_t> resetPortals();
+
     const float x() override;
 
     const float y() override;

@@ -231,4 +231,7 @@
 #define CAKE_Y_POS  3
 #define CAKE_SIDE_LENGTH_POS  4
 
+#define PROTOCOL_RESET_PORTALS  (int16_t)   32
+#define RESET_PORTALS_ARGS  0
+
 #endif //PORTAL_PROTOCOL_MACROS_H

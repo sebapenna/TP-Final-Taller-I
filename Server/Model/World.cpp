@@ -168,6 +168,9 @@ void World::step() {
     stepRocks();
     updateChellsWantingToKill();
     killChell();
+    for (auto &portal : _new_portals)
+        _objects_to_update.push_back(portal);   // Agrego nuevos portales
+    _new_portals.clear();
     deleteOldPortals();
 }
 
@@ -624,6 +627,17 @@ Portal* World::createPortal(const float &x, const float &y, b2Vec2 normal, const
     auto portal = new Portal(next_id, body, normal, color, 2 * half_width, 2 * half_height);
     body->SetUserData(portal);
     _portals.insert({next_id, portal});
+    _new_portals.push_back(portal); // Agrego a vector de objetos que se deben actualizar
     return portal;
+}
+
+void World::resetPortals(const size_t &chell_id) {
+    auto chell = getChell(chell_id);
+    auto portals_ids = chell->resetPortals();
+    // Verifico si chell tenia portales y los agrego a portales a eliminar
+    if (portals_ids.first != -1)
+        _portals_to_delete.push_back(portals_ids.first);
+    if (portals_ids.second != -1)
+        _portals_to_delete.push_back(portals_ids.second);
 }
 

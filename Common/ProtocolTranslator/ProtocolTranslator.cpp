@@ -30,6 +30,7 @@
 #include "Common/ProtocolTranslator/GameStateDTO/QuitDTO.h"
 #include "Common/ProtocolTranslator/GameStateDTO/BeginDTO.h"
 #include "Common/ProtocolTranslator/DataDTO/CakeDTO.h"
+#include "ResetPortalsDTO.h"
 #include <vector>
 #include <iostream>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/CommitSuicideDTO.h>
@@ -45,19 +46,19 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &outpu
     output.push_back(dto->getClassId());    // Siempre primer valor es el ID
     switch (dto->getClassId()) {
         case PROTOCOL_BEGIN:
-            output.push_back(BEGIN_ARGS);
+            output.push_back(BEGIN_ARGS);   // No tiene mas datos a agregar
             break;
 
         case PROTOCOL_QUIT:
-            output.push_back(QUIT_ARGS);
+            output.push_back(QUIT_ARGS);   // No tiene mas datos a agregar
             break;
 
         case PROTOCOL_KILL_MISSING_CHELL:
-            output.push_back(KILL_MISSING_CHELL_ARGS);
+            output.push_back(KILL_MISSING_CHELL_ARGS);   // No tiene mas datos a agregar
             break;
 
         case PROTOCOL_COMMIT_SUICIDE:
-            output.push_back(COMMIT_SUICIDE_ARGS);
+            output.push_back(COMMIT_SUICIDE_ARGS);   // No tiene mas datos a agregar
             break;
 
         case PROTOCOL_MOVE_LEFT:
@@ -79,6 +80,10 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &outpu
         case PROTOCOL_SHOOT_PORTAL:
             output.push_back(SHOOT_PORTAL_ARGS);
             shootPortal(dto, output);
+            break;
+
+        case PROTOCOL_RESET_PORTALS:
+            output.push_back(RESET_PORTALS_ARGS);   // No tiene mas datosa agregar
             break;
 
         case PROTOCOL_SHOOT_PIN_TOOL:
@@ -233,6 +238,9 @@ shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &inp
         case PROTOCOL_SHOOT_PORTAL:
             return make_shared<ShootPortalDTO>(input[SHOOT_PORTAL_COLOUR_POS],
                     input[SHOOT_PORTAL_X_POS], input[SHOOT_PORTAL_Y_POS]);
+
+        case PROTOCOL_RESET_PORTALS:
+            return make_shared<ResetPortalsDTO>();
 
         case PROTOCOL_SHOOT_PIN_TOOL:
             return make_shared<ShootPinToolDTO>(input[SHOOT_PT_X_POS], input[SHOOT_PT_Y_POS]);
