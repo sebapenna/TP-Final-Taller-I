@@ -57,17 +57,12 @@ void WorldView::draw() {
         }
     }
 
-    for (auto const& portal: portalsBlue) {
+    for (auto const& portal: portals) {
         if (camera->isInCamera(portal.second->getDst())) {
             portal.second->draw(*camera);
         }
     }
 
-    for (auto const& portal: portalsOrange) {
-        if (camera->isInCamera(portal.second->getDst())) {
-            portal.second->draw(*camera);
-        }
-    }
     if (cake){
         cake->draw(*camera);
     }
@@ -196,18 +191,12 @@ void WorldView::obtainXY(int &x, int &y, int x_m, int y_m, Renderer& renderer) {
     camera->obtainXY(x, y, x_m, y_m, renderer);
 }
 
-void WorldView::addPortalBlue(std::shared_ptr<PortalBlueView> portal) {
-    portalsBlue[portal->getId()] = portal;
+void WorldView::addPortal(int16_t id, std::shared_ptr<View> portal) {
+    portals[id] = portal;
 }
 
-void WorldView::addPortalOrange(std::shared_ptr<PortalOrangeView> portal) {
-    portalsOrange[portal->getId()] = portal;
+
+void WorldView::removePortal(int16_t id) {
+    portals.erase(id);
 }
 
-void WorldView::removePortalBlue(int16_t id) {
-    portalsBlue.erase(id);
-}
-
-void WorldView::removePortalOrange(int16_t id) {
-    portalsOrange.erase(id);
-}

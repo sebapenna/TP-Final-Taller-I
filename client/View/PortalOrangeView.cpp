@@ -12,11 +12,11 @@ portal(texture, renderer, 209, 210, 77, 234, 4, 4, 1, 0, AnimationState::onRepea
 
 void PortalOrangeView::draw(Camera &camera) {
     if (tilted == STRAIGHT) {
-        portal.draw(camera, this->getDst(), 0);
+        portal.drawMovingSprite(camera, this->getDst(), 0);
     } else if (tilted == LEFT) {
-        portal.draw(camera, this->getDst(), 45);
+        portal.drawMovingSprite(camera, this->getDst(), 45);
     } else if (tilted == RIGHT) {
-        portal.draw(camera, this->getDst(), -45);
+        portal.drawMovingSprite(camera, this->getDst(), -45);
     }
 }
 

@@ -8,16 +8,16 @@
 
 PortalBlueView::PortalBlueView(int id, SDL_Texture *texture, Renderer &renderer, int16_t tilted, int x, int y) :
 View(x, y), id(id),
-portal(texture, renderer, 209, 210, 77, 21, 4, 4, 1, 0, AnimationState::onRepeat), tilted(tilted) {
+portal(texture, renderer, 209, 210, 78, 21, 4, 4, 1, 0, AnimationState::onRepeat), tilted(tilted) {
 }
 
 void PortalBlueView::draw(Camera &camera) {
     if (tilted == STRAIGHT) {
-        portal.draw(camera, this->getDst(), 0);
+        portal.drawMovingSprite(camera, this->getDst(), 0);
     } else if (tilted == LEFT) {
-        portal.draw(camera, this->getDst(), 45);
+        portal.drawMovingSprite(camera, this->getDst(), 45);
     } else if (tilted == RIGHT) {
-        portal.draw(camera, this->getDst(), -45);
+        portal.drawMovingSprite(camera, this->getDst(), -45);
     }
 }
 

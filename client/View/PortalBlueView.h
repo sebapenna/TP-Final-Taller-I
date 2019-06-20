@@ -7,7 +7,7 @@
 
 #include <client/ComponentsSDL/AnimatedSprite.h>
 #include "View.h"
-
+enum PortalColor {BLUE, ORANGE};
 class PortalBlueView : public View {
 private:
     int id;

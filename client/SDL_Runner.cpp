@@ -310,21 +310,16 @@ void SDL_Runner::run() {
                     case PROTOCOL_PORTAL_DATA: {
                         auto portalDTO = (PortalDTO*) newItem;
                         if (portalDTO->getDeleteState() == DELETE) {
-                            if (portalDTO->getColour() == BLUE_PORTAL) {
-                                world.removePortalBlue(portalDTO->getId());
-                            } else if (portalDTO->getColour() == ORANGE_PORTAL) {
-                                world.removePortalOrange(portalDTO->getId());
-                            }
+                            world.removePortal(portalDTO->getId());
                         } else {
+                            std::shared_ptr<View> portal;
                             if (portalDTO->getColour() == BLUE_PORTAL) {
-                                auto portal = std::make_shared<PortalBlueView>(portalDTO->getId(), textureFactory.getTextureByName(portal_file_name), renderer, portalDTO->getTilt());
-                                portal->setDestRect(portalDTO->getX(), portalDTO->getY(), portalDTO->getWidth(), portalDTO->getHeight());
-                                world.addPortalBlue(portal);
+                                portal = std::make_shared<PortalBlueView>(portalDTO->getId(), textureFactory.getTextureByName(portal_file_name), renderer, portalDTO->getTilt());
                             } else {
-                                auto portal = std::make_shared<PortalOrangeView>(portalDTO->getId(), textureFactory.getTextureByName(portal_file_name), renderer, portalDTO->getTilt());
-                                portal->setDestRect(portalDTO->getX(), portalDTO->getY(), portalDTO->getWidth(), portalDTO->getHeight());
-                                world.addPortalOrange(portal);
+                                portal = std::make_shared<PortalOrangeView>(portalDTO->getId(), textureFactory.getTextureByName(portal_file_name), renderer, portalDTO->getTilt());
                             }
+                            portal->setDestRect(portalDTO->getX(), portalDTO->getY(), portalDTO->getWidth(), portalDTO->getHeight());
+                            world.addPortal(portalDTO->getId(), portal);
                         }
                         break;
                     }

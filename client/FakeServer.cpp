@@ -19,6 +19,7 @@
 #include <Common/ProtocolTranslator/DataDTO/EnergyReceiverDTO.h>
 #include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
 #include "FakeServer.h"
 #include "../Common/ProtocolTranslator/ProtocolDTO.h"
 
@@ -36,8 +37,8 @@ void FakeServer::run() {
     /*std::shared_ptr<ProtocolDTO>dto2(new ChellDTO(2, 1, 5, 4, 4, WEST, NOT_TILTED, NOT_MOVING, JUMPING, NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
     safeQueue.push(dto2);
     */
-    std::shared_ptr<ProtocolDTO>dto3(new ChellDTO(2, -15, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DELETE));
-    safeQueue.push(dto3);
+    //std::shared_ptr<ProtocolDTO>dto3(new ChellDTO(2, -15, 4, CHELL_HALF_WIDTH*2, CHELL_HALF_HEIGHT*2, WEST, NOT_TILTED, NOT_MOVING, NOT_JUMPING, NOT_SHOOTING, NOT_CARRYING, DELETE));
+    //safeQueue.push(dto3);
     std::shared_ptr<ProtocolDTO>dto4(new ButtonDTO(1, 10, 4, BUTTON_HALF_WIDTH*2, BUTTON_HALF_HEIGHT*2));
     safeQueue.push(dto4);
     std::shared_ptr<ProtocolDTO>dto5(new GateDTO(1, -1, 4, GATE_HALF_WIDTH*2, GATE_HALF_HEIGHT*2));
@@ -63,9 +64,10 @@ void FakeServer::run() {
     safeQueue.push(dto18);
     std::shared_ptr<ProtocolDTO>dto19(new MetalDiagonalBlockDTO(-10, 4, 4, O_NO));
     safeQueue.push(dto19);
-
     std::shared_ptr<ProtocolDTO>dto999(new BeginDTO());
     safeQueue.push(dto999);
+    std::shared_ptr<ProtocolDTO>dto812(new PortalDTO(0, 10, 4, 4,2, STRAIGHT, BLUE_PORTAL, DONT_DELETE));
+    safeQueue.push(dto812);
     while (!done) {
         auto protocolDTO = blockingQueue.getTopAndPop();
         if (protocolDTO.get()->getClassId() == PROTOCOL_MOVE_LEFT) {

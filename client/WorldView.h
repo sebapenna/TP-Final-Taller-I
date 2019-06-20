@@ -32,8 +32,8 @@ private:
     std::map<int, std::shared_ptr<EnergyTransmitterView>> transmitters;
     std::map<int, std::shared_ptr<EnergyReceiverView>> receivers;
     std::map<int, std::shared_ptr<EnergyBallView>> balls;
-    std::map<int, std::shared_ptr<PortalBlueView>> portalsBlue;
-    std::map<int, std::shared_ptr<PortalOrangeView>> portalsOrange;
+    std::map<int, std::shared_ptr<View>> portals;
+
     std::shared_ptr<CakeView> cake;
     std::shared_ptr<BackgroundView> background;
     Camera* camera;
@@ -65,10 +65,8 @@ public:
     void addBall(std::shared_ptr<EnergyBallView> ball);
     void removeBall(int16_t id);
     void obtainXY(int &x, int &y, int x_m, int y_m, Renderer& renderer);
-    void addPortalBlue(std::shared_ptr<PortalBlueView> portal);
-    void addPortalOrange(std::shared_ptr<PortalOrangeView> portal);
-    void removePortalBlue(int16_t id);
-    void removePortalOrange(int16_t id);
+    void addPortal(int16_t id, std::shared_ptr<View> portal);
+    void removePortal(int16_t id);
 };
 
 
