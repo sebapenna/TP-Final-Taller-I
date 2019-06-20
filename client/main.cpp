@@ -42,7 +42,7 @@ int main(int argc, char** argv){
         // Chell turning around
         //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
         std::string title("Portal");
-        /*Protocol protocol("localhost", argv[1]);
+        Protocol protocol("localhost", argv[1]);
 
         HandshakeHandler::getOptionsAndChoose(protocol); // Obtengo mensajes de bienvenidas, opciones, etc
         // Tirar dos threads, uno que lea la entrada, y otro que espere a lo que le responde el server.
@@ -59,24 +59,24 @@ int main(int argc, char** argv){
         commandReceiver.join();
         commandSender.join();
 
-        if (user_quit_game) return 1;*/
+        if (user_quit_game) return 1;
 
         bool done = false;
         ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;
         SafeQueue<std::shared_ptr<ProtocolDTO>> safeQueue;
 
-        /*ClientSender clientSender(protocol, blockingQueue, done);
+        ClientSender clientSender(protocol, blockingQueue, done);
         clientSender.start();
 
         ClientReceiver clientReceiver(protocol, safeQueue, done);
-        clientReceiver.start();*/
+        clientReceiver.start();
         SDL_Runner sdlRunner(title, safeQueue, done);
         sdlRunner.start();
 
 
-        FakeServer server(blockingQueue, safeQueue, done);
+        /*FakeServer server(blockingQueue, safeQueue, done);
         server.start();
-
+*/
         SDL_Event e;
         while (!done) {
             while (SDL_PollEvent(&e)) {
@@ -169,14 +169,14 @@ int main(int argc, char** argv){
             }
             SDL_Delay(1);
         }
-        /*protocol.disconnect();*/
+        protocol.disconnect();
         sdlRunner.join();
-        /*blockingQueue.setFinishedAdding();
+        blockingQueue.setFinishedAdding();
 
         clientSender.join();
-        clientReceiver.join();*/
+        clientReceiver.join();
 
-        server.join();
+        /*server.join();*/
         return 0;
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
