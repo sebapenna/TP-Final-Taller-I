@@ -88,7 +88,7 @@ public:
     void testFall() {
         cout << endl << "TEST caer con gravedad: ";
         chell->teleport(0, 4); // Elevo a chell para que caiga
-        for (int i = 0; i < STEP_ITERATIONS; i++)
+        for (int i = 0; i < 2 * STEP_ITERATIONS; i++)
             world->step();
         float y_diff = chell->y() - chell_init_y;
         float x_diff = chell->x() - chell_init_x;

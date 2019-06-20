@@ -59,11 +59,11 @@
 
 /* Coniguracion Acid */
 #define ACID_HALF_WIDTH  HALF_BOX_LEN
-#define ACID_HALF_HEIGHT  1
+#define ACID_HALF_HEIGHT  0.5
 
 /* Configuracion Button */
 #define BUTTON_HALF_WIDTH  HALF_BOX_LEN
-#define BUTTON_HALF_HEIGHT  1
+#define BUTTON_HALF_HEIGHT  0.5
 
 #define NOT_ACTIVATED   (uint8_t) 0
 #define ACTIVATED (uint8_t) 1
@@ -90,8 +90,8 @@
 #define CAKE_HALF_LEN   2
 
 /* Configuracion Portal */
-#define PORTAL_HALF_WIDTH    1
-#define PORTAL_HALF_HEIGHT 2
+#define PORTAL_HALF_WIDTH    0.5
+#define PORTAL_HALF_HEIGHT 1.8  // Algo mas chico que el largo del bloque
 
 /* Inclinacion Portal */
 #define STRAIGHT    (int16_t) 0

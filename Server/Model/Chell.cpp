@@ -98,8 +98,16 @@ void Chell::stopMovement() {
 }
 
 void Chell::teleport(float x, float y) {
+//    float vel_mod = sqrt(pow(_body->GetLinearVelocity().x, 2) +
+//                         pow(_body->GetLinearVelocity().y, 2));
+    float impulse_x = 2*MOVE_FORCE * _portal_to_use->exitPortal()->normal().x;
+
+    float impulse_y = 1.5*MOVE_FORCE * _portal_to_use->exitPortal()->normal().y;
     b2Vec2 new_pos(x,y);
     _body->SetTransform(new_pos, 0);
+    (_jump_state != ON_GROUND) ? (_jump_state = ON_GROUND) : 0;
+    _body->SetLinearVelocity({0,0});    // Anulo velocidad que tenia
+    _body->ApplyLinearImpulse({impulse_x, impulse_y}, _body->GetWorldCenter(), true);
 }
 
 bool Chell::reachedCake() {
@@ -111,8 +119,8 @@ void Chell::kill() {
 }
 
 int Chell::setNewPortal(Portal *portal) {
-    size_t old_portal_id = -1;
-    if (portal->colour() == ORANGE_PORTAL) {
+    int old_portal_id = -1;
+    if (portal->colour() == ORANGE_PORTAL) {    // Nuevo portal naranja
         if (_portals.first)
             old_portal_id = _portals.first->id();
         if (_portals.second) {
@@ -120,7 +128,7 @@ int Chell::setNewPortal(Portal *portal) {
             _portals.second->setExitPortal(portal);
         }
         _portals.first = portal;
-    } else {
+    } else {    // Nuevo portal azul
         if (_portals.second)
             old_portal_id = _portals.second->id();
         if (_portals.first) {
@@ -196,16 +204,10 @@ void Chell::move() {
     if (_portal_to_use) {   // Chell se debe teletransportar
         float newx = _portal_to_use->exitPortal()->x();
         float newy = _portal_to_use->exitPortal()->y();
-        float vel_mod = sqrt(pow(_body->GetLinearVelocity().x, 2) +
-                pow(_body->GetLinearVelocity().y, 2));
-        float new_velx = vel_mod * _portal_to_use->exitPortal()->normal().x * 10;
-        float new_vely = vel_mod * _portal_to_use->exitPortal()->normal().y * 10;
         teleport(newx, newy);
-        _body->ApplyLinearImpulse({new_velx, new_vely}, _body->GetWorldCenter(), true);
         _portal_to_use = nullptr;   // Teletransportacion realizada
         _teleported = true; // Indico que chell se teletransporto durante step
-    }
-    if (_tilt == NOT_TILTED) {  // Si esta inclinado cae, no se mueve
+    } else if (_tilt == NOT_TILTED) {  // Si esta inclinado cae, no se mueve
         int x_impulse = 0, y_impulse = 0;
         x_impulse = calculateXImpulse();
         if (_jump) {
@@ -254,40 +256,14 @@ void Chell::collideWith(Collidable *other) {
     auto cname = other->classId();
     auto velx = _body->GetLinearVelocity().x;
     auto vely = _body->GetLinearVelocity().y;
-    if (cname == ROCK) {
-        auto rock = (Rock*) other;
-        float head_pos = this->y() + CHELL_HALF_HEIGHT;
-        // Evaluo si esta encima de chell y cayendo
-        (rock->y() > head_pos && rock->velocityY() != 0) ? _dead = true : _hit_wall = true;
-    } else if (cname == ACID || cname == ENERGY_BALL) {
-        _dead = true;
-    } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == GATE || cname == CAKE ||
-    cname == ENERGY_RECEIVER || cname == ENERGY_TRANSMITTER) {
-        if (abs(vely) > DELTA_VEL || abs(velx) > DELTA_VEL) {    // Verifico no sea error delta
-            _hit_wall = true;
-            _move_state = MOVE_STOP;    // Freno cuando colisiona con bloque (saltando o caminando)
-        }
-        if (cname == CAKE)
-            _reached_cake = true;
-    } else if (cname == PORTAL) {
-        if (_tilt != NOT_TILTED)
-            _tilt = NOT_TILTED; // Sale del portal sin inclinacion
-        if (!_teleported) {
-            auto portal = (Portal *) other;
-            if (portal->exitPortal())   // Verifico que tenga ambos portales
-                _portal_to_use = portal;    // Asigno portal a atravesar
-            else
-                _hit_wall = true;
-        }   // Si se teletransporto se ignorara contacto en pre-solve
-    } else if (cname == METAL_DIAGONAL_BLOCK) {
+    if (cname == METAL_DIAGONAL_BLOCK) {
         _hit_wall = true;
         auto block = (MetalDiagonalBlock*) other;
-        auto diff_x = abs(x() - block->x());
         switch (block->getOrientation()) {
             case O_NE:
                 // Evaluo si esta moviendose hacia izquierda o si la velocidad en Y es mayor que
                 // delta. Siempre chell debe estar a partir del centro del bloque para inclinarse
-                if ((velx < 0 || abs(vely) > DELTA_VEL) && (x() > block->getCenterX()))
+                if ((velx < 0 || abs(vely) > DELTA_VEL) && (x() > block->getCenterX()) && !_teleported)
                     _tilt = EAST;   //todo: lo mismo en O_NO
                 break;
             case O_NO:
@@ -298,6 +274,34 @@ void Chell::collideWith(Collidable *other) {
                 break;
             default:    // Chell no se inclina
                 break;
+        }
+    } else {
+        (_tilt != NOT_TILTED) ? (_tilt = NOT_TILTED) : 0;
+        if (cname == ROCK) {
+            auto rock = (Rock *) other;
+            float head_pos = this->y() + CHELL_HALF_HEIGHT;
+            // Evaluo si esta encima de chell y cayendo
+            (rock->y() > head_pos && rock->velocityY() != 0) ? _dead = true : _hit_wall = true;
+        } else if (cname == ACID || cname == ENERGY_BALL) {
+            _dead = true;
+        } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == GATE || cname == CAKE ||
+                   cname == ENERGY_RECEIVER || cname == ENERGY_TRANSMITTER) {
+            if (abs(vely) > DELTA_VEL || abs(velx) > DELTA_VEL) {    // Verifico no sea error delta
+                _hit_wall = true;
+                _move_state = MOVE_STOP;    // Freno cuando colisiona con bloque (saltando o caminando)
+            }
+            if (cname == CAKE)
+                _reached_cake = true;
+        } else if (cname == PORTAL) {
+            if (_tilt != NOT_TILTED)
+                _tilt = NOT_TILTED; // Sale del portal sin inclinacion
+            if (!_teleported) {
+                auto portal = (Portal *) other;
+                if (portal->exitPortal())   // Verifico que tenga ambos portales
+                    _portal_to_use = portal;    // Asigno portal a atravesar
+                else
+                    _hit_wall = true;
+            }   // Si se teletransporto se ignorara contacto en pre-solve
         }
     }
 }

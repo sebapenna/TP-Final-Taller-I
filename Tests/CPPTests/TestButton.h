@@ -162,7 +162,7 @@ public:
         float chell_y = button1_y + dist_to_chell + 2;
         world->createChell(chell_x, chell_y);
         CPPUNIT_ASSERT(!button1->isActivated());
-        for (int i = 0; i < STEP_ITERATIONS; i++)
+        for (int i = 0; i < 2 * STEP_ITERATIONS; i++)
             world->step();
         CPPUNIT_ASSERT(button1->isActivated());
         auto chell = world->getChell(0);

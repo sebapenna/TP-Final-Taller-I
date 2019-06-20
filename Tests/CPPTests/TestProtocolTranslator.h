@@ -1015,6 +1015,7 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 5, output[CAKE_X_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 2, output[CAKE_Y_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 3, output[CAKE_SIDE_LENGTH_POS]);
+        cout << "OK";
     }
 
     void testTranslateCakeData() {

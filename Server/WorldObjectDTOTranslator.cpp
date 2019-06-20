@@ -77,13 +77,14 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
         }
         case ACID: {
             auto obj = (Acid *) collidable;
-            return make_shared<AcidDTO>(new_pos.first, new_pos.second, obj->width(), obj->height());
+            return make_shared<AcidDTO>(new_pos.first, new_pos.second, obj->width(),
+                    round(obj->height()));
         }
         case BUTTON: {
             auto obj = (Button *) collidable;
             if (initial_data) {
                 return make_shared<ButtonDTO>(obj->id(), new_pos.first, new_pos.second,
-                        obj->width(), obj->height());
+                        obj->width(), round(obj->height()));
             }
             auto state = NOT_ACTIVATED; // Se registro cambio de estado
             if (obj->isActivated())
@@ -141,7 +142,8 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
         case PORTAL: {
             auto obj = (Portal*) collidable;
             return make_shared<PortalDTO>(obj->id(), new_pos.first, new_pos.second,
-                    obj->width(), obj->height(), obj->tilt(), obj->colour(), DONT_DELETE);
+                    round(obj->width()), round(obj->height()), obj->tilt(), obj->colour(),
+                    DONT_DELETE);
         }
         case PIN_TOOL: {
             // todo: PIN TOOL GETTERS

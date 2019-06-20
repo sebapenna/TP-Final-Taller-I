@@ -140,7 +140,7 @@ void World::killChell() {
 
 void World::deleteOldPortals() {
     for (auto &id : _portals_to_delete) {
-        auto portal = _portals[id];
+        Portal* portal = _portals[id];
         if (portal) {
             _world->DestroyBody(portal->getBody());
             _objects_to_delete.emplace_back(id, portal->classId());
@@ -620,7 +620,7 @@ Portal* World::createPortal(const float &x, const float &y, b2Vec2 normal, const
 
     size_t next_id = 0;
     if (!_portals.empty())
-        next_id = _portals.end()->first;    // Obtengo id del ultimo portal (mayor id)
+        next_id = _portals.rbegin()->first + 1;    // Obtengo id del ultimo portal (mayor id)
     auto portal = new Portal(next_id, body, normal, color, 2 * half_width, 2 * half_height);
     body->SetUserData(portal);
     _portals.insert({next_id, portal});

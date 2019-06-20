@@ -84,10 +84,13 @@ rock:
 button:
   - id: 0
     x: -120
-    y: 1
+    y: 0.5
   - id: 1
     x: 25
-    y: 1
+    y: 0.5
+  - id: 2
+    x: -34
+    y: 0.5
 gate:
   - id: 0
     x: 60
@@ -137,5 +140,5 @@ energy_barrier:
     orientation: H
 acid:
   - x: 35
-    y: 1
+    y: 0.5
 

@@ -74,12 +74,12 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
     } else if ((cname1 == CHELL && cname2 == ENERGY_BARRIER) ||
     (cname1 == ENERGY_BARRIER && cname2 == CHELL)) {
         contact->SetEnabled(false);
-    } else if (cname1 == CHELL && cname2 == PORTAL) {
-        auto chell = (Chell*) coll1;
+    } else if (cname1 == CHELL && (cname2 == PORTAL/* || cname2 == METAL_DIAGONAL_BLOCK*/)) {
+        auto chell = (Chell*) coll1;    // Si portal en bloque diagonal evito deteccion contacto
         if (chell->ifTeleportedSetDone()) // Contacto se debe a que es punto de salida
             contact->SetEnabled(false); // Ignoro contacto con portal salida
-    } else if (cname2 == CHELL && cname1 == PORTAL) {
-        auto chell = (Chell*) coll2;
+    } else if (cname2 == CHELL && (cname1 == PORTAL /*|| cname1 == METAL_DIAGONAL_BLOCK*/)) {
+        auto chell = (Chell*) coll2;    // Si portal en bloque diagonal evito deteccion contacto
         if (chell->ifTeleportedSetDone())  // Contacto se debe a que es punto de salida
             contact->SetEnabled(false); // Ignoro contacto con portal salida
     }
