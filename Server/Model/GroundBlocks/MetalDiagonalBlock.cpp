@@ -40,3 +40,7 @@ const float MetalDiagonalBlock::width() {
 const float MetalDiagonalBlock::height() {
     return _height;
 }
+
+const float MetalDiagonalBlock::getCenterX() {
+    return _x + _width / 2;
+}

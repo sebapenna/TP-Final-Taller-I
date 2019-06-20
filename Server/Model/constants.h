@@ -35,7 +35,7 @@
 
 /* Movimiento */
 #define MOVE_FORCE  1500
-#define JUMP_FORCE  /*1250*/2000
+#define JUMP_FORCE  /*2000*/2000
 #define MOVE_LEFT   (uint8) 0
 #define MOVE_RIGHT  (uint8) 1
 #define MOVE_STOP   (uint8) 2

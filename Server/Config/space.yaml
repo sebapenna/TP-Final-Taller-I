@@ -25,9 +25,9 @@ block_rock:
     height: 4
     x: 0
     y: -2
-  - width: *length
+  - width: 6
     height: *length
-    x: 14
+    x: -26
     y: 2
   - width: *length # right_wall
     height: *height
@@ -44,24 +44,24 @@ block_metal:
     y: 2
   - width: *length
     height: *length
-    x: -96
-    y: 6
+    x: 60
+    y: 10
 block_metal_diagonal: # posicion de punta inferior izquierda (viendolo como cuadrado)
   - width: *length
     height: *length
     x: -92
     y: 4
     orientation: NE
-#  - width: *length
-#    height: *length
-#    x: -10
-#    y: 1
-#    orientation: NO
-#  - width: *length
-#    height: *length
-#    x: 20
-#    y: 1
-#    orientation: SE
+  - width: *length
+    height: *length
+    x: -10
+    y: 0
+    orientation: NE
+  - width: *length
+    height: *length
+    x: -16
+    y: 0
+    orientation: NO
 #  - width: *length
 #    height: *length
 #    x: -20

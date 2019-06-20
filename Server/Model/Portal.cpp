@@ -55,7 +55,8 @@ const b2Vec2 &Portal::normal() const {
 }
 
 void Portal::setExitPortal(Portal *other) {
-    _exit_portal = other;
+    if (other)
+        _exit_portal = other;
 }
 
 Portal *Portal::exitPortal() const {

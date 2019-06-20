@@ -33,6 +33,9 @@ public:
     const float width() override;
 
     const float height() override;
+
+    // Retorna el valor de x en el centro del cuerpo
+    const float getCenterX();
 };
 
 

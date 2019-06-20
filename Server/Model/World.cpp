@@ -141,13 +141,15 @@ void World::killChell() {
 void World::deleteOldPortals() {
     for (auto &id : _portals_to_delete) {
         auto portal = _portals[id];
-        _world->DestroyBody(portal->getBody());
-        _objects_to_delete.emplace_back(id, portal->classId());
-        delete portal;
-        _portals.erase(id);
+        if (portal) {
+            _world->DestroyBody(portal->getBody());
+            _objects_to_delete.emplace_back(id, portal->classId());
+            delete portal;
+            portal = nullptr;
+            _portals.erase(id);
+        }
     }
     _portals_to_delete.clear(); // Vacio vector portales a eliminar
-
 }
 
 

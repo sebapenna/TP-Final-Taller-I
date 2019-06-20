@@ -115,14 +115,18 @@ int Chell::setNewPortal(Portal *portal) {
     if (portal->colour() == ORANGE_PORTAL) {
         if (_portals.first)
             old_portal_id = _portals.first->id();
-        if (_portals.second)
+        if (_portals.second) {
             portal->setExitPortal(_portals.second);  // Seteo portal de salida
+            _portals.second->setExitPortal(portal);
+        }
         _portals.first = portal;
     } else {
         if (_portals.second)
             old_portal_id = _portals.second->id();
-        if (_portals.first)
+        if (_portals.first) {
             portal->setExitPortal(_portals.first);  // Seteo portal de salida
+            _portals.first->setExitPortal(portal);
+        }
         _portals.second = portal;
     }
     return old_portal_id;
@@ -143,8 +147,8 @@ void Chell::updateJumpState() {
             if (vel_y <= 0)  // Empieza a caer
                 _jump_state = FALLING;
             break;
-        case FALLING:
-            if (abs(vel_y) < DELTA_VEL)
+        case FALLING:   // Velocidad menor a delta o no mas inclinado
+            if (abs(vel_y) < DELTA_VEL || (_tilt != NOT_TILTED))
                 _jump_state = ON_GROUND;  // Cae en una superficie
             break;
     }
@@ -156,7 +160,7 @@ bool Chell::movementInXAlreadyApplied() {
         return true;
     if (_move_state == MOVE_LEFT && vel_x < 0)  // Moviendo hacia izquierda
         return true;
-    return (_move_state == MOVE_STOP && vel_x == 0 && !_hit_wall);    // Cuerpo quieto
+    return (_move_state == MOVE_STOP && vel_x == 0 && _hit_wall);    // Cuerpo quieto
 }
 
 int Chell::calculateXImpulse() {
@@ -173,10 +177,14 @@ int Chell::calculateXImpulse() {
             (vel_x > 0) ? (impulse_factor = -2) : (impulse_factor = -1);
             break;
         case MOVE_STOP:
-            if (vel_x > 0)
-                impulse_factor = -1;
-            else if (vel_x < 0)
-                impulse_factor = 1;
+            if (_jump_state == ON_GROUND)   // Stop en superficie frena cuerpo
+                _body->SetLinearVelocity({0, 0});
+            if (_jump_state == JUMPED) {    // En el aire realiza impulso, no frena cuerpo
+                if (vel_x > 0)
+                    impulse_factor = -1;
+                else if (vel_x < 0)
+                    impulse_factor = 1;
+            }
             break;
         default: // No existe este caso
             break;
@@ -188,14 +196,16 @@ void Chell::move() {
     if (_portal_to_use) {   // Chell se debe teletransportar
         float newx = _portal_to_use->exitPortal()->x();
         float newy = _portal_to_use->exitPortal()->y();
-        float new_velx = x() * _portal_to_use->exitPortal()->normal().x;
-        float new_vely = y() * _portal_to_use->exitPortal()->normal().y;
+        float vel_mod = sqrt(pow(_body->GetLinearVelocity().x, 2) +
+                pow(_body->GetLinearVelocity().y, 2));
+        float new_velx = vel_mod * _portal_to_use->exitPortal()->normal().x * 10;
+        float new_vely = vel_mod * _portal_to_use->exitPortal()->normal().y * 10;
         teleport(newx, newy);
-        _body->SetLinearVelocity({new_velx, new_vely});
+        _body->ApplyLinearImpulse({new_velx, new_vely}, _body->GetWorldCenter(), true);
         _portal_to_use = nullptr;   // Teletransportacion realizada
         _teleported = true; // Indico que chell se teletransporto durante step
     }
-    if (_tilt == NOT_TILTED) {
+    if (_tilt == NOT_TILTED) {  // Si esta inclinado cae, no se mueve
         int x_impulse = 0, y_impulse = 0;
         x_impulse = calculateXImpulse();
         if (_jump) {
@@ -242,6 +252,8 @@ bool Chell::actedDuringStep() {
 
 void Chell::collideWith(Collidable *other) {
     auto cname = other->classId();
+    auto velx = _body->GetLinearVelocity().x;
+    auto vely = _body->GetLinearVelocity().y;
     if (cname == ROCK) {
         auto rock = (Rock*) other;
         float head_pos = this->y() + CHELL_HALF_HEIGHT;
@@ -249,55 +261,58 @@ void Chell::collideWith(Collidable *other) {
         (rock->y() > head_pos && rock->velocityY() != 0) ? _dead = true : _hit_wall = true;
     } else if (cname == ACID || cname == ENERGY_BALL) {
         _dead = true;
-    } else if (cname == METAL_DIAGONAL_BLOCK) {
-        _hit_wall = true;
-        auto block = (MetalDiagonalBlock*) other;
-        auto diff_x = abs(x() - block->x());
-        switch (block->getOrientation()) {
-            case O_NE:
-                if (_body->GetLinearVelocity().x < 0 ||
-                        (abs(_body->GetLinearVelocity().y) > DELTA_VEL && diff_x < CHELL_HALF_WIDTH)) {
-                    // De costado o arriba
-                    _tilt = EAST;   //todo: lo mismo en O_NO
-                }
-                break;
-            case O_NO:
-                if (_body->GetLinearVelocity().x > 0 || abs(_body->GetLinearVelocity().y) >
-                DELTA_VEL) {    // De costado o arriba
-                    _tilt = WEST;
-                    _body->ApplyLinearImpulse({-2 * MOVE_FORCE, 0},
-                                              _body->GetWorldCenter(), true);
-                }
-                break;
-            default:    // Chell no se inclina
-                break;
-        }
     } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == GATE || cname == CAKE ||
     cname == ENERGY_RECEIVER || cname == ENERGY_TRANSMITTER) {
-        if (abs(_body->GetLinearVelocity().y) > DELTA_VEL ||
-        abs(_body->GetLinearVelocity().x) > DELTA_VEL) {    // Verifico no sea velocidad error delta
+        if (abs(vely) > DELTA_VEL || abs(velx) > DELTA_VEL) {    // Verifico no sea error delta
             _hit_wall = true;
             _move_state = MOVE_STOP;    // Freno cuando colisiona con bloque (saltando o caminando)
         }
         if (cname == CAKE)
             _reached_cake = true;
     } else if (cname == PORTAL) {
+        if (_tilt != NOT_TILTED)
+            _tilt = NOT_TILTED; // Sale del portal sin inclinacion
         if (!_teleported) {
             auto portal = (Portal *) other;
             if (portal->exitPortal())   // Verifico que tenga ambos portales
-                _portal_to_use = portal;
+                _portal_to_use = portal;    // Asigno portal a atravesar
             else
                 _hit_wall = true;
         }   // Si se teletransporto se ignorara contacto en pre-solve
+    } else if (cname == METAL_DIAGONAL_BLOCK) {
+        _hit_wall = true;
+        auto block = (MetalDiagonalBlock*) other;
+        auto diff_x = abs(x() - block->x());
+        switch (block->getOrientation()) {
+            case O_NE:
+                // Evaluo si esta moviendose hacia izquierda o si la velocidad en Y es mayor que
+                // delta. Siempre chell debe estar a partir del centro del bloque para inclinarse
+                if ((velx < 0 || abs(vely) > DELTA_VEL) && (x() > block->getCenterX()))
+                    _tilt = EAST;   //todo: lo mismo en O_NO
+                break;
+            case O_NO:
+                // Evaluo si esta moviendose hacia derecha o si la velocidad en Y es mayor que
+                // delta. Siempre chell debe estar a partir del centro del bloque para inclinarse
+                if ((velx > 0 || abs(vely) > DELTA_VEL) && (x() < block->getCenterX()))
+                    _tilt = WEST;
+                break;
+            default:    // Chell no se inclina
+                break;
+        }
     }
 }
 
 void Chell::endCollitionWith(Collidable *other) {
     auto cname = other->classId();
     if (cname == METAL_DIAGONAL_BLOCK) {
-        if (_tilt != NOT_TILTED)
+        if (_tilt != NOT_TILTED && (abs(y() - _height / 2 - other->y()) < DELTA_POS))
             _body->SetLinearVelocity({0,0});
-        _tilt = NOT_TILTED;   // Deja de caminar en diagonal
+        else if (_jump_state == FALLING)
+            _body->SetLinearVelocity({MOVE_FORCE,-MOVE_FORCE});
+        if (abs(y() - _height / 2 - other->y()) < DELTA_POS)   // Chell llego a base de bloque
+            _tilt = NOT_TILTED;   // Deja de caminar en diagonal
+        else if (x() + width() / 2 < other->x())
+            _tilt = NOT_TILTED; // Pase el bloque
     } else if (cname == ROCK_BLOCK || cname == METAL_BLOCK || cname == ROCK ||
     cname == ENERGY_RECEIVER || cname == ENERGY_TRANSMITTER) {
         _hit_wall = false;
