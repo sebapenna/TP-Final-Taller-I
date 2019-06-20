@@ -8,6 +8,7 @@
 
 #include <client/ComponentsSDL/Sprite.h>
 #include "View.h"
+
 enum ButtonState{activated, deactivated};
 class ButtonView : public View {
 private:
