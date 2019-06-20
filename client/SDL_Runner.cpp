@@ -13,8 +13,6 @@
 #include <client/View/EnergyReceiverView.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterActivateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/PinToolDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
