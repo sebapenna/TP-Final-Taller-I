@@ -24,6 +24,7 @@
 #include <Common/ProtocolTranslator/PlayerActionsDTO/DropRockDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPinToolDTO.h>
+#include <Common/ProtocolTranslator/ResetPortalsDTO.h>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "Common/ProtocolTranslator/PlayerActionsDTO/MoveLeftDTO.h"
@@ -160,11 +161,10 @@ int main(int argc, char** argv){
                             break;
                         }
                         case SDLK_r: {
-                            //std::shared_ptr<ProtocolDTO> dto(new ResetDTO());
-                            //blockingQueue.push(dto);
+                            std::shared_ptr<ProtocolDTO> dto(new ResetPortalsDTO());
+                            blockingQueue.push(dto);
                             break;
                         }
-
                     }
                 } else if (e.type == SDL_KEYUP) {
                     std::shared_ptr<ProtocolDTO> dto(new StopDTO());

@@ -13,8 +13,6 @@
 #include <client/View/EnergyReceiverView.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterActivateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/PinToolDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -98,7 +96,9 @@ void SDL_Runner::addRockBlock(RockBlockDTO *rockBlockDTO, std::string &file_name
     for(int i=0; i<rockBlockDTO->getWidth(); i+=CUT_LEN_BLOCKS) {
         for (int j = 0; j<rockBlockDTO->getHeight(); j+=CUT_LEN_BLOCKS) {
             auto rockBlock = std::make_shared<BlockRockView>(textureFactory.getTextureByName(file_name), renderer);
-            rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY()+j, CUT_LEN_BLOCKS, CUT_LEN_BLOCKS);
+            int width = i+CUT_LEN_BLOCKS>rockBlockDTO->getWidth()? rockBlockDTO->getWidth() - i : CUT_LEN_BLOCKS;
+            int height = j+CUT_LEN_BLOCKS>rockBlockDTO->getHeight()? rockBlockDTO->getHeight() - j : CUT_LEN_BLOCKS;
+            rockBlock->setDestRect(rockBlockDTO->getX()+i, rockBlockDTO->getY()+j, width, height);
             world.addView(rockBlock);
         }
     }
@@ -108,7 +108,9 @@ void SDL_Runner::addMetalBlock(MetalBlockDTO *metalBlockDTO, std::string &file_n
     for(int i=0; i<metalBlockDTO->getWidth(); i+=CUT_LEN_BLOCKS) {
         for (int j = 0; j<metalBlockDTO->getHeight(); j+=CUT_LEN_BLOCKS) {
             auto metalBlock = std::make_shared<BlockMetalView>(textureFactory.getTextureByName(file_name), renderer);
-            metalBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY() + j, CUT_LEN_BLOCKS, CUT_LEN_BLOCKS);
+            int width = i+CUT_LEN_BLOCKS>metalBlockDTO->getWidth()? metalBlockDTO->getWidth() - i : CUT_LEN_BLOCKS;
+            int height = j+CUT_LEN_BLOCKS>metalBlockDTO->getHeight()? metalBlockDTO->getHeight() - j : CUT_LEN_BLOCKS;
+            metalBlock->setDestRect(metalBlockDTO->getX()+i, metalBlockDTO->getY() + j, width, height);
             world.addView(metalBlock);
         }
     }
