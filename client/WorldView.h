@@ -21,6 +21,7 @@
 #include <client/View/EnergyBallView.h>
 #include <client/View/PortalBlueView.h>
 #include <client/View/PortalOrangeView.h>
+#include <client/View/PinToolView.h>
 
 class WorldView {
 private:
@@ -33,6 +34,7 @@ private:
     std::map<int, std::shared_ptr<EnergyReceiverView>> receivers;
     std::map<int, std::shared_ptr<EnergyBallView>> balls;
     std::map<int, std::shared_ptr<View>> portals;
+    std::map<int, std::shared_ptr<PinToolView>> pintools;
 
     std::shared_ptr<CakeView> cake;
     std::shared_ptr<BackgroundView> background;
@@ -67,6 +69,8 @@ public:
     void obtainXY(int &x, int &y, int x_m, int y_m, Renderer& renderer);
     void addPortal(int16_t id, std::shared_ptr<View> portal);
     void removePortal(int16_t id);
+    void addPinTool(std::shared_ptr<PinToolView> pintool);
+    void removePinTool(int16_t id);
 };
 
 

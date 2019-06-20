@@ -11,14 +11,11 @@
 
 class PortalOrangeView : public View {
 private:
-    int id;
     AnimatedSprite portal;
     int16_t tilted;
 public:
-    PortalOrangeView(int id, SDL_Texture* texture, Renderer& renderer, int16_t tilted, int x = 0, int y = 0);
+    PortalOrangeView(SDL_Texture* texture, Renderer& renderer, int16_t tilted, int x = 0, int y = 0);
     void draw(Camera& camera);
-
-    int getId() const;
 };
 
 
