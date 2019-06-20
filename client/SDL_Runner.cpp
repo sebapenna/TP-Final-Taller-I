@@ -2,33 +2,18 @@
 // Created by jonathanmedina on 05/06/19.
 //
 
-#include <Common/ProtocolTranslator/DataDTO/ChellDTO.h>
 #include <iostream>
-#include <Common/ProtocolTranslator/DataDTO/PlayerChellIdDTO.h>
 #include <client/View/DiagonalBlockMetalView.h>
 #include <client/View/AcidView.h>
 #include <client/View/RockView.h>
-#include <Common/ProtocolTranslator/DataDTO/ButtonDTO.h>
 #include <client/View/ButtonView.h>
-#include <Common/ProtocolTranslator/DataDTO/ButtonStateDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/GateDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/GateStateDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/AcidDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/RockBlockDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/MetalBlockDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/MetalDiagonalBlockDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/RockDTO.h>
 #include <Server/Model/constants.h>
 #include <client/View/BackgroundView.h>
-#include <Common/ProtocolTranslator/DataDTO/EnergyBarrierDTO.h>
 #include <client/View/EnergyBarrierView.h>
-#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverDTO.h>
 #include <client/View/EnergyReceiverView.h>
-#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/EnergyTransmitterActivateDTO.h>
-#include <Common/ProtocolTranslator/DataDTO/EnergyBallDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/EnergyReceiverActivateDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
@@ -202,6 +187,7 @@ void SDL_Runner::run() {
     std::string gate_file_name("gate");
     std::string cake_file_name("cake");
     std::string background("background");
+    std::string portal_file_name("portal");
     bool done_receiving = false;
     while (!done_receiving) {
         auto aux = safeQueue.getTopAndPop();
@@ -322,6 +308,24 @@ void SDL_Runner::run() {
                         break;
                     }
                     case PROTOCOL_PORTAL_DATA: {
+                        auto portalDTO = (PortalDTO*) newItem;
+                        if (portalDTO->getDeleteState() == DELETE) {
+                            if (portalDTO->getColour() == BLUE_PORTAL) {
+                                world.removePortalBlue(portalDTO->getId());
+                            } else if (portalDTO->getColour() == ORANGE_PORTAL) {
+                                world.removePortalOrange(portalDTO->getId());
+                            }
+                        } else {
+                            if (portalDTO->getColour() == BLUE_PORTAL) {
+                                auto portal = std::make_shared<PortalBlueView>(portalDTO->getId(), textureFactory.getTextureByName(portal_file_name), renderer, portalDTO->getTilt());
+                                portal->setDestRect(portalDTO->getX(), portalDTO->getY(), portalDTO->getWidth(), portalDTO->getHeight());
+                                world.addPortalBlue(portal);
+                            } else {
+                                auto portal = std::make_shared<PortalOrangeView>(portalDTO->getId(), textureFactory.getTextureByName(portal_file_name), renderer, portalDTO->getTilt());
+                                portal->setDestRect(portalDTO->getX(), portalDTO->getY(), portalDTO->getWidth(), portalDTO->getHeight());
+                                world.addPortalOrange(portal);
+                            }
+                        }
                         break;
                     }
                     case PROTOCOL_PIN_TOOL_DATA: {

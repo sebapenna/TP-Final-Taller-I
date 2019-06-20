@@ -19,6 +19,8 @@
 #include <client/View/CakeView.h>
 #include <client/View/EnergyTransmitterView.h>
 #include <client/View/EnergyBallView.h>
+#include <client/View/PortalBlueView.h>
+#include <client/View/PortalOrangeView.h>
 
 class WorldView {
 private:
@@ -30,6 +32,8 @@ private:
     std::map<int, std::shared_ptr<EnergyTransmitterView>> transmitters;
     std::map<int, std::shared_ptr<EnergyReceiverView>> receivers;
     std::map<int, std::shared_ptr<EnergyBallView>> balls;
+    std::map<int, std::shared_ptr<PortalBlueView>> portalsBlue;
+    std::map<int, std::shared_ptr<PortalOrangeView>> portalsOrange;
     std::shared_ptr<CakeView> cake;
     std::shared_ptr<BackgroundView> background;
     Camera* camera;
@@ -60,8 +64,11 @@ public:
     void activateTransmitter(int16_t id);
     void addBall(std::shared_ptr<EnergyBallView> ball);
     void removeBall(int16_t id);
-
     void obtainXY(int &x, int &y, int x_m, int y_m, Renderer& renderer);
+    void addPortalBlue(std::shared_ptr<PortalBlueView> portal);
+    void addPortalOrange(std::shared_ptr<PortalOrangeView> portal);
+    void removePortalBlue(int16_t id);
+    void removePortalOrange(int16_t id);
 };
 
 
