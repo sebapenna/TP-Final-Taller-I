@@ -3,7 +3,7 @@ project(Portal)
 
 # todo CMAKE FULL
 #SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -DDEBUG_MODE" )
-SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -DDEBUG_MODE" )
+SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -g -DDEBUG_MODE" )
 # todo: borrar debug mode en la entrega !
 include_directories(${PROJECT_SOURCE_DIR})
 

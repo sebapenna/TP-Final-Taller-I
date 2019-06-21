@@ -22,7 +22,7 @@ private:
     bool _reached_cake;
     bool _teleported = false;
     // Par de portales: primero sera el naranja y el segundo el azul.
-    std::pair<Portal*, Portal*> _portals;
+    std::pair<Portal *, Portal *> _portals;
     Portal *_portal_to_use = nullptr; // Portal por el cual teletransportar, podria no ser propio
     PinTool *_pintool = nullptr;
 
@@ -34,7 +34,7 @@ private:
     int calculateXImpulse();
 
 public:
-    Chell(const size_t &id, b2Body *body, const float& width, const float& height);
+    Chell(const size_t &id, b2Body *body, const float &width, const float &height);
 
     ~Chell() override;
 
@@ -111,7 +111,10 @@ public:
     // Elimina los portales de la chell. En caso de tener previamente portales retornara un par
     // con el id del portal naranja en el primer indice y el azul en el segundo. Si no tuviese
     // alguno o ambos portales retornara -1 en cada posicion.
-    std::pair<size_t,size_t> resetPortals();
+    std::pair<size_t, size_t> resetPortals();
+
+    // Borra referencia a pintool actual.
+    void resetPinTool();
 
     const float x() override;
 

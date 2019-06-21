@@ -360,4 +360,8 @@ int Chell::setNewPinTool(PinTool *pintool) {
     return old_pintool_id;
 }
 
+void Chell::resetPinTool() {
+    _pintool= nullptr;
+}
+
 Chell::~Chell() = default;

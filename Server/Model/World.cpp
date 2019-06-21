@@ -172,6 +172,8 @@ void World::step() {
     stepGates();
     stepChells();
     stepRocks();
+    // Primero realizo step de pin tools y luego deleteOldShootables para eliminar los que
+    // finalizo su tiempo de vida
     stepPinTools();
     for (auto &shot_object : _new_shootables)
         _objects_to_update.push_back(shot_object);   // Agrego nuevos portales
@@ -183,18 +185,15 @@ void World::step() {
 
 void World::stepPinTools() {
     for (auto &shootable : _shootables) {
-        if (shootable.second->classId() == PIN_TOOL) {
-            auto pintool = (PinTool*) shootable.second;
-            pintool->updateLifetime();
-            if (pintool->isDead()) {
-                auto id = pintool->id();
-                _world->DestroyBody(pintool->getBody());
-                _objects_to_delete.emplace_back(id, pintool->classId());
-                delete pintool;
-                pintool = nullptr;
-                _shootables.erase(id);
-//            } else if (energy_ball->actedDuringStep()) {
-//                _objects_to_update.push_back(energy_ball);
+        if (shootable.second) {
+            if (shootable.second->classId() == PIN_TOOL) {
+                auto pintool = (PinTool *) shootable.second;
+                pintool->updateLifetime();
+                if (pintool->isDead()) {
+                    _shootables_to_delete.push_back(pintool->id());
+                    auto chell = getChell(pintool->getOwnerChellId());
+                    chell->resetPinTool();
+                }
             }
         }
     }
@@ -613,9 +612,9 @@ Portal* World::createPortal(const float &x, const float &y, b2Vec2 normal, const
     else if ((normal.x > 0 && normal.y < 0) || (normal.x < 0 && normal.y > 0))
         angle = -45;   // Portal inclinado (rotado hacia derecha)
     else if ((normal.x == 0 && normal.y > 0) || (normal.x == 0 && normal.y < 0))
-        angle = 90; // Cuerpo horizontal
+        angle = 180; // Cuerpo horizontal
 
-    if (angle == 90) {  // Cuerpo horizontal
+    if (angle == 180) {  // Cuerpo horizontal
         half_width = PORTAL_HALF_HEIGHT;
         half_height = PORTAL_HALF_WIDTH;
     }
@@ -635,15 +634,17 @@ Portal* World::createPortal(const float &x, const float &y, b2Vec2 normal, const
 }
 
 
-PinTool *World::createPinTool(const float &x, const float &y) {
+PinTool *World::createPinTool(const float &x, const float &y, const size_t& chell_id) {
     auto body = createStaticBox(x, y, PIN_TOOL_HALF_WIDTH, PIN_TOOL_HALF_HEIGHT);
     size_t next_id = 0;
     if (!_shootables.empty())
         next_id = _shootables.rbegin()->first + 1;    // Obtengo id del ultimo elemento (mayor id)
-    auto pintool = new PinTool(next_id, body, 2 * PIN_TOOL_HALF_WIDTH, 2 * PIN_TOOL_HALF_HEIGHT);
+    auto pintool = new PinTool(next_id, chell_id, body, 2 * PIN_TOOL_HALF_WIDTH,
+            2 * PIN_TOOL_HALF_HEIGHT);
     body->SetUserData(pintool);
     _shootables.insert({next_id, pintool});
     _new_shootables.push_back(pintool); // Agrego a vector de objetos que se deben actualizar
+    return pintool;
 }
 
 bool World::shotHitMetal(RayCastCallback &callback, Chell *chell, const float &dest_x,
@@ -666,7 +667,7 @@ void World::shootPinTool(const size_t &chell_id, const float &dest_x, const floa
         return;
     RayCastCallback callback;
     if (shotHitMetal(callback, chell, dest_x, dest_y)) {   // Colisiono con superficie metal
-        auto pintool = createPinTool(callback.m_point.x, callback.m_point.y);
+        auto pintool = createPinTool(callback.m_point.x, callback.m_point.y, chell_id);
         auto old_pintool_id = chell->setNewPinTool(pintool);
         if (old_pintool_id != -1)
             _shootables_to_delete.push_back(old_pintool_id);    // Portal a eliminar en step

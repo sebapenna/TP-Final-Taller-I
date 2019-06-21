@@ -1,19 +1,27 @@
 #include "PinTool.h"
 #include <Server/Model/constants.h>
 
-PinTool::PinTool(const size_t &id, b2Body *body, const float &width, const float &height) :
-        _body(body), _width(width), _height(height), _id(id) { }
+PinTool::PinTool(const size_t &id, const size_t& chell_id, b2Body *body, const float &width,
+        const float &height) : _owner_chell_id(chell_id), _body(body), _width(width),
+        _height(height), _id(id) { }
+
+PinTool::~PinTool() = default;
 
 const uint8_t PinTool::classId() {
     return PIN_TOOL;
 }
 
 void PinTool::collideWith(Collidable *other) {
-    // Colision no tiene efecto sobre el
+    if (other->classId() == PORTAL)
+        _dead = true;   // Se creo portal sobre pintool, se la elimina
 }
 
 void PinTool::endCollitionWith(Collidable *other) {
     // Colision no tiene efecto sobre el
+}
+
+const size_t PinTool::getOwnerChellId() const {
+    return _owner_chell_id;
 }
 
 const float PinTool::x() {
@@ -57,4 +65,3 @@ bool PinTool::actedDuringStep() {
     return false;
 }
 
-PinTool::~PinTool() = default;

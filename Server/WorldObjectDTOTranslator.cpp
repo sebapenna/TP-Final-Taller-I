@@ -35,6 +35,7 @@
 
 using std::make_shared;
 
+// Utilizo round para aquellos valores que pueden ser menores a 1 (mayores a 0)
 std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *collidable , bool initial_data) {
     if (!collidable)
         return nullptr;
@@ -147,8 +148,8 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
         }
         case PIN_TOOL: {
             auto obj = (PinTool*) collidable;
-            return make_shared<PinToolDTO>(obj->id(), obj->x(), obj->y(), obj->width(),
-                    obj->height(), DONT_DELETE);
+            return make_shared<PinToolDTO>(obj->id(), obj->x(), obj->y(), round(obj->width()),
+                    round(obj->height()), DONT_DELETE);
         }
         default:
             // No existe este caso

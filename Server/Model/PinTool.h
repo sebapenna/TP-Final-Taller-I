@@ -11,9 +11,12 @@ private:
     const float _width, _height;
     float _lifetime = 0;
     bool _dead = false, _previously_dead = false;
+    // Guardo id de chell a la cual pertenece, para poder eliminar cuando tiempo de vida acabada
+    const size_t _owner_chell_id;
 
 public:
-    PinTool(const size_t& id, b2Body * body, const float& width, const float& height);
+    PinTool(const size_t& id, const size_t& chell_id, b2Body * body, const float& width, const
+    float& height);
 
     ~PinTool() override;
 
@@ -40,6 +43,8 @@ public:
     b2Body *getBody() const;
 
     bool isDead();
+
+    const size_t getOwnerChellId() const;
 };
 
 

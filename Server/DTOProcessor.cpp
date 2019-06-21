@@ -5,6 +5,7 @@
 #include <Common/exceptions.h>
 #include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPinToolDTO.h>
 #include "DTOProcessor.h"
 
 using std::vector;
@@ -39,14 +40,14 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
             auto p_dto = (ShootPortalDTO *) dto;
             world->shootPortal(chell_id, p_dto->getX(), p_dto->getY(), p_dto->getColor());
             break;
-        }
-        case PROTOCOL_RESET_PORTALS:
+        } case PROTOCOL_RESET_PORTALS:
             world->resetPortals(chell_id);
             break;
-        case PROTOCOL_SHOOT_PIN_TOOL:
-            // todo: DISPARAR PIN TOOL
+        case PROTOCOL_SHOOT_PIN_TOOL: {
+            auto p_dto = (ShootPinToolDTO *) dto;
+            world->shootPinTool(chell_id, p_dto->getX(), p_dto->getY());
             break;
-        case PROTOCOL_LIFT_ROCK:
+        } case PROTOCOL_LIFT_ROCK:
             // todo: LIFT ROCK
             break;
         case PROTOCOL_DROP_ROCK:

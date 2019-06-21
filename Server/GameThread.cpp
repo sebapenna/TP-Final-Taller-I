@@ -46,8 +46,8 @@ void GameThread::run(std::string map_filename) {
         Stage stage(map_filename);    // Creo stage en tiempo de espera al comienzo
 
         // Loop esperando a que owner inicie la partida. Verifico haya jugadores conectados
-        while (!_begin_game && !_empty_game && !_game_finished) {   //todo:activar
-//            std::this_thread::sleep_for(seconds(20)); // Duermo thread esperando el inicio
+        while (!_begin_game && !_empty_game && !_game_finished) {
+            std::this_thread::sleep_for(milliseconds(500)); // Duermo thread esperando el inicio
             auto event = _events_queue.getTopAndPop();
             if (event != nullptr)
                 switch (event->getProtocolId()) {
@@ -139,8 +139,6 @@ void GameThread::run(std::string map_filename) {
     }
 }
 
-// Todas los atributos se deben inicializar de esta manera antes del thread para ya estar
-// disponibles cuando el  mismo comienze su ejecucion y no haya invalid reads
 GameThread::GameThread(Player* new_player, const size_t &max_players, std::string map_filename,
         const size_t &id) : _map_filename(map_filename), _game_finished(false),
         _empty_game(false), _begin_game(false), _dead_thread(false), _max_players(max_players),

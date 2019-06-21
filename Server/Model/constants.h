@@ -90,8 +90,8 @@
 #define CAKE_HALF_LEN   2
 
 /* Configuracion Portal */
-#define PORTAL_HALF_WIDTH    0.5
-#define PORTAL_HALF_HEIGHT 1.8  // Algo mas chico que el largo del bloque
+#define PORTAL_HALF_WIDTH    0.25
+#define PORTAL_HALF_HEIGHT 2  // Algo mas chico que el largo del bloque
 
 /* Inclinacion Portal */
 #define STRAIGHT    (int16_t) 0
@@ -99,8 +99,8 @@
 #define RIGHT    (int16_t)   2
 
 /* Configuracion PinTool */
-#define PIN_TOOL_HALF_WIDTH 0.25
-#define PIN_TOOL_HALF_HEIGHT    0.25
+#define PIN_TOOL_HALF_WIDTH 1
+#define PIN_TOOL_HALF_HEIGHT    1
 #define PIN_TOOL_LIFETIME   20
 
 /* Class Names*/

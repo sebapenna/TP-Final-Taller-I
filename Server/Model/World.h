@@ -90,7 +90,7 @@ private:
 
     Portal* createPortal(const float &x, const float &y, b2Vec2 normal, const int16_t &color);
 
-    PinTool* createPinTool(const float& x, const float& y);
+    PinTool* createPinTool(const float& x, const float& y, const size_t& chell_id);
 
     // Retorna true en caso de que el disparo colisiono sobre una superficie en la cual se puede
     // crear el objeto que genera el disparo, false en el caso contrario.
