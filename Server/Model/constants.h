@@ -11,6 +11,8 @@
  *
  * */
 
+#define BLOCK_DIVISION  4   // todo: esta puede ir a common, diviision de bloques muy anchos
+
 /* Orientaciones cara diagonal bloque metal diagonal */
 #define O_NE    (uint8_t) NORTH_EAST
 #define O_NO    (uint8_t) NORTH_WEST
@@ -91,7 +93,7 @@
 
 /* Configuracion Portal */
 #define PORTAL_HALF_WIDTH    0.25
-#define PORTAL_HALF_HEIGHT 2  // Algo mas chico que el largo del bloque
+#define PORTAL_HALF_HEIGHT 1.98  // Algo mas chico que el largo del bloque
 
 /* Inclinacion Portal */
 #define STRAIGHT    (int16_t) 0
@@ -119,6 +121,7 @@
 #define PORTAL  (uint8_t) 12
 #define PIN_TOOL    (uint8_t) 13
 #define CAKE    (uint8_t) 14
+
 
 
 #endif //TP_FINAL_CONSTANTES_H

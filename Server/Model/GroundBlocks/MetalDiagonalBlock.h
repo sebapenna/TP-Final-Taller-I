@@ -28,8 +28,9 @@ public:
 
     bool actedDuringStep() override;
 
+    // X e Y seran la posicion de la punta inferior izquierda, pensando el bloque diagonal
+    // como un cuadrado completo, sin importar la orientacion del mismo
     const float x() override;
-
     const float y() override;
 
     const float width() override;
@@ -38,6 +39,7 @@ public:
 
     // Retorna el valor de x en el centro del cuerpo
     const float getCenterX();
+    const float getCenterY();
 };
 
 

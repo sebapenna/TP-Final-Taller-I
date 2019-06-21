@@ -342,8 +342,7 @@ void World::createMetalBlock(const float &width, const float &height,
 }
 
 void World::createMetalDiagonalBlock(const float &width, const float &height,
-                                     const float &x, const float &y,
-                                     const uint8_t &orientation) {
+                                     const float &x, const float &y, const uint8_t &orientation) {
     b2Vec2 vertices[3];
     int32 count = 3;
     switch (orientation) {
@@ -603,7 +602,8 @@ void World::killLastingChell(const size_t &killer_id) {
     }
 }
 
-Portal* World::createPortal(const float &x, const float &y, b2Vec2 normal, const int16_t &color) {
+Portal* World::createPortal(Collidable * collidable, b2Vec2 point, b2Vec2 normal,
+        const int16_t &color) {
     float half_width = PORTAL_HALF_WIDTH, half_height = PORTAL_HALF_HEIGHT;
 
     int angle = 0;  // Default portal vertical, defino angulo en base a normal
@@ -611,12 +611,42 @@ Portal* World::createPortal(const float &x, const float &y, b2Vec2 normal, const
         angle = 45;    // Portal inclinado (rotado hacia izquierda)
     else if ((normal.x > 0 && normal.y < 0) || (normal.x < 0 && normal.y > 0))
         angle = -45;   // Portal inclinado (rotado hacia derecha)
-    else if ((normal.x == 0 && normal.y > 0) || (normal.x == 0 && normal.y < 0))
+    else if ((normal.x == 0 && normal.y > 0) || (normal.x == 0 && normal.y < 0)) {
         angle = 180; // Cuerpo horizontal
-
-    if (angle == 180) {  // Cuerpo horizontal
         half_width = PORTAL_HALF_HEIGHT;
         half_height = PORTAL_HALF_WIDTH;
+    }
+
+    // Posicion sera en base a collidable, para quedar en centro de cara
+    float x = collidable->x(), y = collidable->y();
+    switch (angle) {
+        case 0: {
+            if (collidable->classId() == METAL_BLOCK) {
+                auto block = (MetalBlock *) collidable;
+                (normal.x > 0) ? (x += +collidable->width() / 2) : (x -= collidable->width() / 2);
+                y = block->getSubBlockCenterY(point.y);
+            } else {    // Cara plana de bloque diagonal
+                auto block = (MetalDiagonalBlock *) collidable;
+                (normal.x > 0) ? (x += block->width()) : 0; // x se matiene si falso
+                y = block->getCenterY();
+            }
+            break;
+        } case 180: {
+            if (collidable->classId() == METAL_BLOCK) {
+                auto block = (MetalBlock *) collidable;
+                (normal.y > 0) ? (y += +collidable->height() / 2) : (y -= collidable->height() / 2);
+                x = block->getSubBlockCenterX(point.x);
+            } else {    // Cara plana bloque diagonal
+                auto block = (MetalDiagonalBlock *) collidable;
+                (normal.y > 0) ? (y += block->height()) : 0;    // y se mantiene si falso
+                x = block->getCenterX();
+            }
+            break;
+        } default:   // Inclinado, ambos casos
+            auto block = (MetalDiagonalBlock*) collidable;
+            x = block->getCenterX();
+            y = block->getCenterY();
+            break;
     }
 
     auto body = createStaticBox(x, y, half_width, half_height);
@@ -681,8 +711,8 @@ void World::shootPortal(const size_t &chell_id, const float &dest_x, const float
         return;
     RayCastCallback callback;
     if (shotHitMetal(callback, chell, dest_x, dest_y)) {   // Colisiono con superficie metal
-        auto portal = createPortal(callback.m_point.x, callback.m_point.y, callback.m_normal,
-                color);
+        auto portal = createPortal((Collidable*) callback.m_fixture->GetBody()->GetUserData(),
+                callback.m_point, callback.m_normal, color);
         auto old_portal_id = chell->setNewPortal(portal);
         if (old_portal_id != -1)
             _shootables_to_delete.push_back(old_portal_id);    // Portal a eliminar en step

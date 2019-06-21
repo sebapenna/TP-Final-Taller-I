@@ -31,6 +31,14 @@ public:
     const float width() override;
 
     const float height() override;
+
+    // Calcula la x central del sub-bloque mas cercano al punto x dentro del bloque de gran tamaño.
+    // PRE: x debe encontrarse dentro del largo del bloque.
+    float getSubBlockCenterX(const float& x);
+
+    // Calcula la y central del sub-bloque mas cercano al punto y dentro del bloque de gran tamaño.
+    // PRE: y debe encontrarse dentro del largo del bloque.
+    float getSubBlockCenterY(const float& y);
 };
 
 

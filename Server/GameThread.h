@@ -19,18 +19,18 @@ class Player;
 // iniciar partida y sera aquel de id igual a 0
 class GameThread {
 private:
-    std::mutex _m;
-    std::thread _gameloop;
+    size_t _id;   // id de la partida
+    std::string _map_filename;
+    bool _begin_game, _game_finished, _empty_game, _dead_thread;
+    size_t _max_players;
     std::list<Player*> _players;
     SafeQueue<std::shared_ptr<Event>> _events_queue;
-    size_t _max_players;
-    size_t _id;   // id de la partida
-    bool _begin_game, _game_finished, _empty_game, _dead_thread;
-    std::string _map_filename;
+    std::mutex _m;
+    std::thread _gameloop;
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
-    void run(std::string map_filename);
+    void run();
 
     void notifyAllNewPlayer();
 
@@ -44,7 +44,7 @@ private:
 
 public:
     // map_filename es el archivo yaml con la configuracion del map
-    GameThread(Player* new_player, const size_t &max_players, std::string map_filename,
+    GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
             const size_t &id);
 
     // Une jugador a la partida en caso de que no se haya llegado al limite de jugadores.

@@ -41,9 +41,9 @@ void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
     for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) {deletePlayer(id);});
 }
 
-void GameThread::run(std::string map_filename) {
+void GameThread::run() {
     try {
-        Stage stage(map_filename);    // Creo stage en tiempo de espera al comienzo
+        Stage stage(_map_filename);    // Creo stage en tiempo de espera al comienzo
 
         // Loop esperando a que owner inicie la partida. Verifico haya jugadores conectados
         while (!_begin_game && !_empty_game && !_game_finished) {
@@ -139,10 +139,10 @@ void GameThread::run(std::string map_filename) {
     }
 }
 
-GameThread::GameThread(Player* new_player, const size_t &max_players, std::string map_filename,
-        const size_t &id) : _map_filename(map_filename), _game_finished(false),
+GameThread::GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
+        const size_t &id) : _map_filename(move(map_filename)), _game_finished(false),
         _empty_game(false), _begin_game(false), _dead_thread(false), _max_players(max_players),
-        _id(id), _gameloop(&GameThread::run, this, map_filename) {
+        _id(id), _gameloop(&GameThread::run, this) {
     addPlayerIfOpenToNewPlayersAndNotFull(new_player);
 }
 

@@ -88,7 +88,8 @@ private:
 
     bool inConditionToKillMissingChell();
 
-    Portal* createPortal(const float &x, const float &y, b2Vec2 normal, const int16_t &color);
+    Portal* createPortal(Collidable * collidable, b2Vec2 point, b2Vec2 normal,
+            const int16_t &color);
 
     PinTool* createPinTool(const float& x, const float& y, const size_t& chell_id);
 
