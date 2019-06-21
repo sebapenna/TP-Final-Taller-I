@@ -136,6 +136,10 @@ void WorldView::setChellState(int16_t id, ChellState state) {
     chell->setState(state);
 }
 
+ChellState WorldView::getChellState(int16_t id) {
+    return chells[id]->getState();
+}
+
 void WorldView::makeChellTiltedLeft(int16_t id) {
     auto chell = chells[id];
     chell->setTiltedState(ChellIsTilted::TILTEDLEFT);
