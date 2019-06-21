@@ -13,9 +13,8 @@ class PinToolView : public View {
 private:
     int id;
     Sprite pintool;
-    int16_t tilted;
 public:
-    PinToolView(int id, SDL_Texture* texture, Renderer& renderer, int16_t tilted, int x = 0, int y = 0);
+    PinToolView(int id, SDL_Texture* texture, Renderer& renderer, int x = 0, int y = 0);
     void draw(Camera& camera);
 
     int getId() const;

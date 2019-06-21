@@ -201,7 +201,7 @@ void SDL_Runner::addPinTool(PinToolDTO *pinToolDTO, std::string &file_name) {
     if (pinToolDTO->getDeleteState() == DELETE) {
         world.removePinTool(pinToolDTO->getId());
     } else {
-        auto pinTool = std::make_shared<PinToolView>(pinToolDTO->getId(), textureFactory.getTextureByName(file_name), renderer, pinToolDTO->getTilt());
+        auto pinTool = std::make_shared<PinToolView>(pinToolDTO->getId(), textureFactory.getTextureByName(file_name), renderer);
         pinTool->setDestRect(pinToolDTO->getX(), pinToolDTO->getY(), pinToolDTO->getWidth(), pinToolDTO->getHeight());
         world.addPinTool(pinTool);
     }
