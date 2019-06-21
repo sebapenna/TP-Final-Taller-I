@@ -58,7 +58,7 @@ add_library(sdldemo
         CommandSender.cpp
         CommandSender.h
         CommandReceiver.cpp
-        CommandReceiver.h View/CakeView.cpp View/CakeView.h View/EnergyBallView.cpp View/EnergyBallView.h View/PortalBlueView.cpp View/PortalBlueView.h View/PortalOrangeView.cpp View/PortalOrangeView.h View/PinToolView.cpp View/PinToolView.h)
+        CommandReceiver.h View/CakeView.cpp View/CakeView.h View/EnergyBallView.cpp View/EnergyBallView.h View/PortalBlueView.cpp View/PortalBlueView.h View/PortalOrangeView.cpp View/PortalOrangeView.h View/PinToolView.cpp View/PinToolView.h ComponentsSDL/SoundFactory.cpp ComponentsSDL/SoundFactory.h)
 
 
 

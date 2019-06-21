@@ -25,6 +25,8 @@
 #include <Common/ProtocolTranslator/DataDTO/EnergyBallDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/PinToolDTO.h>
+#include <client/ComponentsSDL/SoundFactory.h>
+#include <client/ComponentsSDL/MusicPlayer.h>
 #include "ComponentsSDL/Renderer.h"
 #include "TextureFactory.h"
 #include "../Common/SafeQueue.h"
@@ -38,6 +40,8 @@ private:
     Window window;
     Renderer renderer;
     TextureFactory textureFactory;
+    SoundFactory soundFactory;
+    MusicPlayer musicPlayer;
     WorldView world;
     int16_t myChellId;
 
