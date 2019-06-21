@@ -45,7 +45,9 @@ void SDL_Runner::addChell(ChellDTO *chellDTO, std::string &file_name) {
         world.addChell(chell2);
     }
     if (chellDTO->getJumping() == JUMPING) {
-        musicPlayer.playPlayerJumping();
+        if (world.getChellState(chellDTO->getId()) != ChellState::flying) {
+            musicPlayer.playPlayerJumping();
+        }
         world.setChellState(chellDTO->getId(), ChellState::flying);
     } else if (chellDTO->getMoving()) {
         if (chellDTO->getDirection() == O_O) {

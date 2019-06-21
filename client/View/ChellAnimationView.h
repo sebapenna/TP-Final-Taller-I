@@ -30,6 +30,8 @@ public:
     void setState(ChellState state);
     void setTiltedState(ChellIsTilted state);
     bool isDead();
+
+    ChellState getState() const;
 };
 
 

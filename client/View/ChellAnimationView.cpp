@@ -60,3 +60,7 @@ bool ChellAnimationView::isDead() {
 void ChellAnimationView::setTiltedState(ChellIsTilted state) {
     this->tiltedState = state;
 }
+
+ChellState ChellAnimationView::getState() const {
+    return state;
+}

@@ -9,11 +9,13 @@ MusicPlayer::MusicPlayer(SoundFactory &soundFactory) : soundFactory(soundFactory
 
 void MusicPlayer::playBackgroundMusic() {
     Mix_PlayMusic(soundFactory.getMusic(), -1);
+    Mix_VolumeMusic(20);
 }
 
 void MusicPlayer::playLoserSong() {
     Mix_HaltMusic();
     Mix_PlayMusic(soundFactory.getLoserMusic(), -1);
+    Mix_VolumeMusic(MIX_MAX_VOLUME);
 }
 
 void MusicPlayer::playGateOpening() {
