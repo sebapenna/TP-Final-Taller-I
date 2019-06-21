@@ -27,7 +27,7 @@
 
 SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>> &safeQueue, bool& done) :
     safeQueue(safeQueue), done(done), window(title, 1600, 1000, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE),
-    renderer(window), textureFactory() {
+    renderer(window), textureFactory(), soundFactory(), musicPlayer(soundFactory) {
     textureFactory.init(renderer);
     srand(time(NULL));
 }
@@ -36,12 +36,16 @@ void SDL_Runner::addChell(ChellDTO *chellDTO, std::string &file_name) {
     auto chell2 = std::make_shared<ChellAnimationView>(chellDTO->getId(), textureFactory.getTextureByName(file_name), renderer);
     if (chellDTO->getDeleteState() == DELETE) {
         world.setChellState(chellDTO->getId(), ChellState::dying);
+        if (myChellId == chellDTO->getId()) {
+            musicPlayer.playLoserSong();
+        }
         return;
     } else {
         chell2->setDestRect(chellDTO->getX(), chellDTO->getY(), chellDTO->getWidth(), chellDTO->getHeight());
         world.addChell(chell2);
     }
     if (chellDTO->getJumping() == JUMPING) {
+        musicPlayer.playPlayerJumping();
         world.setChellState(chellDTO->getId(), ChellState::flying);
     } else if (chellDTO->getMoving()) {
         if (chellDTO->getDirection() == O_O) {
@@ -50,6 +54,7 @@ void SDL_Runner::addChell(ChellDTO *chellDTO, std::string &file_name) {
             world.setChellState(chellDTO->getId(), ChellState::runningRight);
         }
     } else if (chellDTO->getShooting() == SHOOTING) {
+        musicPlayer.playPlayerFiring();
         world.setChellState(chellDTO->getId(), ChellState::firing);
     } else {
         world.setChellState(chellDTO->getId(), ChellState::standing);
@@ -166,8 +171,10 @@ void SDL_Runner::setButtonState(ButtonStateDTO *buttonStateDTO) {
 
 void SDL_Runner::setGateState(GateStateDTO *gateStateDTO) {
     if (gateStateDTO->getState() == OPEN) {
+        musicPlayer.playGateOpening();
         world.openGate(gateStateDTO->getId());
     } else {
+        musicPlayer.playGateClosing();
         world.closeGate(gateStateDTO->getId());
     }
 }
@@ -217,6 +224,8 @@ void SDL_Runner::run() {
     std::string background("background");
     std::string portal_file_name("portal");
     std::string pintool_file_name("pintool");
+
+    musicPlayer.playBackgroundMusic();
 
     bool done_receiving = false;
     while (!done_receiving) {

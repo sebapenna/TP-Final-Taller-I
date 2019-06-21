@@ -6,8 +6,19 @@
 #define PORTAL_MUSICPLAYER_H
 
 
-class MusicPlayer {
+#include "SoundFactory.h"
 
+class MusicPlayer {
+private:
+    SoundFactory& soundFactory;
+public:
+    MusicPlayer(SoundFactory& soundFactory);
+    void playBackgroundMusic();
+    void playLoserSong();
+    void playGateOpening();
+    void playGateClosing();
+    void playPlayerFiring();
+    void playPlayerJumping();
 };
 
 

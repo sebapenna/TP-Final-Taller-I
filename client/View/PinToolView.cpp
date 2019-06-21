@@ -12,7 +12,7 @@ PinToolView::PinToolView(int id, SDL_Texture *texture, Renderer &renderer, int x
 }
 
 void PinToolView::draw(Camera &camera) {
-    pintool.draw(camera,this->getDst(), 0);
+    pintool.draw(camera,this->getDst());
 }
 
 int PinToolView::getId() const {
