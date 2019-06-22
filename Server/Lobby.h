@@ -6,6 +6,7 @@
 #include "GameThread.h"
 #include <memory>
 #include "Event.h"
+#include "Configuration.h"
 #include <Common/SafeQueue.h>
 #include <mutex>
 
@@ -18,6 +19,7 @@ class Player;
 // poder liberar su memoria en caso de cerrar el servidor.
 class Lobby {
 private:
+    std::shared_ptr<Configuration> _configuration;
     std::mutex _m;
     std::mutex _mtx_sleep;  // Mutex exclusivo para el thread que elimina partidas terminadas
     std::condition_variable _cv;    // Condition variable para cerrar thread que elimina partidas

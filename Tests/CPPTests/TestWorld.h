@@ -6,6 +6,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 class TestWorld : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE( TestWorld );
@@ -13,13 +14,17 @@ class TestWorld : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE_END();
 
 private:
+    std::shared_ptr<Configuration> ptr;
+    Configuration *config;
     World *world;
     size_t width = 20;
     size_t height = 30;
 
 public:
     void setUp() {
-        world = new World(width, height);
+        ptr = make_shared<Configuration>();
+    config = ptr.get();
+        world = new World(width, height, ptr);
     }
 
     void tearDown() {

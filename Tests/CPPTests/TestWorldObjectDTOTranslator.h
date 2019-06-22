@@ -13,6 +13,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 
 class TestWorldObjectDTOTranslator : public CppUnit::TestFixture {
@@ -41,13 +42,17 @@ CPPUNIT_TEST_SUITE(TestWorldObjectDTOTranslator);
     CPPUNIT_TEST_SUITE_END();
 
 private:
+    std::shared_ptr<Configuration> ptrcon;
+    Configuration *config;
     World *world;
     size_t width = 100;
     size_t height = 200;
 
 public:
     void setUp() {
-        world = new World(width, height);
+        ptrcon = make_shared<Configuration>();
+        config = ptrcon.get();
+        world = new World(width, height, ptrcon);
     }
 
     void tearDown() {
@@ -60,8 +65,10 @@ public:
         int16_t w1 = 100, h1 = 4, x1 = 0, y1 = -2;
         int16_t w2 = 30, h2 = 10, x2 = 20, y2 = 20;
         auto new_pos = PositionTranslator::translate(ROCK_BLOCK, x1, y1, w1/2, h1/2);
-        world->createRockBlock(w1, h1, x1, y1);
-        world->createRockBlock(w2, h2, x2, y2);
+        auto data1 = make_shared<RockBlockData>(w1, h1, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<RockBlockData>(w2, h2, x2, y2);
+        world->createCollidable(data2);
         auto iter = world->getRockBlocks().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -89,8 +96,12 @@ public:
         int16_t w1 = 100, h1 = 4, x1 = 0, y1 = -2;
         int16_t w2 = 30, h2 = 10, x2 = 20, y2 = 20;
         auto new_pos = PositionTranslator::translate(METAL_BLOCK, x1, y1, w1/2, h1/2);
-        world->createMetalBlock(w1, h1, x1, y1);
-        world->createMetalBlock(w2, h2, x2, y2);
+
+        auto data1 = make_shared<MetalBlockData>(w1, h1, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<MetalBlockData>(w2, h2, x2, y2);
+        world->createCollidable(data2);
+
         auto iter = world->getMetalBlocks().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -117,8 +128,10 @@ public:
         cout << endl << "TEST crear DTO metal diagonal block: ";
         int16_t side1 = 100, x1 = 0, y1 = -2;
         int16_t side2 = 30, x2 = 20, y2 = 20;
-        world->createMetalDiagonalBlock(side1, side1, x1, y1, O_NE);
-        world->createMetalDiagonalBlock(side2, side2, x2, y2, O_NO);
+        auto data1 = make_shared<MetalDiagonalBlockData>(side1, side1, x1, y1, "NE");
+        world->createCollidable(data1);
+        auto data2 = make_shared<MetalDiagonalBlockData>(side2, side2, x2, y2, "NO");
+        world->createCollidable(data2);
         auto iter = world->getMetalDiagonalBlocks().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -146,9 +159,11 @@ public:
         int16_t x2 = 20, y2 = 20;
         auto new_pos = PositionTranslator::translate(ENERGY_TRANSMITTER, x1, y1, ENRG_BLOCK_HALF_LEN);
 
+        auto data1 = make_shared<EnergyTransmitterData>(x1, y1, "E");
+        world->createCollidable(data1);
+        auto data2 = make_shared<EnergyTransmitterData>(x2, y2, "O");
+        world->createCollidable(data2);
 
-        world->createEnergyTransmitter(x1, y1, O_E);
-        world->createEnergyTransmitter(x2, y2, O_O);
         auto iter = world->getEnergyTransmitters().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -180,8 +195,11 @@ public:
         auto new_pos = PositionTranslator::translate(ENERGY_RECEIVER, x1, y1, ENRG_BLOCK_HALF_LEN);
 
 
-        world->createEnergyReceiver(x1, y1);
-        world->createEnergyReceiver(x2, y2);
+        auto data1 = make_shared<EnergyReceiverData>(0, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<EnergyReceiverData>(1, x2, y2);
+        world->createCollidable(data2);
+
         auto iter = world->getEnergyReceivers().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -208,11 +226,16 @@ public:
         cout << endl << "TEST crear DTO acid: ";
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
-        auto new_pos = PositionTranslator::translate(ACID, x1, y1, ACID_HALF_WIDTH, ACID_HALF_HEIGHT);
+        int w = 4;
+        auto new_pos = PositionTranslator::translate(ACID, x1, y1, w / 2,
+                config->getAcidHalfHeight());
 
 
-        world->createAcid(x1, y1);
-        world->createAcid(x2, y2);
+        auto data1 = make_shared<AcidData>(x1, y1, w);
+        world->createCollidable(data1);
+        auto data2 = make_shared<AcidData>(x2, y2, w);
+        world->createCollidable(data2);
+
         auto iter = world->getAcids().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -224,7 +247,7 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * ACID_HALF_HEIGHT), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, dto->getClassId());
 
-        new_pos = PositionTranslator::translate(ACID, x2, y2, ACID_HALF_WIDTH, ACID_HALF_HEIGHT);
+        new_pos = PositionTranslator::translate(ACID, x2, y2, w / 2, config->getAcidHalfHeight());
         iter = world->getAcids().at(1);
         ptr = WorldObjectDTOTranslator::translate(iter, true);
         dto = (AcidDTO*) ptr.get();
@@ -242,9 +265,11 @@ public:
         int16_t x2 = 20, y2 = 20;
         auto new_pos = PositionTranslator::translate(BUTTON, x1, y1, BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT);
 
+        auto data1 = make_shared<ButtonData>(0, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<ButtonData>(1, x2, y2);
+        world->createCollidable(data2);
 
-        world->createButton(x1, y1);
-        world->createButton(x2, y2);
         auto iter = world->getButtons().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -275,9 +300,11 @@ public:
         int16_t x2 = 20, y2 = 20;
         auto new_pos = PositionTranslator::translate(GATE, x1, y1, GATE_HALF_WIDTH, GATE_HALF_HEIGHT);
 
+        auto data1 = make_shared<GateData>(0, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<GateData>(1, x2, y2);
+        world->createCollidable(data2);
 
-        world->createGate(x1, y1, {}, {});  // Creo botones/receptores vacios, ajeno a pruebas
-        world->createGate(x2, y2, {}, {});
         auto iter = world->getGates().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -307,9 +334,10 @@ public:
         auto new_pos = PositionTranslator::translate(ENERGY_BARRIER, x1, y1, BARRIER_HALF_WIDTH,
                 BARRIER_HALF_LENGTH);
 
-
-        world->createEnergyBarrier(x1, y1, O_V);
-        world->createEnergyBarrier(x2, y2, O_H);
+        auto data1 = make_shared<EnergyBarrierData>(x1, y1, "V");
+        world->createCollidable(data1);
+        auto data2 = make_shared<EnergyBarrierData>(x2, y2, "H");
+        world->createCollidable(data2);
         auto iter = world->getEnergyBarriers().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -338,9 +366,11 @@ public:
         int16_t x2 = 20, y2 = 20;
         auto new_pos = PositionTranslator::translate(ROCK, x1, y1, ROCK_HALF_LEN);
 
-
-        world->createRock(x1, y1);
-        world->createRock(x2, y2);
+        auto data1 = make_shared<RockData>(x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<RockData>(x2, y2);
+        world->createCollidable(data2);
+        
         auto iter = world->getRocks().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -371,9 +401,11 @@ public:
         int16_t x2 = 20, y2 = 20;
         auto new_pos = PositionTranslator::translate(CHELL, x1, y1, CHELL_HALF_WIDTH, CHELL_HALF_HEIGHT);
 
-
-        world->createChell(x1, y1);
-        world->createChell(x2, y2);
+        auto data1 = make_shared<ChellData>(0, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<ChellData>(0, x2, y2);
+        world->createCollidable(data2);
+        
         auto iter = world->getChells().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         ptr = WorldObjectDTOTranslator::translate(iter, true);
@@ -404,11 +436,12 @@ public:
         cout << endl << "TEST crear DTO energy ball: ";
         int16_t x1 = 0, y1 = -2;
 
-        world->createEnergyTransmitter(x1, y1, O_E);
+        auto data1 = make_shared<EnergyTransmitterData>(x1, y1, "E");
+        world->createCollidable(data1);
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i)
+            for (int i = 0; i < config->getFps(); ++i)
                 world->step();
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
+        for (int i = 0; i < config->getFps(); ++i)
             world->step(); // Step donde se crea EnergyBall
         auto energy_ball = world->getEnergyBall(0);
 
@@ -435,8 +468,10 @@ public:
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
 
-        world->createEnergyTransmitter(x1, y1, O_E);
-        world->createEnergyTransmitter(x2, y2, O_O);
+        auto data1 = make_shared<EnergyTransmitterData>(x1, y1, "E");
+        world->createCollidable(data1);
+        auto data2 = make_shared<EnergyTransmitterData>(x2, y2, "O");
+        world->createCollidable(data2);
         auto iter = world->getEnergyTransmitters().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         // En caso real solo se utilizara este DTO cuando se active el transmisor
@@ -453,8 +488,10 @@ public:
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
 
-        world->createEnergyReceiver(x1, y1);
-        world->createEnergyReceiver(x2, y2);
+        auto data1 = make_shared<EnergyReceiverData>(0, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<EnergyReceiverData>(1, x2, y2);
+        world->createCollidable(data2);
         auto iter = world->getEnergyReceivers().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
         // En caso real solo se utilizara este DTO cuando se active el receptor
@@ -471,8 +508,10 @@ public:
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
 
-        world->createButton(x1, y1);
-        world->createButton(x2, y2);
+        auto data1 = make_shared<ButtonData>(0, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<ButtonData>(0, x2, y2);
+        world->createCollidable(data2);
 
         auto iter = world->getButtons().at(0);
         std::shared_ptr<ProtocolDTO> ptr;
@@ -500,8 +539,11 @@ public:
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
 
-        world->createButton(x1, y1);
-        world->createGate(x2, y2, {0}, {});  // Gate depende de boton
+        auto data1 = make_shared<ButtonData>(0, x1, y1);
+        world->createCollidable(data1);
+        auto data2 = make_shared<GateData>(0, x2, y2);
+        data2->addButtonNeeded(0);
+        world->createCollidable(data2);
         auto button = world->getButton(0);
 
 

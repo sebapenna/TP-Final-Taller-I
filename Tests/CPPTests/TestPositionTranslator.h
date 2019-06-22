@@ -8,6 +8,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 
 class TestPositionTranslator : public CppUnit::TestFixture {

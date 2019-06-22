@@ -9,6 +9,7 @@
 #include <mutex>
 #include "DTOProcessor.h"
 #include "Event.h"
+#include "Configuration.h"
 #include <string>
 
 class Player;
@@ -30,7 +31,7 @@ private:
 
     // Run para el thread del gameloop. Juego comienza una vez que owner de la partida indica que
     // se debe iniciar y se llama al metodo beginGame.
-    void run();
+    void run(std::shared_ptr<Configuration> configuration);
 
     void notifyAllNewPlayer();
 
@@ -45,7 +46,7 @@ private:
 public:
     // map_filename es el archivo yaml con la configuracion del map
     GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
-            const size_t &id);
+            const size_t &id, std::shared_ptr<Configuration> configuration);
 
     // Une jugador a la partida en caso de que no se haya llegado al limite de jugadores.
     // Valor de retorno sera true en caso de haber sido agregado, false de lo contrario.

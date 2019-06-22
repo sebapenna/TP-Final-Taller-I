@@ -3,8 +3,9 @@
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
 #include <Server/Model/Obstacles/Gate.h>
 
-EnergyBall::EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius) :
-_id(id), _radius(radius) {
+EnergyBall::EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius,
+        const float &max_lifetime, const float &time_step) : _max_lifetime(max_lifetime),_id(id),
+        _radius(radius), _time_step(time_step) {
     _body = body;
     int x_impulse = 0, y_impulse = 0;
     switch (direction) {
@@ -32,12 +33,12 @@ _id(id), _radius(radius) {
 EnergyBall::~EnergyBall()  = default;
 
 void EnergyBall::updateLifetime() {
-    _lifetime += TIME_STEP;
+    _lifetime += _time_step;
 }
 
 bool EnergyBall::isDead() {
-    float diff_time = ENERGY_BALL_MAX_LIFETIME - _lifetime;
-    return (_dead || diff_time < TIME_STEP);
+    float diff_time = _max_lifetime - _lifetime;
+    return (_dead || diff_time < _time_step);
 }
 
 const uint8_t EnergyBall::classId() {
@@ -82,15 +83,9 @@ void EnergyBall::collideWith(Collidable *other) {
     }
 }
 
-void EnergyBall::endCollitionWith(Collidable *other) {
-
-}
+void EnergyBall::endCollitionWith(Collidable *other) { }
 
 bool EnergyBall::actedDuringStep() {
-    if (_previously_dead != _dead) {
-        _previously_dead = _dead;
-        return true;
-    }
     // Calculo diferencia para evitar detectar cambio de posicion menor a delta
     float diff_x = abs(_previous_x - _body->GetPosition().x);
     float diff_y = abs(_previous_y - _body->GetPosition().y);

@@ -36,10 +36,6 @@ void Rock::endCollitionWith(Collidable *other) {
 }
 
 bool Rock::actedDuringStep() {
-    if (_previously_dead != _dead) {
-        _previously_dead = _dead;   // Se debe eliminar roca
-        return true;
-    }
     // Calculo diferencia para evitar detectar cambio de posicion menor a delta
     float diff_x = abs(_previous_x - _body->GetPosition().x);
     float diff_y = abs(_previous_y - _body->GetPosition().y);

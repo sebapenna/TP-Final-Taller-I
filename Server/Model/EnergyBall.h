@@ -9,13 +9,14 @@ class EnergyBall: public Collidable {
 private:
     b2Body *_body;
     size_t _id;
-    float _lifetime = 0;
+    float _lifetime = 0, _max_lifetime, _time_step;
     float _previous_x, _previous_y;
-    bool _dead = false, _previously_dead = false;
+    bool _dead = false;
     const float _radius;
 
 public:
-    EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius);
+    EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius,
+            const float &max_lifetime, const float &time_step);
 
     ~EnergyBall() override;
 
@@ -42,7 +43,6 @@ public:
     // Utilizar a los metodos width y height retornara el diametro de la bola
     const float width() override;
     const float height() override;
-
 };
 
 

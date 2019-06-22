@@ -28,16 +28,9 @@
 #define O_H (uint8_t) 9
 
 /* Box2D */
-#define GRAVITY_X   0.0f
-#define GRAVITY_Y   -10.0f
 #define TIME_STEP   (float) (1.0f / 30.0f)
-#define VELOCITY_ITERATIONS 8
-#define POSTION_ITERATIONS  3
-#define STEP_ITERATIONS (1 / TIME_STEP)
 
 /* Movimiento */
-#define MOVE_FORCE  1500
-#define JUMP_FORCE  /*2000*/2000
 #define MOVE_LEFT   (uint8) 0
 #define MOVE_RIGHT  (uint8) 1
 #define MOVE_STOP   (uint8) 2
@@ -52,12 +45,9 @@
 /* Configuracion Chell */
 #define CHELL_HALF_WIDTH  HALF_BOX_LEN
 #define CHELL_HALF_HEIGHT  HALF_BOX_LEN
-#define CHELL_DENSITY   5
-#define CHELL_GRAVITY_SCALE 5
 
 /* Coniguracion Rock */
 #define ROCK_HALF_LEN  2    // Largo de medio lado de la roca (cuerpo cuadrado)
-#define ROCK_DENSITY    1000000
 
 /* Coniguracion Acid */
 #define ACID_HALF_WIDTH  HALF_BOX_LEN
@@ -80,7 +70,6 @@
 
 /* Configuracion Energy Ball */
 #define ENRG_BALL_RADIUS    HALF_BOX_LEN
-#define ENRG_BALL_DENSITY    1
 #define ENRG_BALL_FORCE 100
 #define ENERGY_BALL_MAX_LIFETIME 5
 
@@ -91,18 +80,12 @@
 /* Configuracion Cake */
 #define CAKE_HALF_LEN   2
 
-/* Configuracion Portal */
-#define PORTAL_HALF_WIDTH    0.25
-#define PORTAL_HALF_HEIGHT 1.98  // Algo mas chico que el largo del bloque
-
 /* Inclinacion Portal */
 #define STRAIGHT    (int16_t) 0
 #define LEFT    (int16_t)   1
 #define RIGHT    (int16_t)   2
 
 /* Configuracion PinTool */
-#define PIN_TOOL_HALF_WIDTH 1
-#define PIN_TOOL_HALF_HEIGHT    1
 #define PIN_TOOL_LIFETIME   20
 
 /* Class Names*/
@@ -121,7 +104,5 @@
 #define PORTAL  (uint8_t) 12
 #define PIN_TOOL    (uint8_t) 13
 #define CAKE    (uint8_t) 14
-
-
 
 #endif //TP_FINAL_CONSTANTES_H

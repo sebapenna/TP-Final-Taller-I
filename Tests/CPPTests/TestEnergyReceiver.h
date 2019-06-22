@@ -5,9 +5,11 @@
 #include "Server/Model/World.h"
 #include "Server/Model/constants.h"
 #include <Common/exceptions.h>
+#include <Server/CollidableData/Data/EnergyReceiverData.h>
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 class TestEnergyReceiver : public CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE(TestEnergyReceiver);
@@ -17,6 +19,8 @@ CPPUNIT_TEST_SUITE(TestEnergyReceiver);
     CPPUNIT_TEST_SUITE_END();
 
 private:
+    std::shared_ptr<Configuration> ptr;
+    Configuration *config;
     World *world;
     EnergyReceiver *e_recvr1;
     EnergyReceiver *e_recvr2;
@@ -26,10 +30,15 @@ private:
 
 public:
     void setUp() {
-        world = new World(width, height);
-        world->createRockBlock(100, 4, 0, -2); // Piso
-        world->createEnergyReceiver(e_recvr1_x, e_recvr1_y);
-        world->createEnergyReceiver(e_recvr2_x, e_recvr2_y);
+        ptr = make_shared<Configuration>();
+config = ptr.get();
+        world = new World(width, height, ptr);
+        auto data = make_shared<RockBlockData>(100, 4, 0, -2); // Piso
+        world->createCollidable(data);
+        auto data2 = make_shared<EnergyReceiverData>(0, e_recvr1_x, e_recvr1_y);
+        world->createCollidable(data2);
+        auto data3 = make_shared<EnergyReceiverData>(0, e_recvr2_x, e_recvr2_y);
+        world->createCollidable(data3);
         init_n_bodies = 3;
         e_recvr1 = world->getEnergyReceiver(0);
         e_recvr2 = world->getEnergyReceiver(1);
@@ -52,7 +61,7 @@ public:
         cout << endl << "TEST activar: ";
         e_recvr1->activate();
         CPPUNIT_ASSERT(!e_recvr1->isActivated()); // Se activa luego de step
-        for (int i = 0; i < STEP_ITERATIONS; i++)   // Activo receptor 1
+        for (int i = 0; i < config->getFps(); i++)   // Activo receptor 1
             world->step();
         CPPUNIT_ASSERT(e_recvr1->isActivated());
         cout << "OK";
@@ -61,13 +70,13 @@ public:
     void testActivateMoreThanOne() {
         cout << endl << "TEST activar mas de uno: ";
         e_recvr1->activate();
-        for (int i = 0; i < STEP_ITERATIONS; i++)   // Activo receptor 1
+        for (int i = 0; i < config->getFps(); i++)   // Activo receptor 1
             world->step();
         CPPUNIT_ASSERT(e_recvr1->isActivated());
         CPPUNIT_ASSERT(!e_recvr2->isActivated());
         e_recvr2->activate();
         CPPUNIT_ASSERT(!e_recvr2->isActivated());
-        for (int i = 0; i < STEP_ITERATIONS; i++)   // Activo receptor 2
+        for (int i = 0; i < config->getFps(); i++)   // Activo receptor 2
             world->step();
         CPPUNIT_ASSERT(e_recvr1->isActivated());
         CPPUNIT_ASSERT(e_recvr2->isActivated());

@@ -10,6 +10,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 class TestPortal : public CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE( TestPortal );
@@ -36,6 +37,8 @@ CPPUNIT_TEST_SUITE( TestPortal );
     CPPUNIT_TEST_SUITE_END();
 
 private:
+    std::shared_ptr<Configuration> ptr;
+    Configuration *config;
     World *world;
     Chell *chell;
     size_t width = 100;
@@ -45,9 +48,13 @@ private:
 
 public:
     void setUp() {
-        world = new World(width, height);
-        world->createRockBlock(1000, 4, 0, -2);  // Piso
-        world->createChell(chell_x, chell_y);
+        ptr = make_shared<Configuration>();
+config = ptr.get();
+        world = new World(width, height, ptr);
+        auto data = make_shared<RockBlockData>(100, 4, 0, -2); // Piso
+        world->createCollidable(data);
+        auto data1 = make_shared<ChellData>(0, chell_x, chell_y);
+        world->createCollidable(data1);
         chell = world->getChell(0);
     }
 
@@ -59,7 +66,8 @@ public:
         cout << endl << endl << "TEST PORTAL";
         cout << endl << "TEST crear sobre cara izquierda bloque metal: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
         auto portal = (Portal*) world->getShootables().at(0);
@@ -72,7 +80,8 @@ public:
     void testCreateOnMetalBlockRightSide() {
         cout << endl << "TEST crear sobre cara derecha bloque metal: ";
         float w = 4, h = 4, x = -20, y = 2;
-        world->createMetalBlock(w, h, x, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
         world->shootPortal(0, -30, 2, ORANGE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
         auto portal = (Portal*) world->getShootables().at(0);
@@ -85,7 +94,8 @@ public:
     void testCreateOnMetalBlockUpSide() {
         cout << endl << "TEST crear sobre cara superior bloque metal: ";
         float w = 4, h = 4, x = 0, y = 20;
-        world->createMetalBlock(w, h, x, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
         world->shootPortal(0, 0, 30, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
         auto portal = (Portal*) world->getShootables().at(0);
@@ -97,8 +107,10 @@ public:
     void testCreateOnMetalBlockDownSide() {
         cout << endl << "TEST crear sobre cara inferior bloque metal: ";
         float w = 4, h = 4, x = 0, y = 30;
-        world->createChell(0, 50);  // Coloco chell en el aire para disparar debajo
-        world->createMetalBlock(w, h, x, y);
+        auto data1 = make_shared<ChellData>(0, 0, 50);
+        world->createCollidable(data1); // Coloco chell en el aire para disparar debajo
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
         world->shootPortal(1, 0, -30, BLUE_PORTAL); // Chell 1 dispara
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
         auto portal = (Portal*) world->getShootables().at(0);
@@ -110,8 +122,10 @@ public:
     void testDontCreateOnRockBlock() {
         cout << endl << "TEST no crear sobre bloque piedra ni atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createRockBlock(w, h, x - 10, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<RockBlockData>(w, h, x-10, y);
+        world->createCollidable(data1);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
@@ -120,8 +134,10 @@ public:
     void testDontCreateOnRock() {
         cout << endl << "TEST no crear sobre piedra ni atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createRock(x - 10, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<RockData>(x - 10, y);
+        world->createCollidable(data1);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
@@ -130,8 +146,10 @@ public:
     void testDontCreateOnAcid() {
         cout << endl << "TEST no crear sobre acido ni atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createAcid(x - 10, y);    // Hardcodeo acido vertical (irreal en juego)
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1  = make_shared<AcidData>(x - 10, y, 4);
+        world->createCollidable(data1); // Hardcodeo acido vertical (irreal en juego)
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
@@ -140,8 +158,10 @@ public:
     void testDontCreateOnButton() {
         cout << endl << "TEST no crear sobre boton ni atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createButton(x - 10, y);  // Hardcodeo boton vertical (irreal en juego)
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1  = make_shared<ButtonData>(0, x - 10, y);
+        world->createCollidable(data1); // Hardcodeo boton vertical (irreal en juego)
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
@@ -150,8 +170,10 @@ public:
     void testDontCreateOnEnergyReceiver() {
         cout << endl << "TEST no crear sobre receptor energia ni atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createEnergyReceiver(x - 10, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<EnergyReceiverData>(0, x - 10, y);
+        world->createCollidable(data1);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
@@ -160,8 +182,10 @@ public:
     void testDontCreateOnEnergyTransmitter() {
         cout << endl << "TEST no crear sobre transmisor energia ni atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createEnergyTransmitter(x - 10, y, O_E);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<EnergyTransmitterData>(x - 10, y, "E");
+        world->createCollidable(data1);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
@@ -170,8 +194,10 @@ public:
     void testDontCreateOnEnergyBarrier() {
         cout << endl << "TEST no crear sobre barrera energia ni atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createEnergyBarrier(x - 10, 4, O_V);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<EnergyBarrierData>(x - 10, 4, "V");
+        world->createCollidable(data1);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
@@ -181,8 +207,10 @@ public:
         cout << endl << "TEST no crear sobre barrera chell pero y crear atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
         float x2 = x - 10;
-        world->createMetalBlock(w, h, x, y);
-        world->createChell(x2, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<ChellData>(0, x2, y);
+        world->createCollidable(data1);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
         auto portal = (Portal*) world->getShootables().at(0);    // Se creo portal sobre bloque metal detras
@@ -194,9 +222,13 @@ public:
     void testDontCreateOnClosedGate() {
         cout << endl << "TEST no crear sobre compuerta cerrada ni atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createButton(-100, y);  // Hardcodeo boton vertical (irreal en juego)
-        world->createGate(x - 10, 4, {0}, {});
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<ButtonData>(0, -100, y);
+        world->createCollidable(data1); // Hardcodeo boton vertical (irreal en juego)
+        auto data2 = make_shared<GateData>(0, x - 10, 4);
+        data2->addButtonNeeded(0);
+        world->createCollidable(data2);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 0, world->getShootables().size());
         cout << "OK";
@@ -206,9 +238,13 @@ public:
         cout << endl << "TEST no crear sobre compuerta abierta pero atravesar: ";
         float w = 4, h = 4, x = 20, y = 2;
         float x2 = x - 10;
-        world->createMetalBlock(w, h, x, y);
-        world->createButton(-100, y);  // Hardcodeo boton vertical (irreal en juego)
-        world->createGate(x2, 4, {0}, {});
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<ButtonData>(0, -100, y);
+        world->createCollidable(data1); // Hardcodeo boton vertical (irreal en juego)
+        auto data2 = make_shared<GateData>(0, x2, 4);
+        data2->addButtonNeeded(0);
+        world->createCollidable(data2);
         auto button = world->getButton(0);
         button->activate();
         world->step();  // Permito se active button y abra gate
@@ -223,7 +259,8 @@ public:
     void testDontCreatePortalOnPortal() {
         cout << endl << "TEST no crear portal sobre otro portal: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         world->shootPortal(0, 30, 2, ORANGE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getShootables().size());
@@ -237,8 +274,10 @@ public:
     void testCreateBlueAndOrangePortalForOneChell() {
         cout << endl << "TEST crear portal azul y naranja: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createMetalBlock(w, h, -1 * x, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<MetalBlockData>(w, h, -1 * x, y);
+        world->createCollidable(data1);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         world->shootPortal(0, -30, 2, ORANGE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 2, world->getShootables().size());
@@ -259,12 +298,17 @@ public:
         cout << endl << "TEST cambiar portal naranja: ";
         float w = 4, h = 4, x = 20, y = 2;
         float x2 = x - 10;
-        world->createMetalBlock(w, h, x, y);
-        world->createMetalBlock(w, h, -1 * x, y);
-        world->createMetalBlock(w, h, chell_x, 20);
-        world->createMetalBlock(w, h, 20, 20);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<MetalBlockData>(w, h, -1 * x, y);
+        world->createCollidable(data1);
+        auto data2 = make_shared<MetalBlockData>(w, h, chell_x, 20);
+        world->createCollidable(data2);
+        auto data3 = make_shared<MetalBlockData>(w, h, 20, 20);
+        world->createCollidable(data3);
 
-        world->createChell(x2, y);
+        auto data4 = make_shared<ChellData>(0, x2, y);
+        world->createCollidable(data4);
         world->shootPortal(0, chell_x, 30, ORANGE_PORTAL);
         world->shootPortal(1, -30, 2, ORANGE_PORTAL);
 
@@ -292,12 +336,19 @@ public:
         cout << endl << "TEST cambiar portal azul: ";
         float w = 4, h = 4, x = 20, y = 2;
         float x2 = x - 10;
-        world->createMetalBlock(w, h, x, y);
-        world->createMetalBlock(w, h, -1 * x, y);
-        world->createMetalBlock(w, h, chell_x, 20);
-        world->createMetalBlock(w, h, 20, 20);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<MetalBlockData>(w, h, -1 * x, y);
+        world->createCollidable(data1);
+        auto data2 = make_shared<MetalBlockData>(w, h, chell_x, 20);
+        world->createCollidable(data2);
+        auto data3 = make_shared<MetalBlockData>(w, h, 20, 20);
+        world->createCollidable(data3);
 
-        world->createChell(x2, y);
+
+        auto data4 = make_shared<ChellData>(0, x2, y);
+        world->createCollidable(data4);
+        
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         world->shootPortal(1, chell_x, 20, BLUE_PORTAL);
         world->shootPortal(0, -30, 2, ORANGE_PORTAL);
@@ -324,9 +375,12 @@ public:
         cout << endl << "TEST mas de una chell creando portal: ";
         float w = 4, h = 4, x = 20, y = 2;
         float x2 = x - 10;
-        world->createMetalBlock(w, h, x, y);
-        world->createMetalBlock(w, h, -1 * x, y);
-        world->createChell(x2, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<MetalBlockData>(w, h, -1 * x, y);
+        world->createCollidable(data1);
+        auto data2 = make_shared<ChellData>(0, x2, y);
+        world->createCollidable(data2);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         world->shootPortal(1, -30, 2, BLUE_PORTAL);
         CPPUNIT_ASSERT_EQUAL((size_t) 2, world->getShootables().size());
@@ -340,8 +394,10 @@ public:
     void testResetPortals() {
         cout << endl << "TEST resetear portales de chell: ";
         float w = 4, h = 4, x = 20, y = 2;
-        world->createMetalBlock(w, h, x, y);
-        world->createMetalBlock(w, h, -1 * x, y);
+        auto data = make_shared<MetalBlockData>(w, h, x, y);
+        world->createCollidable(data);
+        auto data1 = make_shared<MetalBlockData>(w, h, -1 * x, y);
+        world->createCollidable(data1);
         world->shootPortal(0, 30, 2, BLUE_PORTAL);
         world->shootPortal(0, -30, 2, ORANGE_PORTAL);
 

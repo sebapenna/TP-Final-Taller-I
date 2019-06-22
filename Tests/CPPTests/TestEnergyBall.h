@@ -8,6 +8,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 class TestEnergyBall : public CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE(TestEnergyBall);
@@ -31,13 +32,17 @@ CPPUNIT_TEST_SUITE(TestEnergyBall);
     CPPUNIT_TEST_SUITE_END();
 
 private:
+    std::shared_ptr<Configuration> ptr;
+    Configuration *config;
     World *world;
     size_t width = 100, height = 200;
     float e_transm_x = 0, e_transm_y = 2;
 
 public:
     void setUp() override {
-        world = new World(width, height);
+        ptr = make_shared<Configuration>();
+config = ptr.get();
+        world = new World(width, height, ptr);
     }
 
     void tearDown() override {
@@ -46,17 +51,17 @@ public:
 
     void releaseEnergyBall() {
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i)
+            for (int i = 0; i < config->getFps(); ++i)
                 world->step();
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
+        for (int i = 0; i < config->getFps(); ++i)
             world->step(); // Step donde se crea EnergyBall
     }
 
     void testContactWithRockBlock() {
         cout << endl << endl << "TEST ENERGY BALL";
         cout << endl << "TEST eliminar al contacto con bloque roca: ";
-
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
@@ -64,12 +69,13 @@ public:
         float wall_x = energy_ball->x() + ENRG_BALL_RADIUS + wall_width;
         float wall_y = wall_height / 2;
         // Creo pared donde colisionar la bola
-        world->createRockBlock(wall_width, wall_height, wall_x, wall_y);
+        auto data1 = make_shared<RockBlockData>(wall_width, wall_height, wall_x, wall_y);
+        world->createCollidable(data1);
 
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
         int n_bodies = world->getWorld()->GetBodyCount();
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             time_elapsed += TIME_STEP;
             world->step();
             if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
@@ -84,7 +90,8 @@ public:
     void testContactWithAcid() {
         cout << endl << "TEST eliminar al contacto con acido: ";
 
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "S");
+        world->createCollidable(data);
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
@@ -92,12 +99,13 @@ public:
         float acid_y = energy_ball->y() - ENRG_BALL_RADIUS - ACID_HALF_HEIGHT - 1;
 
         // Creo acido donde colisionar la bola
-        world->createAcid(acid_x, acid_y);
+        auto data1 = make_shared<AcidData>(acid_x, acid_y, 4);
+        world->createCollidable(data1);
         int n_bodies = world->getWorld()->GetBodyCount();
 
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             time_elapsed += TIME_STEP;
             world->step();
             if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
@@ -110,7 +118,8 @@ public:
 
     void testContactWithButton() {
         cout << endl << "TEST eliminar al contacto con boton: ";
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "S");
+        world->createCollidable(data);
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
@@ -118,12 +127,13 @@ public:
         float button_y = energy_ball->y() - ENRG_BALL_RADIUS - BUTTON_HALF_HEIGHT - 1;
 
         // Creo boton donde colisionar la bola
-        world->createButton(button_x, button_y);
+        auto data1 = make_shared<ButtonData>(0, button_x, button_y);
+        world->createCollidable(data1);
         int n_bodies = world->getWorld()->GetBodyCount();
 
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             time_elapsed += TIME_STEP;
             world->step();
             if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
@@ -138,7 +148,8 @@ public:
     void testContactWithRock() {
         cout << endl << "TEST eliminar al contacto con roca: ";
 
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "S");
+        world->createCollidable(data);
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
@@ -146,12 +157,13 @@ public:
         float rock_y = energy_ball->y() - ENRG_BALL_RADIUS - ROCK_HALF_LEN - 1;
 
         // Creo roca donde colisionar la bola
-        world->createRock(rock_x, rock_y);
+        auto data1 = make_shared<RockData>(rock_x, rock_y);
+        world->createCollidable(data1);
         int n_bodies = world->getWorld()->GetBodyCount();
 
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             time_elapsed += TIME_STEP;
             world->step();
             if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
@@ -166,7 +178,8 @@ public:
     void testContactWithEnergyTransmitter() {
         cout << endl << "TEST eliminar al contacto con transmisor de energia: ";
 
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "S");
+        world->createCollidable(data);
         releaseEnergyBall();
         auto e_ball = world->getEnergyBall(0);
 
@@ -174,12 +187,13 @@ public:
         float e_transm_2_y = e_ball->y() - ENRG_BALL_RADIUS - ENRG_BLOCK_HALF_LEN- 1;
 
         // Creo tranmisor donde colisionar la bola
-        world->createEnergyTransmitter(e_transm_2_x, e_transm_2_y, O_E);
+        auto data2 = make_shared<EnergyTransmitterData>(e_transm_2_x, e_transm_2_y, "E");
+        world->createCollidable(data2);
         int n_bodies = world->getWorld()->GetBodyCount();
 
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             time_elapsed += TIME_STEP;
             world->step();
             if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
@@ -194,8 +208,10 @@ public:
     void testContactWithChell() {
         cout << endl << "TEST eliminar al contacto con chell: ";
 
-        world->createRockBlock(100, 4, 0, -2); // Piso
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        auto data = make_shared<RockBlockData>(100, 4, 0, -2); // Piso
+        world->createCollidable(data);
+        auto data1 = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data1);
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
@@ -203,12 +219,13 @@ public:
         float chell_y = energy_ball->y();
 
         // Creo chell donde colisionar la bola
-        world->createChell(chell_x, chell_y);
+        auto data2 = make_shared<ChellData>(0, chell_x, chell_y);
+        world->createCollidable(data2);
         int n_bodies = world->getWorld()->GetBodyCount();
 
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             time_elapsed += TIME_STEP;
             world->step();
             if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
@@ -226,8 +243,10 @@ public:
         float e_transm_2_x = e_transm_x + 4 * ENRG_BALL_RADIUS + 2 * ENRG_BLOCK_HALF_LEN + 2;
         float e_transm_2_y = e_transm_y;
         // Creo transmisores en sentido opuesto para que choquen bolas energia
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        world->createEnergyTransmitter(e_transm_2_x, e_transm_2_y, O_O);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
+        auto data1 = make_shared<EnergyTransmitterData>(e_transm_2_x, e_transm_2_y, "O");
+        world->createCollidable(data1);
         releaseEnergyBall();
         auto e_ball_1 = world->getEnergyBall(0); // Bola de transm1
         auto e_ball_2 = world->getEnergyBall(1); // Bola de transm2
@@ -237,7 +256,7 @@ public:
 
         int n_bodies = world->getWorld()->GetBodyCount();
         bool balls_ignored = false;
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             world->step();
             // Verifico que una bola paso a la otra
             // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
@@ -255,14 +274,16 @@ public:
         float barrier_x = e_transm_x + 4 * ENRG_BALL_RADIUS + BARRIER_HALF_WIDTH + 2;
         float barrier_y = BARRIER_HALF_LENGTH;
         // Creo transmisores en sentido opuesto para que choquen bolas energia
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        world->createEnergyBarrier(barrier_x, barrier_y, O_V);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
+        auto data1 = make_shared<EnergyBarrierData>(barrier_x, barrier_y, "V");
+        world->createCollidable(data1);
         releaseEnergyBall();
         auto e_ball = world->getEnergyBall(0); // Bola de transm1
 
         int n_bodies = world->getWorld()->GetBodyCount();
         bool barrier_ignored = false;
-        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < 2 * config->getFps(); ++i) {
             world->step();
             // Verifico que bola paso la barrera
             // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
@@ -278,23 +299,28 @@ public:
     void testContactWithOpenGate() {
         cout << endl << "TEST ignorar contacto con compuerta abierta: ";
 
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
         releaseEnergyBall();
         auto e_ball = world->getEnergyBall(0); // Bola de transm1
 
-        world->createButton(100, 100); // Boton para abrir gate
+        auto data1 = make_shared<ButtonData>(0, 100, 100);
+        world->createCollidable(data1); // Boton para abrir gate
         auto button  = world->getButton(0);
         button->activate(); // Activo boton
 
         float gate_x = e_ball->x() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
         float gate_y = GATE_HALF_HEIGHT;
-        world->createGate(gate_x, gate_y, {0}, {});
+        auto data2 = make_shared<GateData>(0, gate_x, gate_y);
+        data2->addButtonNeeded(0);
+        world->createCollidable(data2);
+
         auto gate = world->getGate(0);
 
         int n_bodies = world->getWorld()->GetBodyCount();
         bool gate_ignored = false;
 
-        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < 2 * config->getFps(); ++i) {
             world->step();
             // Verifico que bola paso la compuerta
             // IMPORTANTE: primero compruebo n_bodies para asegurarme que no fueron eliminados
@@ -311,18 +337,24 @@ public:
     void testContactWithClosedGate() {
         cout << endl << "TEST destruir al chocar con compuerta cerrada: ";
 
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
         releaseEnergyBall();
         auto e_ball = world->getEnergyBall(0); // Bola de transm1
-        world->createButton(100, 100); // Boton para abrir gate
+        auto data1 = make_shared<ButtonData>(0, 100, 100);
+        world->createCollidable(data1); // Boton para abrir gate
+        auto button  = world->getButton(0);
+        button->activate(); // Activo boton
 
         float gate_x = e_ball->x() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
         float gate_y = GATE_HALF_HEIGHT;
-        world->createGate(gate_x, gate_y, {0}, {});
+        auto data2 = make_shared<GateData>(0, gate_x, gate_y);
+        world->createCollidable(data2);
+        data2->addButtonNeeded(0);
         auto gate = world->getGate(0);
 
         auto n_bodies = world->getWorld()->GetBodyCount();
-        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i)
+        for (int i = 0; i < 2 * config->getFps(); ++i)
             world->step();
 
         CPPUNIT_ASSERT(!gate->isOpen());
@@ -335,7 +367,8 @@ public:
         cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
                         "movimiento: ";
 
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
         CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
         releaseEnergyBall();
         world->step();
@@ -354,17 +387,20 @@ public:
         cout << endl << "TEST verificar que se agrega a vector de objetos a eliminar luego de "
                         "morir: ";
 
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
         CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
         float rock_x = energy_ball->x() + ENRG_BALL_RADIUS + ROCK_HALF_LEN + 1;
         float rock_y = energy_ball->y();
-        world->createRockBlock(100, 4, 0, -2); // Superficie donde apoyar roca
+        auto data1 = make_shared<RockBlockData>(100, 4, 0, -2);
+        world->createCollidable(data1); // Superficie donde apoyar roca
         // Creo roca donde colisionar la bola
-        world->createRock(rock_x, rock_y);
+        auto data2 = make_shared<RockData>(rock_x, rock_y);
+        world->createCollidable(data2);
 
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             world->step();
             if (world->getObjectsToDelete().size() == 1) {  // Se elimino bola energia
                 // Verifico no se lo agrego a vector de elementos a actualizar
@@ -381,13 +417,16 @@ public:
 
     void testContactWithMetalBlockFromLeft() {
         cout << endl << "TEST rebotar en bloque metal, cara izquierda: ";
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        world->createMetalBlock(4, 4, (e_transm_x + 15), 2);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
+        auto data1 = make_shared<MetalBlockData>(4, 4, (e_transm_x + 15), 2);
+        world->createCollidable(data1);
+
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
         auto last_x = energy_ball->x();
         bool bounced = false;
-        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < 2 * config->getFps(); ++i) {
             world->step();
             energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
             if (energy_ball) {
@@ -402,13 +441,17 @@ public:
 
     void testContactWithMetalBlockFromRight() {
         cout << endl << "TEST rebotar en bloque metal, cara derecha: ";
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
-        world->createMetalBlock(4, 4, (e_transm_x - 15), 2);
+        auto data1 = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "O");
+        world->createCollidable(data1);
+
+        auto data2 = make_shared<MetalBlockData>(4, 4, (e_transm_x - 15), 2);
+        world->createCollidable(data2);
+
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
         auto last_x = energy_ball->x();
         bool bounced = false;
-        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < 2 * config->getFps(); ++i) {
             world->step();
             energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
             if (energy_ball) {
@@ -423,13 +466,16 @@ public:
 
     void testContactWithMetalBlockFromAbove() {
         cout << endl << "TEST rebotar en bloque metal, cara superior: ";
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
-        world->createMetalBlock(4, 4, (e_transm_x), (e_transm_y - 15));
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "S");
+        world->createCollidable(data);
+        auto data1 = make_shared<MetalBlockData>(4, 4, e_transm_x, (e_transm_y - 15));
+        world->createCollidable(data1);
+
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
         auto last_y = energy_ball->y();
         bool bounced = false;
-        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < 2 * config->getFps(); ++i) {
             world->step();
             energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
             if (energy_ball) {
@@ -444,13 +490,17 @@ public:
 
     void testContactWithMetalBlockFromBelow() {
         cout << endl << "TEST rebotar en bloque metal, cara inferior: ";
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
-        world->createMetalBlock(4, 4, (e_transm_x), (e_transm_y + 15));
+        auto data1 = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "N");
+        world->createCollidable(data1);
+
+        auto data2 = make_shared<MetalBlockData>(4, 4, e_transm_x, (e_transm_y + 15));
+        world->createCollidable(data2);
+
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
         auto last_y = energy_ball->y();
         bool bounced = false;
-        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < 2 * config->getFps(); ++i) {
             world->step();
             energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
             if (energy_ball) {
@@ -469,13 +519,14 @@ public:
 
 //    void testContactWithMetalDiagonalBlockNEFromLeft() {
 //        cout << endl << "TEST rebotar en bloque diagonal metal NE, cara derecha: ";
-//        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+//        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+//        world->createCollidable(data);
 //        world->createMetalDiagonalBlock(4, 4, (e_transm_x + 15), 0, O_NO);
 //        releaseEnergyBall();
 //        auto energy_ball = world->getEnergyBall(0);
 ////        auto last_x = energy_ball->x();
 ////        bool bounced = false;
-//        for (int i = 0; i < 2 * STEP_ITERATIONS; ++i) {
+//        for (int i = 0; i < 2 * config->getFps(); ++i) {
 //            world->step();
 //            energy_ball = world->getEnergyBall(0);  // Verifico que no colision y fue destruida
 //            std::cout << "y: "<<energy_ball->y() << " x: "<<energy_ball->x()<<endl;

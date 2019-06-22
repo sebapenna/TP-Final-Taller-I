@@ -2,12 +2,13 @@
 #define PORTAL_TESTYAMLPARSER_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include "Server/YamlData/YamlParser.h"
+#include "Server/CollidableData/YamlParser.h"
 #include "Server/Model/constants.h"
 #include <string>
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 class TestYamlParser : public CppUnit::TestFixture {
     CPPUNIT_TEST_SUITE( TestYamlParser );
@@ -35,9 +36,9 @@ private:
 public:
     void setUp() {
 #ifdef DEBUG_MODE
-        parser = new YamlParser("../test.yaml");
+        parser = new YamlParser("test.yaml");
 #else
-        parser = new YamlParser("/etc/portal-game/server/test.yaml");
+        parser = new YamlParser("/etc/portal-game/server/test.yaml");   // todo folder
 #endif
     }
 
@@ -63,130 +64,156 @@ public:
 
     void testParseRockBlocks() {
         cout << endl << "TEST datos bloques roca: ";
-        auto data_vector = parser->loadRockBlocksData();
-        CPPUNIT_ASSERT_EQUAL(_width, data_vector[0].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) -1, data_vector[0].getY());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadRockBlocksData(data_vector);
+        auto data = (RockBlockData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL(_width, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_length, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) 0, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) -1, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL(_width, data_vector[1].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[1].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 61, data_vector[1].getY());
+        data = (RockBlockData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL(_width, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_length, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) 0, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 61, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[2].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_height, data_vector[2].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) 101, data_vector[2].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[2].getY());
+        data = (RockBlockData*) data_vector[2].get();
+        CPPUNIT_ASSERT_EQUAL(_length, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_height, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) 101, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 0, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[3].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_height, data_vector[3].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) -1, data_vector[3].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[3].getY());
+        data = (RockBlockData*) data_vector[3].get();
+        CPPUNIT_ASSERT_EQUAL(_length, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_height, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) -1, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 0, data->getY());
         cout << "OK";
     }
 
     void testParseMetalBlocks() {
         cout << endl << "TEST datos bloques metal: ";
-        auto data_vector = parser->loadMetalBlocksData();
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) 5, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadMetalBlocksData(data_vector);
+        auto data = (MetalBlockData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL(_length, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_length, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) 5, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[1].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[1].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) -5, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        data = (MetalBlockData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL(_length, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_length, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) -5, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
         cout << "OK";
     }
 
     void testParseMetalDiagonalBlocks() {
         cout << endl << "TEST datos bloques metal diagonal: ";
-        auto data_vector = parser->loadMetalDiagonalBlockData();
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[0].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) 10, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
-        CPPUNIT_ASSERT_EQUAL(O_NE, data_vector[0].getOrientation());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadMetalDiagonalBlockData(data_vector);
+        
+        auto data = (MetalDiagonalBlockData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL(_length, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_length, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) 10, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_NE, data->getOrientation());
 
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[1].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[1].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) -10, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
-        CPPUNIT_ASSERT_EQUAL(O_NO, data_vector[1].getOrientation());
+        data = (MetalDiagonalBlockData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL(_length, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_length, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) -10, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_NO, data->getOrientation());
 
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[2].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[2].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) 20, data_vector[2].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[2].getY());
-        CPPUNIT_ASSERT_EQUAL(O_SE, data_vector[2].getOrientation());
+        data = (MetalDiagonalBlockData*) data_vector[2].get();
+        CPPUNIT_ASSERT_EQUAL(_length, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_length, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) 20, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_SE, data->getOrientation());
 
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[3].getWidth());
-        CPPUNIT_ASSERT_EQUAL(_length, data_vector[3].getHeight());
-        CPPUNIT_ASSERT_EQUAL((float) -20, data_vector[3].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[3].getY());
-        CPPUNIT_ASSERT_EQUAL(O_SO, data_vector[3].getOrientation());
+        data = (MetalDiagonalBlockData*) data_vector[3].get();
+        CPPUNIT_ASSERT_EQUAL(_length, data->getWidth());
+        CPPUNIT_ASSERT_EQUAL(_length, data->getHeight());
+        CPPUNIT_ASSERT_EQUAL((float) -20, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_SO, data->getOrientation());
         cout << "OK";
     }
 
     void testParseRock() {
         cout << endl << "TEST datos rocas: ";
-        auto data_vector = parser->loadRockData();
-        CPPUNIT_ASSERT_EQUAL((float) 30, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadRockData(data_vector);
+        auto data = (RockData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL((float) 30, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL((float) -30, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        data = (RockData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL((float) -30, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
         cout << "OK";
     }
 
     void testParseAcid() {
         cout << endl << "TEST datos acido: ";
-        auto data_vector = parser->loadAcidData();
-        CPPUNIT_ASSERT_EQUAL((float) 40, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadAcidData(data_vector);
+        auto data = (AcidData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL((float) 40, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL((float) -40, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        data = (AcidData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL((float) -40, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
         cout << "OK";
     }
 
     void testParseButton() {
         cout << endl << "TEST datos botones: ";
-        auto data_vector = parser->loadButtonData();
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, data_vector[0].getId());
-        CPPUNIT_ASSERT_EQUAL((float) 50, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadButtonData(data_vector);
+        auto data = (ButtonData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, data->getId());
+        CPPUNIT_ASSERT_EQUAL((float) 50, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, data_vector[1].getId());
-        CPPUNIT_ASSERT_EQUAL((float) -50, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        data = (ButtonData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, data->getId());
+        CPPUNIT_ASSERT_EQUAL((float) -50, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
         cout << "OK";
     }
 
     void testParseGate() {
         cout << endl << "TEST datos compuertas: ";
-        auto data_vector = parser->loadGateData();
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, data_vector[0].getId());
-        CPPUNIT_ASSERT_EQUAL((float) 60, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
-        auto buttons_needed = data_vector[0].getButtonsNeeded();
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadGateData(data_vector);
+        auto data = (GateData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, data->getId());
+        CPPUNIT_ASSERT_EQUAL((float) 60, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        auto buttons_needed = data->getButtonsNeeded();
         CPPUNIT_ASSERT_EQUAL((size_t) 0, buttons_needed[0]);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, buttons_needed[1]);
         CPPUNIT_ASSERT_EQUAL((size_t) 2, buttons_needed.size());
-        auto e_receiver_needed = data_vector[0].getEnergyReceiversNeeded();
+        auto e_receiver_needed = data->getEnergyReceiversNeeded();
         CPPUNIT_ASSERT_EQUAL((size_t) 0, e_receiver_needed[0]);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, e_receiver_needed.size());
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, data_vector[1].getId());
-        CPPUNIT_ASSERT_EQUAL((float) -60, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
-        buttons_needed = data_vector[1].getButtonsNeeded();
+        data = (GateData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, data->getId());
+        CPPUNIT_ASSERT_EQUAL((float) -60, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        buttons_needed = data->getButtonsNeeded();
         CPPUNIT_ASSERT_EQUAL((size_t) 1, buttons_needed[0]);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, buttons_needed.size());
-        e_receiver_needed = data_vector[1].getEnergyReceiversNeeded();
+        e_receiver_needed = data->getEnergyReceiversNeeded();
         CPPUNIT_ASSERT_EQUAL((size_t) 0, e_receiver_needed[0]);
         CPPUNIT_ASSERT_EQUAL((size_t) 1, e_receiver_needed[1]);
         CPPUNIT_ASSERT_EQUAL((size_t) 2, e_receiver_needed.size());
@@ -195,61 +222,74 @@ public:
 
     void testParseEnergyTransmitter() {
         cout << endl << "TEST datos transmisor energia: ";
-        auto data_vector = parser->loadEnergyTransmitterData();
-        CPPUNIT_ASSERT_EQUAL((float) 70, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
-        CPPUNIT_ASSERT_EQUAL(O_N, data_vector[0].getDirection());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadEnergyTransmitterData(data_vector);
+        auto data = (EnergyTransmitterData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL((float) 70, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_N, data->getDirection());
 
-        CPPUNIT_ASSERT_EQUAL((float) -70, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
-        CPPUNIT_ASSERT_EQUAL(O_S, data_vector[1].getDirection());
+        data = (EnergyTransmitterData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL((float) -70, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_S, data->getDirection());
 
-        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[2].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[2].getY());
-        CPPUNIT_ASSERT_EQUAL(O_E, data_vector[2].getDirection());
+        data = (EnergyTransmitterData*) data_vector[2].get();
+        CPPUNIT_ASSERT_EQUAL((float) 0, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_E, data->getDirection());
 
-        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[3].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[3].getY());
-        CPPUNIT_ASSERT_EQUAL(O_O, data_vector[3].getDirection());
+        data = (EnergyTransmitterData*) data_vector[3].get();
+        CPPUNIT_ASSERT_EQUAL((float) 0, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_O, data->getDirection());
         cout << "OK";
     }
 
     void testParseEnergyReceiver() {
         cout << endl << "TEST datos receptor energia: ";
-        auto data_vector = parser->loadEnergyReceiverData();
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, data_vector[0].getId());
-        CPPUNIT_ASSERT_EQUAL((float) 80, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadEnergyReceiverData(data_vector);
+        auto data = (EnergyReceiverData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, data->getId());
+        CPPUNIT_ASSERT_EQUAL((float) 80, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, data_vector[1].getId());
-        CPPUNIT_ASSERT_EQUAL((float) -80, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        data = (EnergyReceiverData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, data->getId());
+        CPPUNIT_ASSERT_EQUAL((float) -80, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
         cout << "OK";
     }
 
     void testParseEnergyBarrier() {
         cout << endl << "TEST datos barrera energia: ";
-        auto data_vector = parser->loadEnergyBarrierData();
-        CPPUNIT_ASSERT_EQUAL((float) 90, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
-        CPPUNIT_ASSERT_EQUAL(O_V, data_vector[0].getOrientation());
+        std::vector<std::shared_ptr<CollidableData>> data_vector;
+        parser->loadEnergyBarrierData(data_vector);
+        auto data = (EnergyBarrierData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL((float) 90, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_V, data->getOrientation());
 
-        CPPUNIT_ASSERT_EQUAL((float) -90, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
-        CPPUNIT_ASSERT_EQUAL(O_H, data_vector[1].getOrientation());
+        data = (EnergyBarrierData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL((float) -90, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
+        CPPUNIT_ASSERT_EQUAL(O_H, data->getOrientation());
         cout << "OK";
     }
 
     void testParseChell() {
         cout << endl << "TEST datos chell: ";
         auto data_vector = parser->loadChellData();
-        CPPUNIT_ASSERT_EQUAL((size_t) 0, data_vector[0].getId());
-        CPPUNIT_ASSERT_EQUAL((float) 0, data_vector[0].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[0].getY());
+        auto data = (ChellData*) data_vector[0].get();
+        CPPUNIT_ASSERT_EQUAL((size_t) 0, data->getId());
+        CPPUNIT_ASSERT_EQUAL((float) 0, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
 
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, data_vector[1].getId());
-        CPPUNIT_ASSERT_EQUAL((float) 10, data_vector[1].getX());
-        CPPUNIT_ASSERT_EQUAL((float) 1, data_vector[1].getY());
+        data = (ChellData*) data_vector[1].get();
+        CPPUNIT_ASSERT_EQUAL((size_t) 1, data->getId());
+        CPPUNIT_ASSERT_EQUAL((float) 10, data->getX());
+        CPPUNIT_ASSERT_EQUAL((float) 1, data->getY());
         cout << "OK";
     }
 };

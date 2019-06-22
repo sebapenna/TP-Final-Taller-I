@@ -9,7 +9,6 @@ private:
     b2Body *_body;
     const size_t _id;
     float _previous_x, _previous_y;
-    bool _previously_dead = false;  // Guardo estado previo para identificar cambio
     bool _dead = false;
     const float _width, _height;
 

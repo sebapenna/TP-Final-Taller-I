@@ -10,15 +10,17 @@
 #include "EnergyBlocks/EnergyTransmitter.h"
 #include "Server/Model/EnergyBall.h"
 #include "Server/Model/ContactListener.h"
-#include "Cake.h"
-#include "Portal.h"
+#include "Server/Model/Obstacles/Cake.h"
+#include "Server/Model/Shots/Portal.h"
 #include "RayCastCallback.h"
-#include "PinTool.h"
+#include "Server/Model/Shots/PinTool.h"
 #include <Server/Model/GroundBlocks/RockBlock.h>
 #include <Server/Model/Obstacles/Acid.h>
 #include <Server/Model/GroundBlocks/MetalDiagonalBlock.h>
 #include <Server/Model/GroundBlocks/MetalBlock.h>
 #include <Server/Model/Obstacles/EnergyBarrier.h>
+#include <Server/Configuration.h>
+#include <Server/CollidableData/CollidableData.h>
 #include <vector>
 #include <map>
 
@@ -27,6 +29,9 @@ private:
     b2World *_world;
     size_t _width;
     size_t _height;
+    float _time_step, _velocity_iterations, _position_iterations;
+
+    std::shared_ptr<Configuration> _configuration;
 
     std::vector<Chell *> _chells;
     std::vector<Rock *> _rocks;
@@ -40,7 +45,6 @@ private:
     // Mapa que contiene pin tools y portales, ambos obejtos disparables. El incremento de ids no
     // diferenciara los unos de los otros.
     std::map<size_t, Collidable*> _shootables;
-    // todo: YAML::Node _config => configuracion de constants.h
 
     // Vector de objetos que modificaron su estado/posicion durante step
     std::vector<Collidable *> _objects_to_update;
@@ -63,13 +67,6 @@ private:
     std::vector<EnergyBarrier *> _energy_barriers;
     // todo: UN SOLO VECTOR COLLIDABLE?
 
-    // box_width y box_height seran los valores que se usaran en setAsBox. Friccion 0 por default
-    b2Body *createStaticBox(const float &x, const float &y, const float &box_half_width,
-                            const float &box_half_height, const float &friction = 0);
-
-    b2Body *createDynamicBox(const float &x, const float &y, const float &box_half_width,
-                             const float &box_half_height, const float &density);
-
     void stepEnergyBalls();
 
     void stepEnergyTransmitters();
@@ -88,18 +85,8 @@ private:
 
     bool inConditionToKillMissingChell();
 
-    Portal* createPortal(Collidable * collidable, b2Vec2 point, b2Vec2 normal,
-            const int16_t &color);
-
-    PinTool* createPinTool(const float& x, const float& y, const size_t& chell_id);
-
-    // Retorna true en caso de que el disparo colisiono sobre una superficie en la cual se puede
-    // crear el objeto que genera el disparo, false en el caso contrario.
-    bool shotHitMetal(RayCastCallback &callback, Chell *chell, const float &dest_x,
-                      const float &dest_y);
-
 public:
-    World(const size_t &width, const size_t &height);
+    World(const size_t &width, const size_t &height, std::shared_ptr<Configuration> configuration);
 
     // Constructor para demorar construccion hasta momento en que se tienen datos de width y height.
     World() = default;
@@ -145,71 +132,26 @@ public:
     Cake *getCake() const;
 
     const std::vector<Chell *> &getChells() const;
-
     const std::vector<Rock *> &getRocks() const;
-
     const std::vector<Button *> &getButtons() const;
-
     const std::vector<Gate *> &getGates() const;
-
     const std::vector<EnergyReceiver *> &getEnergyReceivers() const;
-
     const std::vector<EnergyTransmitter *> &getEnergyTransmitters() const;
-
     const std::vector<RockBlock *> &getRockBlocks() const;
-
     const std::vector<Acid *> &getAcids() const;
-
     const std::vector<MetalDiagonalBlock *> &getMetalDiagonalBlocks() const;
-
     const std::vector<MetalBlock *> &getMetalBlocks() const;
-
     const std::vector<EnergyBarrier *> &getEnergyBarriers() const;
-
     const std::vector<Collidable *> &getObjectsToUpdate() const;
-
     const std::vector<std::pair<size_t, uint8_t>> &getObjectsToDelete() const;
-
     const std::map<size_t, Collidable*> &getShootables() const;
 
 
     /******************************* Creacion Objetos **********************************/
-    // PRE [PARA AMBOS CREATE BLOCK[: width y height son ancho y alto del cuerpo completo
-    void createRockBlock(const float &width, const float &height, const float &x, const float &y);
 
-    void createMetalBlock(const float &width, const float &height, const float &x, const float &y);
-
-    // X e Y deben ser la posicion de la punta inferior izquierda, pensando el bloque diagonal
-    // como un cuadrado completo, sin importar la orientacion del mismo
-    void createMetalDiagonalBlock(const float &width, const float &height,
-                                  const float &x, const float &y, const uint8_t &orientation);
-
-    void createRock(const float &x, const float &y);
-
-    void createAcid(const float &x, const float &y);
-
-    // PRE: Se debe crear en orden de id creciente
-    void createChell(const float &x, const float &y);
-
-    // PRE: Se debe crear en orden de id creciente
-    void createButton(const float &x, const float &y);
-
-    // PRE: Se debe crear en orden de id creciente. Se deben haber creado los buttons y gates
-    // cuyos id paso en los vectores
-    void createGate(const float &x, const float &y, const std::vector<size_t> &buttons_needed,
-                    const std::vector<size_t> &energy_receiver_needed);
-
-    // PRE: Se debe crear en orden de id creciente
-    void createEnergyReceiver(const float &x, const float &y);
-
-    void createEnergyTransmitter(const float &x, const float &y, const uint8_t &direction);
 
     // El parametro es el transmisor origen
     void createEnergyBall(EnergyTransmitter *energy_transm);
-
-    void createEnergyBarrier(const float &x, const float &y, const uint8_t &direction);
-
-    void createCake(const float &x, const float &y);
 
     // Indica que chell del id indicado decidio matar a la chell que no llego a la cake.
     // Internamente se verifica si dicha chell esta verdaderamente en el lugar de la cake y en
@@ -237,6 +179,33 @@ public:
 
     // Realiza el disparo del pin tool y en caso de colisionar con una superficie de metal lo crea
     void shootPinTool(const size_t &chell_id, const float &dest_x, const float &dest_y);
+
+
+
+    size_t getNextButtonId();
+    size_t getNextReceiverId();
+    size_t getNextTransmitterId();
+    size_t getNextGateId();
+    size_t getNextRockId();
+    size_t getNextChellId();
+    size_t getNextShootableId();
+
+    void addAcid(Acid *acid);
+    void addChell(Chell *chell);
+    void addButton(Button *button);
+    void addCake(Cake *cake);
+    void addEnergyBarrier(EnergyBarrier *barrier);
+    void addEnergyReceiver(EnergyReceiver *receiver);
+    void addEnergyTransmitter(EnergyTransmitter *transmitter);
+    void addGate(Gate *gate);
+    void addRockBlock(RockBlock *block);
+    void addMetalBlock(MetalBlock *block);
+    void addMetalDiagonalBlock(MetalDiagonalBlock *block);
+    void addRock(Rock *rock);
+    void addShootable(const size_t& shootable_id, Collidable *shootable);
+    void addShootableToDelete(const size_t& id);
+
+    void createCollidable(std::shared_ptr<CollidableData> collidable_data);
 };
 
 

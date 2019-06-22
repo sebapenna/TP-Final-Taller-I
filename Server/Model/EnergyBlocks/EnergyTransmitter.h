@@ -12,10 +12,12 @@ private:
     bool _changed_state = false;    // Booleano para indicar camibo de estado durante step
     size_t _id;
     const float _width, _height;
+    const float _time_step, _time_to_release;
 
 public:
     explicit EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction,
-            const float& width, const float& height);
+            const float& width, const float& height, const float& time_step,
+            const float& time_to_release);
 
     ~EnergyTransmitter() override;
 

@@ -8,17 +8,18 @@
 #include "Server/Model/World.h"
 #include "Event.h"
 #include "DTOProcessor.h"
+#include "Configuration.h"
 #include <Common/ProtocolTranslator/ProtocolDTO.h>
-#include <Server/YamlData/YamlParser.h>
+#include <Server/CollidableData/YamlParser.h>
 
 class Stage {
 private:
     World *_world;
     DTOProcessor _processor;
-    std::vector<ChellData> _available_chells;
+    std::vector<std::shared_ptr<CollidableData>> _available_chells;
 
 public:
-    explicit Stage(std::string &config_file);
+    explicit Stage(std::string &map_file, std::shared_ptr<Configuration> configuration);
 
     ~Stage();
 

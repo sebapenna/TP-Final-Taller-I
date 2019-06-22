@@ -28,7 +28,7 @@
 #include <Common/ProtocolTranslator/DataDTO/GateStateDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/PinToolDTO.h>
-#include <Server/Model/Cake.h>
+#include <Server/Model/Obstacles/Cake.h>
 #include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
 #include "WorldObjectDTOTranslator.h"
 #include "PositionTranslator.h"

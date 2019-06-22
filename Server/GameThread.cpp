@@ -41,9 +41,9 @@ void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
     for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) {deletePlayer(id);});
 }
 
-void GameThread::run() {
+void GameThread::run(shared_ptr<Configuration> c) {
     try {
-        Stage stage(_map_filename);    // Creo stage en tiempo de espera al comienzo
+        Stage stage(_map_filename, c);    // Creo stage en tiempo de espera al comienzo
 
         // Loop esperando a que owner inicie la partida. Verifico haya jugadores conectados
         while (!_begin_game && !_empty_game && !_game_finished) {
@@ -123,7 +123,7 @@ void GameThread::run() {
                 // Sleep
                 auto stop = high_resolution_clock::now();
                 auto duration = duration_cast<milliseconds>(stop - start);
-                int sleep_time = (TIME_STEP) * 1000 - duration.count();
+                int sleep_time = (1 / c->getFps()) * 1000 - duration.count();
                 if (sleep_time > 0)
                     std::this_thread::sleep_for(milliseconds(sleep_time));
             }
@@ -140,9 +140,10 @@ void GameThread::run() {
 }
 
 GameThread::GameThread(Player* new_player, const size_t &max_players, std::string &&map_filename,
-        const size_t &id) : _map_filename(move(map_filename)), _game_finished(false),
-        _empty_game(false), _begin_game(false), _dead_thread(false), _max_players(max_players),
-        _id(id), _gameloop(&GameThread::run, this) {
+        const size_t &id, std::shared_ptr<Configuration> configuration) :
+        _map_filename(move(map_filename)), _game_finished(false), _empty_game(false),
+        _begin_game(false), _dead_thread(false), _max_players(max_players),_id(id),
+        _gameloop(&GameThread::run, this, configuration) {
     addPlayerIfOpenToNewPlayersAndNotFull(new_player);
 }
 

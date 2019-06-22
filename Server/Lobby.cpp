@@ -33,9 +33,14 @@ void Lobby::runEraserThread() {
     }
 }
 
-Lobby::Lobby(const std::string &port) : _connection_closed(false), _next_player_id(0),
+Lobby::Lobby(const std::string &port) : _configuration(make_shared<Configuration>()),
+_connection_closed
+(false),
+_next_player_id(0),
 _next_game_id(0), _accept_socket(port, WAITING_QUEUE_SIZE),
-_game_eraser_thread(&Lobby::runEraserThread, this) { }
+_game_eraser_thread(&Lobby::runEraserThread, this) {
+//    _configuration = make_shared<Configuration>();
+}
 
 void Lobby::shutdown() {
     _connection_closed = true;
@@ -80,7 +85,8 @@ SafeQueue<shared_ptr<Event>> &Lobby::createGame(Player* player, const size_t &n_
     // se ve afectada, tan solo la creacion del Thread.
     std::lock_guard<std::mutex> lock(_m);
     // Id de la partida sera en base al tamaño del vector
-    auto game = std::make_shared<GameThread>(player, n_players, move(map_filename), _next_game_id);
+    auto game = std::make_shared<GameThread>(player, n_players, move(map_filename),
+            _next_game_id, _configuration);
     ++_next_game_id; // Actualizo proximo id
 
     // Elimino player del lobby

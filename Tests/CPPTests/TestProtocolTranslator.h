@@ -41,6 +41,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 using std::vector;
 using std::shared_ptr;
 

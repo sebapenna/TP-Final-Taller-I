@@ -3,8 +3,8 @@
 
 #include <Box2D/Box2D.h>
 #include "Collidable.h"
-#include "Portal.h"
-#include "PinTool.h"
+#include "Server/Model/Shots/Portal.h"
+#include "Server/Model/Shots/PinTool.h"
 
 class Chell: public Collidable {
 private:
@@ -13,11 +13,11 @@ private:
     b2Body *_body;
     uint8 _move_state;
     uint8 _jump_state, _previous_jump_state;
-    bool _jump, _dead, _previously_dead;
+    bool _jump, _dead;
     float _previous_x, _previous_y;
     int16_t _tilt, _previous_tilt; // Guardo estado previo para identificar cambio
     bool _carrying_rock, _previously_carrying;
-    bool _shooting;
+    bool _shooting, _previously_shooting = false;
     bool _hit_wall;
     bool _reached_cake;
     bool _teleported = false;
@@ -25,6 +25,9 @@ private:
     std::pair<Portal *, Portal *> _portals;
     Portal *_portal_to_use = nullptr; // Portal por el cual teletransportar, podria no ser propio
     PinTool *_pintool = nullptr;
+
+    float _move_force;
+    float _jump_force;
 
     // Evita volver a aplicar un impulso en el mismo sentido
     bool movementInXAlreadyApplied();
@@ -116,6 +119,9 @@ public:
     // Borra referencia a pintool actual.
     void resetPinTool();
 
+    // Registra que chell realizo un disparo, independientemente si crea o no portal o pintool
+    void shoot();
+
     const float x() override;
 
     const float y() override;
@@ -123,6 +129,10 @@ public:
     const float width() override;
 
     const float height() override;
+
+    void setJumpForce(float jumpForce);
+
+    void setMoveForce(float moveForce);
 };
 
 

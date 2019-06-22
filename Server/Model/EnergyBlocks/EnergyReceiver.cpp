@@ -1,7 +1,7 @@
 #include "EnergyReceiver.h"
 #include <Server/Model/EnergyBall.h>
-#include <Server/Model/Portal.h>
-#include <Server/Model/PinTool.h>
+#include <Server/Model/Shots/Portal.h>
+#include <Server/Model/Shots/PinTool.h>
 
 EnergyReceiver::EnergyReceiver(const size_t &id, const float& x, const float& y, const float& width,
                                const float& height) : _id(id), _x(x), _y(y), _width(width),

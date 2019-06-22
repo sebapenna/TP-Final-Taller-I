@@ -7,14 +7,16 @@
 
 Chell::Chell(const size_t &id, b2Body *body, const float& width, const float& height) : _id(id),
 _body(body), _move_state(MOVE_STOP), _jump_state(ON_GROUND), _previous_jump_state(ON_GROUND),
-_jump(false), _dead(false), _previously_dead(false), _carrying_rock(false), _previously_carrying
-(false), _shooting(false), _hit_wall(false), _reached_cake(false), _previous_tilt(NOT_TILTED),
-_tilt(NOT_TILTED), _width(width), _height(height) {
+_jump(false), _dead(false), _carrying_rock(false), _previously_carrying(false), _shooting(false),
+_hit_wall(false), _reached_cake(false), _previous_tilt(NOT_TILTED),_tilt(NOT_TILTED), _width(width),
+_height(height) {
     _previous_x = _body->GetPosition().x;
     _previous_y = _body->GetPosition().y;
     _portals.first = nullptr;   // Seteo a null ambos portales
     _portals.second = nullptr;
 }
+
+Chell::~Chell() = default;
 
 const float Chell::x() {
     return  _body->GetPosition().x;
@@ -98,11 +100,10 @@ void Chell::stopMovement() {
 }
 
 void Chell::teleport(float x, float y) {
-//    float vel_mod = sqrt(pow(_body->GetLinearVelocity().x, 2) +
-//                         pow(_body->GetLinearVelocity().y, 2));
-    float impulse_x = 2*MOVE_FORCE * _portal_to_use->exitPortal()->normal().x;
+    // todo: calculo velocidad al salir
+    float impulse_x = 2*_move_force * _portal_to_use->exitPortal()->normal().x;
 
-    float impulse_y = 1.5*MOVE_FORCE * _portal_to_use->exitPortal()->normal().y;
+    float impulse_y = 1.5*_move_force * _portal_to_use->exitPortal()->normal().y;
     b2Vec2 new_pos(x,y);
     _body->SetTransform(new_pos, 0);
     (_jump_state != ON_GROUND) ? (_jump_state = ON_GROUND) : 0;
@@ -177,7 +178,7 @@ int Chell::calculateXImpulse() {
         default: // No existe este caso
             break;
     }
-    return impulse_factor * MOVE_FORCE;
+    return impulse_factor * _move_force;
 }
 
 void Chell::move() {
@@ -192,7 +193,7 @@ void Chell::move() {
         x_impulse = calculateXImpulse();
         if (_jump) {
             _jump = false;
-            y_impulse = JUMP_FORCE;
+            y_impulse = _jump_force;
         }
         b2Vec2 impulse(x_impulse, y_impulse);
         _body->ApplyLinearImpulse(impulse, _body->GetWorldCenter(), true);
@@ -201,10 +202,6 @@ void Chell::move() {
 }
 
 bool Chell::actedDuringStep() {
-//    if (_previously_dead != _dead) {
-//        _previously_dead = _dead;   // Chell murio en ultimo step
-//        return true;
-//    }
     // Calculo diferencia para evitar detectar cambio de posicion menor a delta
     float diff_x = abs(_previous_x - _body->GetPosition().x);
     float diff_y = abs(_previous_y - _body->GetPosition().y);
@@ -229,7 +226,11 @@ bool Chell::actedDuringStep() {
     }
     // Retorno ultima condicion, shooting no cambio estado porque es solo un instante,
     // y se actualiza llamando a isShooting();
-    return _shooting;
+    if (_previously_shooting != _shooting) {
+        _previously_shooting = _shooting;
+        return true;
+    }
+    return false;
 }
 
 void Chell::collideWith(Collidable *other) {
@@ -244,7 +245,7 @@ void Chell::collideWith(Collidable *other) {
                 // Evaluo si esta moviendose hacia izquierda o si la velocidad en Y es mayor que
                 // delta. Siempre chell debe estar a partir del centro del bloque para inclinarse
                 if ((velx < 0 || abs(vely) > DELTA_VEL) && (x() > block->getCenterX()) && !_teleported)
-                    _tilt = EAST;   //todo: lo mismo en O_NO
+                    _tilt = EAST;
                 break;
             case O_NO:
                 // Evaluo si esta moviendose hacia derecha o si la velocidad en Y es mayor que
@@ -292,7 +293,7 @@ void Chell::endCollitionWith(Collidable *other) {
         if (_tilt != NOT_TILTED && (abs(y() - _height / 2 - other->y()) < DELTA_POS))
             _body->SetLinearVelocity({0,0});
         else if (_jump_state == FALLING)
-            _body->SetLinearVelocity({MOVE_FORCE,-MOVE_FORCE});
+            _body->SetLinearVelocity({_move_force,-_move_force});
         if (abs(y() - _height / 2 - other->y()) < DELTA_POS)   // Chell llego a base de bloque
             _tilt = NOT_TILTED;   // Deja de caminar en diagonal
         else if (x() + width() / 2 < other->x())
@@ -364,4 +365,15 @@ void Chell::resetPinTool() {
     _pintool= nullptr;
 }
 
-Chell::~Chell() = default;
+void Chell::shoot() {
+    _shooting = true;
+}
+
+void Chell::setJumpForce(float jumpForce) {
+    _jump_force = jumpForce;
+}
+
+void Chell::setMoveForce(float moveForce) {
+    _move_force = moveForce;
+}
+

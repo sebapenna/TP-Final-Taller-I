@@ -9,6 +9,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 class TestRock : public CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE(TestRock);
@@ -22,6 +23,8 @@ CPPUNIT_TEST_SUITE(TestRock);
     CPPUNIT_TEST_SUITE_END();
 
 private:
+    std::shared_ptr<Configuration> ptr;
+    Configuration *config;
     World *world;
     Rock *rock1;
     Rock *rock2;
@@ -32,10 +35,15 @@ private:
 
 public:
     void setUp() {
-        world = new World(width, height);
-        world->createRockBlock(100, 4, 0, -2); // Piso
-        world->createRock(rock1_x, rock1_y);
-        world->createRock(rock2_x, rock2_y);
+        ptr = make_shared<Configuration>();
+config = ptr.get();
+        world = new World(width, height, ptr);
+        auto data = make_shared<RockBlockData>(100, 4, 0, -2); // Piso
+        world->createCollidable(data);
+        auto data2 = make_shared<RockData>(rock1_x, rock1_y);
+        world->createCollidable(data2);
+        auto data3 = make_shared<RockData>(rock2_x, rock2_y);
+        world->createCollidable(data3);
         init_n_bodies = 3;  // Cantidad de bodies que creo al inicio
         rock1 = world->getRock(0);
         rock2 = world->getRock(1);
@@ -71,7 +79,7 @@ public:
 
     void testRemainsStillOnGround() {
         cout << endl << "TEST queda quieta sobre una superficie: ";
-        for (int i = 0; i < STEP_ITERATIONS; i++)
+        for (int i = 0; i < config->getFps(); i++)
             world->step();
         float y_diff = rock1->y() - rock1_y;
         float x_diff = rock1->x() - rock1_x;
@@ -83,10 +91,11 @@ public:
     void testContactWithBarrier() {
         cout << endl << "TEST eliminar ante contacto con barrera energia: ";
         float barrier_x = 10, barrier_y = BARRIER_HALF_LENGTH;
-        world->createEnergyBarrier(barrier_x, barrier_y, O_V);
+        auto data = make_shared<EnergyBarrierData>(barrier_x, barrier_y, "V");
+        world->createCollidable(data);
         auto n_bodies = world->getWorld()->GetBodyCount();
         rock1->teletransport(barrier_x, barrier_y);
-        for (int i = 0; i < STEP_ITERATIONS; i++)
+        for (int i = 0; i < config->getFps(); i++)
             world->step();
         CPPUNIT_ASSERT_EQUAL(n_bodies - 1, world->getWorld()->GetBodyCount());
         CPPUNIT_ASSERT_EQUAL((Rock*)nullptr, world->getRock(0));
@@ -99,11 +108,12 @@ public:
         float e_transm_x = rock1_x - ENRG_BALL_RADIUS - ROCK_HALF_LEN - 1;
         float e_transm_y = rock1_y ;
 
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);    // Lanzara bola contra chell
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i)
+            for (int i = 0; i < config->getFps(); ++i)
                 world->step();
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
+        for (int i = 0; i < config->getFps(); ++i)
             world->step(); // Step donde se crea EnergyBall
 
         float pre_contact_pos_y = rock1->y();
@@ -112,7 +122,7 @@ public:
         int n_bodies = world->getWorld()->GetBodyCount();
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             time_elapsed += TIME_STEP;
             world->step();
             if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
@@ -149,7 +159,8 @@ public:
                         "morir: ";
         CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
         float barrier_x = 10, barrier_y = BARRIER_HALF_LENGTH;
-        world->createEnergyBarrier(barrier_x, barrier_y, O_V);
+        auto data = make_shared<EnergyBarrierData>(barrier_x, barrier_y, "V");
+        world->createCollidable(data);
         rock2->teletransport(barrier_x, barrier_y); // Coloco sobre la barrera
         world->step();
         // Roca 2 debe ser eliminada

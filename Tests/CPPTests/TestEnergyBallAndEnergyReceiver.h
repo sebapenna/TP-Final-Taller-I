@@ -8,6 +8,7 @@
 
 using std::cout;
 using std::endl;
+using std::make_shared;
 
 class TestEnergyBallAndEnergyReceiver : public CppUnit::TestFixture {
 CPPUNIT_TEST_SUITE(TestEnergyBallAndEnergyReceiver);
@@ -19,6 +20,8 @@ CPPUNIT_TEST_SUITE(TestEnergyBallAndEnergyReceiver);
     CPPUNIT_TEST_SUITE_END();
 
 private:
+    std::shared_ptr<Configuration> ptr;
+    Configuration *config;
     World *world;
     size_t width = 100, height = 200;
     float e_transm_x = 0, e_transm_y = 2;
@@ -27,8 +30,9 @@ private:
 
 public:
     void setUp() {
-        world = new World(width, height);
-//        world->createRockBlock(100, 4, 0, -2); // Piso
+        ptr = make_shared<Configuration>();
+config = ptr.get();
+        world = new World(width, height, ptr);
     }
 
     void tearDown() {
@@ -37,9 +41,9 @@ public:
 
     void releaseEnergyBall() {
         for (int j = 1; j < TIME_TO_RELEASE; ++j)
-            for (int i = 0; i < STEP_ITERATIONS; ++i)
+            for (int i = 0; i < config->getFps(); ++i)
                 world->step();
-        for (int i = 0; i < STEP_ITERATIONS; ++i)
+        for (int i = 0; i < config->getFps(); ++i)
             world->step(); // Step donde se crea EnergyBall
     }
 
@@ -48,8 +52,10 @@ public:
         cout << endl << "TEST activar tras contacto desde izquierda: ";
 
         float e_rec_x = e_transm_x + dist_between_energy_blocks + 5;    // X centro receptor
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_E);
-        world->createEnergyReceiver(e_rec_x, e_transm_y);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
+        world->createCollidable(data);
+        auto data2 = make_shared<EnergyReceiverData>(0, e_rec_x, e_transm_y);
+        world->createCollidable(data2);
 
         releaseEnergyBall();
 
@@ -60,7 +66,7 @@ public:
         float time_elapsed = 0; // Contabilizo tiempo antes que muera bola
         bool e_ball_erased = false;
 
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             world->step();
             time_elapsed += TIME_STEP;
             float new_n_bod = world->getWorld()->GetBodyCount();
@@ -77,8 +83,10 @@ public:
         cout << endl << "TEST activar tras contacto desde derecha: ";
 
         float e_rec_x = e_transm_x - dist_between_energy_blocks - 5; // X centro receptor
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_O);
-        world->createEnergyReceiver(e_rec_x, e_transm_y);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "O");
+        world->createCollidable(data);
+        auto data2 = make_shared<EnergyReceiverData>(0, e_rec_x, e_transm_y);
+        world->createCollidable(data2);
 
         releaseEnergyBall();
 
@@ -89,7 +97,7 @@ public:
         float time_elapsed = 0; // Contabilizo tiempo antes que muera bola
         bool e_ball_erased = false;
 
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             world->step();
             time_elapsed += TIME_STEP;
             float new_n_bod = world->getWorld()->GetBodyCount();
@@ -106,8 +114,10 @@ public:
         cout << endl << "TEST activar tras contacto desde abajo: ";
 
         float e_rec_y = e_transm_y + dist_between_energy_blocks + 5;
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_N);
-        world->createEnergyReceiver(e_transm_x, e_rec_y);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "N");
+        world->createCollidable(data);
+        auto data2 = make_shared<EnergyReceiverData>(0, e_transm_x, e_rec_y);
+        world->createCollidable(data2);
 
         releaseEnergyBall();
 
@@ -117,7 +127,7 @@ public:
         float time_elapsed = 0; // Contabilizo tiempo antes que muera bola
         bool e_ball_erased = false;
 
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             world->step();
             time_elapsed += TIME_STEP;
             float new_n_bod = world->getWorld()->GetBodyCount();
@@ -134,8 +144,10 @@ public:
         cout << endl << "TEST activar tras contacto desde arriba: ";
 
         float e_rec_y = e_transm_y - dist_between_energy_blocks - 5; // y centro receptor
-        world->createEnergyTransmitter(e_transm_x, e_transm_y, O_S);
-        world->createEnergyReceiver(e_transm_x, e_rec_y);
+        auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "S");
+        world->createCollidable(data);
+        auto data2 = make_shared<EnergyReceiverData>(0, e_transm_x, e_rec_y);
+        world->createCollidable(data2);
 
         releaseEnergyBall();
 
@@ -145,7 +157,7 @@ public:
         float time_elapsed = 0; // Contabilizo tiempo antes que muera bola
         bool e_ball_erased = false;
 
-        for (int i = 0; i < STEP_ITERATIONS; ++i) {
+        for (int i = 0; i < config->getFps(); ++i) {
             world->step();
             time_elapsed += TIME_STEP;
             float new_n_bod = world->getWorld()->GetBodyCount();
@@ -161,7 +173,8 @@ public:
     void testTransmitterAddedToUpdateVectorAfterReceivingBall() {
         cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
                         "recibir bola energia: ";
-        world->createEnergyReceiver(0, 10);
+        auto data = make_shared<EnergyReceiverData>(0, 0, 10);
+        world->createCollidable(data);
         auto e_recv = world->getEnergyReceiver(0);
         e_recv->activate();
         world->step();

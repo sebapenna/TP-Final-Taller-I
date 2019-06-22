@@ -2,12 +2,13 @@
 #include <Server/Model/constants.h>
 
 EnergyTransmitter::EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction,
-        const float& width, const float& height) : _body(body), _direction(direction), _id(id),
-        _width(width), _height(height) { }
+        const float& width, const float& height, const float& time_step,
+        const float& time_to_release) : _time_step(time_step), _time_to_release(time_to_release),
+        _body(body), _direction(direction), _id(id), _width(width), _height(height) { }
 
 bool EnergyTransmitter::releaseEnergyBall() {
-    _time_elapsed += TIME_STEP;
-    if (_time_elapsed >= TIME_TO_RELEASE) {
+    _time_elapsed += _time_step;
+    if (_time_elapsed >= _time_to_release) {
         _time_elapsed = 0;
         _changed_state = true;
         return true;
