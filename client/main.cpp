@@ -38,6 +38,14 @@
 #define KNOWN_ERROR 1
 #define UNKNOWN_ERROR 2
 #define DELAY 1
+
+void positionInScreen(int& x, int& y, SDL_Runner& sdlRunner) {
+    int x_m;
+    int y_m;
+    SDL_GetMouseState(&x_m, &y_m);
+    sdlRunner.getRealPos(x, y, x_m, y_m);
+}
+
 int main(int argc, char** argv){
     try {
         // Chell turning around
@@ -88,32 +96,23 @@ int main(int argc, char** argv){
                     break;
                 } else if (e.type == SDL_MOUSEBUTTONDOWN) {
                     if (e.button.button == SDL_BUTTON_LEFT) {
-                        int x_m;
-                        int y_m;
-                        SDL_GetMouseState(&x_m, &y_m);
                         int x;
                         int y;
-                        sdlRunner.getRealPos(x, y, x_m, y_m);
+                        positionInScreen(x, y, sdlRunner);
                         std::shared_ptr<ProtocolDTO> dto(new ShootPortalDTO(BLUE_PORTAL, x, y));
                         blockingQueue.push(dto);
                     } else if (e.button.button == SDL_BUTTON_RIGHT) {
-                        int x_m;
-                        int y_m;
-                        SDL_GetMouseState(&x_m, &y_m);
-
                         int x;
                         int y;
-                        sdlRunner.getRealPos(x, y, x_m, y_m);
+                        positionInScreen(x, y, sdlRunner);
+
                         std::shared_ptr<ProtocolDTO> dto(new ShootPortalDTO(ORANGE_PORTAL, x, y));
                         blockingQueue.push(dto);
                     } else if (e.button.button == SDL_BUTTON_MIDDLE) {
-                        int x_m;
-                        int y_m;
-                        SDL_GetMouseState(&x_m, &y_m);
-
                         int x;
                         int y;
-                        sdlRunner.getRealPos(x, y, x_m, y_m);
+                        positionInScreen(x, y, sdlRunner);
+
                         std::shared_ptr<ProtocolDTO> dto(new ShootPinToolDTO(x, y));
                         blockingQueue.push(dto);
                     }

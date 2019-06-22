@@ -46,6 +46,13 @@ double ChellAnimationView::getAngle() const {
 }
 
 void ChellAnimationView::setState(ChellState state) {
+    if (this->state == ChellState::firing) {
+        if (this->firingChell.done()) {
+            this->firingChell.reset();
+        } else {
+            return;
+        }
+    }
     this->state = state;
 }
 
