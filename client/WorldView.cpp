@@ -69,8 +69,10 @@ void WorldView::draw() {
         }
     }
 
-    if (cake){
-        cake->draw(*camera);
+    if (cake) {
+        if (camera->isInCamera(cake->getDst())) {
+            cake->draw(*camera);
+        }
     }
 
     for(auto const& chell: chells) {
@@ -185,7 +187,9 @@ void WorldView::activateTransmitter(int16_t id) {
 }
 
 void WorldView::addBall(std::shared_ptr<EnergyBallView> ball) {
-    // TO DO: si la bola ya existe, simplemente modificar la posicion..
+    // TODO: si la bola ya existe, simplemente modificar la posicion..
+    //// THIS GETS FIXED ONCE I TRANSFER ALL THE LOGIC OF PIXELS TO THE CAMERA
+    //// AND OUTSIDE THE CAMERA ALL SHOULD BE IN METERS.
     balls[ball->getId()] = ball;
 }
 

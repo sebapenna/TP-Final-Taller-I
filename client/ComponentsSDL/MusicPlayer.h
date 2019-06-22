@@ -19,6 +19,8 @@ public:
     void playGateClosing();
     void playPlayerFiring();
     void playPlayerJumping();
+    void playButtonPress();
+    void playButtonUnpress();
 };
 
 

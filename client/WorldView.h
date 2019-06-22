@@ -36,7 +36,7 @@ private:
     std::map<int, std::shared_ptr<View>> portals;
     std::map<int, std::shared_ptr<PinToolView>> pintools;
 
-    std::shared_ptr<CakeView> cake;
+    std::shared_ptr<View> cake;
     std::shared_ptr<BackgroundView> background;
     Camera* camera;
 public:

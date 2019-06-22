@@ -14,6 +14,8 @@ SoundFactory::SoundFactory() {
     effects["gate_close"] = getChunkFromFile("assets/soundeffects/scenario/gate_close.wav");
     effects["player_firing"] = getChunkFromFile("assets/soundeffects/player/firing.wav");
     effects["player_jumping"] = getChunkFromFile("assets/soundeffects/player/jump.wav");
+    effects["button_press"] = getChunkFromFile("assets/soundeffects/scenario/button_press.wav");
+    effects["button_unpress"] = getChunkFromFile("assets/soundeffects/scenario/button_press.wav");
 }
 
 SoundFactory::~SoundFactory() {

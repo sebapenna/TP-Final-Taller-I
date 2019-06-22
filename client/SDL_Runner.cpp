@@ -165,8 +165,10 @@ void SDL_Runner::addCake(CakeDTO *cakeDTO, std::string &file_name) {
 
 void SDL_Runner::setButtonState(ButtonStateDTO *buttonStateDTO) {
     if (buttonStateDTO->getState() == PRESSED) {
+        this->musicPlayer.playButtonPress();
         world.activateButton(buttonStateDTO->getId());
     } else {
+        this->musicPlayer.playButtonUnpress();
         world.deactivateButton(buttonStateDTO->getId());
     }
 }
