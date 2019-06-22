@@ -34,6 +34,12 @@ public:
     const float width() override;
 
     const float height() override;
+
+    void step(const float &time_step) override;
+
+    bool isDead(const float &time_step) override;
+
+    b2Body *getBody() const override;
 };
 
 

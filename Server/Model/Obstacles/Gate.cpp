@@ -1,3 +1,4 @@
+#include <Box2D/Dynamics/b2Body.h>
 #include "Gate.h"
 
 Gate::Gate(const size_t &id, const float& x, const float& y, const float& width,
@@ -17,22 +18,6 @@ void Gate::addButtonNeeded(Button *button) {
 
 void Gate::addEnergyReceiverNeeded(EnergyReceiver *e_receiver) {
     _energy_reveivers_needed.push_back(e_receiver);
-}
-
-void Gate::updateState() {
-    if (_buttons_needed.empty() && _energy_reveivers_needed.empty())
-        return; // Compuerta no tiene forma de abrir
-    for (auto &it : _buttons_needed)
-        if (!it->isActivated()) {
-            _open = false;
-            return;
-        }
-    for (auto &it : _energy_reveivers_needed)
-        if (!it->isActivated()) {
-            _open = false;
-            return;
-        }
-    _open = true;   // Estaban todos activos
 }
 
 const uint8_t Gate::classId() {
@@ -69,6 +54,30 @@ const float Gate::width() {
 
 const float Gate::height() {
     return _height;
+}
+
+void Gate::step(const float &time_step) {
+    if (_buttons_needed.empty() && _energy_reveivers_needed.empty())
+        return; // Compuerta no tiene forma de abrir
+    for (auto &it : _buttons_needed)
+        if (!it->isActivated()) {
+            _open = false;
+            return;
+        }
+    for (auto &it : _energy_reveivers_needed)
+        if (!it->isActivated()) {
+            _open = false;
+            return;
+        }
+    _open = true;   // Estaban todos activos
+}
+
+bool Gate::isDead(const float &time_step) {
+    return false;   // No se destruye
+}
+
+b2Body *Gate::getBody() const {
+    return nullptr; // No tiene body
 }
 
 Gate::~Gate() = default;

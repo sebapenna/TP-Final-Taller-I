@@ -7,7 +7,7 @@ _id(id), _width(width), _height(height) {
     _previous_y = _body->GetPosition().y;
 }
 
-bool Rock::isDead() const {
+bool Rock::isDead(const float& time_step) {
     return _dead;
 }
 
@@ -69,6 +69,10 @@ const float Rock::height() {
 
 float Rock::velocityY() {
     return _body->GetLinearVelocity().y;
+}
+
+void Rock::step(const float &time_step) {
+    // todo TELEPORT
 }
 
 Rock::~Rock() = default;

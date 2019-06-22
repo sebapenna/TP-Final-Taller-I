@@ -2,6 +2,7 @@
 
 #include "MetalBlock.h"
 #include <Server/Model/constants.h>
+#include <Box2D/Dynamics/b2Body.h>
 
 using std::abs;
 
@@ -70,6 +71,19 @@ float MetalBlock::getSubBlockCenterY(const float &y) {
             return origin;
         origin -= (factor * BLOCK_DIVISION);    // Muevo en un bloque
     }
+}
+
+void MetalBlock::step(const float &time_step) {
+    // No realizo accion en step
+}
+
+bool MetalBlock::isDead(const float &time_step) {
+    return false;   // No se destruye
+
+}
+
+b2Body *MetalBlock::getBody() const {
+    return nullptr; // No tiene body
 }
 
 MetalBlock::~MetalBlock() = default;

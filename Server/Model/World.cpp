@@ -31,6 +31,14 @@ void deletePointerVector(vector<T> &v) {
     }
 }
 
+template<class T>
+void deletePointerMap(std::map<size_t, T> &v) {
+    for_each(v.begin(), v.end(), [](std::pair<size_t, T> p) {
+        delete p.second;
+        p.second = nullptr;
+    });
+}
+
 World::~World() {
     deletePointerVector<Chell*>(_chells);
     deletePointerVector<RockBlock*>(_rock_blocks);
@@ -39,15 +47,12 @@ World::~World() {
     deletePointerVector<Acid*>(_acids);
     deletePointerVector<EnergyTransmitter*>(_energy_transmitters);
     deletePointerVector<EnergyReceiver*>(_energy_receivers);
-    deletePointerVector<EnergyBall*>(_energy_balls);
     deletePointerVector<Rock*>(_rocks);
     deletePointerVector<MetalDiagonalBlock*>(_metal_diagonal_blocks);
     deletePointerVector<MetalBlock*>(_metal_blocks);
     deletePointerVector<EnergyBarrier*>(_energy_barriers);
-    for_each(_shootables.begin(), _shootables.end(), [](std::pair<size_t, Collidable *> p) {
-        delete p.second;
-        p.second = nullptr;
-    });
+    deletePointerMap<EnergyBall*>(_energy_balls);
+    deletePointerMap<Collidable*>(_shootables);
     delete _cake;
     delete _contact_listener;
     delete _world;
@@ -73,7 +78,7 @@ void World::updateChellsWantingToKill() {
     _want_to_kill.erase(remove_if(_want_to_kill.begin(), _want_to_kill.end(), [this](size_t &id) {
         // Borro si se alejo de cake o murio
         auto chell = getChell(id);
-        return (chell) ? !chell->reachedCake(): true;
+        return (chell) ? !chell->reachedCake() : true;
     }), _want_to_kill.end());
 }
 
@@ -122,13 +127,13 @@ void World::step() {
     _objects_to_delete.clear();
     _world->Step(_time_step, _velocity_iterations, _position_iterations);
     // Orden de acciones: primero las que su estado afectan a otros
-    stepEnergyTransmitters();
+    stepCollidableVector<EnergyTransmitter>(_energy_transmitters);
     stepEnergyBalls();
-    stepButtons();
-    stepEnergyReceivers();
-    stepGates();
-    stepChells();
-    stepRocks();
+    stepCollidableVector<Button>(_buttons);
+    stepCollidableVector<EnergyReceiver>(_energy_receivers);
+    stepCollidableVector<Gate>(_gates);
+    stepCollidableVector<Chell>(_chells);
+    stepCollidableVector<Rock>(_rocks);
     // Primero realizo step de pin tools y luego deleteOldShootables para eliminar los que
     // finalizo su tiempo de vida
     stepPinTools();
@@ -140,68 +145,38 @@ void World::step() {
     killChell();
 }
 
-void World::stepPinTools() {
-    for (auto &shootable : _shootables) {
-        if (shootable.second) {
-            if (shootable.second->classId() == PIN_TOOL) {
-                auto pintool = (PinTool *) shootable.second;
-                pintool->updateLifetime();
-                if (pintool->isDead()) {
-                    _shootables_to_delete.push_back(pintool->id());
-                    auto chell = getChell(pintool->getOwnerChellId());
-                    chell->resetPinTool();
-                }
+template <class T>
+void World::stepCollidableVector(std::vector<T *> &vector) {
+    for (int i = 0; i < vector.size(); ++i) {
+        auto collidable = vector[i];
+        if (collidable) {    // Verifico no haberlo eliminado previamente
+            collidable->step(_time_step);
+            if (collidable->isDead(_time_step)) {
+                _world->DestroyBody(collidable->getBody());
+                _objects_to_delete.emplace_back(i, collidable->classId());
+                delete collidable;
+                collidable = nullptr;
+                vector[i] = nullptr;
+            } else if (collidable->actedDuringStep()) {
+                if (collidable->classId() == ENERGY_TRANSMITTER) // Accion de transmisor crea bola
+                    this->createEnergyBall((EnergyTransmitter*) collidable);
+                _objects_to_update.push_back(collidable);
             }
         }
     }
 }
 
-void World::stepGates() {
-    for (auto &gate : _gates) {
-        gate->updateState();
-        if (gate->actedDuringStep())
-            _objects_to_update.push_back(gate);
-    }
-}
-
-void World::stepButtons() {
-    for (auto &button : _buttons) {
-        button->updateState();
-        if (button->actedDuringStep())
-            _objects_to_update.push_back(button);
-    }
-}
-
-void World::stepEnergyReceivers() {
-    for (auto &energy_receiver : _energy_receivers) {
-        energy_receiver->updateState();
-        if (energy_receiver->actedDuringStep())
-            _objects_to_update.push_back(energy_receiver);
-    }
-}
-
-void World::stepEnergyTransmitters() {
-    for (auto &energy_transmitter : _energy_transmitters) {
-        if (energy_transmitter->releaseEnergyBall())
-            this->createEnergyBall(energy_transmitter);
-        if (energy_transmitter->actedDuringStep())
-            _objects_to_update.push_back(energy_transmitter);
-    }
-}
-
-void World::stepChells() {
-    for (int i = 0; i < _chells.size(); ++i) {
-        auto chell = _chells[i];
-        if (chell) {    // Verifico no haberlo eliminado previamente
-            if (!chell->isDead()) { // Verifico que no murio en algun contacto
-                chell->move();
-                if (chell->actedDuringStep())
-                    _objects_to_update.push_back(chell);
-            } else {
-                _world->DestroyBody(chell->getBody());
-                _objects_to_delete.emplace_back(i, chell->classId());
-                delete chell;
-                _chells[i] = nullptr;
+void World::stepPinTools() {
+    for (auto &shootable : _shootables) {
+        if (shootable.second) {
+            if (shootable.second->classId() == PIN_TOOL) {
+                auto pintool = (PinTool *) shootable.second;
+                pintool->step(_time_step);
+                if (pintool->isDead(_time_step)) {
+                    _shootables_to_delete.push_back(pintool->id()); // Se eliminan posteriormente
+                    auto chell = getChell(pintool->getOwnerChellId());
+                    chell->resetPinTool();
+                }
             }
         }
     }
@@ -211,30 +186,14 @@ void World::stepEnergyBalls() {
     for (int i = 0; i < _energy_balls.size(); ++i) {
         auto energy_ball = _energy_balls[i];
         if (energy_ball) { // Verifico no haberlo eliminado previamente
-            energy_ball->updateLifetime();
-            if (energy_ball->isDead()) {
+            energy_ball->step(_time_step);
+            if (energy_ball->isDead(_time_step)) {
                 _world->DestroyBody(energy_ball->getBody());
-                _objects_to_delete.emplace_back(i, energy_ball->classId());
+                _objects_to_delete.emplace_back(energy_ball->id(), energy_ball->classId());
+                _energy_balls.erase(energy_ball->id());
                 delete energy_ball;
-                _energy_balls[i] = nullptr;
             } else if (energy_ball->actedDuringStep()) {
                 _objects_to_update.push_back(energy_ball);
-            }
-        }
-    }
-}
-
-void World::stepRocks() {
-    for (int i = 0; i < _rocks.size(); ++i) {
-        auto rock = _rocks[i];
-        if (rock) {
-            if (rock->isDead()) {
-                _world->DestroyBody(rock->getBody());
-                _objects_to_delete.emplace_back(i, rock->classId());
-                delete rock;
-                _rocks[i] = nullptr;
-            } else if (rock->actedDuringStep()) {
-                _objects_to_update.push_back(rock);
             }
         }
     }
@@ -380,6 +339,14 @@ size_t World::getNextShootableId() {
     return next_id;
 }
 
+
+size_t World::getNextEnergyBallId() {
+    size_t next_id = 0;
+    if (!_energy_balls.empty())
+        next_id = _energy_balls.rbegin()->first + 1;    // Obtengo id del ultimo elemento (mayor id)
+    return next_id;
+}
+
 /***************************************** Setters / Adders ************************************/
 void World::addAcid(Acid *acid) {
     _acids.push_back(acid);
@@ -483,13 +450,12 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
     b2Body *body = _world->CreateBody(&body_def);
     body->CreateFixture(&fixture);
 
-    auto *energy_ball = new EnergyBall(_energy_balls.size(), body, energy_transm->getDirection(),
+    auto *energy_ball = new EnergyBall(getNextEnergyBallId(), body, energy_transm->getDirection(),
             _configuration->getEnergyBallRadius(), _configuration->getEnergyBallLifetime(),
-            _time_step);
+            _configuration->getEnergyBallForce());
     body->SetUserData(energy_ball);
-    _energy_balls.push_back(energy_ball);
+    _energy_balls.emplace(energy_ball->id(), energy_ball);
 }
-
 
 /***************************************** Shootables *******************************************/
 void World::shootPinTool(const size_t &chell_id, const float &dest_x, const float &dest_y) {

@@ -69,7 +69,7 @@ private:
 public:
     void setUp() {
         ptr = make_shared<Configuration>();
-config = ptr.get();
+        config = ptr.get();
         world = new World(width, height, ptr);
         auto data = make_shared<RockBlockData>(100, 4, 0, -2); // Piso
         world->createCollidable(data);
@@ -543,7 +543,7 @@ config = ptr.get();
         auto rock = world->getRock(0);
         // Verifico roca frena a chell
         CPPUNIT_ASSERT_LESS(rock->x(), chell->x());
-        CPPUNIT_ASSERT(!chell->isDead());
+        CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
         CPPUNIT_ASSERT_EQUAL(n_bodies, world->getWorld()->GetBodyCount());
         cout << "OK";
     }
@@ -605,7 +605,7 @@ config = ptr.get();
                 CPPUNIT_ASSERT(!chell->isJumping());
                 CPPUNIT_ASSERT(!chell->isShooting());
                 CPPUNIT_ASSERT(!chell->isCarryingRock());
-                CPPUNIT_ASSERT(!chell->isDead());
+                CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                 updated = true;
             }
         }
@@ -628,7 +628,7 @@ config = ptr.get();
                 CPPUNIT_ASSERT(!chell->isJumping());
                 CPPUNIT_ASSERT(!chell->isShooting());
                 CPPUNIT_ASSERT(!chell->isCarryingRock());
-                CPPUNIT_ASSERT(!chell->isDead());
+                CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                 updated = true;
             }
         }
@@ -657,7 +657,7 @@ config = ptr.get();
                 CPPUNIT_ASSERT(chell->isJumping());
                 CPPUNIT_ASSERT(!chell->isShooting());
                 CPPUNIT_ASSERT(!chell->isCarryingRock());
-                CPPUNIT_ASSERT(!chell->isDead());
+                CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                 updated = true;
             }
         }
@@ -687,7 +687,7 @@ config = ptr.get();
                     CPPUNIT_ASSERT(!chell->isJumping());
                     CPPUNIT_ASSERT(!chell->isShooting());
                     CPPUNIT_ASSERT(!chell->isCarryingRock());
-                    CPPUNIT_ASSERT(!chell->isDead());
+                    CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                     updated = true;
                 }
             }
@@ -719,7 +719,7 @@ config = ptr.get();
                  CPPUNIT_ASSERT(!chell->isJumping());
                  CPPUNIT_ASSERT(!chell->isShooting());
                  CPPUNIT_ASSERT(!chell->isCarryingRock());
-                 CPPUNIT_ASSERT(!chell->isDead());
+                 CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                  updated = true;
              }
          }

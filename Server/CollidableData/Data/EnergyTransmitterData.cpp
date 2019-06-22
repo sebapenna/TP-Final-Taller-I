@@ -33,7 +33,7 @@ EnergyTransmitterData::build(World *world, std::shared_ptr<Configuration> c) {
     auto body = BoxCreator::createStaticBox(world->getWorld(), _x, _y, c->getEnergyBlockHalfLen(),
             c->getEnergyBlockHalfLen());
     auto *e_transm = new EnergyTransmitter(world->getNextTransmitterId(), body, _direction,
-            c->getEnergyBlockHalfLen() * 2, c->getEnergyBlockHalfLen() * 2, 1 / c->getFps(),
+            c->getEnergyBlockHalfLen() * 2, c->getEnergyBlockHalfLen() * 2,
             c->getTimeToReleaseEnrgBall());
     body->SetUserData(e_transm);
     world->addEnergyTransmitter(e_transm);

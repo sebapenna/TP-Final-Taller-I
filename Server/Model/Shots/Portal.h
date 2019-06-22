@@ -37,7 +37,7 @@ public:
 
     const size_t id() const;
 
-    b2Body *getBody() const;
+    b2Body *getBody() const override;
 
     const float getWidth() const;
 
@@ -57,6 +57,10 @@ public:
     const float width() override;
 
     const float height() override;
+
+    void step(const float &time_step) override;
+
+    bool isDead(const float &time_step) override;
 };
 
 

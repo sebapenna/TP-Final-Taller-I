@@ -26,7 +26,7 @@ chell_id, std::shared_ptr<Configuration> config) {
 
     auto pintool = new PinTool(world->getNextShootableId(), chell_id, body,
             2 * config->getPintoolHalfWidth(), 2 * config->getPintoolHalfHeight(),
-            config->getPintoolLifetime(), 1 / config->getFps());
+            config->getPintoolLifetime());
     body->SetUserData(pintool);
     world->addShootable(pintool->id(), pintool);
     return pintool;

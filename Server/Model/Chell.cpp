@@ -38,7 +38,7 @@ const size_t Chell::id() const {
     return _id;
 }
 
-bool Chell::isDead() {
+bool Chell::isDead(const float &time_step) {
     return _dead;
 }
 
@@ -375,5 +375,10 @@ void Chell::setJumpForce(float jumpForce) {
 
 void Chell::setMoveForce(float moveForce) {
     _move_force = moveForce;
+}
+
+void Chell::step(const float &time_step) {
+    if (!_dead)
+        move();
 }
 

@@ -1,5 +1,6 @@
 #include "MetalDiagonalBlock.h"
 #include <Server/Model/constants.h>
+#include <Box2D/Dynamics/b2Body.h>
 
 MetalDiagonalBlock::MetalDiagonalBlock(const float& x, const float& y, const float& width,
         const float& height, uint8_t o) : _x(x), _y(y), _width(width), _height(height),
@@ -47,6 +48,18 @@ const float MetalDiagonalBlock::getCenterX() {
 
 const float MetalDiagonalBlock::getCenterY() {
     return _y + _height / 2;
+}
+
+void MetalDiagonalBlock::step(const float &time_step) {
+    // No realiza accion en step
+}
+
+bool MetalDiagonalBlock::isDead(const float &time_step) {
+    return false;   // No se destruye
+}
+
+b2Body *MetalDiagonalBlock::getBody() const {
+    return nullptr; // No tiene body
 }
 
 MetalDiagonalBlock::~MetalDiagonalBlock() = default;

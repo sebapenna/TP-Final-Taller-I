@@ -19,9 +19,9 @@ public:
 
     float velocityY();
 
-    b2Body *getBody() const;
+    b2Body *getBody() const override;
 
-    bool isDead() const;
+    bool isDead(const float& time_step) override;
 
     const size_t id() const;
 
@@ -42,6 +42,8 @@ public:
     const float width() override;
 
     const float height() override;
+
+    void step(const float &time_step) override;
 };
 
 

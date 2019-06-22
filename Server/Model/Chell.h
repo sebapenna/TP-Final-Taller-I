@@ -50,7 +50,7 @@ public:
     int16_t tilt() const;
 
 
-    b2Body *getBody() const;
+    b2Body *getBody() const override;
 
     void move_left();
 
@@ -68,7 +68,7 @@ public:
     // Metodo a llamar para que se aplique el movimiento seteado previamente
     void move();
 
-    bool isDead();
+    bool isDead(const float& time_step) override;
 
     const uint8_t classId() override;
 
@@ -133,6 +133,8 @@ public:
     void setJumpForce(float jumpForce);
 
     void setMoveForce(float moveForce);
+
+    void step(const float &time_step) override;
 };
 
 

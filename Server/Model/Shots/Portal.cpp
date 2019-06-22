@@ -79,4 +79,12 @@ const float Portal::height() {
     return _height;
 }
 
+void Portal::step(const float &time_step) {
+    // No realiza accion durante step
+}
+
+bool Portal::isDead(const float &time_step) {
+    return false;   // No se destruye
+}
+
 Portal::~Portal()  = default;

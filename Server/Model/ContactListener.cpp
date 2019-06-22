@@ -2,6 +2,7 @@
 #include "ContactListener.h"
 #include "constants.h"
 #include "Chell.h"
+#include "EnergyBall.h"
 #include <Server/Model/Collidable.h>
 #include <Server/Model/Obstacles/Gate.h>
 
@@ -86,10 +87,32 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
         // Contacto se debe a que es punto de salida o es un portal sin salida
         if (chell->ifTeleportedSetDone() || !portal->exitPortal())
             contact->SetEnabled(false); // Ignoro contacto con portal salida o portal sin salida
-    } else if (cname1 == PIN_TOOL && cname2 != PORTAL) {
-        contact->SetEnabled(false); // Ignoro contacto con cualquier objeto que no sea el portal
-    } else if (cname2 == PIN_TOOL && cname1 != PORTAL) {
-        contact->SetEnabled(false); // Ignoro contacto con cualquier objeto que no sea el portal
+    } else if (cname1 == ENERGY_BALL && (cname2 == PORTAL)) {
+        auto energyball = (EnergyBall*) coll1;
+        auto portal = (Portal*) coll2;
+        // Contacto se debe a que es punto de salida o es un portal sin salida
+        if (energyball->ifTeleportedSetDone() || !portal->exitPortal())
+            contact->SetEnabled(false); // Ignoro contacto con portal salida o sin salida
+    } else if (cname2 == CHELL && (cname1 == PORTAL)) {
+        auto energyball = (EnergyBall*) coll2;
+        auto portal = (Portal*) coll1;
+        // Contacto se debe a que es punto de salida o es un portal sin salida
+        if (energyball->ifTeleportedSetDone() || !portal->exitPortal())
+            contact->SetEnabled(false); // Ignoro contacto con portal salida o portal sin salida
+    } else if (cname1 == PIN_TOOL) {
+        if (cname2 == PORTAL) {
+            auto pintool = (PinTool*) coll1;
+            pintool->collideWith(coll2);
+        } else {
+            contact->SetEnabled(false); // Ignoro contacto con cualquier objeto que no sea el portal
+        }
+    } else if (cname2 == PIN_TOOL) {
+        if (cname1 == PORTAL) {
+            auto pintool = (PinTool*) coll2;
+            pintool->collideWith(coll1);
+        } else {
+            contact->SetEnabled(false); // Ignoro contacto con cualquier objeto que no sea el portal
+        }
     }
 }
 

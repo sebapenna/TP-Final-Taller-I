@@ -660,7 +660,7 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) 10, output.at(ENRG_BALL_ID_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) -2, output.at(ENRG_BALL_X_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, output.at(ENRG_BALL_Y_POS));
-        CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(config->getEnergyBallRadius()_POS));
+        CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(ENRG_BALL_RADIUS_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) DELETE, output.at(ENRG_BALL_DELETE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(ENRG_BALL_ARGS + extra_data, vec_size);
         cout << "OK";

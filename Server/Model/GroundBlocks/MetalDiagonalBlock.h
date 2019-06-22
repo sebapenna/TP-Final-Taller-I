@@ -37,9 +37,15 @@ public:
 
     const float height() override;
 
+    void step(const float &time_step) override;
+
     // Retorna el valor de x en el centro del cuerpo
     const float getCenterX();
     const float getCenterY();
+
+    bool isDead(const float &time_step) override;
+
+    b2Body *getBody() const override;
 };
 
 

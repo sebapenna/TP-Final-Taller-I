@@ -2,9 +2,9 @@
 #include <Server/Model/constants.h>
 
 PinTool::PinTool(const size_t &id, const size_t& chell_id, b2Body *body, const float &width,
-        const float &height, const float& max_lifetime, const float& time_step) :
+        const float &height, const float& max_lifetime) :
         _owner_chell_id(chell_id), _body(body), _width(width), _height(height), _id(id),
-        _max_lifetime(max_lifetime), _time_step(time_step) { }
+        _max_lifetime(max_lifetime) { }
 
 PinTool::~PinTool() = default;
 
@@ -49,13 +49,9 @@ const size_t PinTool::id() const {
     return _id;
 }
 
-void PinTool::updateLifetime() {
-    _lifetime += _time_step;
-}
-
-bool PinTool::isDead() {
+bool PinTool::isDead(const float& time_step) {
     float diff_time = _max_lifetime - _lifetime;
-    return (_dead || diff_time < _time_step);
+    return (_dead || diff_time < time_step);
 }
 
 bool PinTool::actedDuringStep() {
@@ -66,3 +62,6 @@ bool PinTool::actedDuringStep() {
     return false;
 }
 
+void PinTool::step(const float &time_step) {
+    _lifetime += time_step;
+}

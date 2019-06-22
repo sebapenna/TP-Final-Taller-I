@@ -26,12 +26,13 @@ private:
     size_t width = 100, height = 200;
     float e_transm_x = 0, e_transm_y = 2;
     // Calculo distancia entre centro de transmisor y receptor (suponiendolos pegados)
-    float dist_between_energy_blocks = 2 * config->getEnergyBlockHalfLen();
+    float dist_between_energy_blocks;
 
 public:
     void setUp() {
         ptr = make_shared<Configuration>();
-config = ptr.get();
+        config = ptr.get();
+        dist_between_energy_blocks = 2 * config->getEnergyBlockHalfLen();
         world = new World(width, height, ptr);
     }
 

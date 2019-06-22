@@ -12,21 +12,17 @@ private:
     bool _changed_state = false;    // Booleano para indicar camibo de estado durante step
     size_t _id;
     const float _width, _height;
-    const float _time_step, _time_to_release;
+    const float _time_to_release;
 
 public:
     explicit EnergyTransmitter(const size_t &id, b2Body *body, uint8_t direction,
-            const float& width, const float& height, const float& time_step,
-            const float& time_to_release);
+            const float& width, const float& height, const float& time_to_release);
 
     ~EnergyTransmitter() override;
 
-    // Le indica a world si debe crear una EnergyBall
-    bool releaseEnergyBall();
-
     size_t id() const;
 
-    b2Body *getBody() const;
+    b2Body *getBody() const override;
 
     uint8_t getDirection() const;
 
@@ -45,6 +41,11 @@ public:
     const float width() override;
 
     const float height() override;
+
+    void step(const float &time_step) override;
+
+    bool isDead(const float &time_step) override;
+
 };
 
 

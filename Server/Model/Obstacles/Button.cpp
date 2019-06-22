@@ -1,5 +1,6 @@
 #include <Server/Model/Collidable.h>
 #include <iostream>
+#include <Box2D/Dynamics/b2Body.h>
 #include "Button.h"
 
 Button::Button(const size_t &id, const float& x, const float& y, const float& width,
@@ -15,14 +16,6 @@ void Button::deactivate() {
 
 bool Button::isActivated() {
     return _activated;
-}
-
-void Button::updateState() {
-    _activated = _bodies_on_it > 0;
-    if (_activated)
-        _state = ACTIVATED;
-    else
-        _state = NOT_ACTIVATED;
 }
 
 size_t Button::id() const {
@@ -67,6 +60,22 @@ const float Button::width() {
 
 const float Button::height() {
     return _height;
+}
+
+void Button::step(const float &time_step) {
+    _activated = _bodies_on_it > 0;
+    if (_activated)
+        _state = ACTIVATED;
+    else
+        _state = NOT_ACTIVATED;
+}
+
+bool Button::isDead(const float &time_step) {
+    return false;   // No se destruye
+}
+
+b2Body *Button::getBody() const {
+    return nullptr; // No tiene body
 }
 
 Button::~Button() = default;

@@ -15,11 +15,6 @@ bool EnergyReceiver::isActivated() {
     return _activated;
 }
 
-void EnergyReceiver::updateState() {
-    if (_state == ACTIVATED)
-        _activated = true;
-}
-
 const uint8_t EnergyReceiver::classId() {
     return ENERGY_RECEIVER;
 }
@@ -59,6 +54,19 @@ const float EnergyReceiver::width() {
 
 const float EnergyReceiver::height() {
     return _height;
+}
+
+void EnergyReceiver::step(const float &time_step) {
+    if (_state == ACTIVATED)
+        _activated = true;
+}
+
+bool EnergyReceiver::isDead(const float &time_step) {
+    return false;   // No se destruye
+}
+
+b2Body *EnergyReceiver::getBody() const {
+    return nullptr; // No tiene body
 }
 
 EnergyReceiver::~EnergyReceiver() = default;

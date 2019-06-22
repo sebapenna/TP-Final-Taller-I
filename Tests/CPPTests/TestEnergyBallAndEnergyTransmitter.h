@@ -33,14 +33,16 @@ private:
     Configuration *config;
     World *world;
     size_t width = 100, height = 200;
-    float e_transm_x = 0, e_transm_y = config->getEnergyBlockHalfLen();
+    float e_transm_x = 0, e_transm_y;
     // Calculo distancia entre centro de transmisor y bola energia (suponiendolos pegados)
-    const float dist_transm_to_enrgball = config->getEnergyBlockHalfLen() + config->getEnergyBallRadius();
+    float dist_transm_to_enrgball;
 
 public:
     void setUp() {
         ptr = make_shared<Configuration>();
-config = ptr.get();
+        config = ptr.get();
+        e_transm_y = config->getEnergyBlockHalfLen();
+        dist_transm_to_enrgball = config->getEnergyBlockHalfLen() + config->getEnergyBallRadius();
         world = new World(width, height, ptr);
 //        world->createRockBlock(100, 4, 0, -2); // Piso
     }
@@ -157,12 +159,12 @@ config = ptr.get();
             for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j) {
                 for (int i = 0; i < config->getFps(); ++i)
                     world->step();
-                if (total_balls > 0 && !world->getEnergyBall(k))
+                if (total_balls > 0 && !world->getEnergyBall(0))
                     ball_removed = true; // Se elimino una bola por el tiempo transcurrido
             }
             for (int i = 0; i < config->getFps(); ++i)
                 world->step(); // Step donde se crea EnergyBall
-            if (world->getEnergyBall(k))
+            if (world->getEnergyBall(0))
                 ++total_balls;
         }
         CPPUNIT_ASSERT_EQUAL((size_t) 2, total_balls);

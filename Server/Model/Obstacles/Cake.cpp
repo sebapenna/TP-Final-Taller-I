@@ -46,4 +46,16 @@ const float Cake::height() {
     return 0;
 }
 
+void Cake::step(const float &time_step) {
+    // No realiza accion en step
+}
+
+bool Cake::isDead(const float &time_step) {
+    return false;   // No se destruye
+}
+
+b2Body *Cake::getBody() const {
+    return _body;
+}
+
 Cake::~Cake() = default;

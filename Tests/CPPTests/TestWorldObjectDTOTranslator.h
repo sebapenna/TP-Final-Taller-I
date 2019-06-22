@@ -242,7 +242,7 @@ public:
         auto dto = (AcidDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * w), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) w, dto->getWidth());
         // Redondeo porque altura acido podria ser menor a 1
         CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * config->getAcidHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, dto->getClassId());
@@ -253,7 +253,7 @@ public:
         dto = (AcidDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * w), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) w, dto->getWidth());
         CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * config->getAcidHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, dto->getClassId());
         cout << "OK";
@@ -527,7 +527,7 @@ public:
 
         iter = world->getButtons().at(1);
         iter->activate();   // activo boton
-        iter->updateState();    // Fuerzo que se setee el estado para testear
+        iter->step(1 / config->getFps());    // Fuerzo que se setee el estado para testear
         ptr = WorldObjectDTOTranslator::translate(iter);
         dto = (ButtonStateDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getId());
@@ -559,10 +559,10 @@ public:
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_GATE_CHANGE_STATE, dto->getClassId());
 
         button->activate();
-        button->updateState();  // Activo para abrir compuerta
+        button->step(1 / config->getFps());  // Activo para abrir compuerta
 
         iter = world->getGates().at(0);
-        iter->updateState(); // Abro compuerta
+        iter->step(1 / config->getFps()); // Abro compuerta
 
         ptr = WorldObjectDTOTranslator::translate(iter);
         dto = (GateStateDTO*) ptr.get();

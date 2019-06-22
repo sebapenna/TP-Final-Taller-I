@@ -32,6 +32,8 @@ public:
 
     const float height() override;
 
+    void step(const float &time_step) override;
+
     // Calcula la x central del sub-bloque mas cercano al punto x dentro del bloque de gran tamaño.
     // PRE: x debe encontrarse dentro del largo del bloque.
     float getSubBlockCenterX(const float& x);
@@ -39,6 +41,10 @@ public:
     // Calcula la y central del sub-bloque mas cercano al punto y dentro del bloque de gran tamaño.
     // PRE: y debe encontrarse dentro del largo del bloque.
     float getSubBlockCenterY(const float& y);
+
+    bool isDead(const float &time_step) override;
+
+    b2Body *getBody() const override;
 };
 
 

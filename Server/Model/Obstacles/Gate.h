@@ -28,8 +28,6 @@ public:
 
     void addEnergyReceiverNeeded(EnergyReceiver* e_receiver);
 
-    void updateState();
-
     const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
@@ -45,6 +43,12 @@ public:
     const float width() override;
 
     const float height() override;
+
+    void step(const float &time_step) override;
+
+    bool isDead(const float &time_step) override;
+
+    b2Body *getBody() const override;
 };
 
 
