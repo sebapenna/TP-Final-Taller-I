@@ -16,7 +16,6 @@ private:
     bool _jump, _dead;
     float _previous_x, _previous_y;
     int16_t _tilt, _previous_tilt; // Guardo estado previo para identificar cambio
-    bool _carrying_rock, _previously_carrying;
     bool _shooting, _previously_shooting = false;
     bool _hit_wall;
     bool _reached_cake;
@@ -25,6 +24,8 @@ private:
     std::pair<Portal *, Portal *> _portals;
     Portal *_portal_to_use = nullptr; // Portal por el cual teletransportar, podria no ser propio
     PinTool *_pintool = nullptr;
+
+    b2RopeJoint *_rock_joint = nullptr;
 
     float _move_force;
     float _jump_force;
@@ -88,8 +89,6 @@ public:
 
     bool isJumping();
 
-    bool isCarryingRock();
-
     bool isMoving();
 
     // Indica en que direccion se esta moviendo
@@ -135,6 +134,10 @@ public:
     void setMoveForce(float moveForce);
 
     void step(const float &time_step) override;
+
+    void liftRock();
+
+    void dropRock();
 };
 
 

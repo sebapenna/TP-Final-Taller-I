@@ -604,7 +604,6 @@ public:
                 CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
                 CPPUNIT_ASSERT(!chell->isJumping());
                 CPPUNIT_ASSERT(!chell->isShooting());
-                CPPUNIT_ASSERT(!chell->isCarryingRock());
                 CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                 updated = true;
             }
@@ -627,7 +626,6 @@ public:
                 CPPUNIT_ASSERT_EQUAL(O_O, chell->movementDirection());
                 CPPUNIT_ASSERT(!chell->isJumping());
                 CPPUNIT_ASSERT(!chell->isShooting());
-                CPPUNIT_ASSERT(!chell->isCarryingRock());
                 CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                 updated = true;
             }
@@ -656,7 +654,6 @@ public:
                 CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
                 CPPUNIT_ASSERT(chell->isJumping());
                 CPPUNIT_ASSERT(!chell->isShooting());
-                CPPUNIT_ASSERT(!chell->isCarryingRock());
                 CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                 updated = true;
             }
@@ -686,7 +683,6 @@ public:
                     CPPUNIT_ASSERT_EQUAL(O_E, chell->movementDirection());
                     CPPUNIT_ASSERT(!chell->isJumping());
                     CPPUNIT_ASSERT(!chell->isShooting());
-                    CPPUNIT_ASSERT(!chell->isCarryingRock());
                     CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                     updated = true;
                 }
@@ -718,7 +714,6 @@ public:
                  CPPUNIT_ASSERT(!update_chell->isMoving()); // Not moving implica que se freno
                  CPPUNIT_ASSERT(!chell->isJumping());
                  CPPUNIT_ASSERT(!chell->isShooting());
-                 CPPUNIT_ASSERT(!chell->isCarryingRock());
                  CPPUNIT_ASSERT(!chell->isDead(1 / config->getFps()));
                  updated = true;
              }

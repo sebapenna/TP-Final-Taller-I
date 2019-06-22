@@ -318,7 +318,7 @@ shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &inp
                     input[CHELL_Y_POS], input[CHELL_WIDTH_POS], input[CHELL_HEIGHT_POS],
                     input[CHELL_DIRECTION_POS], input[CHELL_TILTED_POS], input[CHELL_MOVING_POS],
                     input[CHELL_JUMPING_POS], input[CHELL_SHOOTING_POS],
-                    input[CHELL_CARRYING_ROCK_POS], input[CHELL_DELETE_STATE_POS]);
+                    input[CHELL_DELETE_STATE_POS]);
 
         case PROTOCOL_CAKE_DATA:
             return make_shared<CakeDTO>(input[CAKE_X_POS], input[CAKE_Y_POS],
@@ -496,7 +496,6 @@ void ProtocolTranslator::chellData(const ProtocolDTO *dto, vector<int16_t> &outp
     output.push_back(p_dto->getMoving());
     output.push_back(p_dto->getJumping());
     output.push_back(p_dto->getShooting());
-    output.push_back(p_dto->getCarryingRock());
     output.push_back(p_dto->getDeleteState());
 }
 

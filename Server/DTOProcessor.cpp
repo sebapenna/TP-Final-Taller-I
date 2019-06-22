@@ -48,10 +48,10 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
             world->shootPinTool(chell_id, p_dto->getX(), p_dto->getY());
             break;
         } case PROTOCOL_LIFT_ROCK:
-            // todo: LIFT ROCK
+            chell->liftRock();
             break;
         case PROTOCOL_DROP_ROCK:
-            // todo: DROP ROCK
+            chell->dropRock();
             break;
         case PROTOCOL_QUIT:
             // todo: eliminar chell de WORLD

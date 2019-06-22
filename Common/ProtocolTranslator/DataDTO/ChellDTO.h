@@ -15,14 +15,13 @@ private:
     const int16_t _moving;
     const int16_t _jumping;
     const int16_t _shooting;
-    const int16_t _carrying_rock;
     const int16_t _delete_state;
 
 public:
     ChellDTO(const int16_t& id, const int16_t& x, const int16_t& y, const int16_t& width,
             const int16_t& height, const int16_t& direction, const int16_t& tilted,
-            const int16_t& moving, const int16_t& jumping, const int16_t& shoting, const int16_t&
-            carrying_rock, const int16_t& delete_state);
+            const int16_t& moving, const int16_t& jumping, const int16_t& shoting,
+            const int16_t& delete_state);
 
     ~ChellDTO() override = default;
 
@@ -41,8 +40,6 @@ public:
     const int16_t getJumping() const;
 
     const int16_t getShooting() const;
-
-    const int16_t getCarryingRock() const;
 
     const int16_t getDeleteState() const;
 

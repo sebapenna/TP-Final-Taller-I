@@ -7,9 +7,8 @@
 
 Chell::Chell(const size_t &id, b2Body *body, const float& width, const float& height) : _id(id),
 _body(body), _move_state(MOVE_STOP), _jump_state(ON_GROUND), _previous_jump_state(ON_GROUND),
-_jump(false), _dead(false), _carrying_rock(false), _previously_carrying(false), _shooting(false),
-_hit_wall(false), _reached_cake(false), _previous_tilt(NOT_TILTED),_tilt(NOT_TILTED), _width(width),
-_height(height) {
+_jump(false), _dead(false), _shooting(false), _hit_wall(false), _reached_cake(false),
+_previous_tilt(NOT_TILTED),_tilt(NOT_TILTED), _width(width), _height(height) {
     _previous_x = _body->GetPosition().x;
     _previous_y = _body->GetPosition().y;
     _portals.first = nullptr;   // Seteo a null ambos portales
@@ -59,6 +58,7 @@ bool Chell::isShooting() {
 }
 
 bool Chell::isJumping() {
+    auto it = _body->GetContactList();
     return _jump_state != ON_GROUND;
 }
 
@@ -70,10 +70,6 @@ uint8_t Chell::movementDirection() {
     if (_body->GetLinearVelocity().x < 0)
         return O_O;
     return O_E;
-}
-
-bool Chell::isCarryingRock() {
-    return _carrying_rock;
 }
 
 int16_t Chell::tilt() const {
@@ -218,10 +214,6 @@ bool Chell::actedDuringStep() {
     }
     if (_previous_jump_state != _jump_state) {
         _previous_jump_state = _jump_state;
-        return true;
-    }
-    if (_previously_carrying != _carrying_rock) {
-        _previously_carrying = _carrying_rock;
         return true;
     }
     // Retorno ultima condicion, shooting no cambio estado porque es solo un instante,
@@ -381,4 +373,47 @@ void Chell::step(const float &time_step) {
     if (!_dead)
         move();
 }
+
+void Chell::liftRock() {
+    Rock *rock = nullptr;
+    auto velx = _body->GetLinearVelocity().x;
+    for (auto it = _body->GetContactList(); it; it = it->next) {
+        auto coll1 = (Collidable*) it->contact->GetFixtureB()->GetBody()->GetUserData();
+        auto coll2 = (Collidable*) it->contact->GetFixtureA()->GetBody()->GetUserData();
+        if (coll1->classId() == ROCK) {
+            rock = (Rock *) coll1;
+        } else if (coll2->classId() == ROCK) {
+            rock = (Rock *) coll2;
+        }
+        if (rock) {            // Tomo roca segun velocidad
+            if ((rock->x() >= x() && velx >= 0) || (rock->x() < x() && velx < 0) ) {
+//                b2DistanceJointDef jointDef;
+                b2RopeJointDef jointDef;
+                jointDef.bodyA = _body;
+                jointDef.bodyB = rock->getBody();
+                jointDef.collideConnected = true;
+                jointDef.maxLength = 0;
+                // Creo joint
+                _rock_joint = (b2RopeJoint*) _body->GetWorld()->CreateJoint(&jointDef);
+                b2MassData lift_mass;
+//                _body->GetMassData(&lift_mass);
+                lift_mass.mass = 0;
+//                lift_mass.mass = _body->GetMass();
+//                lift_mass.center = rock->getBody()->GetPosition();
+                rock->getBody()->SetMassData(&lift_mass);    // Cambio masa a roca para levantarla
+                return; // Uni chell a una roca
+            }
+            rock = nullptr; // Seteo a null roca nuevamente en caso que no se haya podido unir
+        }
+    }
+}
+
+void Chell::dropRock() {
+    if (_rock_joint) {
+        _rock_joint->GetBodyB()->ResetMassData();   // Pongo masa correspondiente a roca
+        _body->GetWorld()->DestroyJoint(_rock_joint);
+        _rock_joint = nullptr;
+    }
+}
+
 

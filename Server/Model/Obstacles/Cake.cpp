@@ -39,11 +39,11 @@ const float Cake::y() {
 }
 
 const float Cake::width() {
-    return 0;
+    return _width;
 }
 
 const float Cake::height() {
-    return 0;
+    return _height;
 }
 
 void Cake::step(const float &time_step) {

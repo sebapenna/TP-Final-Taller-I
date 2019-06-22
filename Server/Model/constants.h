@@ -37,31 +37,10 @@
 #define DELTA_VEL 0.001    // Error de velocidad en movimiento de cuerpos
 #define DELTA_POS   (float) 0.02    // Error posicion (x e y)
 
-#define HALF_BOX_LEN 2
-
-/* Configuracion Chell */
-#define CHELL_HALF_WIDTH  HALF_BOX_LEN
-#define CHELL_HALF_HEIGHT  HALF_BOX_LEN
-
-/* Coniguracion Rock */
-#define ROCK_HALF_LEN  2    // Largo de medio lado de la roca (cuerpo cuadrado)
-
-/* Configuracion Button */
-#define BUTTON_HALF_WIDTH  HALF_BOX_LEN
-#define BUTTON_HALF_HEIGHT  0.25
-
 #define NOT_ACTIVATED   (uint8_t) 0
 #define ACTIVATED (uint8_t) 1
 
-/* Configuracion Gate */
-#define GATE_HALF_WIDTH  HALF_BOX_LEN
-#define GATE_HALF_HEIGHT  (2 * GATE_HALF_WIDTH)
 
-/* Configuracion Energy Receiver y Energy Transmitter */
-#define ENRG_BLOCK_HALF_LEN  HALF_BOX_LEN // Largo de medio lado del recvr/transmitter (cuerpos cuadrados)
-
-/* Configuracion Cake */
-#define CAKE_HALF_LEN   2
 
 /* Inclinacion Portal */
 #define STRAIGHT    (int16_t) 0

@@ -129,12 +129,9 @@ std::shared_ptr<ProtocolDTO> WorldObjectDTOTranslator::translate(Collidable *col
             auto shooting = NOT_SHOOTING;
             if (obj->isShooting())
                 shooting = SHOOTING;
-            auto carring_rock = NOT_CARRYING;
-            if (obj->isCarryingRock())
-                carring_rock = CARRYING;
             return make_shared<ChellDTO>(obj->id(), new_pos.first, new_pos.second,
                     obj->width(), obj->height(), obj->movementDirection(),
-                    obj->tilt(), moving, jumping, shooting, carring_rock, DONT_DELETE); // No borrar
+                    obj->tilt(), moving, jumping, shooting, DONT_DELETE); // No borrar
         }
         case CAKE: {
             auto obj = (Cake*) collidable;
@@ -164,7 +161,7 @@ WorldObjectDTOTranslator::translate(const size_t &object_id, const uint8_t &obje
         case ROCK:
             return std::make_shared<RockDTO>(object_id, 0, 0, 0, DELETE);
         case CHELL:
-            return make_shared<ChellDTO>(object_id, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, DELETE);
+            return make_shared<ChellDTO>(object_id, 0, 0, 0, 0, 0, 0, 0, 0, 0, DELETE);
         case ENERGY_BALL:
             return make_shared<EnergyBallDTO>(object_id, 0, 0, 0, DELETE);
         case PORTAL:

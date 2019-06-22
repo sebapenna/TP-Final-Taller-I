@@ -14,7 +14,7 @@ chell_density:  5
 chell_gravity_scale:  5
 
 rock_half_len: *len
-rock_density: 1000000
+rock_density: 10 #1000000
 
 acid_half_height: 0.25
 

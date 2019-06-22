@@ -35,9 +35,6 @@
 #define NOT_SHOOTING    (int16_t)   0
 #define SHOOTING    (int16_t)   1
 
-#define NOT_CARRYING   (int16_t)    0
-#define CARRYING    (int16_t)   1
-
 #define STRAIGHT (int16_t)  0
 #define LEFT    (int16_t)   1
 #define RIGHT    (int16_t)   2
@@ -186,9 +183,8 @@
 #define CHELL_MOVING_POS   (CHELL_TILTED_POS + 1)
 #define CHELL_JUMPING_POS  (CHELL_MOVING_POS + 1)
 #define CHELL_SHOOTING_POS  (CHELL_JUMPING_POS + 1)
-#define CHELL_CARRYING_ROCK_POS   (CHELL_SHOOTING_POS + 1)
-#define CHELL_DELETE_STATE_POS   (CHELL_CARRYING_ROCK_POS + 1)
-#define CHELL_ARGS  12
+#define CHELL_DELETE_STATE_POS   (CHELL_SHOOTING_POS + 1)
+#define CHELL_ARGS  11
 
 #define PROTOCOL_BUTTON_CHANGE_STATE   (int16_t) 22
 #define BUTTON_CHANGE_ID_POS    2

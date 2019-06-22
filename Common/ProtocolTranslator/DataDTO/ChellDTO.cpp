@@ -4,10 +4,9 @@
 ChellDTO::ChellDTO(const int16_t &id, const int16_t &x, const int16_t &y, const int16_t& width,
                    const int16_t& height, const int16_t &direction, const int16_t &tilted,
                    const int16_t& moving, const int16_t &jumping, const int16_t &shooting,
-                   const int16_t &carrying_rock, const int16_t &delete_state) : _id(id), _x(x),
-                   _y(y), _width(width), _height(height), _direction(direction), _tilted(tilted),
-                   _jumping(jumping), _moving(moving), _shooting(shooting),
-                   _carrying_rock(carrying_rock), _delete_state(delete_state) {
+                   const int16_t &delete_state) : _id(id), _x(x), _y(y), _width(width),
+                   _height(height), _direction(direction), _tilted(tilted), _jumping(jumping),
+                   _moving(moving), _shooting(shooting), _delete_state(delete_state) {
 }
 
 int16_t ChellDTO::getClassId() const {
@@ -52,10 +51,6 @@ const int16_t ChellDTO::getJumping() const {
 
 const int16_t ChellDTO::getShooting() const {
     return _shooting;
-}
-
-const int16_t ChellDTO::getCarryingRock() const {
-    return _carrying_rock;
 }
 
 const int16_t ChellDTO::getDeleteState() const {

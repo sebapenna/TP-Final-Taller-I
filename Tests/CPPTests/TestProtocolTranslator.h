@@ -772,7 +772,7 @@ public:
     void testTranslateChellDTO() {
         cout << endl << "TEST traducir ChellDTO a datos: ";
         shared_ptr<ProtocolDTO> dto(new ChellDTO(4, -2, 0, 4, 5, EAST, NOT_TILTED, NOT_MOVING, NOT_JUMPING,
-                NOT_SHOOTING, NOT_CARRYING, DONT_DELETE));
+                NOT_SHOOTING, DONT_DELETE));
         int vec_size = ProtocolTranslator::translate(dto.get(), output);
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_CHELL_DATA, output[PROTOCOL_ID_POS]);
         CPPUNIT_ASSERT_EQUAL((int16_t) 4, output.at(CHELL_ID_POS));
@@ -785,7 +785,6 @@ public:
         CPPUNIT_ASSERT_EQUAL((int16_t) NOT_MOVING, output.at(CHELL_MOVING_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) NOT_JUMPING, output.at(CHELL_JUMPING_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) NOT_SHOOTING, output.at(CHELL_SHOOTING_POS));
-        CPPUNIT_ASSERT_EQUAL((int16_t) NOT_CARRYING, output.at(CHELL_CARRYING_ROCK_POS));
         CPPUNIT_ASSERT_EQUAL((int16_t) DONT_DELETE, output.at(CHELL_DELETE_STATE_POS));
         CPPUNIT_ASSERT_EQUAL(CHELL_ARGS + extra_data, vec_size);
         cout << "OK";
@@ -806,7 +805,6 @@ public:
         v.push_back(MOVING);
         v.push_back(JUMPING);
         v.push_back(SHOOTING);
-        v.push_back(CARRYING);
         v.push_back(DELETE);
         auto p = ProtocolTranslator::translate(v);
         auto dto = (ChellDTO*) p.get();
@@ -821,7 +819,6 @@ public:
         CPPUNIT_ASSERT_EQUAL(MOVING, dto->getMoving());
         CPPUNIT_ASSERT_EQUAL(JUMPING, dto->getJumping());
         CPPUNIT_ASSERT_EQUAL(SHOOTING, dto->getShooting());
-        CPPUNIT_ASSERT_EQUAL(CARRYING, dto->getCarryingRock());
         CPPUNIT_ASSERT_EQUAL(DELETE, dto->getDeleteState());
         cout << "OK";
     }
