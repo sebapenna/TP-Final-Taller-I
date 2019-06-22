@@ -70,7 +70,7 @@ config = ptr.get();
         cout << endl << "TEST cae con gravedad: ";
         for (int i = 0; i < 200; i++)
             world->step();
-        float y_diff = rock2->y() - ROCK_HALF_LEN;
+        float y_diff = rock2->y() - config->getRockHalfLen();
         float x_diff = rock2->x() - rock2_x;
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, x_diff);
         CPPUNIT_ASSERT_LESSEQUAL(DELTA_POS, y_diff);
@@ -90,7 +90,7 @@ config = ptr.get();
 
     void testContactWithBarrier() {
         cout << endl << "TEST eliminar ante contacto con barrera energia: ";
-        float barrier_x = 10, barrier_y = BARRIER_HALF_LENGTH;
+        float barrier_x = 10, barrier_y = config->getBarrierHalfLen();
         auto data = make_shared<EnergyBarrierData>(barrier_x, barrier_y, "V");
         world->createCollidable(data);
         auto n_bodies = world->getWorld()->GetBodyCount();
@@ -105,12 +105,12 @@ config = ptr.get();
     void testContactWithEnergyBall() {
         cout << endl << "TEST quedar en lugar ante contacto con energy ball: ";
 
-        float e_transm_x = rock1_x - ENRG_BALL_RADIUS - ROCK_HALF_LEN - 1;
+        float e_transm_x = rock1_x - config->getEnergyBallRadius() - config->getRockHalfLen() - 1;
         float e_transm_y = rock1_y ;
 
         auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
         world->createCollidable(data);    // Lanzara bola contra chell
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i)
                 world->step();
         for (int i = 0; i < config->getFps(); ++i)
@@ -123,9 +123,9 @@ config = ptr.get();
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
         for (int i = 0; i < config->getFps(); ++i) {
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             world->step();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
+            if (time_elapsed < config->getEnergyBallLifetime() &&
                 world->getWorld()->GetBodyCount() < n_bodies)
                 ball_deleted = true;    // Bola colisiono con pared
         }
@@ -158,7 +158,7 @@ config = ptr.get();
         cout << endl << "TEST verificar que se agrega a vector de objetos a eliminar luego de "
                         "morir: ";
         CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
-        float barrier_x = 10, barrier_y = BARRIER_HALF_LENGTH;
+        float barrier_x = 10, barrier_y = config->getBarrierHalfLen();
         auto data = make_shared<EnergyBarrierData>(barrier_x, barrier_y, "V");
         world->createCollidable(data);
         rock2->teletransport(barrier_x, barrier_y); // Coloco sobre la barrera

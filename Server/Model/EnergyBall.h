@@ -12,11 +12,11 @@ private:
     float _lifetime = 0, _max_lifetime, _time_step;
     float _previous_x, _previous_y;
     bool _dead = false;
-    const float _radius;
+    const float _radius, _force;
 
 public:
     EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius,
-            const float &max_lifetime, const float &time_step);
+            const float &max_lifetime, const float &time_step, const float& force);
 
     ~EnergyBall() override;
 

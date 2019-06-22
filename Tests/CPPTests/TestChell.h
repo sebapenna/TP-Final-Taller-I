@@ -390,7 +390,7 @@ config = ptr.get();
         float b_width = 100;
         float b_height = 2;
         float b_x = 0;
-        float b_y = chell_init_y + CHELL_HALF_HEIGHT + b_height;
+        float b_y = chell_init_y + config->getChellHalfHeight() + b_height;
         chell->jump();
         float max_height = 0;
         for (int i = 0; i < 200; ++i) {   // Jump with no roof
@@ -410,7 +410,7 @@ config = ptr.get();
 
     void testMoveRightCollideWithDiagonalBlock() {
         cout << endl << "TEST mover hacia derecha y caminar sobre diagonal: ";
-        float b_width = 2 * chell->width()/2, b_height = 2 * CHELL_HALF_HEIGHT;
+        float b_width = 2 * chell->width()/2, b_height = 2 * config->getChellHalfHeight();
         float b_x = chell_init_x + chell->width()/2 + 1;
         float b_y = 0;
         auto data = make_shared<MetalDiagonalBlockData>(b_width, b_height, b_x, b_y, "NO");
@@ -435,7 +435,7 @@ config = ptr.get();
 
     void testMoveLeftCollideWithDiagonalBlock() {
         cout << endl << "TEST mover hacia izquierda y caminar sobre diagonal: ";
-        float b_width = 2 * chell->width()/2, b_height = 2 * CHELL_HALF_HEIGHT;
+        float b_width = 2 * chell->width()/2, b_height = 2 * config->getChellHalfHeight();
         float b_x = chell_init_x - chell->width()/2 - b_width - 1;
         float b_y = 0;
         auto data = make_shared<MetalDiagonalBlockData>(b_width, b_height, b_x, b_y, "NE");
@@ -460,10 +460,10 @@ config = ptr.get();
 
     void testMoveRightAndFallOverDiagonalBlock() {
         cout << endl << "TEST mover hacia derecha y caer por bloque diagonal: ";
-        float b_width = 2 * chell->width()/2, b_height = 2 * CHELL_HALF_HEIGHT;
+        float b_width = 2 * chell->width()/2, b_height = 2 * config->getChellHalfHeight();
         float ground_width = 2 * b_width;
         float ground_x = chell_init_x;
-        float ground_y = chell_init_y + (CHELL_HALF_HEIGHT * 2);
+        float ground_y = chell_init_y + (config->getChellHalfHeight() * 2);
         float b_x = ground_x + ground_width / 2;
         float b_y = ground_y - b_height / 2;
 //         Superficie donde probar
@@ -472,7 +472,7 @@ config = ptr.get();
         auto data = make_shared<MetalDiagonalBlockData>(b_width, b_height, b_x, b_y, "NE");
         world->createCollidable(data);
         float new_x = ground_x;
-        float new_y = ground_y + b_height / 2 + CHELL_HALF_HEIGHT;
+        float new_y = ground_y + b_height / 2 + config->getChellHalfHeight();
         auto data3 = make_shared<ChellData>(1, new_x, new_y);
         world->createCollidable(data3);
         auto chell2 = world->getChell(1);
@@ -489,10 +489,10 @@ config = ptr.get();
     void testMoveLeftAndFallOverDiagonalBlock() {
         cout << endl << "TEST mover hacia izquierda y caer por bloque "
                         "diagonal: ";
-        float b_width = 2 * chell->width()/2, b_height = 2 * CHELL_HALF_HEIGHT;
+        float b_width = 2 * chell->width()/2, b_height = 2 * config->getChellHalfHeight();
         float ground_width = 2 * b_width;
         float ground_x = chell_init_x;
-        float ground_y = chell_init_y + (CHELL_HALF_HEIGHT * 2);
+        float ground_y = chell_init_y + (config->getChellHalfHeight() * 2);
         float b_x = ground_x - ground_width / 2;
         float b_y = ground_y - b_height / 2;
         // Superficie donde probar
@@ -501,7 +501,7 @@ config = ptr.get();
         auto data = make_shared<MetalDiagonalBlockData>(b_width, b_height, b_x, b_y, "NO");
         world->createCollidable(data);
         float new_x = ground_x;
-        float new_y = ground_y + b_height / 2 + CHELL_HALF_HEIGHT;
+        float new_y = ground_y + b_height / 2 + config->getChellHalfHeight();
         auto data3 = make_shared<ChellData>(1, new_x, new_y);
         world->createCollidable(data3);
         auto chell2 = world->getChell(1);
@@ -519,7 +519,7 @@ config = ptr.get();
     void testContactWithFallingRock() {
         cout << endl << "TEST morir al caerle roca encima: ";
         float rock_x = chell_init_x;
-        float rock_y = chell_init_y + chell->width()/2 + ROCK_HALF_LEN + 1;
+        float rock_y = chell_init_y + chell->width()/2 + config->getRockHalfLen() + 1;
         // Creo roca sobre chell
         auto data = make_shared<RockData>(rock_x, rock_y);
         world->createCollidable(data);
@@ -533,7 +533,7 @@ config = ptr.get();
 
     void testContactWithRockInItsWay() {
         cout << endl << "TEST chocar con roca en su camino y no morir: ";
-        float rock_x = chell_init_x + chell->width()/2 + ROCK_HALF_LEN + 1;
+        float rock_x = chell_init_x + chell->width()/2 + config->getRockHalfLen() + 1;
         float rock_y = chell_init_y;
         auto data = make_shared<RockData>(rock_x, rock_y);
         world->createCollidable(data);
@@ -550,9 +550,10 @@ config = ptr.get();
 
     void testContactWithAcid() {
         cout << endl << "TEST morir tras contacto con acido: ";
-        float acid_x = chell_init_x + chell->width()/2 + ACID_HALF_WIDTH + 1;
-        float acid_y = ACID_HALF_HEIGHT;
-        auto data = make_shared<AcidData>(acid_x, acid_y, 4);
+        float w = 4;
+        float acid_x = chell_init_x + chell->width()/2 + w/2 + 1;
+        float acid_y = config->getAcidHalfHeight();
+        auto data = make_shared<AcidData>(acid_x, acid_y, w);
         world->createCollidable(data);
         auto n_bodies = world->getWorld()->GetBodyCount();
         chell->move_right();    // Avanzo chell para que choque con acido
@@ -565,12 +566,12 @@ config = ptr.get();
 
     void testContactWithEnergyBall() {
         cout << endl << "TEST morir tras contacto con energy ball: ";
-        float transm_x = chell_init_x + chell->width()/2 + 2 * (ENRG_BALL_RADIUS) +
-                ENRG_BLOCK_HALF_LEN + 4;
-        float transm_y  = ENRG_BLOCK_HALF_LEN;
+        float transm_x = chell_init_x + chell->width()/2 + 2 * (config->getEnergyBallRadius()) +
+                config->getEnergyBlockHalfLen() + 4;
+        float transm_y  = config->getEnergyBlockHalfLen();
         auto data = make_shared<EnergyTransmitterData>(transm_x, transm_y, "O");
         world->createCollidable(data);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i)
                 world->step();
         for (int i = 0; i < config->getFps(); ++i)
@@ -729,9 +730,10 @@ config = ptr.get();
     void testAddedToDeleteVectorAfterDead() {
         cout << endl << "TEST verificar que se agrega a vector de objetos a eliminar luego de "
                         "morir: ";
-        float acid_x = chell_init_x + chell->width()/2 + ACID_HALF_WIDTH + 1;
-        float acid_y = ACID_HALF_HEIGHT;
-        auto data = make_shared<AcidData>(acid_x, acid_y, 4);
+        float w = 4;
+        float acid_x = chell_init_x + chell->width()/2 + w/2 + 1;
+        float acid_y = config->getAcidHalfHeight();
+        auto data = make_shared<AcidData>(acid_x, acid_y, w);
         world->createCollidable(data);
         chell->move_right();
         bool deleted = true;
@@ -768,7 +770,7 @@ config = ptr.get();
 
     void testIgnoreCollitionWithEnergyBarrier() {
         cout << endl << "TEST ignorar contacto con barrera energia: ";
-        float barrier_x = chell_init_x + 10, barrier_y = BARRIER_HALF_LENGTH;
+        float barrier_x = chell_init_x + 10, barrier_y = config->getBarrierHalfLen();
         auto data = make_shared<EnergyBarrierData>(barrier_x, barrier_y, "V");
         world->createCollidable(data);
         chell->move_right();

@@ -33,9 +33,9 @@ private:
     Configuration *config;
     World *world;
     size_t width = 100, height = 200;
-    float e_transm_x = 0, e_transm_y = ENRG_BLOCK_HALF_LEN;
+    float e_transm_x = 0, e_transm_y = config->getEnergyBlockHalfLen();
     // Calculo distancia entre centro de transmisor y bola energia (suponiendolos pegados)
-    const float dist_transm_to_enrgball = ENRG_BLOCK_HALF_LEN + ENRG_BALL_RADIUS;
+    const float dist_transm_to_enrgball = config->getEnergyBlockHalfLen() + config->getEnergyBallRadius();
 
 public:
     void setUp() {
@@ -50,7 +50,7 @@ config = ptr.get();
     }
 
     void releaseEnergyBall() {
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i)
                 world->step();
         for (int i = 0; i < config->getFps(); ++i)
@@ -63,7 +63,7 @@ config = ptr.get();
 
         auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "N");
         world->createCollidable(data);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i) {
                 world->step();
                 CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(0));
@@ -85,7 +85,7 @@ config = ptr.get();
 
         auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "S");
         world->createCollidable(data);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i) {
                 world->step();
                 CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(0));
@@ -107,7 +107,7 @@ config = ptr.get();
 
         auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
         world->createCollidable(data);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i) {
                 world->step();
                 CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(0));
@@ -129,7 +129,7 @@ config = ptr.get();
 
         auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "O");
         world->createCollidable(data);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i) {
                 world->step();
                 CPPUNIT_ASSERT_EQUAL((EnergyBall*) nullptr, world->getEnergyBall(0));
@@ -154,7 +154,7 @@ config = ptr.get();
         auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "O");
         world->createCollidable(data);
         for (int k = 0; k < 2; ++k) {
-            for (int j = 1; j < TIME_TO_RELEASE; ++j) {
+            for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j) {
                 for (int i = 0; i < config->getFps(); ++i)
                     world->step();
                 if (total_balls > 0 && !world->getEnergyBall(k))
@@ -330,7 +330,7 @@ config = ptr.get();
         releaseEnergyBall();
 
         int n_bodies = world->getWorld()->GetBodyCount();
-        int iterations = ENERGY_BALL_MAX_LIFETIME / TIME_STEP;
+        int iterations = config->getEnergyBallLifetime() / (1 / config->getFps());
         for (int i = 0; i < iterations; ++i)
             world->step(); // Step donde se crea EnergyBall
         // Testeo que se haya eliminado de world de Box2D

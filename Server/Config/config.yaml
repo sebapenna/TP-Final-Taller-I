@@ -22,7 +22,7 @@ button_half_width:  *len
 button_half_height: 0.25
 
 gate_half_width: *len
-gate_half_height: 4 # 2 * len
+gate_half_height: 4 # 2 * width
 
 enrg_block_half_len:  *len  # Ancho y alto por ser cuerpo cuadrado
 time_to_release:  10  # Tiempo que demora en liberar bola de energia

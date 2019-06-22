@@ -157,7 +157,7 @@ public:
         cout << endl << "TEST crear DTO energy transmitter: ";
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
-        auto new_pos = PositionTranslator::translate(ENERGY_TRANSMITTER, x1, y1, ENRG_BLOCK_HALF_LEN);
+        auto new_pos = PositionTranslator::translate(ENERGY_TRANSMITTER, x1, y1, config->getEnergyBlockHalfLen());
 
         auto data1 = make_shared<EnergyTransmitterData>(x1, y1, "E");
         world->createCollidable(data1);
@@ -172,16 +172,16 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL(EAST, dto->getDirection());
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, dto->getId());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (ENRG_BLOCK_HALF_LEN * 2), dto->getSideLength());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (config->getEnergyBlockHalfLen() * 2), dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_TRANSMITTER_DATA, dto->getClassId());
 
-        new_pos = PositionTranslator::translate(ENERGY_TRANSMITTER, x2, y2, ENRG_BLOCK_HALF_LEN);
+        new_pos = PositionTranslator::translate(ENERGY_TRANSMITTER, x2, y2, config->getEnergyBlockHalfLen());
         iter = world->getEnergyTransmitters().at(1);
         ptr = WorldObjectDTOTranslator::translate(iter, true);
         dto = (EnergyTransmitterDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (ENRG_BLOCK_HALF_LEN * 2), dto->getSideLength());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (config->getEnergyBlockHalfLen() * 2), dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getId());
         CPPUNIT_ASSERT_EQUAL(WEST, dto->getDirection());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_TRANSMITTER_DATA, dto->getClassId());
@@ -192,7 +192,7 @@ public:
         cout << endl << "TEST crear DTO energy receiver: ";
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
-        auto new_pos = PositionTranslator::translate(ENERGY_RECEIVER, x1, y1, ENRG_BLOCK_HALF_LEN);
+        auto new_pos = PositionTranslator::translate(ENERGY_RECEIVER, x1, y1, config->getEnergyBlockHalfLen());
 
 
         auto data1 = make_shared<EnergyReceiverData>(0, x1, y1);
@@ -207,16 +207,16 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, dto->getId());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (ENRG_BLOCK_HALF_LEN * 2), dto->getSideLength());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (config->getEnergyBlockHalfLen() * 2), dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_RECEIVER_DATA, dto->getClassId());
 
-        new_pos = PositionTranslator::translate(ENERGY_RECEIVER, x2, y2, ENRG_BLOCK_HALF_LEN);
+        new_pos = PositionTranslator::translate(ENERGY_RECEIVER, x2, y2, config->getEnergyBlockHalfLen());
         iter = world->getEnergyReceivers().at(1);
         ptr = WorldObjectDTOTranslator::translate(iter, true);
         dto = (EnergyReceiverDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (ENRG_BLOCK_HALF_LEN * 2), dto->getSideLength());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (config->getEnergyBlockHalfLen() * 2), dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getId());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_RECEIVER_DATA, dto->getClassId());
         cout << "OK";
@@ -242,9 +242,9 @@ public:
         auto dto = (AcidDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * ACID_HALF_WIDTH), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * w), dto->getWidth());
         // Redondeo porque altura acido podria ser menor a 1
-        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * ACID_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * config->getAcidHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, dto->getClassId());
 
         new_pos = PositionTranslator::translate(ACID, x2, y2, w / 2, config->getAcidHalfHeight());
@@ -253,8 +253,8 @@ public:
         dto = (AcidDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * ACID_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * ACID_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * w), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * config->getAcidHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ACID_DATA, dto->getClassId());
         cout << "OK";
     }
@@ -263,7 +263,8 @@ public:
         cout << endl << "TEST crear DTO button: ";
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
-        auto new_pos = PositionTranslator::translate(BUTTON, x1, y1, BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT);
+        auto new_pos = PositionTranslator::translate(BUTTON, x1, y1, config->getButtonHalfWidth(),
+                config->getButtonHalfHeight());
 
         auto data1 = make_shared<ButtonData>(0, x1, y1);
         world->createCollidable(data1);
@@ -277,19 +278,19 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, dto->getId());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BUTTON_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * BUTTON_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getButtonHalfWidth()), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * config->getButtonHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BUTTON_DATA, dto->getClassId());
 
-        new_pos = PositionTranslator::translate(BUTTON, x2, y2, BUTTON_HALF_WIDTH, BUTTON_HALF_HEIGHT);
+        new_pos = PositionTranslator::translate(BUTTON, x2, y2, config->getButtonHalfWidth(), config->getButtonHalfHeight());
         iter = world->getButtons().at(1);
         ptr = WorldObjectDTOTranslator::translate(iter, true);
         dto = (ButtonDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getId());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BUTTON_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * BUTTON_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getButtonHalfWidth()), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) round(2 * config->getButtonHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_BUTTON_DATA, dto->getClassId());
         cout << "OK";
     }
@@ -298,7 +299,8 @@ public:
         cout << endl << "TEST crear DTO gate: ";
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
-        auto new_pos = PositionTranslator::translate(GATE, x1, y1, GATE_HALF_WIDTH, GATE_HALF_HEIGHT);
+        auto new_pos = PositionTranslator::translate(GATE, x1, y1, config->getGateHalfWidth(),
+                config->getGateHalfHeight());
 
         auto data1 = make_shared<GateData>(0, x1, y1);
         world->createCollidable(data1);
@@ -311,18 +313,18 @@ public:
         auto dto = (GateDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * GATE_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * GATE_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getGateHalfWidth()), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getGateHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_GATE_DATA, dto->getClassId());
 
-        new_pos = PositionTranslator::translate(GATE, x2, y2, GATE_HALF_WIDTH, GATE_HALF_HEIGHT);
+        new_pos = PositionTranslator::translate(GATE, x2, y2, config->getGateHalfWidth(), config->getGateHalfHeight());
         iter = world->getGates().at(1);
         ptr = WorldObjectDTOTranslator::translate(iter, true);
         dto = (GateDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * GATE_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * GATE_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getGateHalfWidth()), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getGateHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_GATE_DATA, dto->getClassId());
         cout << "OK";
     }
@@ -331,8 +333,8 @@ public:
         cout << endl << "TEST crear DTO acid: ";
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
-        auto new_pos = PositionTranslator::translate(ENERGY_BARRIER, x1, y1, BARRIER_HALF_WIDTH,
-                BARRIER_HALF_LENGTH);
+        auto new_pos = PositionTranslator::translate(ENERGY_BARRIER, x1, y1,
+                config->getBarrierHalfWidth(), config->getBarrierHalfLen());
 
         auto data1 = make_shared<EnergyBarrierData>(x1, y1, "V");
         world->createCollidable(data1);
@@ -344,18 +346,19 @@ public:
         auto dto = (EnergyBarrierDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BARRIER_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BARRIER_HALF_LENGTH), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getBarrierHalfWidth()), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getBarrierHalfLen()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_BARRIER_DATA, dto->getClassId());
 
-        new_pos = PositionTranslator::translate(ENERGY_BARRIER, x2, y2, BARRIER_HALF_LENGTH, BARRIER_HALF_WIDTH);
+        new_pos = PositionTranslator::translate(ENERGY_BARRIER, x2, y2, config->getBarrierHalfLen(),
+                config->getBarrierHalfWidth());
         iter = world->getEnergyBarriers().at(1);
         ptr = WorldObjectDTOTranslator::translate(iter, true);
         dto = (EnergyBarrierDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BARRIER_HALF_LENGTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * BARRIER_HALF_WIDTH), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getBarrierHalfLen()), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getBarrierHalfWidth()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_BARRIER_DATA, dto->getClassId());
         cout << "OK";
     }
@@ -364,7 +367,7 @@ public:
         cout << endl << "TEST crear DTO rock: ";
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
-        auto new_pos = PositionTranslator::translate(ROCK, x1, y1, ROCK_HALF_LEN);
+        auto new_pos = PositionTranslator::translate(ROCK, x1, y1, config->getRockHalfLen());
 
         auto data1 = make_shared<RockData>(x1, y1);
         world->createCollidable(data1);
@@ -379,10 +382,10 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) DONT_DELETE, dto->getDeleteState());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * ROCK_HALF_LEN), dto->getSideLength());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getRockHalfLen()), dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ROCK_DATA, dto->getClassId());
 
-        new_pos = PositionTranslator::translate(ROCK, x2, y2, ROCK_HALF_LEN);
+        new_pos = PositionTranslator::translate(ROCK, x2, y2, config->getRockHalfLen());
         iter = world->getRocks().at(1);
         ptr = WorldObjectDTOTranslator::translate(iter, true);
         dto = (RockDTO*) ptr.get();
@@ -390,7 +393,7 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getId());
         CPPUNIT_ASSERT_EQUAL((int16_t) DONT_DELETE, dto->getDeleteState());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * ROCK_HALF_LEN), dto->getSideLength());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getRockHalfLen()), dto->getSideLength());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ROCK_DATA, dto->getClassId());
         cout << "OK";
     }
@@ -399,7 +402,7 @@ public:
         cout << endl << "TEST crear DTO chell: ";
         int16_t x1 = 0, y1 = -2;
         int16_t x2 = 20, y2 = 20;
-        auto new_pos = PositionTranslator::translate(CHELL, x1, y1, CHELL_HALF_WIDTH, CHELL_HALF_HEIGHT);
+        auto new_pos = PositionTranslator::translate(CHELL, x1, y1, config->getChellHalfWidth(), config->getChellHalfHeight());
 
         auto data1 = make_shared<ChellData>(0, x1, y1);
         world->createCollidable(data1);
@@ -414,19 +417,19 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL(DONT_DELETE, dto->getDeleteState());
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, dto->getId());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * CHELL_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * CHELL_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getChellHalfWidth()), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getChellHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_CHELL_DATA, dto->getClassId());
 
-        new_pos = PositionTranslator::translate(CHELL, x2, y2, CHELL_HALF_WIDTH, CHELL_HALF_HEIGHT);
+        new_pos = PositionTranslator::translate(CHELL, x2, y2, config->getChellHalfWidth(), config->getChellHalfHeight());
         iter = world->getChells().at(1);
         ptr = WorldObjectDTOTranslator::translate(iter, true);
         dto = (ChellDTO*) ptr.get();
         CPPUNIT_ASSERT_EQUAL(new_pos.first, dto->getX());
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL((int16_t) 1, dto->getId());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * CHELL_HALF_WIDTH), dto->getWidth());
-        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * CHELL_HALF_HEIGHT), dto->getHeight());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getChellHalfWidth()), dto->getWidth());
+        CPPUNIT_ASSERT_EQUAL((int16_t) (2 * config->getChellHalfHeight()), dto->getHeight());
         CPPUNIT_ASSERT_EQUAL(DONT_DELETE, dto->getDeleteState());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_CHELL_DATA, dto->getClassId());
         cout << "OK";
@@ -438,7 +441,7 @@ public:
 
         auto data1 = make_shared<EnergyTransmitterData>(x1, y1, "E");
         world->createCollidable(data1);
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i)
                 world->step();
         for (int i = 0; i < config->getFps(); ++i)
@@ -446,7 +449,7 @@ public:
         auto energy_ball = world->getEnergyBall(0);
 
         auto new_pos = PositionTranslator::translate(ENERGY_BALL, energy_ball->x(),
-                energy_ball->y(), ENRG_BALL_RADIUS);
+                energy_ball->y(), config->getEnergyBallRadius());
 
 
         auto iter = world->getEnergyBall(0);
@@ -457,7 +460,7 @@ public:
         CPPUNIT_ASSERT_EQUAL(new_pos.second, dto->getY());
         CPPUNIT_ASSERT_EQUAL(DONT_DELETE, dto->getDeleteState());
         CPPUNIT_ASSERT_EQUAL((int16_t) 0, dto->getId());
-        CPPUNIT_ASSERT_EQUAL((int16_t) ENRG_BALL_RADIUS, dto->getRadius());
+        CPPUNIT_ASSERT_EQUAL((int16_t) config->getEnergyBallRadius(), dto->getRadius());
         CPPUNIT_ASSERT_EQUAL(PROTOCOL_ENERGY_BALL_DATA, dto->getClassId());
 
         cout << "OK";

@@ -50,7 +50,7 @@ config = ptr.get();
     }
 
     void releaseEnergyBall() {
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i)
                 world->step();
         for (int i = 0; i < config->getFps(); ++i)
@@ -66,7 +66,7 @@ config = ptr.get();
         auto energy_ball = world->getEnergyBall(0);
 
         float wall_width = 4, wall_height = 10;
-        float wall_x = energy_ball->x() + ENRG_BALL_RADIUS + wall_width;
+        float wall_x = energy_ball->x() + config->getEnergyBallRadius() + wall_width;
         float wall_y = wall_height / 2;
         // Creo pared donde colisionar la bola
         auto data1 = make_shared<RockBlockData>(wall_width, wall_height, wall_x, wall_y);
@@ -76,9 +76,9 @@ config = ptr.get();
         bool ball_deleted = false;
         int n_bodies = world->getWorld()->GetBodyCount();
         for (int i = 0; i < config->getFps(); ++i) {
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             world->step();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
+            if (time_elapsed < config->getEnergyBallLifetime() &&
                 world->getWorld()->GetBodyCount() < n_bodies)
                 ball_deleted = true;    // Bola colisiono con pared
         }
@@ -96,7 +96,7 @@ config = ptr.get();
         auto energy_ball = world->getEnergyBall(0);
 
         float acid_x = energy_ball->x();
-        float acid_y = energy_ball->y() - ENRG_BALL_RADIUS - ACID_HALF_HEIGHT - 1;
+        float acid_y = energy_ball->y() - config->getEnergyBallRadius() - config->getAcidHalfHeight() - 1;
 
         // Creo acido donde colisionar la bola
         auto data1 = make_shared<AcidData>(acid_x, acid_y, 4);
@@ -106,10 +106,10 @@ config = ptr.get();
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
         for (int i = 0; i < config->getFps(); ++i) {
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             world->step();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
-                world->getWorld()->GetBodyCount() < n_bodies)
+            if (time_elapsed < config->getEnergyBallLifetime() &&
+            world->getWorld()->GetBodyCount() < n_bodies)
                 ball_deleted = true;    // Bola colisiono con pared
         }
         CPPUNIT_ASSERT(ball_deleted);
@@ -124,7 +124,7 @@ config = ptr.get();
         auto energy_ball = world->getEnergyBall(0);
 
         float button_x = energy_ball->x();
-        float button_y = energy_ball->y() - ENRG_BALL_RADIUS - BUTTON_HALF_HEIGHT - 1;
+        float button_y = energy_ball->y() - config->getEnergyBallRadius() - config->getButtonHalfHeight() - 1;
 
         // Creo boton donde colisionar la bola
         auto data1 = make_shared<ButtonData>(0, button_x, button_y);
@@ -134,9 +134,9 @@ config = ptr.get();
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
         for (int i = 0; i < config->getFps(); ++i) {
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             world->step();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
+            if (time_elapsed < config->getEnergyBallLifetime() &&
                 world->getWorld()->GetBodyCount() < n_bodies)
                 ball_deleted = true;    // Bola colisiono con pared
         }
@@ -154,7 +154,7 @@ config = ptr.get();
         auto energy_ball = world->getEnergyBall(0);
 
         float rock_x = energy_ball->x();
-        float rock_y = energy_ball->y() - ENRG_BALL_RADIUS - ROCK_HALF_LEN - 1;
+        float rock_y = energy_ball->y() - config->getEnergyBallRadius() - config->getRockHalfLen() - 1;
 
         // Creo roca donde colisionar la bola
         auto data1 = make_shared<RockData>(rock_x, rock_y);
@@ -164,9 +164,9 @@ config = ptr.get();
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
         for (int i = 0; i < config->getFps(); ++i) {
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             world->step();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
+            if (time_elapsed < config->getEnergyBallLifetime() &&
                 world->getWorld()->GetBodyCount() < n_bodies)
                 ball_deleted = true;    // Bola colisiono con pared
         }
@@ -184,7 +184,7 @@ config = ptr.get();
         auto e_ball = world->getEnergyBall(0);
 
         float e_transm_2_x = e_ball->x();
-        float e_transm_2_y = e_ball->y() - ENRG_BALL_RADIUS - ENRG_BLOCK_HALF_LEN- 1;
+        float e_transm_2_y = e_ball->y() - config->getEnergyBallRadius() - config->getEnergyBlockHalfLen()- 1;
 
         // Creo tranmisor donde colisionar la bola
         auto data2 = make_shared<EnergyTransmitterData>(e_transm_2_x, e_transm_2_y, "E");
@@ -194,9 +194,9 @@ config = ptr.get();
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
         for (int i = 0; i < config->getFps(); ++i) {
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             world->step();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
+            if (time_elapsed < config->getEnergyBallLifetime() &&
                 world->getWorld()->GetBodyCount() < n_bodies)
                 ball_deleted = true;    // Bola colisiono con pared
         }
@@ -215,7 +215,7 @@ config = ptr.get();
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
 
-        float chell_x = energy_ball->x() + ENRG_BALL_RADIUS + CHELL_HALF_WIDTH + 1;
+        float chell_x = energy_ball->x() + config->getEnergyBallRadius() + config->getChellHalfWidth() + 1;
         float chell_y = energy_ball->y();
 
         // Creo chell donde colisionar la bola
@@ -226,9 +226,9 @@ config = ptr.get();
         float time_elapsed = 0; // Contabilizo tiempo vida bola energia
         bool ball_deleted = false;
         for (int i = 0; i < config->getFps(); ++i) {
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             world->step();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME &&
+            if (time_elapsed < config->getEnergyBallLifetime() &&
                 world->getWorld()->GetBodyCount() < n_bodies)
                 ball_deleted = true;    // Bola colisiono con pared
         }
@@ -240,7 +240,7 @@ config = ptr.get();
     void testContactWithEnergyBall() {
         cout << endl << "TEST ignorar contacto con otra bola de energia: ";
 
-        float e_transm_2_x = e_transm_x + 4 * ENRG_BALL_RADIUS + 2 * ENRG_BLOCK_HALF_LEN + 2;
+        float e_transm_2_x = e_transm_x + 4 * config->getEnergyBallRadius() + 2 * config->getEnergyBlockHalfLen() + 2;
         float e_transm_2_y = e_transm_y;
         // Creo transmisores en sentido opuesto para que choquen bolas energia
         auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
@@ -271,8 +271,9 @@ config = ptr.get();
 
     void testContactWithEnergyBarrier() {
         cout << endl << "TEST ignorar contacto con barrera energia: ";
-        float barrier_x = e_transm_x + 4 * ENRG_BALL_RADIUS + BARRIER_HALF_WIDTH + 2;
-        float barrier_y = BARRIER_HALF_LENGTH;
+        float barrier_x = e_transm_x + 4 * config->getEnergyBallRadius() +
+                config->getBarrierHalfWidth() + 2;
+        float barrier_y = config->getBarrierHalfLen();
         // Creo transmisores en sentido opuesto para que choquen bolas energia
         auto data = make_shared<EnergyTransmitterData>(e_transm_x, e_transm_y, "E");
         world->createCollidable(data);
@@ -309,8 +310,8 @@ config = ptr.get();
         auto button  = world->getButton(0);
         button->activate(); // Activo boton
 
-        float gate_x = e_ball->x() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
-        float gate_y = GATE_HALF_HEIGHT;
+        float gate_x = e_ball->x() + config->getEnergyBallRadius() + config->getGateHalfWidth() + 2;
+        float gate_y = config->getGateHalfHeight();
         auto data2 = make_shared<GateData>(0, gate_x, gate_y);
         data2->addButtonNeeded(0);
         world->createCollidable(data2);
@@ -346,8 +347,8 @@ config = ptr.get();
         auto button  = world->getButton(0);
         button->activate(); // Activo boton
 
-        float gate_x = e_ball->x() + ENRG_BALL_RADIUS + GATE_HALF_WIDTH + 2;
-        float gate_y = GATE_HALF_HEIGHT;
+        float gate_x = e_ball->x() + config->getEnergyBallRadius() + config->getGateHalfWidth() + 2;
+        float gate_y = config->getGateHalfHeight();
         auto data2 = make_shared<GateData>(0, gate_x, gate_y);
         world->createCollidable(data2);
         data2->addButtonNeeded(0);
@@ -392,7 +393,7 @@ config = ptr.get();
         CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
         releaseEnergyBall();
         auto energy_ball = world->getEnergyBall(0);
-        float rock_x = energy_ball->x() + ENRG_BALL_RADIUS + ROCK_HALF_LEN + 1;
+        float rock_x = energy_ball->x() + config->getEnergyBallRadius() + config->getRockHalfLen() + 1;
         float rock_y = energy_ball->y();
         auto data1 = make_shared<RockBlockData>(100, 4, 0, -2);
         world->createCollidable(data1); // Superficie donde apoyar roca

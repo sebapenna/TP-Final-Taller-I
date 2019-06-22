@@ -27,9 +27,6 @@
 #define O_V (uint8_t) 8
 #define O_H (uint8_t) 9
 
-/* Box2D */
-#define TIME_STEP   (float) (1.0f / 30.0f)
-
 /* Movimiento */
 #define MOVE_LEFT   (uint8) 0
 #define MOVE_RIGHT  (uint8) 1
@@ -49,10 +46,6 @@
 /* Coniguracion Rock */
 #define ROCK_HALF_LEN  2    // Largo de medio lado de la roca (cuerpo cuadrado)
 
-/* Coniguracion Acid */
-#define ACID_HALF_WIDTH  HALF_BOX_LEN
-#define ACID_HALF_HEIGHT  0.25
-
 /* Configuracion Button */
 #define BUTTON_HALF_WIDTH  HALF_BOX_LEN
 #define BUTTON_HALF_HEIGHT  0.25
@@ -66,16 +59,6 @@
 
 /* Configuracion Energy Receiver y Energy Transmitter */
 #define ENRG_BLOCK_HALF_LEN  HALF_BOX_LEN // Largo de medio lado del recvr/transmitter (cuerpos cuadrados)
-#define TIME_TO_RELEASE 10  // Tiempo tras que libera bola energia el transmisor
-
-/* Configuracion Energy Ball */
-#define ENRG_BALL_RADIUS    HALF_BOX_LEN
-#define ENRG_BALL_FORCE 100
-#define ENERGY_BALL_MAX_LIFETIME 5
-
-/* Configuracion Energy Barrier */
-#define BARRIER_HALF_LENGTH  4
-#define BARRIER_HALF_WIDTH   1
 
 /* Configuracion Cake */
 #define CAKE_HALF_LEN   2
@@ -84,9 +67,6 @@
 #define STRAIGHT    (int16_t) 0
 #define LEFT    (int16_t)   1
 #define RIGHT    (int16_t)   2
-
-/* Configuracion PinTool */
-#define PIN_TOOL_LIFETIME   20
 
 /* Class Names*/
 #define ENERGY_RECEIVER (uint8_t) 0

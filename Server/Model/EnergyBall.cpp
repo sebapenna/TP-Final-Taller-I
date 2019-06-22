@@ -4,22 +4,22 @@
 #include <Server/Model/Obstacles/Gate.h>
 
 EnergyBall::EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius,
-        const float &max_lifetime, const float &time_step) : _max_lifetime(max_lifetime),_id(id),
-        _radius(radius), _time_step(time_step) {
+        const float &max_lifetime, const float &time_step, const float &force) : _id(id),
+        _max_lifetime(max_lifetime), _radius(radius), _time_step(time_step), _force(force) {
     _body = body;
     int x_impulse = 0, y_impulse = 0;
     switch (direction) {
         case O_N:
-            y_impulse = ENRG_BALL_FORCE;
+            y_impulse = _force;
             break;
         case O_S:
-            y_impulse = -1 * ENRG_BALL_FORCE;
+            y_impulse = -1 * _force;
             break;
         case O_E:
-            x_impulse = ENRG_BALL_FORCE;
+            x_impulse = _force;
             break;
         case O_O:
-            x_impulse = -1 * ENRG_BALL_FORCE;
+            x_impulse = -1 * _force;
             break;
         default:    // No existe este caso
             break;

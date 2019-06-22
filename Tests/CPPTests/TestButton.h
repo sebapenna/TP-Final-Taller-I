@@ -135,7 +135,7 @@ config = ptr.get();
         cout << endl << "TEST activar tras contacto con roca: ";
         // Hago que roca caiga sobre el boton
         float rock_x = button1_x;
-        float dist_to_rock = BUTTON_HALF_HEIGHT + ROCK_HALF_LEN;
+        float dist_to_rock = config->getButtonHalfHeight() + config->getRockHalfLen();
         float rock_y = button1_y + dist_to_rock + 2;
         auto data = make_shared<RockData>(rock_x, rock_y);
         world->createCollidable(data);
@@ -154,7 +154,7 @@ config = ptr.get();
                         "finalizar: ";
         // Hago que roca caiga sobre el boton
         float rock_x = button1_x;
-        float dist_to_rock = BUTTON_HALF_HEIGHT + ROCK_HALF_LEN;
+        float dist_to_rock = config->getButtonHalfHeight() + config->getRockHalfLen();
         float rock_y = button1_y + dist_to_rock + 2;
         auto data = make_shared<RockData>(rock_x, rock_y);
         world->createCollidable(data);
@@ -172,7 +172,7 @@ config = ptr.get();
     void testActivateContactWithChell() {
         cout << endl << "TEST activar tras contacto con chell: ";
         float chell_x = button1_x;
-        float dist_to_chell = BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT;
+        float dist_to_chell = config->getButtonHalfHeight() + config->getChellHalfHeight();
         float chell_y = button1_y + dist_to_chell + 2;
         auto data = make_shared<ChellData>(0, chell_x, chell_y);
         world->createCollidable(data);
@@ -189,8 +189,8 @@ config = ptr.get();
     void testActivateAndDeactivateContactWithChell() {
         cout << endl << "TEST activar tras contacto con chell y desactivar "
                         "al finalizar: ";
-        float dist_to_chell_y = BUTTON_HALF_HEIGHT + CHELL_HALF_HEIGHT;
-        float dist_to_chell_x = BUTTON_HALF_HEIGHT + CHELL_HALF_WIDTH;
+        float dist_to_chell_y = config->getButtonHalfHeight() + config->getChellHalfHeight();
+        float dist_to_chell_x = config->getButtonHalfHeight() + config->getChellHalfWidth();
         float chell_x = button1_x - dist_to_chell_x - 2;
         float chell_y = button1_y + dist_to_chell_y + 2;
         auto data = make_shared<ChellData>(0, chell_x, chell_y);

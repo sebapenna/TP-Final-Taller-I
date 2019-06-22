@@ -260,7 +260,7 @@ void Chell::collideWith(Collidable *other) {
         (_tilt != NOT_TILTED) ? (_tilt = NOT_TILTED) : 0;
         if (cname == ROCK) {
             auto rock = (Rock *) other;
-            float head_pos = this->y() + CHELL_HALF_HEIGHT;
+            float head_pos = this->y() + _height / 2;
             // Evaluo si esta encima de chell y cayendo
             (rock->y() > head_pos && rock->velocityY() != 0) ? _dead = true : _hit_wall = true;
         } else if (cname == ACID || cname == ENERGY_BALL) {

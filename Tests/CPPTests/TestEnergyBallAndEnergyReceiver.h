@@ -26,7 +26,7 @@ private:
     size_t width = 100, height = 200;
     float e_transm_x = 0, e_transm_y = 2;
     // Calculo distancia entre centro de transmisor y receptor (suponiendolos pegados)
-    float dist_between_energy_blocks = 2 * ENRG_BLOCK_HALF_LEN;
+    float dist_between_energy_blocks = 2 * config->getEnergyBlockHalfLen();
 
 public:
     void setUp() {
@@ -40,7 +40,7 @@ config = ptr.get();
     }
 
     void releaseEnergyBall() {
-        for (int j = 1; j < TIME_TO_RELEASE; ++j)
+        for (int j = 1; j < config->getTimeToReleaseEnrgBall(); ++j)
             for (int i = 0; i < config->getFps(); ++i)
                 world->step();
         for (int i = 0; i < config->getFps(); ++i)
@@ -68,9 +68,9 @@ config = ptr.get();
 
         for (int i = 0; i < config->getFps(); ++i) {
             world->step();
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             float new_n_bod = world->getWorld()->GetBodyCount();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME && new_n_bod < n_bod)
+            if (time_elapsed < config->getEnergyBallLifetime() && new_n_bod < n_bod)
                 e_ball_erased = true;
         }
 
@@ -99,9 +99,9 @@ config = ptr.get();
 
         for (int i = 0; i < config->getFps(); ++i) {
             world->step();
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             float new_n_bod = world->getWorld()->GetBodyCount();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME && new_n_bod < n_bod)
+            if (time_elapsed < config->getEnergyBallLifetime() && new_n_bod < n_bod)
                 e_ball_erased = true;
         }
 
@@ -129,9 +129,9 @@ config = ptr.get();
 
         for (int i = 0; i < config->getFps(); ++i) {
             world->step();
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             float new_n_bod = world->getWorld()->GetBodyCount();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME && new_n_bod < n_bod)
+            if (time_elapsed < config->getEnergyBallLifetime() && new_n_bod < n_bod)
                 e_ball_erased = true;
         }
 
@@ -159,9 +159,9 @@ config = ptr.get();
 
         for (int i = 0; i < config->getFps(); ++i) {
             world->step();
-            time_elapsed += TIME_STEP;
+            time_elapsed += (1 / config->getFps());
             float new_n_bod = world->getWorld()->GetBodyCount();
-            if (time_elapsed < ENERGY_BALL_MAX_LIFETIME && new_n_bod < n_bod)
+            if (time_elapsed < config->getEnergyBallLifetime() && new_n_bod < n_bod)
                 e_ball_erased = true;
         }
 
