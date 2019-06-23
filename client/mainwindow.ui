@@ -6,68 +6,199 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
-    <height>193</height>
+    <width>415</width>
+    <height>239</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QLabel" name="label">
+   <widget class="QWidget" name="createOrJoinMenu" native="true">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
-      <width>67</width>
-      <height>17</height>
+      <y>10</y>
+      <width>391</width>
+      <height>161</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Host</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>220</x>
-      <y>0</y>
-      <width>67</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Port</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>300</x>
-      <y>100</y>
-      <width>89</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Conectar</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>20</y>
-      <width>381</width>
-      <height>80</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="containerH">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QLineEdit" name="HostInput"/>
+      <widget class="QPushButton" name="createButton">
+       <property name="text">
+        <string>Create</string>
+       </property>
+      </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="joinButton">
+       <property name="text">
+        <string>Join</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="selectPlayersMenu" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>20</y>
+      <width>401</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="selectAmountPlayers">
+     <item>
+      <widget class="QLabel" name="selectAmmountPlayersLabe">
+       <property name="text">
+        <string>Select Amount of players</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="selectAmountList">
+       <item>
+        <property name="text">
+         <string>1</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>3</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>4</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="selectAmmountPlayersButton">
+       <property name="text">
+        <string>Select</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="connectHostPortMenu" native="true">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>20</y>
+      <width>381</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="hostLabel">
+       <property name="text">
+        <string>Host</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="HostInput"/>
+     </item>
+     <item row="1" column="1">
       <widget class="QLineEdit" name="portInput"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="connectButton">
+       <property name="text">
+        <string>Conectar</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="portLabel">
+       <property name="text">
+        <string>Port</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="selectMapMenu" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>391</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QListWidget" name="listMap"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="selectMap">
+       <property name="text">
+        <string>Select map</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="startOrQuitMenu" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>10</y>
+      <width>411</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QPushButton" name="startGameButton">
+       <property name="text">
+        <string>Start game</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="quitButton">
+       <property name="text">
+        <string>Quit</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="selectMatchMenu" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>391</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <item>
+      <widget class="QListView" name="listMatch"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="selectMatchButton">
+       <property name="text">
+        <string>Select match</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -77,7 +208,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>401</width>
+     <width>415</width>
      <height>22</height>
     </rect>
    </property>

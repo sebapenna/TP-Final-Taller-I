@@ -6,6 +6,16 @@
 #include "TextureFactory.h"
 #include "ComponentsSDL/SDLException.h"
 
+#define CHELL_TEXTURE_NAME "chell"
+#define BLOCK_TEXTURE_NAME "block"
+#define GATE_TEXTURE_NAME "gate"
+#define BULLET_AND_ROCK_TEXTURE_NAME "bulletAndRock"
+#define ACID_AND_BUTTONS_TEXTURE_NAME "acidAndButtons"
+#define BACKGROUND_TEXTURE_NAME "background"
+#define CAKE_TEXTURE_NAME "cake"
+#define PORTAL_TEXTURE_NAME "portal"
+#define PINTOOL_TEXTURE_NAME "pintool"
+
 TextureFactory::TextureFactory() : textures(textures) {
     IMG_Init(IMG_INIT_PNG);
 }
@@ -17,53 +27,53 @@ TextureFactory::~TextureFactory() {
 }
 
 void TextureFactory::init(Renderer& renderer) {
-    textures["chell"] = loadTexture(std::string("assets/textures/chell.png"), renderer);
-    textures["block"] = loadTexture(std::string("assets/textures/block.png"), renderer);
-    textures["gate"] = loadTexture(std::string("assets/textures/gates.png"), renderer);
-    textures["bulletAndRock"] = loadTexture(std::string("assets/textures/bulletAndRock.png"), renderer);
-    textures["acidAndButtons"] = loadTexture(std::string("assets/textures/acidAndButtons.png"), renderer);
-    textures["background"] = loadTexture(std::string("assets/backgroundImage/background.png"), renderer);
-    textures["cake"] = loadTexture(std::string("assets/textures/cake.png"), renderer);
-    textures["portal"] = loadTexture(std::string("assets/textures/portal.png"), renderer);
-    textures["pintool"] = loadTexture(std::string("assets/textures/pintool.png"), renderer);
+    textures[CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chell.png"), renderer);
+    textures[BLOCK_TEXTURE_NAME] = loadTexture(std::string("assets/textures/block.png"), renderer);
+    textures[GATE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/gates.png"), renderer);
+    textures[BULLET_AND_ROCK_TEXTURE_NAME] = loadTexture(std::string("assets/textures/bulletAndRock.png"), renderer);
+    textures[ACID_AND_BUTTONS_TEXTURE_NAME] = loadTexture(std::string("assets/textures/acidAndButtons.png"), renderer);
+    textures[BACKGROUND_TEXTURE_NAME] = loadTexture(std::string("assets/backgroundImage/background.png"), renderer);
+    textures[CAKE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/cake.png"), renderer);
+    textures[PORTAL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/portal.png"), renderer);
+    textures[PINTOOL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/pintool.png"), renderer);
     //setColor(textures["chell"], 255, 0, 0);
 }
 
 
 SDL_Texture *TextureFactory::getBlockTexture() {
-    return textures["block"];
+    return textures[BLOCK_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::getGateTexture() {
-    return textures["gate"];
+    return textures[GATE_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::getCakeTexture() {
-    return textures["cake"];
+    return textures[CAKE_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::getPortalTexture() {
-    return textures["portal"];
+    return textures[PORTAL_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::getPintoolTexture() {
-    return textures["pintool"];
+    return textures[PINTOOL_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::getBulletAndRocksTexture() {
-    return textures["bulletAndRock"];
+    return textures[BULLET_AND_ROCK_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::getBackground() {
-    return textures["background"];
+    return textures[BACKGROUND_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::getAcidAndButtonsTexture() {
-    return textures["acidAndButtons"];
+    return textures[ACID_AND_BUTTONS_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::getChellTexture() {
-    return textures["chell"];
+    return textures[CHELL_TEXTURE_NAME];
 }
 
 SDL_Texture *TextureFactory::loadTexture(const std::string &filename, Renderer& renderer) {

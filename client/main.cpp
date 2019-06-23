@@ -57,6 +57,7 @@ int main(int argc, char** argv){
         mainWindow.show();
 
         app.exec();
+        std::setlocale(LC_NUMERIC, "C");
         std::string title("Portal");
         Protocol protocol("localhost", argv[1]);
 

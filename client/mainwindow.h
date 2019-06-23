@@ -16,7 +16,21 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_connectButton_clicked();
+
+    void on_createButton_clicked();
+
+    void on_selectAmmountPlayersButton_clicked();
+
+    void on_startGameButton_clicked();
+
+    void on_quitButton_clicked();
+
+    void on_selectMap_clicked();
+
+    void on_joinButton_clicked();
+
+    void on_selectMatchButton_clicked();
 
 private:
     Ui::MainWindow *ui;
