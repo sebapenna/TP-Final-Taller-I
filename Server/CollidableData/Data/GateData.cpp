@@ -36,7 +36,7 @@ const std::vector<size_t> &GateData::getEnergyReceiversNeeded() const {
 void GateData::build(World *world, std::shared_ptr<Configuration> c) {
     auto body = BoxCreator::createStaticBox(world->getWorld(), _x, _y, c->getGateHalfWidth(),
             c->getGateHalfHeight());
-    auto *gate = new Gate(world->getNextGateId(), _x, _y, c->getGateHalfWidth() * 2,
+    auto *gate = new Gate(world->getNextGateId(), body, c->getGateHalfWidth() * 2,
             c->getGateHalfHeight() * 2);
 
     for (auto &button_id : _buttons_needed)

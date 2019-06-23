@@ -174,9 +174,11 @@ void GameThread::deletePlayer(const size_t &id) {
         return (p->id() == id) ? (p->disconnectAndJoin(), delete p, p = nullptr, true) : false;
     });
 
-    notifyAllDeletedPlayer();
-    if (id == 0)    // Elimine al owner, notifico al nuevo
-        notifyNewOwner();
+    if (!_begin_game) { // Notificaciones previas al inicio del juego
+        notifyAllDeletedPlayer();
+        if (id == 0)    // Elimine al owner, notifico al nuevo
+            notifyNewOwner();
+    }
 
     if (_players.empty()) {   // Se desconectaron todos los jugadores
         _empty_game = true;

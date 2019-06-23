@@ -420,4 +420,3 @@ void Chell::setPortalToUse(Portal *portal) {
     _portal_to_use = portal;
 }
 
-
