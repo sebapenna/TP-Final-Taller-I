@@ -25,6 +25,7 @@
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPinToolDTO.h>
 #include <Common/ProtocolTranslator/ResetPortalsDTO.h>
+#include <QtWidgets/QApplication>
 #include "SDL_Runner.h"
 #include "FakeServer.h"
 #include "Common/ProtocolTranslator/PlayerActionsDTO/MoveLeftDTO.h"
@@ -34,6 +35,8 @@
 #include "ClientReceiver.h"
 #include "CommandReceiver.h"
 #include "CommandSender.h"
+#include "mainwindow.h"
+
 
 #define KNOWN_ERROR 1
 #define UNKNOWN_ERROR 2
@@ -48,8 +51,12 @@ void positionInScreen(int& x, int& y, SDL_Runner& sdlRunner) {
 
 int main(int argc, char** argv){
     try {
-        // Chell turning around
-        //AnimatedSprite sprite("chell.png", renderer, 292, 209, 1, 3753, 8, 8, 0, 0, 292, 209, 1, 0);
+        QApplication app(argc, argv);
+
+        MainWindow mainWindow;
+        mainWindow.show();
+
+        app.exec();
         std::string title("Portal");
         Protocol protocol("localhost", argv[1]);
 
