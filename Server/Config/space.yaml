@@ -107,10 +107,10 @@ gate:
 #    energy_receiver_needed:
 #      - id: 0
 #      - id: 1
-energy_transmitter:
-  - x: -60
-    y: 2
-    direction: O
+#energy_transmitter:
+#  - x: -60
+#    y: 2
+#    direction: O
 ##  - x: -114
 ##    y: 16
 ##    direction: S

@@ -138,6 +138,9 @@ public:
     void liftRock();
 
     void dropRock();
+
+    // Indica que portal atravesara la roca, por lo tanto chell debe hacer lo mismo
+    void setPortalToUse(Portal *portal);
 };
 
 

@@ -52,6 +52,9 @@ public:
 
     void teleport(float x, float y);
 
+    // Indica que portal atravesara la chell, por lo tanto roca debe hacer lo mismo
+    void setPortalToUse(Portal *portal);
+
     bool ifTeleportedSetDone();
 
     void setLifter(Chell *chell);

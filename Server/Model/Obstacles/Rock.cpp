@@ -38,7 +38,7 @@ void Rock::collideWith(Collidable *other) {
             if (portal->exitPortal()) {   // Verifico que tenga ambos portales
                 _portal_to_use = portal;    // Asigno portal a atravesar
                 if (_lifter)
-                    _lifter->collideWith(portal);   // Teletransporto chell que la carga
+                    _lifter->setPortalToUse(portal);
             }
         }   // Si se teletransporto se ignorara contacto en pre-solve
     }
@@ -114,8 +114,16 @@ bool Rock::ifTeleportedSetDone() {
 
 void Rock::setLifter(Chell *chell) {
     _lifter = chell;
+    _body->GetFixtureList()->SetDensity(1);
+    _body->ResetMassData();
 }
 
 void Rock::removeLifter() {
     _lifter = nullptr;
+    _body->GetFixtureList()->SetDensity(100);
+    _body->ResetMassData();
+}
+
+void Rock::setPortalToUse(Portal *portal) {
+    _portal_to_use = portal;
 }

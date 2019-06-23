@@ -274,7 +274,7 @@ void Chell::collideWith(Collidable *other) {
                     _portal_to_use = portal;    // Asigno portal a atravesar
                     if (_rock_joint) {
                         auto rock = (Rock*) _rock_joint->GetBodyB()->GetUserData();
-                        rock->collideWith(other);  // Teletransporto roca
+                        rock->setPortalToUse(portal);  // Teletransporto roca
                     }
                 } else {
                     _hit_wall = true;
@@ -399,7 +399,7 @@ void Chell::liftRock() {
                 jointDef.maxLength = 0;
                 // Creo joint
                 _rock_joint = (b2RopeJoint*) _body->GetWorld()->CreateJoint(&jointDef);
-                rock->setLifter(this);
+                rock->setLifter(this);  // Indico a roca quien lo levanta
                 return; // Uni chell a una roca
             }
             rock = nullptr; // Seteo a null roca nuevamente en caso que no se haya podido unir
@@ -414,6 +414,10 @@ void Chell::dropRock() {
         _body->GetWorld()->DestroyJoint(_rock_joint);
         _rock_joint = nullptr;
     }
+}
+
+void Chell::setPortalToUse(Portal *portal) {
+    _portal_to_use = portal;
 }
 
 
