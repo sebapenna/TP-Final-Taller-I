@@ -54,7 +54,7 @@ void DTOProcessor::applyActionToChell(World *world, ProtocolDTO *dto, size_t che
             chell->dropRock();
             break;
         case PROTOCOL_QUIT:
-            // todo: eliminar chell de WORLD
+            chell->kill();  // Mato chell de jugador que se fue
             break;
         default:    // No existe este caso
             break;

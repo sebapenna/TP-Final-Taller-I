@@ -12,11 +12,11 @@ private:
     std::vector<Button*> _buttons_needed;
     std::vector<EnergyReceiver*>  _energy_reveivers_needed;
     const size_t _id;
-    const float _x, _y, _width, _height;
+    const float _width, _height;
+    b2Body *_body;
 
 public:
-    explicit Gate(const size_t &id, const float& x, const float& y, const float& width,
-            const float& height);
+    explicit Gate(const size_t &id, b2Body *body, const float& width, const float& height);
 
     ~Gate() override;
 
@@ -49,6 +49,8 @@ public:
     bool isDead(const float &time_step) override;
 
     b2Body *getBody() const override;
+
+    void verifyChellsUnderIt();
 };
 
 

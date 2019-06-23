@@ -152,6 +152,10 @@ void World::stepCollidableVector(std::vector<T *> &vector) {
         if (collidable) {    // Verifico no haberlo eliminado previamente
             collidable->step(_time_step);
             if (collidable->isDead(_time_step)) {
+                if (collidable->classId() == CHELL) {
+                    auto chell = (Chell*) collidable;
+                    resetPortals(chell->id());  // Elimino portales de chell muerta
+                }
                 _world->DestroyBody(collidable->getBody());
                 _objects_to_delete.emplace_back(i, collidable->classId());
                 delete collidable;
