@@ -7,10 +7,27 @@ SET( CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -std=c++11 -g -DDEBUG_MODE" )
 # todo: borrar debug mode en la entrega !
 include_directories(${PROJECT_SOURCE_DIR})
 
+find_package(Qt5 REQUIRED COMPONENTS Core Widgets Gui)
+
 option(BOX2D_BUILD_SHARED "Build Box2D shared libraries" OFF)
 option(BOX2D_BUILD_STATIC "Build Box2D static libraries" ON)
 set(BOX2D_VERSION 2.3.0)
 #set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
+
+
+set(project_ui
+        client/mainwindow.ui)
+
+set(project_headers
+        client/mainwindow.h)
+
+set(project_sources
+        client/mainwindow.cpp
+        client/main.cpp
+        )
+
+qt5_wrap_ui(project_headers_wrapped ${project_ui})
+qt5_wrap_cpp(project_sources_moc ${project_headers})
 
 add_subdirectory(Box2D)
 add_subdirectory(Yaml)
@@ -19,7 +36,7 @@ add_subdirectory(Common)
 add_subdirectory(Server)
 add_subdirectory(Tests)
 add_subdirectory(client)
-
+include_directories(${PROJECT_BINARY_DIR})
 
 file(COPY Server/Config DESTINATION ./)
 file(COPY Server/Config DESTINATION ./Tests)    # Archivos disponibles para tests
@@ -40,8 +57,14 @@ file(COPY Tests/CPPTests/test.yaml DESTINATION ./Tests)   # Archivo yaml para te
 
 #file(COPY Server)
 
-add_executable (client_sdl client/main.cpp)
-target_link_libraries(client_sdl sdldemo portal-src common-src SDL2 SDL2_image pthread SDL2_mixer SDL2_ttf)
+add_executable (client_sdl ${project_headers} ${project_sources}
+        ${project_sources_moc} ${project_headers_wrapped})
+target_link_libraries(client_sdl
+        sdldemo portal-src common-src
+        SDL2 SDL2_image
+        pthread SDL2_mixer
+        SDL2_ttf Qt5::Core
+        Qt5::Gui Qt5::Widgets)
 
 add_executable(server Server/ServerMain.cpp)
 target_link_libraries(server portal-src)

@@ -3,6 +3,7 @@ SET(CMAKE_BUILD_TYPE Debug)
 project(Portal)
 
 include_directories(..)
+
 add_library(sdldemo
         ComponentsSDL/Renderer.cpp
         ComponentsSDL/SDLException.cpp
@@ -58,14 +59,22 @@ add_library(sdldemo
         CommandSender.cpp
         CommandSender.h
         CommandReceiver.cpp
-        CommandReceiver.h View/CakeView.cpp View/CakeView.h View/EnergyBallView.cpp View/EnergyBallView.h View/PortalBlueView.cpp View/PortalBlueView.h View/PortalOrangeView.cpp View/PortalOrangeView.h View/PinToolView.cpp View/PinToolView.h ComponentsSDL/SoundFactory.cpp ComponentsSDL/SoundFactory.h ComponentsSDL/Text.cpp ComponentsSDL/Text.h ComponentsSDL/FontFactory.cpp ComponentsSDL/FontFactory.h)
+        CommandReceiver.h
+        View/CakeView.cpp
+        View/CakeView.h
+        View/EnergyBallView.cpp
+        View/EnergyBallView.h
+        View/PortalBlueView.cpp
+        View/PortalBlueView.h
+        View/PortalOrangeView.cpp
+        View/PortalOrangeView.h
+        View/PinToolView.cpp
+        View/PinToolView.h
+        ComponentsSDL/SoundFactory.cpp
+        ComponentsSDL/SoundFactory.h
+        ComponentsSDL/Text.cpp
+        ComponentsSDL/Text.h
+        ComponentsSDL/FontFactory.cpp
+        ComponentsSDL/FontFactory.h
+        )
 
-
-
-# Agrego la carpeta con los headers autogenerados a los includes
-#message("Agregando '${PROJECT_BINARY_DIR}' como directorio de includes")
-#include_directories(${PROJECT_BINARY_DIR})
-
-#install(FILES assets/textures/acidAndButtons.png assets/textures/block.png
-#assets/textures/bulletAndRock.png
- #
