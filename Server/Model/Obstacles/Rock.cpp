@@ -7,6 +7,7 @@ Rock::Rock(const size_t &id, b2Body *body, const float& width, const float& heig
 _id(id), _width(width), _height(height) {
     _previous_x = _body->GetPosition().x;
     _previous_y = _body->GetPosition().y;
+    _density = _body->GetFixtureList()->GetDensity();
 }
 
 Rock::~Rock() = default;
@@ -114,13 +115,13 @@ bool Rock::ifTeleportedSetDone() {
 
 void Rock::setLifter(Chell *chell) {
     _lifter = chell;
-    _body->GetFixtureList()->SetDensity(1);
+    _body->GetFixtureList()->SetDensity(1); // Bajo densidad para que pueda ser levantada
     _body->ResetMassData();
 }
 
 void Rock::removeLifter() {
     _lifter = nullptr;
-    _body->GetFixtureList()->SetDensity(100);
+    _body->GetFixtureList()->SetDensity(_density);  // Vuelvo a configurar densidad inicial
     _body->ResetMassData();
 }
 

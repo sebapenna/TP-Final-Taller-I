@@ -12,6 +12,7 @@ Ademas utilizamos YAML para guardar configuraciones.
 ## Instalacion
 * Para instalar SDL, en la terminal ejecutar: sudo apt install libsdl2-dev && sudo apt install libsdl2-image-dev && sudo apt install libsdl2-ttf-dev && sudo apt-get install libsdl2-mixer-dev
 * Para instalar CPPUnit en la terminal, ejecutar: sudo apt-get install libcppunit-dev
+* Para instalar QT, en la terminal ejecutar: sudo apt-get install qt5-default
 * Clonar repositorio
 * Y realizar un cmake . dentro de la carpeta descargada.
 

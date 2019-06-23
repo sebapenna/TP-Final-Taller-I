@@ -15,6 +15,7 @@ private:
     const float _width, _height;
     bool _teleported = false;
     Portal *_portal_to_use = nullptr;
+    float _density;
 
 public:
     explicit Rock(const size_t &id, b2Body *body, const float& width, const float& height);
