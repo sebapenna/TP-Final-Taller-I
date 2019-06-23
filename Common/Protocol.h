@@ -14,6 +14,8 @@ private:
     Socket _socket;
 
 public:
+    Protocol();
+    Protocol(Protocol&& other);
     Protocol(const std::string& ip, const std::string& port);
 
     explicit Protocol(Socket &&other);

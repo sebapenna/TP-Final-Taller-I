@@ -13,6 +13,12 @@ using std::vector;
 #define TWO_BYTES   2
 #define FOUR_BYTES  4
 
+Protocol::Protocol() {
+}
+
+Protocol::Protocol(Protocol &&other) : _socket(std::move(other._socket)) {
+}
+
 Protocol::Protocol(const string& host, const string& port)
 try : _socket(host, port) {
 } catch(const std::exception& e) {
