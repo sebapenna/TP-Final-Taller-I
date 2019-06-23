@@ -10,6 +10,7 @@ La libreria SDL es utilizada para realizar la interfaz grafica del videojuego, y
 Ademas utilizamos YAML para guardar configuraciones.
 
 ## Instalacion
+* Para instalar CMake, en la terminal ejecutar: sudo apt-get install cmake
 * Para instalar SDL, en la terminal ejecutar: sudo apt install libsdl2-dev && sudo apt install libsdl2-image-dev && sudo apt install libsdl2-ttf-dev && sudo apt-get install libsdl2-mixer-dev
 * Para instalar CPPUnit en la terminal, ejecutar: sudo apt-get install libcppunit-dev
 * Para instalar QT, en la terminal ejecutar: sudo apt-get install qt5-default
