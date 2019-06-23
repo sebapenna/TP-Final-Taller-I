@@ -28,3 +28,17 @@ Por el momento el servido esta testeado contra un cliente de prueba. Para ejecut
 
 En la terminal del cliente se vera en pantalla los datos recibidos de distintos objetos en el mapa.
 Para cerrar el servidor se debe presionar la letra 'q'
+## Controles
+
+* Para salir del juego se puede presionar la cruz de la ventana o a su vez la q.
+* Click izquierdo para poner portal azul sobre una superficie posible.
+* Click derecho para poner portal naranja sobre una superficie posible.
+* Click del medio para la PinTool.
+* W para saltar
+* D para moverse a la derecha
+* A para moverse a la izquierda
+* O para cometer un suicidio
+* K para matar a la chell restant
+* E para levantar una roca
+* F para soltar una roca
+* R para deshacer los portales puestos por el jugador.
