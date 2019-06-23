@@ -270,10 +270,15 @@ void Chell::collideWith(Collidable *other) {
                 _tilt = NOT_TILTED; // Sale del portal sin inclinacion
             if (!_teleported) {
                 auto portal = (Portal *) other;
-                if (portal->exitPortal())   // Verifico que tenga ambos portales
+                if (portal->exitPortal()) {   // Verifico que tenga ambos portales
                     _portal_to_use = portal;    // Asigno portal a atravesar
-                else
+                    if (_rock_joint) {
+                        auto rock = (Rock*) _rock_joint->GetBodyB()->GetUserData();
+                        rock->collideWith(other);  // Teletransporto roca
+                    }
+                } else {
                     _hit_wall = true;
+                }
             }   // Si se teletransporto se ignorara contacto en pre-solve
         }
     }
@@ -387,20 +392,14 @@ void Chell::liftRock() {
         }
         if (rock) {            // Tomo roca segun velocidad
             if ((rock->x() >= x() && velx >= 0) || (rock->x() < x() && velx < 0) ) {
-//                b2DistanceJointDef jointDef;
                 b2RopeJointDef jointDef;
                 jointDef.bodyA = _body;
                 jointDef.bodyB = rock->getBody();
-                jointDef.collideConnected = true;
+                jointDef.collideConnected = false;
                 jointDef.maxLength = 0;
                 // Creo joint
                 _rock_joint = (b2RopeJoint*) _body->GetWorld()->CreateJoint(&jointDef);
-                b2MassData lift_mass;
-//                _body->GetMassData(&lift_mass);
-                lift_mass.mass = 0;
-//                lift_mass.mass = _body->GetMass();
-//                lift_mass.center = rock->getBody()->GetPosition();
-                rock->getBody()->SetMassData(&lift_mass);    // Cambio masa a roca para levantarla
+                rock->setLifter(this);
                 return; // Uni chell a una roca
             }
             rock = nullptr; // Seteo a null roca nuevamente en caso que no se haya podido unir
@@ -410,7 +409,8 @@ void Chell::liftRock() {
 
 void Chell::dropRock() {
     if (_rock_joint) {
-        _rock_joint->GetBodyB()->ResetMassData();   // Pongo masa correspondiente a roca
+        auto rock = (Rock*) _rock_joint->GetBodyB()->GetUserData();
+        rock->removeLifter();
         _body->GetWorld()->DestroyJoint(_rock_joint);
         _rock_joint = nullptr;
     }

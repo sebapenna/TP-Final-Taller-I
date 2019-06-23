@@ -5,6 +5,7 @@
 #include "EnergyBall.h"
 #include <Server/Model/Collidable.h>
 #include <Server/Model/Obstacles/Gate.h>
+#include <Server/Model/Obstacles/Rock.h>
 
 ContactListener::ContactListener(b2World *world) {
     _world = world;
@@ -93,11 +94,23 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
         // Contacto se debe a que es punto de salida o es un portal sin salida
         if (energyball->ifTeleportedSetDone() || !portal->exitPortal())
             contact->SetEnabled(false); // Ignoro contacto con portal salida o sin salida
-    } else if (cname2 == CHELL && (cname1 == PORTAL)) {
+    } else if (cname2 == ENERGY_BALL && (cname1 == PORTAL)) {
         auto energyball = (EnergyBall*) coll2;
         auto portal = (Portal*) coll1;
         // Contacto se debe a que es punto de salida o es un portal sin salida
         if (energyball->ifTeleportedSetDone() || !portal->exitPortal())
+            contact->SetEnabled(false); // Ignoro contacto con portal salida o portal sin salida
+    } else if (cname1 == ROCK && (cname2 == PORTAL)) {
+        auto rock = (Rock*) coll1;
+        auto portal = (Portal*) coll2;
+        // Contacto se debe a que es punto de salida o es un portal sin salida
+        if (rock->ifTeleportedSetDone() || !portal->exitPortal())
+            contact->SetEnabled(false); // Ignoro contacto con portal salida o sin salida
+    } else if (cname2 == ROCK && (cname1 == PORTAL)) {
+        auto rock = (Rock*) coll2;
+        auto portal = (Portal*) coll1;
+        // Contacto se debe a que es punto de salida o es un portal sin salida
+        if (rock->ifTeleportedSetDone() || !portal->exitPortal())
             contact->SetEnabled(false); // Ignoro contacto con portal salida o portal sin salida
     } else if (cname1 == PIN_TOOL) {
         if (cname2 == PORTAL) {

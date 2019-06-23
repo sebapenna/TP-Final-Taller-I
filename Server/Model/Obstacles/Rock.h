@@ -3,6 +3,8 @@
 
 #include <Box2D/Box2D.h>
 #include <Server/Model/Collidable.h>
+#include <Server/Model/Shots/Portal.h>
+#include <Server/Model/Chell.h>
 
 class Rock: public Collidable {
 private:
@@ -11,9 +13,12 @@ private:
     float _previous_x, _previous_y;
     bool _dead = false;
     const float _width, _height;
+    bool _teleported = false;
+    Portal *_portal_to_use = nullptr;
 
 public:
     explicit Rock(const size_t &id, b2Body *body, const float& width, const float& height);
+    Chell *_lifter = nullptr;   // Chell que la esta cargando
 
     ~Rock() override;
 
@@ -44,6 +49,13 @@ public:
     const float height() override;
 
     void step(const float &time_step) override;
+
+    void teleport(float x, float y);
+
+    bool ifTeleportedSetDone();
+
+    void setLifter(Chell *chell);
+    void removeLifter();
 };
 
 

@@ -1,5 +1,7 @@
 #include "Rock.h"
 #include <Server/Model/constants.h>
+#include <Server/Model/Shots/Portal.h>
+#include <Server/Model/Chell.h>
 
 Rock::Rock(const size_t &id, b2Body *body, const float& width, const float& height) : _body(body),
 _id(id), _width(width), _height(height) {
@@ -30,6 +32,15 @@ void Rock::collideWith(Collidable *other) {
     auto c_name = other->classId();
     if (c_name == ENERGY_BARRIER) {
         _dead = true;
+    } else if (c_name == PORTAL) {
+        if (!_teleported) {
+            auto portal = (Portal *) other;
+            if (portal->exitPortal()) {   // Verifico que tenga ambos portales
+                _portal_to_use = portal;    // Asigno portal a atravesar
+                if (_lifter)
+                    _lifter->collideWith(portal);   // Teletransporto chell que la carga
+            }
+        }   // Si se teletransporto se ignorara contacto en pre-solve
     }
 }
 
@@ -74,6 +85,37 @@ float Rock::velocityY() {
 }
 
 void Rock::step(const float &time_step) {
-    // todo TELEPORT
+    if (_portal_to_use) {   // Bola se debe teletransportar
+        float newx = _portal_to_use->exitPortal()->x();
+        float newy = _portal_to_use->exitPortal()->y();
+        teleport(newx, newy);
+        _portal_to_use = nullptr;   // Teletransportacion realizada
+        _teleported = true; // Indico que bola se teletransporto durante step
+    }
 }
 
+void Rock::teleport(float x, float y) {
+    // todo: calculo velocidad al salir
+    float impulse_x = _body->GetLinearVelocity().x * _portal_to_use->exitPortal()->normal().x;
+    float impulse_y =  _body->GetLinearVelocity().y * _portal_to_use->exitPortal()->normal().y;
+    b2Vec2 new_pos(x,y);
+    _body->SetTransform(new_pos, 0);
+    _body->SetLinearVelocity({0,0});    // Anulo velocidad que tenia
+    _body->ApplyLinearImpulse({impulse_x, impulse_y}, _body->GetWorldCenter(), true);
+}
+
+bool Rock::ifTeleportedSetDone() {
+    if (_teleported) {
+        _teleported = false;    // Bola ya realizo teletransportacion
+        return true;
+    }
+    return false;
+}
+
+void Rock::setLifter(Chell *chell) {
+    _lifter = chell;
+}
+
+void Rock::removeLifter() {
+    _lifter = nullptr;
+}
