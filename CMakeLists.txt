@@ -41,7 +41,7 @@ file(COPY Tests/CPPTests/test.yaml DESTINATION ./Tests)   # Archivo yaml para te
 #file(COPY Server)
 
 add_executable (client_sdl client/main.cpp)
-target_link_libraries(client_sdl sdldemo portal-src common-src SDL2 SDL2_image pthread SDL2_mixer)
+target_link_libraries(client_sdl sdldemo portal-src common-src SDL2 SDL2_image pthread SDL2_mixer SDL2_ttf)
 
 add_executable(server Server/ServerMain.cpp)
 target_link_libraries(server portal-src)

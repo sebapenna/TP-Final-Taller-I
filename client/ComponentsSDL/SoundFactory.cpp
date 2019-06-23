@@ -38,8 +38,8 @@ Mix_Music *SoundFactory::getMusic() {
 
 Mix_Chunk *SoundFactory::getChunkFromFile(const std::string &file_name) {
     Mix_Chunk* soundeffect = Mix_LoadWAV(file_name.c_str());
-    if (soundeffect == NULL) {
-        throw SDLException("Error while loading sound effect", SDL_GetError());
+    if (!soundeffect) {
+        throw SDLException("Error while loading sound effect", Mix_GetError());
     }
     return soundeffect;
 }
