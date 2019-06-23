@@ -2,10 +2,12 @@
 #include "ui_mainwindow.h"
 
 #include <QMessageBox>
+#include <Common/Protocol.h>
+#include <Common/exceptions.h>
 
-MainWindow::MainWindow(QWidget *parent) :
+MainWindow::MainWindow(Protocol& protocol_client, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow), protocol_client(protocol_client)
 {
     ui->setupUi(this);
     ui->createOrJoinMenu->hide();
@@ -13,6 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->startOrQuitMenu->hide();
     ui->selectMapMenu->hide();
     ui->selectMatchMenu->hide();
+    ui->errorLabel->setStyleSheet("QLabel { color : red; }");
+    ui->errorLabel->hide();
+    ui->informationLabel->setStyleSheet("QLabel { color : blue; }");
+    ui->informationLabel->hide();
+
 }
 
 MainWindow::~MainWindow()
@@ -67,8 +74,25 @@ void MainWindow::on_pushButton_6_clicked()
 
 void MainWindow::on_connectButton_clicked()
 {
+	try {
+        Protocol protocol(ui->HostInput->text().toStdString(), ui->portInput->text().toStdString());
+        this->protocol_client = std::move(protocol);
+        ui->createOrJoinMenu->show();
+        ui->connectHostPortMenu->hide();
+        ui->errorLabel->hide();
+    } catch (CantConnectException& e) {
+        ui->errorLabel->setText("Error while connecting to the server. Please try again");
+        ui->errorLabel->show();
+    }
+    /*
+    ui->errorLabel->setText("CONECTADO AMEO");
+    ui->errorLabel->show();
+
+    ui->informationLabel->setText("THIS IS AN INFORMATION LABEL");
+    ui->informationLabel->show();
+
     ui->createOrJoinMenu->show();
-    ui->connectHostPortMenu->hide();
+    ui->connectHostPortMenu->hide();*/
 }
 
 void MainWindow::on_createButton_clicked()

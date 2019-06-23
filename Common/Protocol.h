@@ -17,6 +17,7 @@ public:
     Protocol();
     Protocol(Protocol&& other);
     Protocol(const std::string& ip, const std::string& port);
+    Protocol& operator=(Protocol&& other);
 
     explicit Protocol(Socket &&other);
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>415</width>
-    <height>239</height>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -201,6 +201,32 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="errorLabel">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>170</y>
+      <width>381</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>error message</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="informationLabel">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>190</y>
+      <width>381</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>information message</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

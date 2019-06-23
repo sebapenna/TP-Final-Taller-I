@@ -51,15 +51,15 @@ void positionInScreen(int& x, int& y, SDL_Runner& sdlRunner) {
 
 int main(int argc, char** argv){
     try {
+        Protocol protocol;
         QApplication app(argc, argv);
 
-        MainWindow mainWindow;
+        MainWindow mainWindow(protocol);
         mainWindow.show();
 
         app.exec();
         std::setlocale(LC_NUMERIC, "C");
         std::string title("Portal");
-        Protocol protocol("localhost", argv[1]);
 
         HandshakeHandler::getOptionsAndChoose(protocol); // Obtengo mensajes de bienvenidas, opciones, etc
         // Tirar dos threads, uno que lea la entrada, y otro que espere a lo que le responde el server.

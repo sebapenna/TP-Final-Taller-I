@@ -33,6 +33,11 @@ Protocol::~Protocol() {
     _socket.shutdown();
 }
 
+Protocol &Protocol::operator=(Protocol &&other) {
+    _socket = std::move(other._socket);
+    return *this;
+}
+
 void Protocol::disconnect() {
     _socket.shutdown();
 }

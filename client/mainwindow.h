@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <Common/Protocol.h>
 
 namespace Ui {
 class MainWindow;
@@ -10,9 +11,10 @@ class MainWindow;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-
+private:
+    Protocol& protocol_client;
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(Protocol& protocol_client,QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:
