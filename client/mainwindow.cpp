@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <Common/Protocol.h>
 #include <Common/exceptions.h>
+#include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
 
 MainWindow::MainWindow(Protocol& protocol_client, QWidget *parent) :
     QMainWindow(parent),
@@ -80,6 +81,11 @@ void MainWindow::on_connectButton_clicked()
         ui->createOrJoinMenu->show();
         ui->connectHostPortMenu->hide();
         ui->errorLabel->hide();
+        std::string information;
+        protocol_client>>information;
+        ui->informationLabel->setText(information.c_str());
+        ui->informationLabel->show();
+
     } catch (CantConnectException& e) {
         ui->errorLabel->setText("Error while connecting to the server. Please try again");
         ui->errorLabel->show();
@@ -97,25 +103,72 @@ void MainWindow::on_connectButton_clicked()
 
 void MainWindow::on_createButton_clicked()
 {
+    protocol_client << (uint8_t)0;
+    std::string information;
+    uint8_t server_response;
+    protocol_client>>server_response;
+    protocol_client>>information;
+    ui->informationLabel->setText(information.c_str());
+
     ui->selectPlayersMenu->show();
     ui->createOrJoinMenu->hide();
 }
 
 void MainWindow::on_selectAmmountPlayersButton_clicked()
 {
+    uint8_t amountPlayers = (uint8_t) atoi(ui->selectAmountList->currentText().toUtf8().data());
+    protocol_client << amountPlayers;
+    std::string information;
+    uint8_t server_response;
+    protocol_client>>server_response;
+    protocol_client>>information;
+    ui->informationLabel->setText(information.c_str());
+
+    std::string delimiter = "\n\t";
+    std::string delimiterForNumbers = ": ";
+
+    information.erase(0,information.find(delimiter) + delimiter.length()); // El mensaje inicial
+    size_t pos = 0;
+    std::string token;
+    while ((pos = information.find(delimiter)) != std::string::npos) {
+        token = information.substr(0, pos);
+        token.erase(0, token.find(delimiterForNumbers) + delimiterForNumbers.length());
+        ui->listMap->addItem(QString::fromStdString(token));
+        information.erase(0, pos + delimiter.length());
+    }
+    information.erase(0, information.find(delimiterForNumbers) + delimiterForNumbers.length());
+    information = information.substr(0,information.length()-1); // Elimino el \n final
+    ui->listMap->addItem(QString::fromStdString(information));
+
     ui->selectMapMenu->show();
     ui->selectPlayersMenu->hide();
 }
 
 void MainWindow::on_selectMap_clicked()
 {
+    int index_selected = ui->listMap->currentIndex().row();
+    protocol_client << (uint8_t)index_selected;
+    std::string information;
+    uint8_t server_response;
+    protocol_client>>server_response;
+    protocol_client>>information;
+    ui->informationLabel->setText(information.c_str());
+
     ui->startOrQuitMenu->show();
     ui->selectMapMenu->hide();
 }
 
 void MainWindow::on_startGameButton_clicked()
 {
-    // BUTTON PARA EMPEZAR
+    std::shared_ptr<ProtocolDTO> dto(new BeginDTO()); // Empiezo el juego
+    protocol_client << *dto.get();
+
+    std::string information;
+    uint8_t server_response;
+    protocol_client>>information;
+    protocol_client>>server_response;
+    ui->informationLabel->setText(information.c_str());
+
     this->close();
 }
 
