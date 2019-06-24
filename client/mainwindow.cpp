@@ -41,20 +41,10 @@ void MainWindow::on_connectButton_clicked()
         protocol_client>>information;
         ui->informationLabel->setText(information.c_str());
         ui->informationLabel->show();
-
     } catch (CantConnectException& e) {
         ui->errorLabel->setText("Error while connecting to the server. Please try again");
         ui->errorLabel->show();
     }
-    /*
-    ui->errorLabel->setText("CONECTADO AMEO");
-    ui->errorLabel->show();
-
-    ui->informationLabel->setText("THIS IS AN INFORMATION LABEL");
-    ui->informationLabel->show();
-
-    ui->createOrJoinMenu->show();
-    ui->connectHostPortMenu->hide();*/
 }
 
 void MainWindow::on_createButton_clicked()
@@ -137,14 +127,90 @@ void MainWindow::on_quitButton_clicked()
 
 void MainWindow::on_joinButton_clicked()
 {
+    protocol_client << (uint8_t)1;
+    std::string information;
+    uint8_t server_response;
+    uint8_t server_response2;
+    protocol_client>>server_response;
+
+    // REFRESH LOOP
+    protocol_client>>information;
+    ui->informationLabel->setText(information.c_str());
+
+    protocol_client << (int16_t)-1;
+
+    information.clear();
+    server_response = -1;
+    protocol_client>>server_response2;
+
+    // END REFRESH LOOP
+    uint32_t n_games;
+    protocol_client>>n_games;
+    protocol_client>>information;
+    for (size_t i = 0; i < n_games; ++i) {
+        std::string server_message123;
+        protocol_client >> server_message123;   // Recibo listado partidas
+        server_message123.erase(0, 3); // elimino el \t y -
+        server_message123 = server_message123.substr(0,server_message123.length()-1); // Elimino el \n final
+        ui->listMatch->addItem(QString::fromStdString(server_message123));
+    }
+    // PARTIDAS LISTADAS
+    ui->informationLabel->setText(information.c_str());
+
     ui->selectMatchMenu->show();
     ui->createOrJoinMenu->hide();
 }
 
 void MainWindow::on_selectMatchButton_clicked()
 {
-    ui->startOrQuitMenu->show();
-    ui->selectMatchMenu->hide();
+    std::string delimiter(": ");
+    std::string currentItem = ui->listMatch->currentItem()->text().toStdString();
+    currentItem.erase(0, currentItem.find(delimiter) + delimiter.length());
+    currentItem = currentItem.substr(0, currentItem.find(" | "));
+    protocol_client << (int16_t) atoi(currentItem.c_str());
+    uint8_t server_response;
+    protocol_client >> server_response;
+
+    std::string server_msg;
+    uint8_t server_response2;
+
+    protocol_client >> server_msg;   // Recibo informacion de lo sucedido
+
+    //protocol_client >> server_response2;
+    if (server_response2 != 0) {
+        ui->startOrQuitMenu->show();
+        ui->selectMatchMenu->hide();
+    } else {
+        ui->errorLabel->setText(server_msg.c_str());
+        ui->errorLabel->show();
+        server_msg.clear();
+
+    }
+}
+
+void MainWindow::on_refreshButton_clicked()
+{
+    std::string information;
+    uint8_t server_response;
+    uint8_t server_response2;
+    ui->listMatch->clear();
+
+    protocol_client << (int16_t)-1;
+    information.clear();
+    server_response = -1;
+    protocol_client>>server_response2;
+    uint32_t n_games;
+    protocol_client>>n_games;
+    protocol_client>>information;
+    for (size_t i = 0; i < n_games; ++i) {
+        std::string server_message123;
+        protocol_client >> server_message123;   // Recibo listado partidas
+        server_message123.erase(0, 3); // elimino el \t y -
+        server_message123 = server_message123.substr(0,server_message123.length()-1); // Elimino el \n final
+        ui->listMatch->addItem(QString::fromStdString(server_message123));
+    }
+    ui->informationLabel->setText(information.c_str());
+    //ui->listMatch->removeRows( 0, ui->listMatch->rowCount() );
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)

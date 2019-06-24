@@ -34,7 +34,7 @@ private slots:
     void on_selectMap_clicked();
 
     void on_joinButton_clicked();
-
+    void on_refreshButton_clicked();
     void on_selectMatchButton_clicked();
 
 private:

@@ -60,11 +60,11 @@ int main(int argc, char** argv){
         app.exec();
         app.quit();
 
-        std::string title("Portal");
         std::setlocale(LC_NUMERIC, "C");
         if (!userWantsToPlay) return 1;
 
-        /*Protocol protocol("localhost", "8080");
+        std::string title("Portal");
+/*        Protocol protocol("localhost", "8080");
 
         HandshakeHandler::getOptionsAndChoose(protocol); // Obtengo mensajes de bienvenidas, opciones, etc
         // Tirar dos threads, uno que lea la entrada, y otro que espere a lo que le responde el server.
@@ -81,9 +81,10 @@ int main(int argc, char** argv){
         commandReceiver.join();
         commandSender.join();
 
-        if (user_quit_game) return 1;*/
-
+        if (user_quit_game) return 1;
+        */
         bool done = false;
+
         ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;
         SafeQueue<std::shared_ptr<ProtocolDTO>> safeQueue;
 
