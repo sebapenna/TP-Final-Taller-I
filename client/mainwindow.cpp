@@ -183,7 +183,7 @@ void MainWindow::on_selectMatchButton_clicked()
     protocol_client >> server_response;
 
     if (server_response == 1) {
-        GUIReceiver guiReceiver(protocol_client);
+        GUIReceiver guiReceiver(protocol_client, ui);
 
         ui->startOrQuitMenu->show();
         ui->selectMatchMenu->hide();

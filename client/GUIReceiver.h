@@ -8,16 +8,14 @@
 
 #include <Common/Thread.h>
 #include <Common/Protocol.h>
-//#include <ui_mainwindow.h>
-//#include "mainwindow.h"
+#include "mainwindow.h"
 
 class GUIReceiver : public Thread {
 private:
-
     Protocol& protocol;
-    //Ui::MainWindow *ui;
+    Ui::MainWindow *ui;
 public:
-    GUIReceiver(Protocol &protocol);
+    GUIReceiver(Protocol &protocol, Ui::MainWindow *ui);
     void run() override;
     static void doSomething();
     //void putUI(Ui::MainWindow *pWindow);
