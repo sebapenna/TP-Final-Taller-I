@@ -19,10 +19,12 @@ set(project_ui
         client/mainwindow.ui)
 
 set(project_headers
-        client/mainwindow.h)
+        client/mainwindow.h
+        client/GUIReceiver.h)
 
 set(project_sources
         client/mainwindow.cpp
+        client/GUIReceiver.cpp
         client/main.cpp
         )
 

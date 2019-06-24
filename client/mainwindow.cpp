@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "GUIReceiver.h"
 
 #include <QMessageBox>
 #include <Common/Protocol.h>
@@ -22,6 +23,7 @@ MainWindow::MainWindow(Protocol& protocol_client, bool& userWantsToPlay, QWidget
     ui->informationLabel->setStyleSheet("QLabel { color : blue; }");
     ui->informationLabel->hide();
 
+    //connect(reinterpret_cast<const QObject *>(&a), SIGNAL(doSomething()), ui->errorLabel, SLOT(setText()));
 }
 
 MainWindow::~MainWindow()
@@ -181,10 +183,11 @@ void MainWindow::on_selectMatchButton_clicked()
     protocol_client >> server_response;
 
     if (server_response == 1) {
+        GUIReceiver guiReceiver(protocol_client);
+
         ui->startOrQuitMenu->show();
         ui->selectMatchMenu->hide();
     } else {
-
         protocol_client >> server_msg;
         protocol_client << (int16_t)-1;
 
