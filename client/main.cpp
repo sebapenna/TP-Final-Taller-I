@@ -64,7 +64,9 @@ int main(int argc, char** argv){
         if (!userWantsToPlay) return 1;
 
         std::string title("Portal");
-/*        Protocol protocol("localhost", "8080");
+/*
+
+        Protocol protocol("localhost", "8081");
 
         HandshakeHandler::getOptionsAndChoose(protocol); // Obtengo mensajes de bienvenidas, opciones, etc
         // Tirar dos threads, uno que lea la entrada, y otro que espere a lo que le responde el server.
@@ -82,7 +84,7 @@ int main(int argc, char** argv){
         commandSender.join();
 
         if (user_quit_game) return 1;
-        */
+*/
         bool done = false;
 
         ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;

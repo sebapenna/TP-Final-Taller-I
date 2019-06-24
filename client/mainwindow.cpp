@@ -173,17 +173,33 @@ void MainWindow::on_selectMatchButton_clicked()
 
     std::string server_msg;
     uint8_t server_response2;
-
     protocol_client >> server_msg;   // Recibo informacion de lo sucedido
 
-    //protocol_client >> server_response2;
-    if (server_response2 != 0) {
+    ui->errorLabel->setText(server_msg.c_str());
+    ui->errorLabel->show();
+    server_msg.clear();
+    protocol_client >> server_response;
+
+    if (server_response == 1) {
         ui->startOrQuitMenu->show();
         ui->selectMatchMenu->hide();
     } else {
-        ui->errorLabel->setText(server_msg.c_str());
-        ui->errorLabel->show();
-        server_msg.clear();
+
+        protocol_client >> server_msg;
+        protocol_client << (int16_t)-1;
+
+        protocol_client>>server_response2;
+        uint32_t n_games;
+        protocol_client>>n_games;
+        ui->listMatch->clear();
+        protocol_client>>server_msg;
+        for (size_t i = 0; i < n_games; ++i) {
+            std::string server_message123;
+            protocol_client >> server_message123;   // Recibo listado partidas
+            server_message123.erase(0, 3); // elimino el \t y -
+            server_message123 = server_message123.substr(0,server_message123.length()-1); // Elimino el \n final
+            ui->listMatch->addItem(QString::fromStdString(server_message123));
+        }
 
     }
 }
@@ -191,13 +207,13 @@ void MainWindow::on_selectMatchButton_clicked()
 void MainWindow::on_refreshButton_clicked()
 {
     std::string information;
-    uint8_t server_response;
     uint8_t server_response2;
     ui->listMatch->clear();
 
     protocol_client << (int16_t)-1;
+
     information.clear();
-    server_response = -1;
+
     protocol_client>>server_response2;
     uint32_t n_games;
     protocol_client>>n_games;
