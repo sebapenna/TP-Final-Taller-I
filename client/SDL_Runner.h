@@ -65,6 +65,7 @@ private:
     void addPinTool(PinToolDTO* pinToolDTO);
 
 public:
+    SDL_Renderer* getRenderer();
     SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue, bool& done);
     void getRealPos(int& x, int& y, int x_m, int y_m);
     void run() override;
