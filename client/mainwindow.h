@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <Common/Protocol.h>
+#include <QCloseEvent>
 
 namespace Ui {
 class MainWindow;
@@ -13,8 +14,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 private:
     Protocol& protocol_client;
+    bool& userWantsToPlay;
+    void closeEvent(QCloseEvent *bar);
 public:
-    explicit MainWindow(Protocol& protocol_client,QWidget *parent = nullptr);
+    explicit MainWindow(Protocol& protocol_client, bool& userWantsToPlay, QWidget *parent = nullptr);
     ~MainWindow();
 
 private slots:

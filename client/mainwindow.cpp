@@ -5,10 +5,11 @@
 #include <Common/Protocol.h>
 #include <Common/exceptions.h>
 #include <Common/ProtocolTranslator/GameStateDTO/BeginDTO.h>
+#include <Common/ProtocolTranslator/GameStateDTO/QuitDTO.h>
 
-MainWindow::MainWindow(Protocol& protocol_client, QWidget *parent) :
+MainWindow::MainWindow(Protocol& protocol_client, bool& userWantsToPlay, QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), protocol_client(protocol_client)
+    ui(new Ui::MainWindow), protocol_client(protocol_client), userWantsToPlay(userWantsToPlay)
 {
     ui->setupUi(this);
     ui->createOrJoinMenu->hide();
@@ -27,51 +28,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-/*
-void MainWindow::on_pushButton_clicked()
-{
-    QMessageBox msgHost;
-    QMessageBox msgBoxPort;
-    msgHost.setText(ui->HostInput->text().toUtf8().constData());
-    msgHost.exec();
-    msgBoxPort.setText(ui->portInput->text().toUtf8().constData());
-    msgBoxPort.exec();
-}
-
-void MainWindow::on_pushButton_2_clicked()
-{
-    ui->label->hide();
-}
-
-void MainWindow::on_pushButton_3_clicked()
-{
-    ui->label->show();
-}
-
-void MainWindow::on_pushButton_4_clicked()
-{
-    QMessageBox msgData;
-    msgData.setText(ui->comboBox->currentText());
-    msgData.exec();
-
-}
-*/
-/*
-void MainWindow::on_pushButton_5_clicked()
-{
-    ui->listWidget->addItem("1");
-}
-
-void MainWindow::on_pushButton_7_clicked()
-{
-    ui->listWidget->addItem("2");
-}
-
-void MainWindow::on_pushButton_6_clicked()
-{
-    QMessageBox::information(this,"title", ui->listWidget->currentItem()->text());
-}*/
-
 
 void MainWindow::on_connectButton_clicked()
 {
@@ -160,6 +116,7 @@ void MainWindow::on_selectMap_clicked()
 
 void MainWindow::on_startGameButton_clicked()
 {
+    this->userWantsToPlay = true;
     std::shared_ptr<ProtocolDTO> dto(new BeginDTO()); // Empiezo el juego
     protocol_client << *dto.get();
 
@@ -174,7 +131,6 @@ void MainWindow::on_startGameButton_clicked()
 
 void MainWindow::on_quitButton_clicked()
 {
-    // BUTON PARA CERRAR
     this->close();
 }
 
@@ -189,4 +145,22 @@ void MainWindow::on_selectMatchButton_clicked()
 {
     ui->startOrQuitMenu->show();
     ui->selectMatchMenu->hide();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (!this->userWantsToPlay) {
+        QMessageBox::StandardButton resBtn = QMessageBox::question( this, "Portal",
+                                                                    tr("Are you sure?\n"),
+                                                                    QMessageBox::Cancel | QMessageBox::No | QMessageBox::Yes,
+                                                                    QMessageBox::Yes);
+        if (resBtn != QMessageBox::Yes) {
+            event->ignore();
+        } else {
+            std::shared_ptr<ProtocolDTO> dto(new QuitDTO()); // Asi no hago el free
+            protocol_client << *dto.get();
+            protocol_client.disconnect();
+            event->accept();
+        }
+    }
 }

@@ -53,13 +53,16 @@ int main(int argc, char** argv){
     try {
         Protocol protocol;
         QApplication app(argc, argv);
-
-        MainWindow mainWindow(protocol);
+        bool userWantsToPlay = false;
+        MainWindow mainWindow(protocol, userWantsToPlay);
         mainWindow.show();
 
         app.exec();
-        std::setlocale(LC_NUMERIC, "C");
+        app.quit();
+
         std::string title("Portal");
+        std::setlocale(LC_NUMERIC, "C");
+        if (!userWantsToPlay) return 1;
 
         /*Protocol protocol("localhost", "8080");
 
