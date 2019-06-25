@@ -77,7 +77,7 @@ add_library(sdldemo
         ComponentsSDL/Text.h
         ComponentsSDL/FontFactory.cpp
         ComponentsSDL/FontFactory.h
-        )
+        GameController.cpp GameController.h)
 
 target_link_libraries(sdldemo ffmpeg-src)
 
