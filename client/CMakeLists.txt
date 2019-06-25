@@ -13,8 +13,8 @@ add_library(sdldemo
         ComponentsSDL/Sprite.h
         ComponentsSDL/AnimatedSprite.cpp
         ComponentsSDL/AnimatedSprite.h
-        View/ChellAnimationView.cpp
-        View/ChellAnimationView.h
+        View/ChellView.cpp
+        View/ChellView.h
         ComponentsSDL/TextureFactory.cpp
         ComponentsSDL/TextureFactory.h
         WorldView.cpp

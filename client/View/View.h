@@ -12,6 +12,8 @@
 
 class Camera;
 
+// This class holds all the information
+// To know where the object is positionated in the world
 class View {
 private:
     SDL_Rect dstSrc;
@@ -26,7 +28,6 @@ public:
     virtual void draw(Camera& camera) = 0;
     Position& getPosition();
 
-    int convertMetersToPixelsTam(int meters);
 };
 
 

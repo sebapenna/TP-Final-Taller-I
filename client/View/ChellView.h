@@ -11,7 +11,7 @@
 
 enum ChellState {standing, runningLeft, runningRight, firing, flying, dying, winning};
 enum ChellIsTilted {TILTEDLEFT, TILTEDRIGHT, NO};
-class ChellAnimationView : public View {
+class ChellView : public View {
 private:
     int id;
     AnimatedSprite runningRightChell;
@@ -25,7 +25,7 @@ private:
 
     double getAngle() const;
 public:
-    ChellAnimationView(int id, SDL_Texture* dyingTexture, SDL_Texture* firingTexture,
+    ChellView(int id, SDL_Texture* dyingTexture, SDL_Texture* firingTexture,
             SDL_Texture* flyingTexture, SDL_Texture* restingTexture,
             SDL_Texture* runningTexture, SDL_Texture* winningTexture, Renderer& renderer, int x=0, int y=0);
     int getId() const;

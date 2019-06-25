@@ -16,7 +16,7 @@
 #include "SDL_Runner.h"
 #include "ComponentsSDL/Window.h"
 #include "ComponentsSDL/Renderer.h"
-#include "View/ChellAnimationView.h"
+#include "client/View/ChellView.h"
 #include "WorldView.h"
 #include "client/View/BlockRockView.h"
 #include "client/View/BlockMetalView.h"
@@ -33,7 +33,7 @@ SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO
 }
 
 void SDL_Runner::addChell(ChellDTO *chellDTO) {
-    auto chell2 = std::make_shared<ChellAnimationView>(chellDTO->getId(), textureFactory.getDyingChellTexture(),
+    auto chell2 = std::make_shared<ChellView>(chellDTO->getId(), textureFactory.getDyingChellTexture(),
             textureFactory.getFiringChellTexture(), textureFactory.getFlyingChellTexture(), textureFactory.getRestingIdleChellTexture(),
             textureFactory.getRunningChellTexture(), textureFactory.getWinningChellTexture(), renderer);
     if (chellDTO->getDeleteState() == DELETE) {

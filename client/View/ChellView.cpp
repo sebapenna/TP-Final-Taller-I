@@ -2,9 +2,9 @@
 // Created by jonathanmedina on 28/05/19.
 //
 
-#include "ChellAnimationView.h"
+#include "ChellView.h"
 
-ChellAnimationView::ChellAnimationView(int id, SDL_Texture *dyingTexture, SDL_Texture *firingTexture,
+ChellView::ChellView(int id, SDL_Texture *dyingTexture, SDL_Texture *firingTexture,
                                        SDL_Texture *flyingTexture, SDL_Texture* restingTexture,
                                        SDL_Texture *runningTexture, SDL_Texture *winningTexture, Renderer &renderer,
                                        int x, int y) :
@@ -19,7 +19,7 @@ ChellAnimationView::ChellAnimationView(int id, SDL_Texture *dyingTexture, SDL_Te
 }
 
 
-void ChellAnimationView::draw(Camera& camera) {
+void ChellView::draw(Camera& camera) {
     double angle = getAngle();
 
     if (state == standing) {
@@ -39,7 +39,7 @@ void ChellAnimationView::draw(Camera& camera) {
     }
 }
 
-double ChellAnimationView::getAngle() const {
+double ChellView::getAngle() const {
     double angle;
     if (tiltedState == TILTEDRIGHT) {
         angle = 45;
@@ -51,7 +51,7 @@ double ChellAnimationView::getAngle() const {
     return angle;
 }
 
-void ChellAnimationView::setState(ChellState state) {
+void ChellView::setState(ChellState state) {
     if (this->state == ChellState::firing) {
         if (this->firingChell.done()) {
             this->firingChell.reset();
@@ -62,22 +62,22 @@ void ChellAnimationView::setState(ChellState state) {
     this->state = state;
 }
 
-int ChellAnimationView::getId() const {
+int ChellView::getId() const {
     return id;
 }
 
-bool ChellAnimationView::isDying() {
+bool ChellView::isDying() {
     return state == dying;
 }
 
-bool ChellAnimationView::isDead() {
+bool ChellView::isDead() {
     return dyingChell.done();
 }
 
-void ChellAnimationView::setTiltedState(ChellIsTilted state) {
+void ChellView::setTiltedState(ChellIsTilted state) {
     this->tiltedState = state;
 }
 
-ChellState ChellAnimationView::getState() const {
+ChellState ChellView::getState() const {
     return state;
 }

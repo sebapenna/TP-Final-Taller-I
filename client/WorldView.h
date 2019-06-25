@@ -10,7 +10,7 @@
 #include <map>
 #include <memory>
 #include "ComponentsSDL/Camera.h"
-#include "View/ChellAnimationView.h"
+#include "client/View/ChellView.h"
 #include <client/View/GateView.h>
 #include <client/View/ButtonView.h>
 #include <client/View/RockView.h>
@@ -26,7 +26,7 @@
 class WorldView {
 private:
     std::vector<std::shared_ptr<View>> views;
-    std::map<int, std::shared_ptr<ChellAnimationView>> chells;
+    std::map<int, std::shared_ptr<ChellView>> chells;
     std::map<int, std::shared_ptr<GateView>> gates;
     std::map<int, std::shared_ptr<ButtonView>> buttons;
     std::map<int, std::shared_ptr<RockView>> rocks;
@@ -51,7 +51,7 @@ public:
     void addButton(std::shared_ptr<ButtonView> button);
     void activateButton(int16_t id);
     void deactivateButton(int16_t id);
-    void addChell(std::shared_ptr<ChellAnimationView> chell);
+    void addChell(std::shared_ptr<ChellView> chell);
     void setChellState(int16_t id, ChellState state);
     ChellState getChellState(int16_t id);
     void makeChellTiltedLeft(int16_t id);
