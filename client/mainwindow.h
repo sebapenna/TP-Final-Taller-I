@@ -46,6 +46,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     GUIReceiver guiReceiver;
+    bool owner;
 };
 
 #endif // MAINWINDOW_H

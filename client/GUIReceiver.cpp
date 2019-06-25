@@ -20,14 +20,9 @@ void GUIReceiver::start(Protocol* protocol) {
             emit messageToGUI(NEW_PLAYER_MESSAGE_ID);
         } else if (msg == std::string("Un jugador ha salido de la partida\n")) {
             emit messageToGUI(QUIT_PLAYER_MESSAGE_ID);
-        } else
-        // NEW PLAYER:
-        // server_command 1
-        // "Nuevo jugador agregado a la partida\n"
-
-        // PLAYER EXIT
-        // SERVER_COMMAND 1
-        // "Un jugador ha salido de la partida\n"
+        } else if (msg == std::string("Ahora sos el owner de la partida, ingresa 's' para comenzar la partida\n")) {
+            emit messageToGUI(NOW_YOU_ARE_THE_OWNER_MESSAGE_ID);
+        }
 
         if (server_command == 0) {
             emit messageToGUI(START_THE_GAME_MESSAGE_ID);

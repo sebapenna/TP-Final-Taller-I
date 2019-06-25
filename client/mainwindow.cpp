@@ -23,7 +23,7 @@ MainWindow::MainWindow(Protocol& protocol_client, bool& userWantsToPlay, QWidget
     //guiReceiver(protocol_client, ui);
     ui->informationLabel->setStyleSheet("QLabel { color : blue; }");
     ui->informationLabel->hide();
-
+    owner = false;
     //connect(reinterpret_cast<const QObject *>(&a), SIGNAL(doSomething()), ui->errorLabel, SLOT(setText()));
 }
 
@@ -42,8 +42,6 @@ void MainWindow::on_connectButton_clicked()
         ui->errorLabel->hide();
         std::string information;
         protocol_client>>information;
-        ui->informationLabel->setText(information.c_str());
-        ui->informationLabel->show();
     } catch (CantConnectException& e) {
         ui->errorLabel->setText("Error while connecting to the server. Please try again");
         ui->errorLabel->show();
@@ -57,7 +55,7 @@ void MainWindow::on_createButton_clicked()
     uint8_t server_response;
     protocol_client>>server_response;
     protocol_client>>information;
-    ui->informationLabel->setText(information.c_str());
+
 
     ui->selectPlayersMenu->show();
     ui->createOrJoinMenu->hide();
@@ -71,7 +69,6 @@ void MainWindow::on_selectAmmountPlayersButton_clicked()
     uint8_t server_response;
     protocol_client>>server_response;
     protocol_client>>information;
-    ui->informationLabel->setText(information.c_str());
 
     std::string delimiter = "\n\t";
     std::string delimiterForNumbers = ": ";
@@ -101,7 +98,7 @@ void MainWindow::on_selectMap_clicked()
     uint8_t server_response;
     protocol_client>>server_response;
     protocol_client>>information;
-    ui->informationLabel->setText(information.c_str());
+
     ui->startOrQuitMenu->show();
 
     bool success = connect(&guiReceiver, &GUIReceiver::messageToGUI, this, &MainWindow::messageFromReceiver);
@@ -109,11 +106,12 @@ void MainWindow::on_selectMap_clicked()
     connect(this, &MainWindow::on_stop, &guiReceiver, &GUIReceiver::stop);
     QFuture<void> test = QtConcurrent::run(&guiReceiver, &GUIReceiver::start, &protocol_client);
     ui->selectMapMenu->hide();
+
+    owner = true;
 }
 
 void MainWindow::on_startGameButton_clicked()
 {
-    this->userWantsToPlay = true;
     std::shared_ptr<ProtocolDTO> dto(new BeginDTO()); // Empiezo el juego
     protocol_client << *dto.get();
     emit on_stop();
@@ -130,9 +128,18 @@ void MainWindow::messageFromReceiver(int message) {
         ui->informationLabel->show();
         QTimer::singleShot(10000, ui->informationLabel, &QLabel::hide);
     } else if (message == START_THE_GAME_MESSAGE_ID) {
+        userWantsToPlay = true;
+        if (!owner) {
+            std::shared_ptr<ProtocolDTO> dto(new BeginDTO()); // Empiezo el juego
+            protocol_client << *dto.get();
+        }
         this->close();
+    } else if (message == NOW_YOU_ARE_THE_OWNER_MESSAGE_ID) {
+        ui->informationLabel->setText("El owner se ha ido. Ahora tu puedes comenzar el juego.");
+        ui->informationLabel->show();
+        ui->startGameButton->show();
+        QTimer::singleShot(10000, ui->informationLabel, &QLabel::hide);
     }
-    //msgBox.button(QMessageBox::Ok)->animateClick(5000);
 }
 
 void MainWindow::on_quitButton_clicked()
@@ -151,7 +158,6 @@ void MainWindow::on_joinButton_clicked()
 
     // REFRESH LOOP
     protocol_client>>information;
-    ui->informationLabel->setText(information.c_str());
 
     protocol_client << (int16_t)-1;
 
@@ -170,8 +176,6 @@ void MainWindow::on_joinButton_clicked()
         server_message123 = server_message123.substr(0,server_message123.length()-1); // Elimino el \n final
         ui->listMatch->addItem(QString::fromStdString(server_message123));
     }
-    // PARTIDAS LISTADAS
-    ui->informationLabel->setText(information.c_str());
 
     ui->selectMatchMenu->show();
     ui->createOrJoinMenu->hide();
@@ -180,6 +184,12 @@ void MainWindow::on_joinButton_clicked()
 void MainWindow::on_selectMatchButton_clicked()
 {
     std::string delimiter(": ");
+    if (!ui->listMatch->currentItem()) {
+        ui->informationLabel->setText("Seleccione una partida.");
+        QTimer::singleShot(10000, ui->informationLabel, &QLabel::hide);
+        ui->informationLabel->show();
+        return;
+    }
     std::string currentItem = ui->listMatch->currentItem()->text().toStdString();
     currentItem.erase(0, currentItem.find(delimiter) + delimiter.length());
     currentItem = currentItem.substr(0, currentItem.find(" | "));
@@ -191,15 +201,19 @@ void MainWindow::on_selectMatchButton_clicked()
     uint8_t server_response2;
     protocol_client >> server_msg;   // Recibo informacion de lo sucedido
 
-    ui->errorLabel->setText(server_msg.c_str());
-    ui->errorLabel->show();
     server_msg.clear();
     protocol_client >> server_response;
 
     if (server_response == 1) {
-        //GUIReceiver guiReceiver(protocol_client, ui);
-        //guiReceiver.start();
+        bool success = connect(&guiReceiver, &GUIReceiver::messageToGUI, this, &MainWindow::messageFromReceiver);
+        Q_ASSERT(success);
+        connect(this, &MainWindow::on_stop, &guiReceiver, &GUIReceiver::stop);
+        QFuture<void> test = QtConcurrent::run(&guiReceiver, &GUIReceiver::start, &protocol_client);
+        ui->informationLabel->setText("Conectado al match. Esperando al owner...");
+        ui->informationLabel->show();
+        QTimer::singleShot(10000, ui->informationLabel, &QLabel::hide);
         ui->startOrQuitMenu->show();
+        ui->startGameButton->hide();
         ui->selectMatchMenu->hide();
     } else {
         protocol_client >> server_msg;
@@ -217,7 +231,9 @@ void MainWindow::on_selectMatchButton_clicked()
             server_message123 = server_message123.substr(0,server_message123.length()-1); // Elimino el \n final
             ui->listMatch->addItem(QString::fromStdString(server_message123));
         }
-
+        ui->informationLabel->setText("La partida no se encuentra disponible.");
+        QTimer::singleShot(10000, ui->informationLabel, &QLabel::hide);
+        ui->informationLabel->show();
     }
 }
 
@@ -242,8 +258,6 @@ void MainWindow::on_refreshButton_clicked()
         server_message123 = server_message123.substr(0,server_message123.length()-1); // Elimino el \n final
         ui->listMatch->addItem(QString::fromStdString(server_message123));
     }
-    ui->informationLabel->setText(information.c_str());
-    //ui->listMatch->removeRows( 0, ui->listMatch->rowCount() );
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
