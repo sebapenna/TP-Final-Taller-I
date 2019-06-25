@@ -180,11 +180,6 @@ uint8_t HandshakeHandler::getPlayerChoice(Protocol &connection) {
 }
 
 
-
-// todo: VERIFICAR CUANDO CLIENTE ELIGE SI HAY GAMES DISPONIBLES
-// if (getGames.empty)
-//      "DEBE CREAR PARTIDA"
-//  => directo a create
 /********************************** HANDLER CLIENTE ********************************************/
 void choiceLoop(Protocol &connection, uint8_t &choice) {
     std::string server_msg, str_choice; // Buffer para mensaje servidor e input
@@ -245,7 +240,7 @@ void joinChoiceLoop(Protocol &connection, int16_t &choice) {
             readInput<int16_t>(choice);
             connection << choice;   // Envio partida seleccionada
             connection >> server_response;  // Obtengo ERROR o SUCCESS
-        } // todo: eliminar codigo repetido
+        }
     }
 }
 

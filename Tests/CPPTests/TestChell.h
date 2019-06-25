@@ -777,7 +777,4 @@ public:
 };
 
 
-// todo: TEST TELETRANSPORTAR Y VER LAS VELOCIDADES ?
-
-
 #endif //PORTAL_TESTCHELL_H

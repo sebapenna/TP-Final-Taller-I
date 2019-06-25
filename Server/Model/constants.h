@@ -11,7 +11,7 @@
  *
  * */
 
-#define BLOCK_DIVISION  4   // todo: esta puede ir a common, diviision de bloques muy anchos
+#define BLOCK_DIVISION  4
 
 /* Orientaciones cara diagonal bloque metal diagonal */
 #define O_NE    (uint8_t) NORTH_EAST

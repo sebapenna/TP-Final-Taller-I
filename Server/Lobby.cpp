@@ -34,13 +34,8 @@ void Lobby::runEraserThread() {
 }
 
 Lobby::Lobby(const std::string &port) : _configuration(make_shared<Configuration>()),
-_connection_closed
-(false),
-_next_player_id(0),
-_next_game_id(0), _accept_socket(port, WAITING_QUEUE_SIZE),
-_game_eraser_thread(&Lobby::runEraserThread, this) {
-//    _configuration = make_shared<Configuration>();
-}
+_connection_closed(false), _next_player_id(0), _next_game_id(0),
+_accept_socket(port, WAITING_QUEUE_SIZE), _game_eraser_thread(&Lobby::runEraserThread, this) { }
 
 void Lobby::shutdown() {
     _connection_closed = true;

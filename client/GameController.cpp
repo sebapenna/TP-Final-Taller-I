@@ -13,7 +13,7 @@
 #include <Common/ProtocolTranslator/PlayerActionsDTO/DropRockDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPinToolDTO.h>
-#include <Common/ProtocolTranslator/ResetPortalsDTO.h>
+#include <Common/ProtocolTranslator/PlayerActionsDTO/ResetPortalsDTO.h>
 #include <Common/ProtocolTranslator/GameStateDTO/QuitDTO.h>
 
 GameController::GameController(SDL_Runner &sdlRunner,

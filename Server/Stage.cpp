@@ -78,3 +78,8 @@ std::vector<std::shared_ptr<ProtocolDTO>> Stage::getDeletedDTO() {
 bool Stage::someoneWon() {
     return _world->allChellsInCake();
 }
+
+void Stage::deletePlayer(const size_t &player_id) {
+    auto chell = _world->getChell(player_id);
+    chell->kill();  // Mato chell de jugador que abandono partida
+}
