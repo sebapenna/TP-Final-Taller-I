@@ -8,7 +8,7 @@ ChellAnimationView::ChellAnimationView(int id, SDL_Texture *dyingTexture, SDL_Te
                                        SDL_Texture *flyingTexture, SDL_Texture* restingTexture,
                                        SDL_Texture *runningTexture, SDL_Texture *winningTexture, Renderer &renderer,
                                        int x, int y) :
-                                       View(x, y), runningRightChell(runningTexture, renderer, 201, 220, 0, 0, 12, 12, 1, 0, AnimationState::onRepeat),
+                                       View(x, y), id(id), runningRightChell(runningTexture, renderer, 201, 220, 0, 0, 12, 12, 1, 0, AnimationState::onRepeat),
                                        standStillChell(restingTexture, renderer, 122, 222, 0, 0, 7, 7, 1, 0, AnimationState::onRepeat),
                                        firingChell(firingTexture, renderer, 190, 212, 0, 0, 5, 5, 1, 0, AnimationState::oneTime),
                                        flyingChell(flyingTexture, renderer, 144, 221, 1, 0, 4, 4, 1, 0, AnimationState::onRepeat),

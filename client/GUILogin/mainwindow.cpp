@@ -55,6 +55,8 @@ void MainWindow::on_createButton_clicked()
     std::string information;
     uint8_t server_response;
     protocol_client>>server_response;
+
+
     protocol_client>>information;
 
 
@@ -69,6 +71,8 @@ void MainWindow::on_selectAmmountPlayersButton_clicked()
     std::string information;
     uint8_t server_response;
     protocol_client>>server_response;
+
+
     protocol_client>>information;
 
     std::string delimiter = "\n\t";
@@ -136,6 +140,7 @@ void MainWindow::messageFromReceiver(int message) {
         }
         this->close();
     } else if (message == NOW_YOU_ARE_THE_OWNER_MESSAGE_ID) {
+        owner = true;
         ui->informationLabel->setText("El owner se ha ido. Ahora tu puedes comenzar el juego.");
         ui->informationLabel->show();
         ui->startGameButton->show();
