@@ -15,8 +15,8 @@ add_library(sdldemo
         ComponentsSDL/AnimatedSprite.h
         View/ChellAnimationView.cpp
         View/ChellAnimationView.h
-        TextureFactory.cpp
-        TextureFactory.h
+        ComponentsSDL/TextureFactory.cpp
+        ComponentsSDL/TextureFactory.h
         WorldView.cpp
         WorldView.h View/View.cpp
         View/View.h ComponentsSDL/Camera.cpp

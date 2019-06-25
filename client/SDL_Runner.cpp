@@ -38,6 +38,8 @@ void SDL_Runner::addChell(ChellDTO *chellDTO) {
         world.setChellState(chellDTO->getId(), ChellState::dying);
         if (myChellId == chellDTO->getId()) {
             musicPlayer.playLoserSong();
+        } else {
+            musicPlayer.playDisappearingPlayer();
         }
         return;
     } else {
@@ -358,6 +360,10 @@ void SDL_Runner::run() {
                     case PROTOCOL_ENERGY_RECEIVER_ACTIVATE: {
                         auto energyReceiverActivateDTO = (EnergyReceiverActivateDTO*)newItem;
                         world.activateReceiver(energyReceiverActivateDTO->getId());
+                        break;
+                    }
+                    case PROTOCOL_WINNER: {
+                        musicPlayer.playWinningNoise();
                         break;
                     }
                 }

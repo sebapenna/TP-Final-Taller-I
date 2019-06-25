@@ -16,16 +16,16 @@ set(BOX2D_VERSION 2.3.0)
 
 
 set(project_ui
-        client/mainwindow.ui)
+        client/GUILogin/mainwindow.ui)
 
 set(project_headers
-        client/mainwindow.h
-        client/GUIReceiver.h
+        client/GUILogin/mainwindow.h
+        client/GUILogin/GUIReceiver.h
         )
 
 set(project_sources
-        client/mainwindow.cpp
-        client/GUIReceiver.cpp
+        client/GUILogin/mainwindow.cpp
+        client/GUILogin/GUIReceiver.cpp
         client/main.cpp
         )
 

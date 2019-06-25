@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include <SDL2/SDL_system.h>
-#include "ComponentsSDL/Renderer.h"
+#include "Renderer.h"
 // Holds all the textures needed in the game
 class TextureFactory {
 private:

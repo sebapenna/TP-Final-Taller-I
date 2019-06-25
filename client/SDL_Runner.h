@@ -28,7 +28,7 @@
 #include <client/ComponentsSDL/SoundFactory.h>
 #include <client/ComponentsSDL/MusicPlayer.h>
 #include "ComponentsSDL/Renderer.h"
-#include "TextureFactory.h"
+#include "client/ComponentsSDL/TextureFactory.h"
 #include "../Common/SafeQueue.h"
 #include "../Common/Thread.h"
 #include "WorldView.h"

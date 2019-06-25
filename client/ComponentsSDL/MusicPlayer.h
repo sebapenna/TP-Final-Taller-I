@@ -21,6 +21,8 @@ public:
     void playPlayerJumping();
     void playButtonPress();
     void playButtonUnpress();
+    void playDisappearingPlayer();
+    void playWinningNoise();
 };
 
 

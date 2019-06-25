@@ -16,6 +16,8 @@ SoundFactory::SoundFactory() {
     effects["player_jumping"] = getChunkFromFile("assets/soundeffects/player/jump.wav");
     effects["button_press"] = getChunkFromFile("assets/soundeffects/scenario/button_press.wav");
     effects["button_unpress"] = getChunkFromFile("assets/soundeffects/scenario/button_press.wav");
+    effects["disappearing"] = getChunkFromFile("assets/soundeffects/player/disappearing.wav");
+    effects["winning_noise"] = getChunkFromFile("assets/soundeffects/player/winning_noise.wav");
 }
 
 SoundFactory::~SoundFactory() {

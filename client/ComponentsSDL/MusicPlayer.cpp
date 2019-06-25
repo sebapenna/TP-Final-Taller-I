@@ -47,3 +47,14 @@ void MusicPlayer::playButtonUnpress() {
     std::string file_name("button_unpress");
     Mix_PlayChannel(-1, soundFactory.getChunk(file_name), 0);
 }
+
+void MusicPlayer::playDisappearingPlayer() {
+    std::string file_name("disappearing");
+    Mix_PlayChannel(-1, soundFactory.getChunk(file_name), 0);
+}
+
+
+void MusicPlayer::playWinningNoise() {
+    std::string file_name("winning_noise");
+    Mix_PlayChannel(-1, soundFactory.getChunk(file_name), 0);
+}

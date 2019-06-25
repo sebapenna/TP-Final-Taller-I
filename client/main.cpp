@@ -8,7 +8,7 @@
 #include "../Common/SafeQueue.h"
 #include "ClientSender.h"
 #include "ClientReceiver.h"
-#include "mainwindow.h"
+#include "client/GUILogin/mainwindow.h"
 #include "GameController.h"
 
 

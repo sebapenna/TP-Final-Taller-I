@@ -4,7 +4,7 @@
 
 #include <SDL2/SDL_image.h>
 #include "TextureFactory.h"
-#include "ComponentsSDL/SDLException.h"
+#include "SDLException.h"
 
 #define CHELL_TEXTURE_NAME "chell"
 #define BLOCK_TEXTURE_NAME "block"
