@@ -36,7 +36,11 @@
 #include "CommandReceiver.h"
 #include "CommandSender.h"
 #include "mainwindow.h"
-
+#include <client/Ffmpeg/OutputFormat.h>
+extern "C" {
+#include <libavformat/avformat.h>
+#include <libswscale/swscale.h>
+}
 
 #define KNOWN_ERROR 1
 #define UNKNOWN_ERROR 2
@@ -95,7 +99,23 @@ int main(int argc, char** argv){
 
         /*FakeServer server(blockingQueue, safeQueue, done);
         server.start();
-*/
+
+
+
+*/     /*  // Contexto para escalar archivos.
+        SwsContext * ctx = sws_getContext(RECORDING_WIDTH, RECORDING_HEIGHT,
+                                          AV_PIX_FMT_RGB24, RECORDING_WIDTH, RECORDING_HEIGHT,
+                                          AV_PIX_FMT_YUV420P, 0, 0, 0, 0);
+        // Este buffer tiene el tamaño de la sección de SDL que quiero leer, multiplico
+        // x3 por la cantidad de bytes (8R,8G,8B)
+        // A sws parece que no le gusta este tamaño
+        OutputFormat videoOutput("gameplay.mp4");
+        std::vector<char> dataBuffer(RECORDING_WIDTH * RECORDING_HEIGHT * 3);*/
+
+
+
+
+
         SDL_Event e;
         while (!done) {
             while (SDL_PollEvent(&e)) {
@@ -180,8 +200,16 @@ int main(int argc, char** argv){
                     blockingQueue.push(dto);
                 }
             }
+     /*       int res = SDL_RenderReadPixels(sdlRunner.getRenderer(), nullptr, SDL_PIXELFORMAT_RGB24,
+                    dataBuffer.data(), RECORDING_WIDTH * 3);
+            if (res) {
+                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "RendererReadPixels error", SDL_GetError(), NULL);
+                break;
+            }
+            videoOutput.writeFrame(dataBuffer.data(), ctx);*/
             SDL_Delay(1);
-        }
+        }/*
+        videoOutput.close();*/
         protocol.disconnect();
         sdlRunner.join();
         blockingQueue.setFinishedAdding();
