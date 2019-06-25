@@ -89,8 +89,18 @@ void World::killChellIfPossible() {
                 if (!chell->reachedCake()) {    // Elimino chell que no estaba en Cake
                     _world->DestroyBody(chell->getBody());
                     _objects_to_delete.emplace_back(i, chell->classId());
+                    _objects_to_update.erase(remove_if(_objects_to_update.begin(),
+                            _objects_to_update.end(), [chell](Collidable* coll) {
+                        if (coll->classId() == CHELL) {
+                            auto c = (Chell*) coll;
+                            return c->id() == chell->id();
+                        }
+                        return false;
+                    }), _objects_to_update.end());  // Elimino de chell de objetos a actualizar
                     delete chell;
+                    chell = nullptr;
                     _chells[i] = nullptr;
+                    --_chells_alive;
                 }
 }
 
@@ -149,6 +159,7 @@ void World::stepCollidableVector(std::vector<T *> &vector) {
                 if (collidable->classId() == CHELL) {
                     auto chell = (Chell*) collidable;
                     resetPortals(chell->id());  // Elimino portales de chell muerta
+                    --_chells_alive;
                 }
                 _world->DestroyBody(collidable->getBody());
                 _objects_to_delete.emplace_back(i, collidable->classId());
@@ -392,6 +403,7 @@ void World::addRock(Rock *rock) {
 
 void World::addChell(Chell *chell) {
     _chells.push_back(chell);
+    ++_chells_alive;
 }
 
 void World::addShootable(const size_t& shootable_id, Collidable *shootable) {
@@ -471,5 +483,5 @@ void World::resetPortals(const size_t &chell_id) {
 }
 
 bool World::allChellsInCake() {
-    return _chells.size() == _cake->getChellsInContact();
+    return _chells_alive == _cake->getChellsInContact();
 }

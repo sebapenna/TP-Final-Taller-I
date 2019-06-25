@@ -65,6 +65,8 @@ private:
 
     std::vector<size_t> _want_to_kill;  // ids chells que quieren matar chell que no llego a cake
 
+    size_t _chells_alive = 0;   // Cuenta la cantidad de chells que siguen en la partida
+
 
     // Elimina aquellos portales o pintool que ya no son utilizados por las disintas chell
     void deleteOldShootables();

@@ -102,7 +102,6 @@ SafeQueue<shared_ptr<Event>> &Lobby::joinGameIfOpenAndNotFull(Player *player, co
     // posiblemente el limite de jugadores dentro de la misma.
     std::lock_guard<std::mutex> lock(_m);
 
-    // todo: optimizar con binary search
     auto it = std::find_if(_games.begin(), _games.end(), [game_id](shared_ptr<GameThread> g) {
         return g->id() == game_id;
     });
