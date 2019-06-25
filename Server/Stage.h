@@ -10,7 +10,7 @@
 #include "DTOProcessor.h"
 #include "Configuration.h"
 #include <Common/ProtocolTranslator/ProtocolDTO.h>
-#include <Server/CollidableData/YamlParser.h>
+#include <Server/Model/CollidableData/YamlParser.h>
 
 class Stage {
 private:
@@ -48,6 +48,9 @@ public:
     void apply(ProtocolDTO *dto, const size_t& player_id);
 
     void step();
+
+    // Retorna true en caso de que todas las chells (podria ser solo una) hayan llegado a la cake
+    bool someoneWon();
 };
 
 

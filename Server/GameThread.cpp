@@ -120,6 +120,12 @@ void GameThread::run(shared_ptr<Configuration> c) {
                     sendToAllPlayers(dto);
                 }); // Envio DTO de objetos a eliminar
 
+                if (stage.someoneWon()) {
+                    auto winner_dto = DTOProcessor::createWinnerDTO();
+                    sendToAllPlayers(winner_dto);
+                    _game_finished = true;
+                }
+
                 // Sleep
                 auto stop = high_resolution_clock::now();
                 auto duration = duration_cast<milliseconds>(stop - start);

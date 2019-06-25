@@ -35,6 +35,7 @@
 #include <iostream>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/CommitSuicideDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/KillMissingChellDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/WinnerDTO.h>
 
 using std::vector;
 using std::move;
@@ -51,6 +52,10 @@ int ProtocolTranslator::translate(const ProtocolDTO *dto, vector<int16_t> &outpu
 
         case PROTOCOL_QUIT:
             output.push_back(QUIT_ARGS);   // No tiene mas datos a agregar
+            break;
+
+        case PROTOCOL_WINNER:
+            output.push_back(WINNER_ARGS);   // No tiene mas datos a agregar
             break;
 
         case PROTOCOL_KILL_MISSING_CHELL:
@@ -216,6 +221,9 @@ shared_ptr<ProtocolDTO> ProtocolTranslator::translate(const vector<int16_t> &inp
 
         case PROTOCOL_QUIT:
             return make_shared<QuitDTO>();
+
+        case PROTOCOL_WINNER:
+            return make_shared<WinnerDTO>();
 
         case PROTOCOL_COMMIT_SUICIDE:
             return make_shared<CommitSuicideDTO>();

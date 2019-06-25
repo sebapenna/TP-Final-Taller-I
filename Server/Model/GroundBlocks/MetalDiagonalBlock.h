@@ -20,32 +20,26 @@ public:
 
     const uint8_t getOrientation() const;
 
-    const uint8_t classId() override;
+    bool isDead(const float &time_step) override;
 
     void collideWith(Collidable *other) override;
-
     void endCollitionWith(Collidable *other) override;
 
+    void step(const float &time_step) override;
     bool actedDuringStep() override;
 
     // X e Y seran la posicion de la punta inferior izquierda, pensando el bloque diagonal
     // como un cuadrado completo, sin importar la orientacion del mismo
+    const uint8_t classId() override;
     const float x() override;
     const float y() override;
-
     const float width() override;
-
     const float height() override;
-
-    void step(const float &time_step) override;
+    b2Body *getBody() const override;
 
     // Retorna el valor de x en el centro del cuerpo
     const float getCenterX();
     const float getCenterY();
-
-    bool isDead(const float &time_step) override;
-
-    b2Body *getBody() const override;
 };
 
 

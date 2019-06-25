@@ -8,13 +8,6 @@ const uint8_t Cake::classId() {
     return CAKE;
 }
 
-float Cake::getX() {
-    return _body->GetPosition().x;
-}
-
-float Cake::getY() {
-    return _body->GetPosition().y;
-}
 
 bool Cake::actedDuringStep() {
     return false;   // No realiza accion en el juego
@@ -56,6 +49,10 @@ bool Cake::isDead(const float &time_step) {
 
 b2Body *Cake::getBody() const {
     return _body;
+}
+
+size_t Cake::getChellsInContact() const {
+    return _chells_in_contact;
 }
 
 Cake::~Cake() = default;

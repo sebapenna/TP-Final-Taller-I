@@ -6,6 +6,7 @@
 #include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPortalDTO.h>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/ShootPinToolDTO.h>
+#include <Common/ProtocolTranslator/DataDTO/WinnerDTO.h>
 #include "DTOProcessor.h"
 
 using std::vector;
@@ -77,4 +78,8 @@ std::shared_ptr<ProtocolDTO> DTOProcessor::createBeginDTO() {
 void DTOProcessor::createDTO(Collidable *collidable, vector<shared_ptr<ProtocolDTO>> &output,
         bool initial_data) {
     output.push_back(std::move(WorldObjectDTOTranslator::translate(collidable, initial_data)));
+}
+
+std::shared_ptr<ProtocolDTO> DTOProcessor::createWinnerDTO() {
+    return std::make_shared<WinnerDTO>();
 }

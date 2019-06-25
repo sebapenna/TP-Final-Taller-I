@@ -1,16 +1,17 @@
-#ifndef PORTAL_BUTTONDATA_H
-#define PORTAL_BUTTONDATA_H
+#ifndef PORTAL_CHELLDATA_H
+#define PORTAL_CHELLDATA_H
 
-#include "Server/CollidableData/CollidableData.h"
+#include "Server/Model/CollidableData/CollidableData.h"
+#include <cstdio>
 
-class ButtonData: public CollidableData {
+class ChellData: public CollidableData {
 private:
     const size_t _id;
     const float _x;
     const float _y;
 
 public:
-    ButtonData(const size_t& id, const float& x, const float& y);
+    ChellData(const size_t& id, const float& x, const float& y);
 
     const size_t getId() const;
 
@@ -23,4 +24,4 @@ public:
 };
 
 
-#endif //PORTAL_BUTTONDATA_H
+#endif //PORTAL_CHELLDATA_H

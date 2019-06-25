@@ -229,4 +229,7 @@
 #define PROTOCOL_RESET_PORTALS  (int16_t)   32
 #define RESET_PORTALS_ARGS  0
 
+#define PROTOCOL_WINNER  (int16_t)   33
+#define WINNER_ARGS  0
+
 #endif //PORTAL_PROTOCOL_MACROS_H

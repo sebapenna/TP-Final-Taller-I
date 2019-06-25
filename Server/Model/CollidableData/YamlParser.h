@@ -4,19 +4,19 @@
 #include <string>
 #include <vector>
 #include "yaml-cpp/yaml.h"
-#include "Server/CollidableData/Data/WorldData.h"
-#include "Server/CollidableData/Data/RockBlockData.h"
-#include "Server/CollidableData/Data/MetalBlockData.h"
-#include "Server/CollidableData/Data/MetalDiagonalBlockData.h"
-#include "Server/CollidableData/Data/RockData.h"
-#include "Server/CollidableData/Data/AcidData.h"
-#include "Server/CollidableData/Data/ButtonData.h"
-#include "Server/CollidableData/Data/GateData.h"
-#include "Server/CollidableData/Data/EnergyTransmitterData.h"
-#include "Server/CollidableData/Data/EnergyReceiverData.h"
-#include "Server/CollidableData/Data/EnergyBarrierData.h"
-#include "Server/CollidableData/Data/ChellData.h"
-#include "Server/CollidableData/Data/CakeData.h"
+#include "Server/Model/CollidableData/Data/WorldData.h"
+#include "Server/Model/CollidableData/Data/RockBlockData.h"
+#include "Server/Model/CollidableData/Data/MetalBlockData.h"
+#include "Server/Model/CollidableData/Data/MetalDiagonalBlockData.h"
+#include "Server/Model/CollidableData/Data/RockData.h"
+#include "Server/Model/CollidableData/Data/AcidData.h"
+#include "Server/Model/CollidableData/Data/ButtonData.h"
+#include "Server/Model/CollidableData/Data/GateData.h"
+#include "Server/Model/CollidableData/Data/EnergyTransmitterData.h"
+#include "Server/Model/CollidableData/Data/EnergyReceiverData.h"
+#include "Server/Model/CollidableData/Data/EnergyBarrierData.h"
+#include "Server/Model/CollidableData/Data/ChellData.h"
+#include "Server/Model/CollidableData/Data/CakeData.h"
 
 class YamlParser {
 private:

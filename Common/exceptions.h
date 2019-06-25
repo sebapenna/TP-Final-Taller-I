@@ -72,4 +72,34 @@ struct CantJoinGameException : public exception {
     }
 };
 
+struct CouldntAllocateFrameException : public exception {
+    const char * what() const throw() override {
+        return "No se pudo reservar memoria para frame.\n";
+    }
+};
+
+struct CouldntFindOutputFormatException : public exception {
+    const char * what() const throw() override {
+        return "No se encontró formato de salida.\n";
+    }
+};
+
+struct CouldntFindEncoderException : public exception {
+    const char * what() const throw() override {
+        return "No se pudo instanciar codec.\n";
+    }
+};
+
+struct SendFrameException : public exception {
+    const char * what() const throw() override {
+        return "Error al enviar frame.\n";
+    }
+};
+
+struct EncodeErrorException : public exception {
+    const char * what() const throw() override {
+        return "Error al codificar.\n";
+    }
+};
+
 #endif //TP_FINAL_EXCEPTIONS_H

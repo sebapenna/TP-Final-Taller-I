@@ -15,6 +15,9 @@ private:
     const float _width, _height;
     b2Body *_body;
 
+    // Verifica si hay alguna chell debajo de la compuerta, en caso de que este por cerrarse
+    void verifyChellsUnderIt();
+
 public:
     explicit Gate(const size_t &id, b2Body *body, const float& width, const float& height);
 
@@ -25,32 +28,23 @@ public:
     bool isOpen();
 
     void addButtonNeeded(Button* button);
-
     void addEnergyReceiverNeeded(EnergyReceiver* e_receiver);
 
-    const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
-
     void endCollitionWith(Collidable *other) override;
 
+    void step(const float &time_step) override;
     bool actedDuringStep() override;
 
+    const uint8_t classId() override;
     const float x() override;
-
     const float y() override;
-
     const float width() override;
-
     const float height() override;
-
-    void step(const float &time_step) override;
-
-    bool isDead(const float &time_step) override;
-
     b2Body *getBody() const override;
 
-    void verifyChellsUnderIt();
+    bool isDead(const float &time_step) override;
 };
 
 

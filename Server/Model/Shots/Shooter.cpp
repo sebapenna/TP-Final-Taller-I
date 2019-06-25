@@ -1,4 +1,4 @@
-#include <Server/CollidableData/BoxCreator.h>
+#include <Server/Model/BodyCreator.h>
 #include <Server/Model/constants.h>
 #include <Server/Model/World.h>
 #include "Shooter.h"

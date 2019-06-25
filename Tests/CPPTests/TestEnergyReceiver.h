@@ -5,7 +5,7 @@
 #include "Server/Model/World.h"
 #include "Server/Model/constants.h"
 #include <Common/exceptions.h>
-#include <Server/CollidableData/Data/EnergyReceiverData.h>
+#include <Server/Model/CollidableData/Data/EnergyReceiverData.h>
 
 using std::cout;
 using std::endl;

@@ -1,7 +1,7 @@
 #ifndef PORTAL_ACIDDATA_H
 #define PORTAL_ACIDDATA_H
 
-#include "Server/CollidableData/CollidableData.h"
+#include <Server/Model/CollidableData/CollidableData.h>
 
 class AcidData: public CollidableData {
 private:

@@ -6,22 +6,6 @@
 
 using std::abs;
 
-const uint8_t MetalBlock::classId() {
-    return METAL_BLOCK;
-}
-
-void MetalBlock::collideWith(Collidable *other) {
-    // No realiza ninguna accion
-}
-
-void MetalBlock::endCollitionWith(Collidable *other) {
-    // No realiza ninguna accion
-}
-
-bool MetalBlock::actedDuringStep() {
-    return false;   // Nunca realiza accion durante un step
-}
-
 MetalBlock::MetalBlock(const float &x, const float &y, const float &width, const float &height) :
 _x(x), _y(y), _width(width), _height(height) { }
 
@@ -39,6 +23,22 @@ const float MetalBlock::width() {
 
 const float MetalBlock::height() {
     return _height;
+}
+
+const uint8_t MetalBlock::classId() {
+    return METAL_BLOCK;
+}
+
+void MetalBlock::collideWith(Collidable *other) {
+    // No realiza ninguna accion
+}
+
+void MetalBlock::endCollitionWith(Collidable *other) {
+    // No realiza ninguna accion
+}
+
+bool MetalBlock::actedDuringStep() {
+    return false;   // Nunca realiza accion durante un step
 }
 
 float MetalBlock::getSubBlockCenterX(const float& x) {

@@ -2,7 +2,7 @@
 #define PORTAL_METALDIAGONALBLOCKDATA_H
 
 #include <string>
-#include "Server/CollidableData/CollidableData.h"
+#include "Server/Model/CollidableData/CollidableData.h"
 
 class MetalDiagonalBlockData : public CollidableData {
 private:

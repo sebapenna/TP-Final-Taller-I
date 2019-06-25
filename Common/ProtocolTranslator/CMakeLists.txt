@@ -33,6 +33,6 @@ add_library(protocol-translator
         DataDTO/EnergyReceiverActivateDTO.cpp DataDTO/EnergyReceiverActivateDTO.h
         DataDTO/GateStateDTO.cpp DataDTO/GateStateDTO.h
         GameStateDTO/QuitDTO.cpp GameStateDTO/QuitDTO.h
-        GameStateDTO/BeginDTO.cpp GameStateDTO/BeginDTO.h DataDTO/CakeDTO.cpp DataDTO/CakeDTO.h PlayerActionsDTO/CommitSuicideDTO.cpp PlayerActionsDTO/CommitSuicideDTO.h PlayerActionsDTO/KillMissingChellDTO.cpp PlayerActionsDTO/KillMissingChellDTO.h ResetPortalsDTO.cpp ResetPortalsDTO.h)
+        GameStateDTO/BeginDTO.cpp GameStateDTO/BeginDTO.h DataDTO/CakeDTO.cpp DataDTO/CakeDTO.h PlayerActionsDTO/CommitSuicideDTO.cpp PlayerActionsDTO/CommitSuicideDTO.h PlayerActionsDTO/KillMissingChellDTO.cpp PlayerActionsDTO/KillMissingChellDTO.h ResetPortalsDTO.cpp ResetPortalsDTO.h DataDTO/WinnerDTO.cpp DataDTO/WinnerDTO.h)
 
 

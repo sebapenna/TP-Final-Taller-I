@@ -17,37 +17,32 @@ private:
     bool _teleported = false;
     Portal *_portal_to_use = nullptr;
 
+    void teleport(float x, float y);
+
 public:
     EnergyBall(const size_t &id, b2Body *body, uint8_t direction, const float& radius,
             const float &max_lifetime, const float& force);
 
     ~EnergyBall() override;
 
-    bool isDead(const float& time_step) override;
-
-    size_t id() const;
-
-    b2Body *getBody() const override;
-
     const uint8_t classId() override;
-
-    void collideWith(Collidable *other) override;
-
-    void endCollitionWith(Collidable *other) override;
-
-    bool actedDuringStep() override;
-
     const float x() override;
-
     const float y() override;
-
     // Utilizar a los metodos width y height retornara el diametro de la bola
     const float width() override;
     const float height() override;
+    b2Body *getBody() const override;
+
+    size_t id() const;
+
+    bool isDead(const float& time_step) override;
+
+
+    void collideWith(Collidable *other) override;
+    void endCollitionWith(Collidable *other) override;
 
     void step(const float &time_step) override;
-
-    void teleport(float x, float y);
+    bool actedDuringStep() override;
 
     bool ifTeleportedSetDone();
 };

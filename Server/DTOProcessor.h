@@ -34,6 +34,10 @@ public:
     // Genera el DTO para notificar el comienzo del juego
     static std::shared_ptr<ProtocolDTO> createBeginDTO();
 
+
+    // Genera el DTO para notificar que es el ganador o uno de los ganadores del juego
+    static std::shared_ptr<ProtocolDTO> createWinnerDTO();
+
     static void createDTO(Collidable* collidable,
             std::vector<std::shared_ptr<ProtocolDTO>> &output, bool initial_data = false);
 

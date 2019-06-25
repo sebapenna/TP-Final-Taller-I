@@ -74,3 +74,7 @@ std::vector<std::shared_ptr<ProtocolDTO>> Stage::getDeletedDTO() {
         output.push_back(_processor.createDeletedDTO(obj_delete.first, obj_delete.second));
     return std::move(output);
 }
+
+bool Stage::someoneWon() {
+    return _world->allChellsInCake();
+}

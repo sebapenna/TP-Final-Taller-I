@@ -5,10 +5,10 @@
 #include "Server/Model/World.h"
 #include "Server/Model/constants.h"
 #include <Common/exceptions.h>
-#include <Server/CollidableData/Data/RockBlockData.h>
-#include <Server/CollidableData/Data/ButtonData.h>
-#include <Server/CollidableData/Data/RockData.h>
-#include <Server/CollidableData/Data/ChellData.h>
+#include <Server/Model/CollidableData/Data/RockBlockData.h>
+#include <Server/Model/CollidableData/Data/ButtonData.h>
+#include <Server/Model/CollidableData/Data/RockData.h>
+#include <Server/Model/CollidableData/Data/ChellData.h>
 
 using std::cout;
 using std::endl;

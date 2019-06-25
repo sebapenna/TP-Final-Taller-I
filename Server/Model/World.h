@@ -20,7 +20,7 @@
 #include <Server/Model/GroundBlocks/MetalBlock.h>
 #include <Server/Model/Obstacles/EnergyBarrier.h>
 #include <Server/Configuration.h>
-#include <Server/CollidableData/CollidableData.h>
+#include <Server/Model/CollidableData/CollidableData.h>
 #include <vector>
 #include <map>
 
@@ -50,7 +50,7 @@ private:
 
     // Mapa que contiene pin tools y portales, ambos obejtos disparables. El incremento de ids no
     // diferenciara los unos de los otros.
-    std::map<size_t, Collidable*> _shootables;
+    std::map<size_t, Collidable *> _shootables;
 
 
     std::vector<Collidable *> _objects_to_update; // Objetos que modificaron su estado en step
@@ -58,7 +58,7 @@ private:
 
 
     // Portales/Pintools creados previo a step que deben moverse a objects_to_update
-    std::vector<Collidable*> _new_shootables;
+    std::vector<Collidable *> _new_shootables;
     // Vector de id de aquellos portales/pin tools que las chells decidieron eliminar o cambiaron
     // por nuevos portales/pin tools y deberan ser eliminados durante step.
     std::vector<size_t> _shootables_to_delete;
@@ -66,8 +66,19 @@ private:
     std::vector<size_t> _want_to_kill;  // ids chells que quieren matar chell que no llego a cake
 
 
+    // Elimina aquellos portales o pintool que ya no son utilizados por las disintas chell
+    void deleteOldShootables();
+
+    // Actualiza los ids de las chells que quieren matar a otra chell y las quita del listado en
+    // caso que ya no esten en condiciones de matar a otra;
+    void updateChellsWantingToKill();
+
+    // Verifica si es posible matar a la chell que no llego a la cake y en caso de ser posible la
+    // borra del juego
+    void killChellIfPossible();
+
     // Step para los vectores de los distintos tipos de collidable
-    template <class T>
+    template<class T>
     void stepCollidableVector(std::vector<T *> &vector);
 
     // Step para energy balls, diferenciado por ser otra estructura
@@ -75,8 +86,6 @@ private:
 
     // Step para pin tools, diferenciado por que su estado implica tareas distintas al resto
     void stepPinTools();
-
-    bool inConditionToKillMissingChell();
 
     // El parametro es el transmisor origen. Bola de energia es el unico elemento del cual world
     // es responsable de su creacion
@@ -87,13 +96,11 @@ public:
 
     // Constructor para demorar construccion hasta momento en que se tienen datos de width y height.
     World() = default;
-
     ~World();
 
     // Asignacion por movimiento.
     // PRE: solo utilizar cuando se construye nuevo World, no cuando ya se lo haya utilizado
     World &operator=(World &&other);
-
     World &operator=(World &other) = delete;
 
     // Step del world. Aplica todas las acciones ante asignadas a los distintos objetos.
@@ -101,7 +108,6 @@ public:
     // encarga de evaluar si es posible eliminar la unica chell que no esta en cake, si las demas
     // chells asi lo hubiesen decidido y eliminarla.
     void step();
-
 
     size_t getWidth() const;
     size_t getHeight() const;
@@ -134,7 +140,6 @@ public:
     const std::vector<Collidable *> &getObjectsToUpdate() const;
     const std::vector<std::pair<size_t, uint8_t>> &getObjectsToDelete() const;
     const std::map<size_t, Collidable*> &getShootables() const;
-
 
     void addAcid(Acid *acid);
     void addChell(Chell *chell);
@@ -176,19 +181,10 @@ public:
     // Realiza el disparo del pin tool y posible creacion del mismo
     void shootPinTool(const size_t &chell_id, const float &dest_x, const float &dest_y);
 
-    // Elimina aquellos portales que ya no son utilizados por las disintas chell
-    void deleteOldShootables();
-
-    // Actualiza los ids de las chells que quieren matar a otra chell y las quita del listado en
-    // caso que ya no esten en condiciones de matar a otra;
-    void updateChellsWantingToKill();
-
-    // Verifica si es posible matar a la chell que no llego a la cake y en caso de ser posible la
-    // borra del juego
-    void killChell();
-
-
     void createCollidable(std::shared_ptr<CollidableData> collidable_data);
+
+    // Retorna true en caso de que todas las chells que forman parte de world estan en cake;
+    bool allChellsInCake();
 };
 
 

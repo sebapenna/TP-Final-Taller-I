@@ -1,7 +1,7 @@
 #ifndef PORTAL_ENERGYTRANSMITTERDATA_H
 #define PORTAL_ENERGYTRANSMITTERDATA_H
 
-#include "Server/CollidableData/CollidableData.h"
+#include "Server/Model/CollidableData/CollidableData.h"
 
 class EnergyTransmitterData : public CollidableData {
 private:

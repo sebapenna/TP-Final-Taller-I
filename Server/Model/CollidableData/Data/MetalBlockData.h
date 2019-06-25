@@ -1,9 +1,10 @@
-#ifndef PORTAL_ROCKBLOCKDATA_H
-#define PORTAL_ROCKBLOCKDATA_H
+#ifndef PORTAL_METALBLOCKDATA_H
+#define PORTAL_METALBLOCKDATA_H
 
-#include "Server/CollidableData/CollidableData.h"
 
-class RockBlockData : public CollidableData {
+#include "Server/Model/CollidableData/CollidableData.h"
+
+class MetalBlockData : public CollidableData {
 private:
     const float _width;
     const float _height;
@@ -11,8 +12,8 @@ private:
     const float _y;
 
 public:
-    RockBlockData(const float& width, const float& height, const float& x,
-            const float& y);
+    MetalBlockData(const float& width, const float& height, const float& x,
+                  const float& y);
 
     const float getWidth() const;
 
@@ -26,4 +27,4 @@ public:
 };
 
 
-#endif //PORTAL_ROCKBLOCKDATA_H
+#endif //PORTAL_METALBLOCKDATA_H

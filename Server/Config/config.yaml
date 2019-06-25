@@ -4,16 +4,16 @@ FPS:  30
 velocity_iterations: 8
 position_iterations: 3
 move_force: 1500
-jump_force: 2000
+jump_force: 1600
 
 half_block_len: &len  2
 
-chell_half_width: *len
-chell_half_height: *len
-chell_density:  5
-chell_gravity_scale:  5
+chell_half_width: 1.5
+chell_half_height: 1.5
+chell_density:  10
+chell_gravity_scale:  2
 
-rock_half_len: *len
+rock_half_len: 1
 rock_density: 100 #1000000
 
 acid_half_height: 0.25

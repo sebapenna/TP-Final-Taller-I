@@ -35,24 +35,24 @@ add_library(portal-src
         ../Common/HandshakeHandler.cpp ../Common/HandshakeHandler.h
         Model/Obstacles/Cake.cpp Model/Obstacles/Cake.h
         Model/RayCastCallback.cpp Model/RayCastCallback.h
-        CollidableData/BoxCreator.cpp CollidableData/BoxCreator.h
+        Model/BodyCreator.cpp Model/BodyCreator.h
         Configuration.cpp Configuration.h
         Model/Shots/Shooter.cpp Model/Shots/Shooter.h
-        CollidableData/YamlParser.cpp CollidableData/YamlParser.h
-        CollidableData/Data/RockBlockData.cpp CollidableData/Data/RockBlockData.h
-        CollidableData/Data/WorldData.cpp CollidableData/Data/WorldData.h
-        CollidableData/Data/MetalBlockData.cpp CollidableData/Data/MetalBlockData.h
-        CollidableData/Data/MetalDiagonalBlockData.cpp CollidableData/Data/MetalDiagonalBlockData.h
-        CollidableData/Data//RockData.cpp CollidableData/Data/RockData.h
-        CollidableData/Data/AcidData.cpp CollidableData/Data/AcidData.h
-        CollidableData/Data/ButtonData.cpp CollidableData/Data/ButtonData.h
-        CollidableData/Data/GateData.cpp CollidableData/Data/GateData.h
-        CollidableData/Data/EnergyTransmitterData.cpp CollidableData/Data/EnergyTransmitterData.h
-        CollidableData/Data/EnergyReceiverData.cpp CollidableData/Data/EnergyReceiverData.h
-        CollidableData/Data/EnergyBarrierData.cpp CollidableData/Data/EnergyBarrierData.h
-        CollidableData/Data/ChellData.cpp CollidableData/Data/ChellData.h
-        CollidableData/Data/CakeData.cpp CollidableData/Data/CakeData.h
-        CollidableData/CollidableData.h)
+        Model/CollidableData/YamlParser.cpp Model/CollidableData/YamlParser.h
+        Model/CollidableData/Data/RockBlockData.cpp Model/CollidableData/Data/RockBlockData.h
+        Model/CollidableData/Data/WorldData.cpp Model/CollidableData/Data/WorldData.h
+        Model/CollidableData/Data/MetalBlockData.cpp Model/CollidableData/Data/MetalBlockData.h
+        Model/CollidableData/Data/MetalDiagonalBlockData.cpp Model/CollidableData/Data/MetalDiagonalBlockData.h
+        Model/CollidableData/Data//RockData.cpp Model/CollidableData/Data/RockData.h
+        Model/CollidableData/Data/AcidData.cpp Model/CollidableData/Data/AcidData.h
+        Model/CollidableData/Data/ButtonData.cpp Model/CollidableData/Data/ButtonData.h
+        Model/CollidableData/Data/GateData.cpp Model/CollidableData/Data/GateData.h
+        Model/CollidableData/Data/EnergyTransmitterData.cpp Model/CollidableData/Data/EnergyTransmitterData.h
+        Model/CollidableData/Data/EnergyReceiverData.cpp Model/CollidableData/Data/EnergyReceiverData.h
+        Model/CollidableData/Data/EnergyBarrierData.cpp Model/CollidableData/Data/EnergyBarrierData.h
+        Model/CollidableData/Data/ChellData.cpp Model/CollidableData/Data/ChellData.h
+        Model/CollidableData/Data/CakeData.cpp Model/CollidableData/Data/CakeData.h
+        Model/CollidableData/CollidableData.h)
 
 target_link_libraries(portal-src common-src Box2D yaml-cpp pthread)
 

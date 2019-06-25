@@ -1,7 +1,7 @@
 #ifndef PORTAL_ROCKDATA_H
 #define PORTAL_ROCKDATA_H
 
-#include "Server/CollidableData/CollidableData.h"
+#include "Server/Model/CollidableData/CollidableData.h"
 #include <cstdio>
 
 class RockData : public CollidableData {

@@ -82,14 +82,8 @@ void World::updateChellsWantingToKill() {
     }), _want_to_kill.end());
 }
 
-bool World::inConditionToKillMissingChell() {
-    if (_chells.size() == 1)    // Tengo solo un chell
-        return false;
-    return (_want_to_kill.size() == (_chells.size() - 1));
-}
-
-void World::killChell() {
-    if (inConditionToKillMissingChell())
+void World::killChellIfPossible() {
+    if ((_want_to_kill.size() == (_chells.size() - 1)) && (_chells.size() != 1))
         for (int i = 0; i < _chells.size(); ++i)
             if (auto chell = _chells[i])
                 if (!chell->reachedCake()) {    // Elimino chell que no estaba en Cake
@@ -142,7 +136,7 @@ void World::step() {
     _new_shootables.clear();
     deleteOldShootables();
     updateChellsWantingToKill();
-    killChell();
+    killChellIfPossible();
 }
 
 template <class T>
@@ -436,23 +430,10 @@ void World::createEnergyBall(EnergyTransmitter *energy_transm) {
         default:    // No existe este caso
             break;
     }
-    b2BodyDef body_def;
-    body_def.position.Set(x, y);
-    body_def.type = b2_dynamicBody;
-    body_def.gravityScale = 0;  // Cuerpo no afectado por gravedad
-
-    b2CircleShape shape;
-    shape.m_p.Set(0,0); // Posicion relativa al centro
     // Reduzco tamaño para evitar contacto por delta
-    shape.m_radius = _configuration->getEnergyBallRadius() - DELTA_POS;
-
-    b2FixtureDef fixture;
-    fixture.shape = &shape;
-    fixture.density = _configuration->getEnergyBallDensity();
-    fixture.restitution = 1;    // Debe rebotar contra ciertos cuerpos
-
-    b2Body *body = _world->CreateBody(&body_def);
-    body->CreateFixture(&fixture);
+    auto radius = _configuration->getEnergyBallRadius() - DELTA_POS;
+    auto body = BoxCreator::createDynamicCircle(_world, x, y, radius, 1,
+            _configuration->getEnergyBallDensity());
 
     auto *energy_ball = new EnergyBall(getNextEnergyBallId(), body, energy_transm->getDirection(),
             _configuration->getEnergyBallRadius(), _configuration->getEnergyBallLifetime(),
@@ -487,4 +468,8 @@ void World::resetPortals(const size_t &chell_id) {
         _shootables_to_delete.push_back(portals_ids.first);
     if (portals_ids.second != -1)
         _shootables_to_delete.push_back(portals_ids.second);
+}
+
+bool World::allChellsInCake() {
+    return _chells.size() == _cake->getChellsInContact();
 }

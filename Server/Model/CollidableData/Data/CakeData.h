@@ -1,7 +1,7 @@
 #ifndef PORTAL_CAKEDATA_H
 #define PORTAL_CAKEDATA_H
 
-#include "Server/CollidableData/CollidableData.h"
+#include <Server/Model/CollidableData/CollidableData.h>
 
 class CakeData: public CollidableData {
 private:

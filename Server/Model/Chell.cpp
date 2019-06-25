@@ -17,6 +17,14 @@ _previous_tilt(NOT_TILTED),_tilt(NOT_TILTED), _width(width), _height(height) {
 
 Chell::~Chell() = default;
 
+void Chell::setJumpForce(float jumpForce) {
+    _jump_force = jumpForce;
+}
+
+void Chell::setMoveForce(float moveForce) {
+    _move_force = moveForce;
+}
+
 const float Chell::x() {
     return  _body->GetPosition().x;
 }
@@ -97,7 +105,7 @@ void Chell::stopMovement() {
 
 void Chell::teleport(float x, float y) {
     // todo: calculo velocidad al salir
-    float impulse_x = 2*_move_force * _portal_to_use->exitPortal()->normal().x;
+    float impulse_x = 2 *_move_force * _portal_to_use->exitPortal()->normal().x;
 
     float impulse_y = 1.5*_move_force * _portal_to_use->exitPortal()->normal().y;
     b2Vec2 new_pos(x,y);
@@ -337,7 +345,7 @@ int Chell::setNewPortal(Portal *portal) {
     return old_portal_id;
 }
 
-std::pair<size_t, size_t> Chell::resetPortals() {
+std::pair<int, int> Chell::resetPortals() {
     auto ids = std::make_pair(-1, -1);
     if (_portals.first) {   // Portal naranja
         ids.first = _portals.first->id();
@@ -366,13 +374,7 @@ void Chell::shoot() {
     _shooting = true;
 }
 
-void Chell::setJumpForce(float jumpForce) {
-    _jump_force = jumpForce;
-}
 
-void Chell::setMoveForce(float moveForce) {
-    _move_force = moveForce;
-}
 
 void Chell::step(const float &time_step) {
     if (!_dead)

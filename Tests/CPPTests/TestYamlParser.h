@@ -2,7 +2,7 @@
 #define PORTAL_TESTYAMLPARSER_H
 
 #include <cppunit/extensions/HelperMacros.h>
-#include "Server/CollidableData/YamlParser.h"
+#include "Server/Model/CollidableData/YamlParser.h"
 #include "Server/Model/constants.h"
 #include <string>
 

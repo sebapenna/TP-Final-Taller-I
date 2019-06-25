@@ -6,13 +6,13 @@
 #include "Server/Model/constants.h"
 #include <Common/exceptions.h>
 #include <string>
-#include <Server/CollidableData/Data/RockBlockData.h>
-#include <Server/CollidableData/Data/ChellData.h>
-#include <Server/CollidableData/Data/MetalDiagonalBlockData.h>
-#include <Server/CollidableData/Data/RockData.h>
-#include <Server/CollidableData/Data/AcidData.h>
-#include <Server/CollidableData/Data/EnergyTransmitterData.h>
-#include <Server/CollidableData/Data/EnergyBarrierData.h>
+#include <Server/Model/CollidableData/Data/RockBlockData.h>
+#include <Server/Model/CollidableData/Data/ChellData.h>
+#include <Server/Model/CollidableData/Data/MetalDiagonalBlockData.h>
+#include <Server/Model/CollidableData/Data/RockData.h>
+#include <Server/Model/CollidableData/Data/AcidData.h>
+#include <Server/Model/CollidableData/Data/EnergyTransmitterData.h>
+#include <Server/Model/CollidableData/Data/EnergyBarrierData.h>
 
 using std::cout;
 using std::endl;

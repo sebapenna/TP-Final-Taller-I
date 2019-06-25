@@ -1,7 +1,7 @@
 #ifndef PORTAL_GATEDATA_H
 #define PORTAL_GATEDATA_H
 
-#include "Server/CollidableData/CollidableData.h"
+#include "Server/Model/CollidableData/CollidableData.h"
 #include <vector>
 
 class GateData : public CollidableData {

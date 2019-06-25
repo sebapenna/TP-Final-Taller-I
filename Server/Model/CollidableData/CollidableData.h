@@ -3,7 +3,7 @@
 
 #include <stdint-gcc.h>
 #include <Server/Model/constants.h>
-#include <Server/CollidableData/BoxCreator.h>
+#include <Server/Model/BodyCreator.h>
 #include <Server/Configuration.h>
 
 class World;

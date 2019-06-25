@@ -15,19 +15,17 @@ private:
     const float _width, _height;
     bool _teleported = false;
     Portal *_portal_to_use = nullptr;
+    Chell *_lifter = nullptr;   // Chell que la esta cargando
     float _density;
+
+    void teleport(float x, float y);
 
 public:
     explicit Rock(const size_t &id, b2Body *body, const float& width, const float& height);
-    Chell *_lifter = nullptr;   // Chell que la esta cargando
 
     ~Rock() override;
 
     float velocityY();
-
-    b2Body *getBody() const override;
-
-    bool isDead(const float& time_step) override;
 
     const size_t id() const;
 
@@ -36,22 +34,17 @@ public:
     const uint8_t classId() override;
 
     void collideWith(Collidable *other) override;
-
     void endCollitionWith(Collidable *other) override;
 
+    void step(const float &time_step) override;
     bool actedDuringStep() override;
 
+    bool isDead(const float& time_step) override;
     const float x() override;
-
     const float y() override;
-
     const float width() override;
-
     const float height() override;
-
-    void step(const float &time_step) override;
-
-    void teleport(float x, float y);
+    b2Body *getBody() const override;
 
     // Indica que portal atravesara la chell, por lo tanto roca debe hacer lo mismo
     void setPortalToUse(Portal *portal);

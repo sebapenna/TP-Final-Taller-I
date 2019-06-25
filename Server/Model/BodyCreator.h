@@ -14,6 +14,9 @@ struct BoxCreator {
     static b2Body *createDynamicBox(b2World *world, const float &x, const float &y,
             const float &box_half_width, const float &box_half_height, const float &density);
 
+    static b2Body *createDynamicCircle(b2World *world, const float &x, const float &y,
+                                       const float &radius, const float& restitution,
+                                       const float &denisty, const float &grav_scale = 0);
 };
 
 
