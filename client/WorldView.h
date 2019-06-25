@@ -72,6 +72,8 @@ public:
     void removePortal(int16_t id);
     void addPinTool(std::shared_ptr<PinToolView> pintool);
     void removePinTool(int16_t id);
+
+    void winTheGame();
 };
 
 

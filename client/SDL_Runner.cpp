@@ -365,6 +365,7 @@ void SDL_Runner::run() {
                         break;
                     }
                     case PROTOCOL_WINNER: {
+                        world.winTheGame();
                         musicPlayer.playWinningNoise();
                         break;
                     }

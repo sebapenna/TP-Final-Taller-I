@@ -220,3 +220,9 @@ void WorldView::addPinTool(std::shared_ptr<PinToolView> pintool) {
 void WorldView::removePinTool(int16_t id) {
     pintools.erase(id);
 }
+
+void WorldView::winTheGame() {
+    for(auto const& chell: chells) {
+        chell.second->setState(ChellState::winning);
+    }
+}

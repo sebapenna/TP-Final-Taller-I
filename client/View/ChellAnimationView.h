@@ -9,7 +9,7 @@
 #include "../ComponentsSDL/AnimatedSprite.h"
 #include "View.h"
 
-enum ChellState {standing, runningLeft, runningRight, firing, flying, dying};
+enum ChellState {standing, runningLeft, runningRight, firing, flying, dying, winning};
 enum ChellIsTilted {TILTEDLEFT, TILTEDRIGHT, NO};
 class ChellAnimationView : public View {
 private:

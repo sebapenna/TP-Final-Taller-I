@@ -34,6 +34,8 @@ void ChellAnimationView::draw(Camera& camera) {
         flyingChell.drawMovingSprite(camera, this->getDst());
     } else if (state == dying) {
         dyingChell.drawMovingSprite(camera, this->getDst(), angle);
+    } else if (state == winning) {
+        winningChell.drawMovingSprite(camera, this->getDst());
     }
 }
 
