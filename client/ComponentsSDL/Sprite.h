@@ -12,6 +12,8 @@
 #include "Camera.h"
 class Camera;
 
+// This class will hold an texture and then call the
+// camera to draw itself
 class Sprite {
 private:
     SDL_Texture* texture;

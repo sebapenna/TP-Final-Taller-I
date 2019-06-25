@@ -10,7 +10,8 @@
 #include <Common/ProtocolTranslator/ProtocolDTO.h>
 #include <Common/SafeQueue.h>
 #include <Common/Protocol.h>
-
+// This class obtains all the different objects
+// from the server and stores it in a non blocking queue
 class ClientReceiver : public Thread {
 private:
     Protocol& protocol;

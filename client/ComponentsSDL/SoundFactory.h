@@ -14,6 +14,7 @@ private:
     Mix_Music *music;
     Mix_Music *loser_music;
 
+
     // Get the chunk from a file
     Mix_Chunk *getChunkFromFile(const std::string &file_name);
 public:
@@ -27,7 +28,6 @@ public:
 
     Mix_Music *getLoserMusic();
     Mix_Music *getMusic();
-
 };
 
 

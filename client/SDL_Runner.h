@@ -33,6 +33,8 @@
 #include "../Common/Thread.h"
 #include "WorldView.h"
 
+// This class informs the worldview whether a new object has arrived
+// Calling the corresponding method.
 class SDL_Runner : public Thread {
 private:
     SafeQueue<std::shared_ptr<ProtocolDTO>>& safeQueue;

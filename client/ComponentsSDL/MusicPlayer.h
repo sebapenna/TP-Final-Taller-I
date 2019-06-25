@@ -8,6 +8,7 @@
 
 #include "SoundFactory.h"
 
+// This class plays the different sound from the sound factory
 class MusicPlayer {
 private:
     SoundFactory& soundFactory;

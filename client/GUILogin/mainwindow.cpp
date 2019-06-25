@@ -18,14 +18,14 @@ MainWindow::MainWindow(Protocol& protocol_client, bool& userWantsToPlay, QWidget
     ui->startOrQuitMenu->hide();
     ui->selectMapMenu->hide();
     ui->selectMatchMenu->hide();
+    this->setWindowTitle("Portal login");
     ui->errorLabel->setStyleSheet("QLabel { color : red; }");
     ui->errorLabel->hide();
-    //guiReceiver(protocol_client, ui);
     ui->informationLabel->setStyleSheet("QLabel { color : blue; }");
     ui->informationLabel->hide();
     owner = false;
     passedTheSelectMap = false;
-    //connect(reinterpret_cast<const QObject *>(&a), SIGNAL(doSomething()), ui->errorLabel, SLOT(setText()));
+
 }
 
 MainWindow::~MainWindow()

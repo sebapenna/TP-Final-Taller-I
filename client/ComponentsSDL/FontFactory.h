@@ -9,7 +9,7 @@
 #include <string>
 #include <map>
 #include <SDL2/SDL_ttf.h>
-
+// This class holds all the possible fonts of the app
 class FontFactory {
 private:
     std::map<std::string, TTF_Font *> fonts;
