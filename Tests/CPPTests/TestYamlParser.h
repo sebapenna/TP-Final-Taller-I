@@ -38,7 +38,7 @@ public:
 #ifdef DEBUG_MODE
         parser = new YamlParser("Config/test.yaml");
 #else
-        parser = new YamlParser("/etc/portal-game/server/test.yaml");   // todo folder
+        parser = new YamlParser("/etc/Portal/Serever/Config/test.yaml");
 #endif
     }
 

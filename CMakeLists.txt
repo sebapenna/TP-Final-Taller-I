@@ -39,10 +39,10 @@ add_subdirectory(Tests)
 add_subdirectory(client)
 include_directories(${PROJECT_BINARY_DIR})
 
-#file(COPY Server/Config DESTINATION ./)
-#file(COPY client/assets DESTINATION ./)
-#file(COPY Server/Config DESTINATION ./Tests)    # Archivos disponibles para tests
-#file(COPY Tests/CPPTests/test.yaml DESTINATION ./Tests)   # Archivo yaml para tests
+file(COPY Server/Config DESTINATION ./)
+file(COPY client/assets DESTINATION ./)
+file(COPY Server/Config DESTINATION ./Tests)    # Archivos disponibles para tests
+file(COPY Tests/CPPTests/test.yaml DESTINATION ./Tests)   # Archivo yaml para tests
 
 add_executable (portal_client
         ${project_headers}
@@ -67,6 +67,7 @@ INSTALL(TARGETS portal_client portal_server DESTINATION /usr/bin)
 INSTALL(DIRECTORY client/assets DESTINATION /var/Portal)
 INSTALL(DIRECTORY Server/Config DESTINATION /var/Portal)
 INSTALL(DIRECTORY Server/Config DESTINATION /etc/Portal)
+INSTALL(FILES Server/Config/test.yaml DESTINATION /etc/Portal/Server/Config)
 
 
 

@@ -15,7 +15,13 @@ Ademas utilizamos YAML para guardar configuraciones.
 * Para instalar CPPUnit en la terminal, ejecutar: sudo apt-get install libcppunit-dev
 * Para instalar QT, en la terminal ejecutar: sudo apt-get install qt5-default
 * Clonar repositorio
-* Y realizar un cmake . dentro de la carpeta descargada.
+* Crear carpeta build y realizar:
+
+cmake ..
+
+make 
+
+sudo make install
 
 
 En caso de que el cliente no funcione, mover los *.png a donde esta el binario del client.
