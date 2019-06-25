@@ -23,6 +23,90 @@
 #define PORTAL_TEXTURE_NAME "portal"
 #define PINTOOL_TEXTURE_NAME "pintool"
 
+#ifdef DEBUG_MODE
+#define DYING_FILE "assets/textures/chellTextures/dying_chell.png"
+#else
+#define DYING_FILE "/etc/Portal/assets/textures/chellTextures/dying_chell.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define FIRING_FILE "assets/textures/chellTextures/firing_chell.png"
+#else
+#define FIRING_FILE "/etc/Portal/assets/textures/chellTextures/firing_chell.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define FLYING_FILE "assets/textures/chellTextures/flying_chell.png"
+#else
+#define FLYING_FILE "/etc/Portal/assets/textures/chellTextures/flying_chell.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define RESTING_FILE "assets/textures/chellTextures/resting_idle_chell.png"
+#else
+#define RESTING_FILE "/etc/Portal/assets/textures/chellTextures/resting_idle_chell.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define RUNNING_FILE "assets/textures/chellTextures/running_chell.png"
+#else
+#define RUNNING_FILE "/etc/Portal/assets/textures/chellTextures/running_chell.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define WINNING_FILE "assets/textures/chellTextures/winning_chell.png"
+#else
+#define WINNING_FILE "/etc/Portal/assets/textures/chellTextures/winning_chell.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define BLOCK_FILE "assets/textures/chellTextures/block.png"
+#else
+#define BLOCK_FILE "/etc/Portal/assets/textures/chellTextures/block.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define GATES_FILE "assets/textures/chellTextures/gates.png"
+#else
+#define GATES_FILE "/etc/Portal/assets/textures/chellTextures/gates.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define BULLET_AND_ROCK_FILE "assets/textures/chellTextures/bulletAndRock.png"
+#else
+#define BULLET_AND_ROCK_FILE "/etc/Portal/assets/textures/chellTextures/bulletAndRock.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define ACID_FILE "assets/textures/chellTextures/acidAndButtons.png"
+#else
+#define ACID_FILE "/etc/Portal/assets/textures/chellTextures/acidAndButtons.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define BACKGROUND_FILE "assets/textures/chellTextures/background.png"
+#else
+#define BACKGROUND_FILE "/etc/Portal/assets/textures/chellTextures/background.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define CAKE_FILE "assets/textures/chellTextures/cake.png"
+#else
+#define CAKE_FILE "/etc/Portal/assets/textures/chellTextures/cake.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define PORTAL_FILE "assets/textures/chellTextures/portal.png"
+#else
+#define PORTAL_FILE "/etc/Portal/assets/textures/chellTextures/portal.png"
+#endif
+
+#ifdef DEBUG_MODE
+#define PINTOOL_FILE "assets/textures/chellTextures/pintool.png"
+#else
+#define PINTOOL_FILE "/etc/Portal/assets/textures/chellTextures/pintool.png"
+#endif
+
 TextureFactory::TextureFactory() : textures(textures) {
     IMG_Init(IMG_INIT_PNG);
 }
@@ -34,21 +118,21 @@ TextureFactory::~TextureFactory() {
 }
 
 void TextureFactory::init(Renderer& renderer) {
-    textures[CHELL_DYING_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/dying_chell.png"), renderer);
-    textures[CHELL_FIRING_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/firing_chell.png"), renderer);
-    textures[CHELL_FLYING_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/flying_chell.png"), renderer);
-    textures[CHELL_RESTING_IDLE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/resting_idle_chell.png"), renderer);
-    textures[CHELL_RUNNING_CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/running_chell.png"), renderer);
-    textures[CHELL_WINNING_CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/winning_chell.png"), renderer);
+    textures[CHELL_DYING_TEXTURE_NAME] = loadTexture(std::string(DYING_FILE), renderer);
+    textures[CHELL_FIRING_TEXTURE_NAME] = loadTexture(std::string(FIRING_FILE), renderer);
+    textures[CHELL_FLYING_TEXTURE_NAME] = loadTexture(std::string(FLYING_FILE), renderer);
+    textures[CHELL_RESTING_IDLE_TEXTURE_NAME] = loadTexture(std::string(RESTING_FILE), renderer);
+    textures[CHELL_RUNNING_CHELL_TEXTURE_NAME] = loadTexture(std::string(RUNNING_FILE), renderer);
+    textures[CHELL_WINNING_CHELL_TEXTURE_NAME] = loadTexture(std::string(WINNING_FILE), renderer);
 
-    textures[BLOCK_TEXTURE_NAME] = loadTexture(std::string("assets/textures/block.png"), renderer);
-    textures[GATE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/gates.png"), renderer);
-    textures[BULLET_AND_ROCK_TEXTURE_NAME] = loadTexture(std::string("assets/textures/bulletAndRock.png"), renderer);
-    textures[ACID_AND_BUTTONS_TEXTURE_NAME] = loadTexture(std::string("assets/textures/acidAndButtons.png"), renderer);
-    textures[BACKGROUND_TEXTURE_NAME] = loadTexture(std::string("assets/backgroundImage/background.png"), renderer);
-    textures[CAKE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/cake.png"), renderer);
-    textures[PORTAL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/portal.png"), renderer);
-    textures[PINTOOL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/pintool.png"), renderer);
+    textures[BLOCK_TEXTURE_NAME] = loadTexture(std::string(BLOCK_FILE), renderer);
+    textures[GATE_TEXTURE_NAME] = loadTexture(std::string(GATES_FILE), renderer);
+    textures[BULLET_AND_ROCK_TEXTURE_NAME] = loadTexture(std::string(BULLET_AND_ROCK_FILE), renderer);
+    textures[ACID_AND_BUTTONS_TEXTURE_NAME] = loadTexture(std::string(ACID_FILE), renderer);
+    textures[BACKGROUND_TEXTURE_NAME] = loadTexture(std::string(BACKGROUND_FILE), renderer);
+    textures[CAKE_TEXTURE_NAME] = loadTexture(std::string(CAKE_FILE), renderer);
+    textures[PORTAL_TEXTURE_NAME] = loadTexture(std::string(PORTAL_FILE), renderer);
+    textures[PINTOOL_TEXTURE_NAME] = loadTexture(std::string(PINTOOL_FILE), renderer);
 
     //setColor(textures["chell"], 255, 0, 0);
 }

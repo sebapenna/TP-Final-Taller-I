@@ -67,7 +67,7 @@ INSTALL(TARGETS portal_client portal_server DESTINATION /usr/bin)
 INSTALL(DIRECTORY client/assets DESTINATION /var/Portal)
 INSTALL(DIRECTORY Server/Config DESTINATION /var/Portal)
 INSTALL(DIRECTORY Server/Config DESTINATION /etc/Portal)
-INSTALL(FILES Server/Config/test.yaml DESTINATION /etc/Portal/Server/Config)
+INSTALL(DIRECTORY client/assets DESTINATION /etc/Portal)
 
 
 

@@ -4,7 +4,8 @@
 #ifdef DEBUG_MODE
     #define CONFIG_FILE "Config/config.yaml"
 #else
-    #define CONFIG_FILE "/etc/Pörtal/Server/space.yaml"   // todo IF NOT DEBUF CON TODOS LOS ARCHIVOS
+    #define CONFIG_FILE "/etc/Portal/Config/config.yaml"
+    // ARCHIVOS
 #endif
 
 Configuration::Configuration() {
