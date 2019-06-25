@@ -45,5 +45,7 @@ Para cerrar el servidor se debe presionar la letra 'q'
 
 
 Manual de Proyecto: https://docs.google.com/document/d/1yPug7UHTOMCyLKyBQwqXsFqV-qyH_LjJhlikPEDWw88/edit?ts=5d10f6be#
+
 Manual de Usuario: https://docs.google.com/document/d/1G6lf7TsFlmXrUqH2_vvfhIsHxhLbivZl49jD5aZUoQI/edit?ts=5d105838
+
 Documentacion Tecnica: https://docs.google.com/document/d/1cbQB0FRhWOrpLvDB_RfdPb2K7EfsNJ5cLFd7dYTcm5U/edit?ts=5d116ebc#
