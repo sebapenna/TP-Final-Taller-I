@@ -85,7 +85,7 @@
 #endif
 
 #ifdef DEBUG_MODE
-#define BACKGROUND_FILE "assets/textures/backgroundImage/background.png"
+#define BACKGROUND_FILE "assets/backgroundImage/background.png"
 #else
 #define BACKGROUND_FILE "/etc/Portal/assets/backgroundImage/background.png"
 #endif
