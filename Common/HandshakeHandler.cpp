@@ -23,27 +23,38 @@
 #define SELECT_PLAYERS_MSG  "Ingrese la cantidad máxima de jugadores para su partida. El valor "\
 "máximo posible es " STR(MAX_PLAYERS_IN_GAME) STR(.\n)
 
-#define SELECT_MAP_MSG "Ingrese la opción de mapa deseada siendo:\n\t- 0: Espacio;\n"
+#define SELECT_MAP_MSG "Ingrese la opción de mapa deseada siendo:\n\t- 0: Practica;\n\t- 1: "\
+"Individual - Nivel 1;\n\t- 2: Individual - Nivel 2;\n"
 
 #define HOW_TO_REFRESH_MSG "Ingrese -1 para actualizar listado de partidas abiertas.\n"
 
 #define SELECT_GAME_MSG "Ingrese el id de una de las siguientes partidas:\n"
 
-#define SPACE_ID (uint8_t) 0   // todo: nombres mapas / CREAR MAPAS
 
 #ifdef DEBUG_MODE
-    #define SPACE "Config/space.yaml"
+    #define PRACTICE "Config/practice.yaml"
 #else
-    #define SPACE "/etc/Pörtal/Server/space.yaml"   // todo IF NOT DEBUF CON TODOS LOS ARCHIVOS
+    #define PRACTICE "/etc/Portal/Config/practice.yaml"
 #endif
 
-#define CITY_ID (uint8_t) 1
-#define CITY "Config/city.yaml"
+#ifdef DEBUG_MODE
+    #define IND_ONE "Config/indiv-one.yaml"
+#else
+    #define IND_ONE "/etc/Portal/Config/indiv-one.yaml"
+#endif
 
-#define WOODS_ID (uint8_t) 2
-#define WOODS "Config/woods.yaml"
+#ifdef DEBUG_MODE
+    #define IND_TWO "Config/indiv-two.yaml"
+#else
+    #define IND_TWO "/etc/Portal/Config/indiv-two.yaml"
+#endif
 
-#define MAP_IDS SPACE_ID, CITY_ID, WOODS_ID // Listado de todos los ids
+#define PRACTICE_ID (uint8_t) 0
+#define IND_ONE_ID (uint8_t) 1
+#define IND_TWO_ID (uint8_t) 2
+
+
+#define MAP_IDS PRACTICE_ID, IND_ONE_ID, IND_TWO_ID // Listado de todos los ids
 
 #define REFRESH (int16_t)   -1  // Valor de refresh negativo para no coincider con posible game_id
 
@@ -106,12 +117,12 @@ size_t HandshakeHandler::joinGame(Protocol &connection, Lobby &lobby) {
             auto max_players = get<1>(game_data);
             auto players_joined = get<2>(game_data);
             auto map_fname = get<3>(game_data);
-            if (map_fname == SPACE)
-                map_fname = "Espacio";
-            else if (map_fname == CITY)
-                map_fname = "Ciudad";
-            else if (map_fname == WOODS)
-                map_fname = "Bosque";
+            if (map_fname == PRACTICE)
+                map_fname = "Practica";
+            else if (map_fname == IND_ONE)
+                map_fname = "Individual - Nivel Uno";
+            else if (map_fname == IND_TWO)
+                map_fname = "Individual - Nivel Dos";
             msg.append("\t- Id Partida: " + to_string(game_id) + " | Jugadores: " +
             to_string(players_joined) + "/" + to_string(max_players) + " | Mapa: " +
             map_fname + "\n");
@@ -150,14 +161,14 @@ std::pair<size_t, std::string> HandshakeHandler::createGame(Protocol &connection
 
     std::string map_name;
     switch (map_choice) {
-        case SPACE_ID:
-            map_name.append(SPACE);
+        case PRACTICE_ID:
+            map_name.append(PRACTICE);
             break;
-        case CITY_ID:
-            map_name.append(CITY);
+        case IND_ONE_ID:
+            map_name.append(IND_ONE);
             break;
-        case WOODS_ID:
-            map_name.append(WOODS);
+        case IND_TWO_ID:
+            map_name.append(IND_TWO);
             break;
         default:
             break;

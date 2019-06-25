@@ -1,0 +1,74 @@
+world:  # Centrado en x=0, y=width/2
+  width: &width  1000
+  height: &height 60
+box_side_length: &length 4 # Alto/Ancho box en Box2D (metros)
+# x, y: posicion central (excepto diagonal)
+cake:
+  x: 40
+  y: 2
+chell:
+  - id: 0
+    x: -20
+    y: 2
+  - id: 1
+    x: -24
+    y: 2
+  - id: 2
+    x: -16
+    y: 2
+  - id: 3
+    x: -14
+    y: 2
+block_rock:
+  - width: *width  # floor
+    height: 4
+    x: 0
+    y: -2
+  - width: 8
+    height: *length
+    x: -24
+    y: 14
+  - width: *length
+    height: *height
+    x: 46
+    y: 30
+  - width: *length
+    height: *length
+    x: 0
+    y: 10
+block_metal:
+  - width: 20
+    height: *height
+    x: -70
+    y: 30
+  - width: 8
+    height: *length
+    x: 0
+    y: 18
+rock:
+  - x: -26
+    y: 2
+button:
+  - id: 0
+    x: 10
+    y: 0.5
+gate:
+  - id: 0
+    x: 30
+    y: 4
+    buttons_needed:
+      - id: 0
+    energy_receiver_needed:
+      - id: 0
+energy_transmitter:
+  - x: -30
+    y: 2
+    direction: O
+energy_receiver:
+  - id: 0
+    x: -24
+    y: 18
+energy_barrier:
+  - x: 0
+    y: 4
+    orientation: V

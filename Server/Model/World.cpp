@@ -483,5 +483,5 @@ void World::resetPortals(const size_t &chell_id) {
 }
 
 bool World::allChellsInCake() {
-    return _chells_alive == _cake->getChellsInContact();
+    return (_chells_alive == _cake->getChellsInContact() && _chells_alive != 0);
 }

@@ -21,7 +21,7 @@ AcceptSocket::AcceptSocket(const string& port, int max_size_waiting_queue) {
                                   ptr->ai_socktype, ptr->ai_protocol);
         if (descriptor == -1)
             break;
-        // todo: ADDRESS ALREADY IN USE => FUNCION SETSOCKOPT
+        // todo: addres already in use - function seckopt
         connected = bind(descriptor, ptr->ai_addr, ptr->ai_addrlen) == 0;
         if (connected)
             connected = listen(descriptor, max_size_waiting_queue) == 0;
