@@ -24,7 +24,7 @@ Por el momento el servido esta testeado contra un cliente de prueba. Para ejecut
 
 ./server PORT (Habilita el servidor a recibir conexiones y crea una "nueva partida" por cada cliente que se conecte)
 
-./client IP PORT (Conecta el cliente al servidor y envia y recibe una serie de mensajes propios del protocolo)
+./client (Conecta el cliente al servidor y envia y recibe una serie de mensajes propios del protocolo)
 
 En la terminal del cliente se vera en pantalla los datos recibidos de distintos objetos en el mapa.
 Para cerrar el servidor se debe presionar la letra 'q'
@@ -42,3 +42,8 @@ Para cerrar el servidor se debe presionar la letra 'q'
 * E para levantar una roca
 * F para soltar una roca
 * R para deshacer los portales puestos por el jugador.
+
+
+Manual de Proyecto: https://docs.google.com/document/d/1yPug7UHTOMCyLKyBQwqXsFqV-qyH_LjJhlikPEDWw88/edit?ts=5d10f6be#
+Manual de Usuario: https://docs.google.com/document/d/1G6lf7TsFlmXrUqH2_vvfhIsHxhLbivZl49jD5aZUoQI/edit?ts=5d105838
+Documentacion Tecnica: https://docs.google.com/document/d/1cbQB0FRhWOrpLvDB_RfdPb2K7EfsNJ5cLFd7dYTcm5U/edit?ts=5d116ebc#
