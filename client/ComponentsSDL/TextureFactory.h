@@ -26,7 +26,7 @@ public:
     SDL_Texture* getBulletAndRocksTexture();
     SDL_Texture* getBackground();
     SDL_Texture* getAcidAndButtonsTexture();
-    SDL_Texture* getChellTexture();
+
     SDL_Texture* getDyingChellTexture();
     SDL_Texture* getFiringChellTexture();
     SDL_Texture* getFlyingChellTexture();

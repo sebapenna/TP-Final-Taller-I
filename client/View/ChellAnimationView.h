@@ -19,6 +19,7 @@ private:
     AnimatedSprite firingChell;
     AnimatedSprite flyingChell;
     AnimatedSprite dyingChell;
+    AnimatedSprite winningChell;
     ChellState state;
     ChellIsTilted tiltedState;
 

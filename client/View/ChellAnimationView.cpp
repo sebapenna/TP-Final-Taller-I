@@ -12,7 +12,8 @@ ChellAnimationView::ChellAnimationView(int id, SDL_Texture *dyingTexture, SDL_Te
                                        standStillChell(restingTexture, renderer, 122, 222, 0, 0, 7, 7, 1, 0, AnimationState::onRepeat),
                                        firingChell(firingTexture, renderer, 190, 212, 0, 0, 5, 5, 1, 0, AnimationState::oneTime),
                                        flyingChell(flyingTexture, renderer, 144, 221, 1, 0, 4, 4, 1, 0, AnimationState::onRepeat),
-                                       dyingChell(dyingTexture, renderer, 199, 274, 0, 0, 12 , 72, 1, 1, AnimationState::oneTime),state(standing), tiltedState(NO)
+                                       dyingChell(dyingTexture, renderer, 199, 274, 0, 0, 12 , 72, 1, 1, AnimationState::oneTime),
+                                       winningChell(winningTexture, renderer, 163, 243, 0, 0, 14, 79, 1, 1, AnimationState::onRepeat),state(standing), tiltedState(NO)
                                        {
     dyingChell.setTimePerSprite(6);
 }
@@ -34,7 +35,6 @@ void ChellAnimationView::draw(Camera& camera) {
     } else if (state == dying) {
         dyingChell.drawMovingSprite(camera, this->getDst(), angle);
     }
-
 }
 
 double ChellAnimationView::getAngle() const {

@@ -13,7 +13,7 @@
 #define CHELL_RUNNING_CHELL_TEXTURE_NAME "running_chell"
 #define CHELL_WINNING_CHELL_TEXTURE_NAME "winning_chell"
 
-#define CHELL_TEXTURE_NAME "chell"
+
 #define BLOCK_TEXTURE_NAME "block"
 #define GATE_TEXTURE_NAME "gate"
 #define BULLET_AND_ROCK_TEXTURE_NAME "bulletAndRock"
@@ -41,7 +41,6 @@ void TextureFactory::init(Renderer& renderer) {
     textures[CHELL_RUNNING_CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/running_chell.png"), renderer);
     textures[CHELL_WINNING_CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/winning_chell.png"), renderer);
 
-    textures[CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chell.png"), renderer);
     textures[BLOCK_TEXTURE_NAME] = loadTexture(std::string("assets/textures/block.png"), renderer);
     textures[GATE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/gates.png"), renderer);
     textures[BULLET_AND_ROCK_TEXTURE_NAME] = loadTexture(std::string("assets/textures/bulletAndRock.png"), renderer);
@@ -87,9 +86,6 @@ SDL_Texture *TextureFactory::getAcidAndButtonsTexture() {
     return textures[ACID_AND_BUTTONS_TEXTURE_NAME];
 }
 
-SDL_Texture *TextureFactory::getChellTexture() {
-    return textures[CHELL_TEXTURE_NAME];
-}
 
 SDL_Texture *TextureFactory::getDyingChellTexture() {
     return textures[CHELL_DYING_TEXTURE_NAME];

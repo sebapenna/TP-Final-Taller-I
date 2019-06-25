@@ -47,6 +47,7 @@ private:
     Ui::MainWindow *ui;
     GUIReceiver guiReceiver;
     bool owner;
+    bool passedTheSelectMap;
 };
 
 #endif // MAINWINDOW_H

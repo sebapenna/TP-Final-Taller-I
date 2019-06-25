@@ -24,6 +24,7 @@ MainWindow::MainWindow(Protocol& protocol_client, bool& userWantsToPlay, QWidget
     ui->informationLabel->setStyleSheet("QLabel { color : blue; }");
     ui->informationLabel->hide();
     owner = false;
+    passedTheSelectMap = false;
     //connect(reinterpret_cast<const QObject *>(&a), SIGNAL(doSomething()), ui->errorLabel, SLOT(setText()));
 }
 
@@ -106,7 +107,7 @@ void MainWindow::on_selectMap_clicked()
     connect(this, &MainWindow::on_stop, &guiReceiver, &GUIReceiver::stop);
     QFuture<void> test = QtConcurrent::run(&guiReceiver, &GUIReceiver::start, &protocol_client);
     ui->selectMapMenu->hide();
-
+    passedTheSelectMap = true;
     owner = true;
 }
 
@@ -209,6 +210,7 @@ void MainWindow::on_selectMatchButton_clicked()
         Q_ASSERT(success);
         connect(this, &MainWindow::on_stop, &guiReceiver, &GUIReceiver::stop);
         QFuture<void> test = QtConcurrent::run(&guiReceiver, &GUIReceiver::start, &protocol_client);
+        passedTheSelectMap = true;
         ui->informationLabel->setText("Conectado al match. Esperando al owner...");
         ui->informationLabel->show();
         QTimer::singleShot(10000, ui->informationLabel, &QLabel::hide);
@@ -270,8 +272,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
         if (resBtn != QMessageBox::Yes) {
             event->ignore();
         } else {
-            std::shared_ptr<ProtocolDTO> dto(new QuitDTO()); // Asi no hago el free
-            protocol_client << *dto.get();
+            if (passedTheSelectMap) {
+                std::shared_ptr<ProtocolDTO> dto(new QuitDTO()); // Asi no hago el free
+                protocol_client << *dto.get();
+            }
             protocol_client.disconnect();
             event->accept();
         }
