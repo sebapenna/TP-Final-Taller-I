@@ -3,6 +3,7 @@
 //
 
 #include <SDL2/SDL_image.h>
+#include <iostream>
 #include "TextureFactory.h"
 #include "SDLException.h"
 
@@ -84,9 +85,9 @@
 #endif
 
 #ifdef DEBUG_MODE
-#define BACKGROUND_FILE "assets/textures/chellTextures/background.png"
+#define BACKGROUND_FILE "assets/textures/backgroundImage/background.png"
 #else
-#define BACKGROUND_FILE "/etc/Portal/assets/textures/backgroundImage/background.png"
+#define BACKGROUND_FILE "/etc/Portal/assets/backgroundImage/background.png"
 #endif
 
 #ifdef DEBUG_MODE

@@ -37,6 +37,12 @@
 #endif
 
 #ifdef DEBUG_MODE
+#define BUTTON_UNPRESS "assets/soundeffects/scenario/button_press.wav"
+#else
+#define BUTTON_UNPRESS "/etc/Portal/assets/soundeffects/scenario/button_unpress.wav"
+#endif
+
+#ifdef DEBUG_MODE
 #define FIRING "assets/soundeffects/player/firing.wav"
 #else
 #define FIRING "/etc/Portal/assets/soundeffects/player/firing.wav"
@@ -69,7 +75,7 @@ SoundFactory::SoundFactory() {
     effects["player_firing"] = getChunkFromFile(FIRING);
     effects["player_jumping"] = getChunkFromFile(JUMP);
     effects["button_press"] = getChunkFromFile(BUTTON_PRESS);
-    effects["button_unpress"] = getChunkFromFile(BUTTON_PRESS);
+    effects["button_unpress"] = getChunkFromFile(BUTTON_UNPRESS);
     effects["disappearing"] = getChunkFromFile(DISAPPEARING);
     effects["winning_noise"] = getChunkFromFile(WINNING);
 }
