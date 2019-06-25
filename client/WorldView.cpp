@@ -223,6 +223,8 @@ void WorldView::removePinTool(int16_t id) {
 
 void WorldView::winTheGame() {
     for(auto const& chell: chells) {
-        chell.second->setState(ChellState::winning);
+        if (!chell.second->isDying()) {
+            chell.second->setState(ChellState::winning);
+        }
     }
 }

@@ -29,8 +29,8 @@ add_library(sdldemo
         ComponentsSDL/Position.h
         SDL_Runner.cpp
         SDL_Runner.h
-        FakeServer.cpp
-        FakeServer.h
+        ../Tests/FakeServer.cpp
+        ../Tests/FakeServer.h
         View/DiagonalBlockMetalView.cpp
         View/DiagonalBlockMetalView.h
         View/AcidView.cpp

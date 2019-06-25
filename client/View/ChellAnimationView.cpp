@@ -66,6 +66,10 @@ int ChellAnimationView::getId() const {
     return id;
 }
 
+bool ChellAnimationView::isDying() {
+    return state == dying;
+}
+
 bool ChellAnimationView::isDead() {
     return dyingChell.done();
 }

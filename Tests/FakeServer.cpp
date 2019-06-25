@@ -17,9 +17,9 @@
 #include <Common/ProtocolTranslator/DataDTO/CakeDTO.h>
 #include <Common/ProtocolTranslator/DataDTO/PortalDTO.h>
 #include "FakeServer.h"
-#include "../Common/ProtocolTranslator/ProtocolDTO.h"
+#include "Common/ProtocolTranslator/ProtocolDTO.h"
 
-#include "../Common/SafeQueue.h"
+#include "Common/SafeQueue.h"
 
 #define HALF_BOX_LEN 2
 #define CHELL_HALF_WIDTH  HALF_BOX_LEN
