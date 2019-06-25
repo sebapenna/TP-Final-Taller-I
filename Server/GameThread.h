@@ -12,6 +12,7 @@
 #include "Configuration.h"
 #include <string>
 
+class Stage;
 class Player;
 
 // A cada jugador se le asignara un id (inician desde 0) por orden de llegada (su posicion en el
@@ -34,14 +35,11 @@ private:
     void run(std::shared_ptr<Configuration> configuration);
 
     void notifyAllNewPlayer();
-
     void notifyAllDeletedPlayer();
-
     void notifyNewOwner();
-
     void notifyOwnerBeganGame();
 
-    void sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto);
+    void sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto, Stage &stage);
 
 public:
     // map_filename es el archivo yaml con la configuracion del map
@@ -54,7 +52,6 @@ public:
 
     // Elimina jugador del id indicado y libera su memoria
     void deletePlayer(const size_t& id);
-
 
 
     // Indico que se debe finalizar la partida y finalizo la ejecucion del hilo

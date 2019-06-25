@@ -2,7 +2,7 @@
 #define PORTAL_RESETPORTALSDTO_H
 
 
-#include "ProtocolDTO.h"
+#include "Common/ProtocolTranslator/ProtocolDTO.h"
 
 class ResetPortalsDTO: public ProtocolDTO {
 public:

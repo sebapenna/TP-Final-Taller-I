@@ -128,5 +128,3 @@ void ContactListener::PreSolve(b2Contact *contact, const b2Manifold *oldManif) {
         }
     }
 }
-
-// todo: refactor de los if/else

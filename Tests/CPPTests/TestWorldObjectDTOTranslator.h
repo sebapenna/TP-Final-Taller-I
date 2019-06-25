@@ -635,7 +635,4 @@ public:
 
 };
 
-// todo: test portal comun y ¿delete?
-// todo: test pin tool comun y delete
-
 #endif //PORTAL_TESTWORLDOBJECTDTOTRANSLATOR_H

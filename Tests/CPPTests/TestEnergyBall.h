@@ -515,8 +515,6 @@ config = ptr.get();
     }
 
 
-// todo: test rebote con todos los bloques diagonal
-
 
 //    void testContactWithMetalDiagonalBlockNEFromLeft() {
 //        cout << endl << "TEST rebotar en bloque diagonal metal NE, cara derecha: ";

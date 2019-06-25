@@ -47,6 +47,8 @@ public:
     // Aplica los distintos DTOs que llegan al servidor sobre el chel de id player_id
     void apply(ProtocolDTO *dto, const size_t& player_id);
 
+    void deletePlayer(const size_t& player_id);
+
     void step();
 
     // Retorna true en caso de que todas las chells (podria ser solo una) hayan llegado a la cake

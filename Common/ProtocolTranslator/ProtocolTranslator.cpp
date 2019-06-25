@@ -30,7 +30,7 @@
 #include "Common/ProtocolTranslator/GameStateDTO/QuitDTO.h"
 #include "Common/ProtocolTranslator/GameStateDTO/BeginDTO.h"
 #include "Common/ProtocolTranslator/DataDTO/CakeDTO.h"
-#include "ResetPortalsDTO.h"
+#include "Common/ProtocolTranslator/PlayerActionsDTO/ResetPortalsDTO.h"
 #include <vector>
 #include <iostream>
 #include <Common/ProtocolTranslator/PlayerActionsDTO/CommitSuicideDTO.h>

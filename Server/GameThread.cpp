@@ -27,7 +27,7 @@ using std::for_each;
 using std::shared_ptr;
 using std::cerr;
 
-void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
+void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto, Stage &stage) {
     std::vector<size_t> to_delete;
     for_each(_players.begin(), _players.end(), [this, &dto, &to_delete] (Player* &player) {
         try {
@@ -38,7 +38,10 @@ void GameThread::sendToAllPlayers(std::shared_ptr<ProtocolDTO> &dto) {
         }
     });
     // Elimino clientes que se desonectaron
-    for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) {deletePlayer(id);});
+    for_each(to_delete.begin(), to_delete.end(), [&](size_t &id) {
+        stage.deletePlayer(id);
+        deletePlayer(id);
+    });
 }
 
 void GameThread::run(shared_ptr<Configuration> c) {
@@ -68,8 +71,8 @@ void GameThread::run(shared_ptr<Configuration> c) {
 
             // Envio escenario completo a cada jugador
             auto stage_dtos = stage.getInitialConfiguration();
-            for_each(stage_dtos.begin(), stage_dtos.end(), [this](shared_ptr<ProtocolDTO> &dto) {
-                    sendToAllPlayers(dto);
+            for_each(stage_dtos.begin(), stage_dtos.end(), [&](shared_ptr<ProtocolDTO> &dto) {
+                    sendToAllPlayers(dto, ref(stage));
             });
 
             // Notifico a cada jugador su id
@@ -84,13 +87,15 @@ void GameThread::run(shared_ptr<Configuration> c) {
             });
 
             // Elimino posibles clientes que se desonectaron
-            for_each(to_delete.begin(), to_delete.end(), [this](size_t &id) { deletePlayer(id); });
-            // todo: SI MANTENGO ESTE VECTOR DEBERIA ELIMINAR SU CHELL DEL MAPA
+            for_each(to_delete.begin(), to_delete.end(), [&](size_t &id) {
+                stage.deletePlayer(id);
+                deletePlayer(id);
+            });
             to_delete.clear();
 
             // Notifico a cada jugador que comienza la partida
             auto begin_dto = DTOProcessor::createBeginDTO();
-            sendToAllPlayers(begin_dto);
+            sendToAllPlayers(begin_dto, ref(stage));
 
             cout << "Comienza la partida " << _id << endl;
 
@@ -99,7 +104,6 @@ void GameThread::run(shared_ptr<Configuration> c) {
             while (!_empty_game && !_game_finished) {
                 auto start = high_resolution_clock::now();
 
-                // Desencolo       //todo:TIMEOUT !
                 for (auto e = _events_queue.getTopAndPop(); e; e = _events_queue.getTopAndPop()) {
                     stage.apply(e->getPtr().get(), e->getPlayerId());
                     if (e->getProtocolId() == PROTOCOL_QUIT)
@@ -111,18 +115,18 @@ void GameThread::run(shared_ptr<Configuration> c) {
 
                 // Notifico cambios a los jugadores
                 auto dto_vector = stage.getUpdatedDTO();
-                for_each(dto_vector.begin(), dto_vector.end(), [this](shared_ptr<ProtocolDTO>dto){
-                    sendToAllPlayers(dto);
+                for_each(dto_vector.begin(), dto_vector.end(), [&](shared_ptr<ProtocolDTO>dto){
+                    sendToAllPlayers(dto, ref(stage));
                 }); // Envio DTO de objetos a actualizar
 
                 dto_vector = stage.getDeletedDTO();
-                for_each(dto_vector.begin(), dto_vector.end(), [this](shared_ptr<ProtocolDTO>dto){
-                    sendToAllPlayers(dto);
+                for_each(dto_vector.begin(), dto_vector.end(), [&](shared_ptr<ProtocolDTO>dto){
+                    sendToAllPlayers(dto, ref(stage));
                 }); // Envio DTO de objetos a eliminar
 
                 if (stage.someoneWon()) {
                     auto winner_dto = DTOProcessor::createWinnerDTO();
-                    sendToAllPlayers(winner_dto);
+                    sendToAllPlayers(winner_dto, ref(stage));
                     _game_finished = true;
                 }
 
