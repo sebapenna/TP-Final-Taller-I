@@ -2,17 +2,41 @@
 // Created by jonathanmedina on 24/06/19.
 //
 
-//#include <qt5/QtCore/QArgument>
 #include "GUIReceiver.h"
-#include "ui_mainwindow.h"
+//#include <string>
 
-GUIReceiver::GUIReceiver(Protocol &protocol, Ui::MainWindow *ui) : protocol(protocol), ui(ui) {
-    ui->errorLabel->setText("HOLA PERON");
-    ui->errorLabel->show();
-}
-void GUIReceiver::doSomething() {
+GUIReceiver::GUIReceiver(QObject *parent) : QObject(parent) {}
 
-}
-void GUIReceiver::run() {
+GUIReceiver::~GUIReceiver() {}
 
+void GUIReceiver::start(Protocol* protocol) {
+    while (true) {
+        std::string msg;
+        *protocol >> msg;
+
+        uint8_t server_command = -1;
+        *protocol >> server_command;
+        if (msg == std::string("Nuevo jugador agregado a la partida\n")) {
+            emit messageToGUI(NEW_PLAYER_MESSAGE_ID);
+        } else if (msg == std::string("Un jugador ha salido de la partida\n")) {
+            emit messageToGUI(QUIT_PLAYER_MESSAGE_ID);
+        } else
+        // NEW PLAYER:
+        // server_command 1
+        // "Nuevo jugador agregado a la partida\n"
+
+        // PLAYER EXIT
+        // SERVER_COMMAND 1
+        // "Un jugador ha salido de la partida\n"
+
+        if (server_command == 0) {
+            emit messageToGUI(START_THE_GAME_MESSAGE_ID);
+            return;
+        }
+
+    }
 }
+void GUIReceiver::stop() {
+    mSTop = true;
+}
+

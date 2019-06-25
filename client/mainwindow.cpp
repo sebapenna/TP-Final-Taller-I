@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "GUIReceiver.h"
-
+#include <QtConcurrent/QtConcurrent>
 #include <QMessageBox>
 #include <Common/Protocol.h>
 #include <Common/exceptions.h>
@@ -20,6 +20,7 @@ MainWindow::MainWindow(Protocol& protocol_client, bool& userWantsToPlay, QWidget
     ui->selectMatchMenu->hide();
     ui->errorLabel->setStyleSheet("QLabel { color : red; }");
     ui->errorLabel->hide();
+    //guiReceiver(protocol_client, ui);
     ui->informationLabel->setStyleSheet("QLabel { color : blue; }");
     ui->informationLabel->hide();
 
@@ -101,8 +102,12 @@ void MainWindow::on_selectMap_clicked()
     protocol_client>>server_response;
     protocol_client>>information;
     ui->informationLabel->setText(information.c_str());
-
     ui->startOrQuitMenu->show();
+
+    bool success = connect(&guiReceiver, &GUIReceiver::messageToGUI, this, &MainWindow::messageFromReceiver);
+    Q_ASSERT(success);
+    connect(this, &MainWindow::on_stop, &guiReceiver, &GUIReceiver::stop);
+    QFuture<void> test = QtConcurrent::run(&guiReceiver, &GUIReceiver::start, &protocol_client);
     ui->selectMapMenu->hide();
 }
 
@@ -111,14 +116,23 @@ void MainWindow::on_startGameButton_clicked()
     this->userWantsToPlay = true;
     std::shared_ptr<ProtocolDTO> dto(new BeginDTO()); // Empiezo el juego
     protocol_client << *dto.get();
+    emit on_stop();
+    //this->close();
+}
 
-    std::string information;
-    uint8_t server_response;
-    protocol_client>>information;
-    protocol_client>>server_response;
-    ui->informationLabel->setText(information.c_str());
-
-    this->close();
+void MainWindow::messageFromReceiver(int message) {
+    if (message == NEW_PLAYER_MESSAGE_ID) {
+        ui->informationLabel->setText("Nuevo jugador conectado");
+        ui->informationLabel->show();
+        QTimer::singleShot(10000, ui->informationLabel, &QLabel::hide);
+    } else if (message == QUIT_PLAYER_MESSAGE_ID) {
+        ui->informationLabel->setText("Un jugador ha abandonado la partida.");
+        ui->informationLabel->show();
+        QTimer::singleShot(10000, ui->informationLabel, &QLabel::hide);
+    } else if (message == START_THE_GAME_MESSAGE_ID) {
+        this->close();
+    }
+    //msgBox.button(QMessageBox::Ok)->animateClick(5000);
 }
 
 void MainWindow::on_quitButton_clicked()
@@ -183,8 +197,8 @@ void MainWindow::on_selectMatchButton_clicked()
     protocol_client >> server_response;
 
     if (server_response == 1) {
-        GUIReceiver guiReceiver(protocol_client, ui);
-
+        //GUIReceiver guiReceiver(protocol_client, ui);
+        //guiReceiver.start();
         ui->startOrQuitMenu->show();
         ui->selectMatchMenu->hide();
     } else {

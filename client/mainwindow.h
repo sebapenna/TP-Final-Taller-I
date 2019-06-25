@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <Common/Protocol.h>
 #include <QCloseEvent>
+#include "GUIReceiver.h"
+
 
 namespace Ui {
 class MainWindow;
@@ -36,9 +38,14 @@ private slots:
     void on_joinButton_clicked();
     void on_refreshButton_clicked();
     void on_selectMatchButton_clicked();
+signals:
+    void on_stop();
 
+public slots:
+    void messageFromReceiver(int message);
 private:
     Ui::MainWindow *ui;
+    GUIReceiver guiReceiver;
 };
 
 #endif // MAINWINDOW_H

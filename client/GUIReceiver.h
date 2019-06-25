@@ -6,19 +6,27 @@
 #define PORTAL_GUIRECEIVER_H
 
 
-#include <Common/Thread.h>
+#include <QObject>
+#include <QThread>
 #include <Common/Protocol.h>
-#include "mainwindow.h"
 
-class GUIReceiver : public Thread {
-private:
-    Protocol& protocol;
-    Ui::MainWindow *ui;
+#define NEW_PLAYER_MESSAGE_ID 1
+#define QUIT_PLAYER_MESSAGE_ID 2
+#define NOW_YOU_ARE_THE_OWNER_MESSAGE_ID 3
+#define START_THE_GAME_MESSAGE_ID 4
+class GUIReceiver : public QObject
+{
+    Q_OBJECT
 public:
-    GUIReceiver(Protocol &protocol, Ui::MainWindow *ui);
-    void run() override;
-    static void doSomething();
-    //void putUI(Ui::MainWindow *pWindow);
+    explicit GUIReceiver(QObject *parent=0);
+    ~GUIReceiver();
+    void start(Protocol* protocol);
+signals:
+    void messageToGUI(int name);
+public slots:
+    void stop();
+private:
+    bool mSTop;
 };
 
 
