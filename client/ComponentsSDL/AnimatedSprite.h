@@ -10,6 +10,8 @@
 #include <vector>
 #define DEFAULT_TIME_PER_SPRITE 4
 
+// This class allows to do animation sprites
+// By rendering some sprites and slowly moving around the sprite sheet
 enum AnimationState {onRepeat, oneTime, revert};
 class AnimatedSprite : public Sprite {
 private:

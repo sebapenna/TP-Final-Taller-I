@@ -5,6 +5,8 @@
 #include <SDL2/SDL_video.h>
 #include <string>
 
+// This is an abstraction for the SDL_Window
+// Allows to do the basic method of it
 class Window {
 private:
     SDL_Window* window;

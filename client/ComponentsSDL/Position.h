@@ -6,7 +6,7 @@
 #define SDL_POSITION_H
 
 
-
+// Holds the position of the different objects
 class Position {
 private:
     int x;

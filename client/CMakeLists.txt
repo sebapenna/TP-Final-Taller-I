@@ -73,8 +73,6 @@ add_library(sdldemo
         View/PinToolView.h
         ComponentsSDL/SoundFactory.cpp
         ComponentsSDL/SoundFactory.h
-        ComponentsSDL/Text.cpp
-        ComponentsSDL/Text.h
         ComponentsSDL/FontFactory.cpp
         ComponentsSDL/FontFactory.h
         GameController.cpp GameController.h)

@@ -38,6 +38,7 @@ Mix_Music *SoundFactory::getMusic() {
     return music;
 }
 
+
 Mix_Chunk *SoundFactory::getChunkFromFile(const std::string &file_name) {
     Mix_Chunk* soundeffect = Mix_LoadWAV(file_name.c_str());
     if (!soundeffect) {

@@ -5,7 +5,9 @@
 #include "../View/View.h"
 #include "Renderer.h"
 #include "Position.h"
-
+// This class draws what the player sees
+// Can also obtain the X,Y in meters for the server
+// And tell whether a chell can see an object
 class Camera {
 private:
     Position& position;

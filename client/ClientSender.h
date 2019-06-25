@@ -9,7 +9,7 @@
 #include <Common/Thread.h>
 #include <Common/Protocol.h>
 #include <Common/ProtectedBlockingQueue.h>
-
+// This class is used to send commands to the server.
 class ClientSender : public Thread {
 private:
     Protocol& protocol;
