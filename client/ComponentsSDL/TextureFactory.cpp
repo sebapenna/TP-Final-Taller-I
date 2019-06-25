@@ -60,51 +60,51 @@
 #endif
 
 #ifdef DEBUG_MODE
-#define BLOCK_FILE "assets/textures/chellTextures/block.png"
+#define BLOCK_FILE "assets/textures/block.png"
 #else
-#define BLOCK_FILE "/etc/Portal/assets/textures/chellTextures/block.png"
+#define BLOCK_FILE "/etc/Portal/assets/textures/block.png"
 #endif
 
 #ifdef DEBUG_MODE
-#define GATES_FILE "assets/textures/chellTextures/gates.png"
+#define GATES_FILE "assets/textures/gates.png"
 #else
-#define GATES_FILE "/etc/Portal/assets/textures/chellTextures/gates.png"
+#define GATES_FILE "/etc/Portal/assets/textures/gates.png"
 #endif
 
 #ifdef DEBUG_MODE
-#define BULLET_AND_ROCK_FILE "assets/textures/chellTextures/bulletAndRock.png"
+#define BULLET_AND_ROCK_FILE "assets/textures/bulletAndRock.png"
 #else
-#define BULLET_AND_ROCK_FILE "/etc/Portal/assets/textures/chellTextures/bulletAndRock.png"
+#define BULLET_AND_ROCK_FILE "/etc/Portal/assets/textures/bulletAndRock.png"
 #endif
 
 #ifdef DEBUG_MODE
-#define ACID_FILE "assets/textures/chellTextures/acidAndButtons.png"
+#define ACID_FILE "assets/textures/acidAndButtons.png"
 #else
-#define ACID_FILE "/etc/Portal/assets/textures/chellTextures/acidAndButtons.png"
+#define ACID_FILE "/etc/Portal/assets/textures/acidAndButtons.png"
 #endif
 
 #ifdef DEBUG_MODE
 #define BACKGROUND_FILE "assets/textures/chellTextures/background.png"
 #else
-#define BACKGROUND_FILE "/etc/Portal/assets/textures/chellTextures/background.png"
+#define BACKGROUND_FILE "/etc/Portal/assets/textures/backgroundImage/background.png"
 #endif
 
 #ifdef DEBUG_MODE
-#define CAKE_FILE "assets/textures/chellTextures/cake.png"
+#define CAKE_FILE "assets/textures/cake.png"
 #else
-#define CAKE_FILE "/etc/Portal/assets/textures/chellTextures/cake.png"
+#define CAKE_FILE "/etc/Portal/assets/textures/cake.png"
 #endif
 
 #ifdef DEBUG_MODE
-#define PORTAL_FILE "assets/textures/chellTextures/portal.png"
+#define PORTAL_FILE "assets/textures/portal.png"
 #else
-#define PORTAL_FILE "/etc/Portal/assets/textures/chellTextures/portal.png"
+#define PORTAL_FILE "/etc/Portal/assets/textures/portal.png"
 #endif
 
 #ifdef DEBUG_MODE
-#define PINTOOL_FILE "assets/textures/chellTextures/pintool.png"
+#define PINTOOL_FILE "assets/textures/pintool.png"
 #else
-#define PINTOOL_FILE "/etc/Portal/assets/textures/chellTextures/pintool.png"
+#define PINTOOL_FILE "/etc/Portal/assets/textures/pintool.png"
 #endif
 
 TextureFactory::TextureFactory() : textures(textures) {
