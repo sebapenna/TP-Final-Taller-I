@@ -33,7 +33,9 @@ SDL_Runner::SDL_Runner(std::string& title, SafeQueue<std::shared_ptr<ProtocolDTO
 }
 
 void SDL_Runner::addChell(ChellDTO *chellDTO) {
-    auto chell2 = std::make_shared<ChellAnimationView>(chellDTO->getId(), textureFactory.getChellTexture(), renderer);
+    auto chell2 = std::make_shared<ChellAnimationView>(chellDTO->getId(), textureFactory.getDyingChellTexture(),
+            textureFactory.getFiringChellTexture(), textureFactory.getFlyingChellTexture(), textureFactory.getRestingIdleChellTexture(),
+            textureFactory.getRunningChellTexture(), textureFactory.getWinningChellTexture(), renderer);
     if (chellDTO->getDeleteState() == DELETE) {
         world.setChellState(chellDTO->getId(), ChellState::dying);
         if (myChellId == chellDTO->getId()) {

@@ -6,6 +6,13 @@
 #include "TextureFactory.h"
 #include "SDLException.h"
 
+#define CHELL_FLYING_TEXTURE_NAME "flying_chell"
+#define CHELL_DYING_TEXTURE_NAME "dying_chell"
+#define CHELL_FIRING_TEXTURE_NAME "firing_chell"
+#define CHELL_RESTING_IDLE_TEXTURE_NAME "resting_idle_chelll"
+#define CHELL_RUNNING_CHELL_TEXTURE_NAME "running_chell"
+#define CHELL_WINNING_CHELL_TEXTURE_NAME "winning_chell"
+
 #define CHELL_TEXTURE_NAME "chell"
 #define BLOCK_TEXTURE_NAME "block"
 #define GATE_TEXTURE_NAME "gate"
@@ -27,6 +34,13 @@ TextureFactory::~TextureFactory() {
 }
 
 void TextureFactory::init(Renderer& renderer) {
+    textures[CHELL_DYING_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/dying_chell.png"), renderer);
+    textures[CHELL_FIRING_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/firing_chell.png"), renderer);
+    textures[CHELL_FLYING_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/flying_chell.png"), renderer);
+    textures[CHELL_RESTING_IDLE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/resting_idle_chell.png"), renderer);
+    textures[CHELL_RUNNING_CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/running_chell.png"), renderer);
+    textures[CHELL_WINNING_CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chellTextures/winning_chell.png"), renderer);
+
     textures[CHELL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/chell.png"), renderer);
     textures[BLOCK_TEXTURE_NAME] = loadTexture(std::string("assets/textures/block.png"), renderer);
     textures[GATE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/gates.png"), renderer);
@@ -36,6 +50,7 @@ void TextureFactory::init(Renderer& renderer) {
     textures[CAKE_TEXTURE_NAME] = loadTexture(std::string("assets/textures/cake.png"), renderer);
     textures[PORTAL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/portal.png"), renderer);
     textures[PINTOOL_TEXTURE_NAME] = loadTexture(std::string("assets/textures/pintool.png"), renderer);
+
     //setColor(textures["chell"], 255, 0, 0);
 }
 
@@ -75,6 +90,31 @@ SDL_Texture *TextureFactory::getAcidAndButtonsTexture() {
 SDL_Texture *TextureFactory::getChellTexture() {
     return textures[CHELL_TEXTURE_NAME];
 }
+
+SDL_Texture *TextureFactory::getDyingChellTexture() {
+    return textures[CHELL_DYING_TEXTURE_NAME];
+}
+
+SDL_Texture *TextureFactory::getFiringChellTexture() {
+    return textures[CHELL_FIRING_TEXTURE_NAME];
+}
+
+SDL_Texture *TextureFactory::getFlyingChellTexture() {
+    return textures[CHELL_FLYING_TEXTURE_NAME];
+}
+
+SDL_Texture *TextureFactory::getRestingIdleChellTexture() {
+    return textures[CHELL_RESTING_IDLE_TEXTURE_NAME];
+}
+
+SDL_Texture *TextureFactory::getRunningChellTexture() {
+    return textures[CHELL_RUNNING_CHELL_TEXTURE_NAME];
+}
+
+SDL_Texture *TextureFactory::getWinningChellTexture() {
+    return textures[CHELL_WINNING_CHELL_TEXTURE_NAME];
+}
+
 
 SDL_Texture *TextureFactory::loadTexture(const std::string &filename, Renderer& renderer) {
     SDL_Texture* texture = IMG_LoadTexture(renderer.getRenderer(), filename.c_str());

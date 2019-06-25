@@ -27,6 +27,12 @@ public:
     SDL_Texture* getBackground();
     SDL_Texture* getAcidAndButtonsTexture();
     SDL_Texture* getChellTexture();
+    SDL_Texture* getDyingChellTexture();
+    SDL_Texture* getFiringChellTexture();
+    SDL_Texture* getFlyingChellTexture();
+    SDL_Texture* getRestingIdleChellTexture();
+    SDL_Texture* getRunningChellTexture();
+    SDL_Texture* getWinningChellTexture();
 };
 
 
