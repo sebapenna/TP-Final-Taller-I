@@ -233,6 +233,7 @@ void joinChoiceLoop(Protocol &connection, int16_t &choice) {
             connection >> server_msg;   // Recibo listado partidas
             std::cout << server_msg;
         }
+
         readInput<int16_t>(choice);
         connection << choice;   // Envio partida seleccionada
         connection >> server_response;  // Obtengo ERROR o SUCCESS

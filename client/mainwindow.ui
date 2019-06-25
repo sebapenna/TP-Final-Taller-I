@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>415</width>
-    <height>274</height>
+    <width>437</width>
+    <height>275</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -191,12 +191,19 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_4">
      <item>
-      <widget class="QListView" name="listMatch"/>
+      <widget class="QListWidget" name="listMatch"/>
      </item>
      <item>
       <widget class="QPushButton" name="selectMatchButton">
        <property name="text">
         <string>Select match</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="refreshButton">
+       <property name="text">
+        <string>Refresh</string>
        </property>
       </widget>
      </item>
@@ -234,7 +241,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>415</width>
+     <width>437</width>
      <height>22</height>
     </rect>
    </property>

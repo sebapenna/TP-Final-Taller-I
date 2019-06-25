@@ -57,15 +57,19 @@ int main(int argc, char** argv){
     try {
         Protocol protocol;
         QApplication app(argc, argv);
-
-        MainWindow mainWindow(protocol);
+        bool userWantsToPlay = false;
+        MainWindow mainWindow(protocol, userWantsToPlay);
         mainWindow.show();
 
         app.exec();
+        app.quit();
+
         std::setlocale(LC_NUMERIC, "C");
+        if (!userWantsToPlay) return 1;
+
         std::string title("Portal");
 
-        /*Protocol protocol("localhost", "8080");
+ /*       Protocol protocol("localhost", "8080");
 
         HandshakeHandler::getOptionsAndChoose(protocol); // Obtengo mensajes de bienvenidas, opciones, etc
         // Tirar dos threads, uno que lea la entrada, y otro que espere a lo que le responde el server.
@@ -82,9 +86,10 @@ int main(int argc, char** argv){
         commandReceiver.join();
         commandSender.join();
 
-        if (user_quit_game) return 1;*/
-
+        if (user_quit_game) return 1;
+        */
         bool done = false;
+
         ProtectedBlockingQueue<std::shared_ptr<ProtocolDTO>> blockingQueue;
         SafeQueue<std::shared_ptr<ProtocolDTO>> safeQueue;
 
