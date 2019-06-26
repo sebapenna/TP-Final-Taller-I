@@ -3,7 +3,6 @@ SET(CMAKE_BUILD_TYPE Debug)
 project(Portal)
 
 include_directories(..)
-add_subdirectory(Ffmpeg)
 
 add_library(sdldemo
         ComponentsSDL/Renderer.cpp
@@ -77,5 +76,5 @@ add_library(sdldemo
         ComponentsSDL/FontFactory.h
         GameController.cpp GameController.h)
 
-target_link_libraries(sdldemo ffmpeg-src)
+target_link_libraries(sdldemo)
 
