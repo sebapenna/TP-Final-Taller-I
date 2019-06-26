@@ -46,6 +46,11 @@ Para ejecutar el cliente se debe abrir una terminal y ejecutar:
 
 Una vez ejecutado el comando se abrirá una ventana donde el jugador podrá seleccionar tanto el puerto e ip a los cuales conectarse, si quiere crear una nueva partida o unirse a una existente y por último seleccionar las distintas opciones que brindará el servidor en base a la decisión tomada. En ambos casos una vez creado o unido a una partida se podrán ver en pantalla distintos mensajes, notificando cuando ha ocurrido algo, ya sea que un jugador se vaya de la partida, o un jugador ingresó al juego. O cuando el owner del juego se ha ido del juego.
 
+###Unit Testing
+Para ejecutar las pruebas unitarias se debe acceder a la carpeta buil y dentro ir al directorio 
+Tests. Alli ejecutar:
+    ./tests
+
 
 ## Controles
 Ya iniciada la partida el usuario verá a su Chell (personaje que utilizará en el juego) centrada en la pantalla. Desde éste momento el jugador tendrá como objetivo llegar a la Cake (punto final de la partida), ubicada en algún lugar del mapa. Para ello podrá realizar distintas acciones a través de las siguientes teclas:

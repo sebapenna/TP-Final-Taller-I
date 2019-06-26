@@ -68,6 +68,7 @@ INSTALL(DIRECTORY client/assets DESTINATION /var/Portal)
 INSTALL(DIRECTORY Server/Config DESTINATION /var/Portal)
 INSTALL(DIRECTORY Server/Config DESTINATION /etc/Portal)
 INSTALL(DIRECTORY client/assets DESTINATION /etc/Portal)
+INSTALL(FILES Tests/CPPTests/test.yaml DESTINATION /etc/Portal/Config)
 
 
 

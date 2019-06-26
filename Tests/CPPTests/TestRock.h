@@ -18,7 +18,6 @@ CPPUNIT_TEST_SUITE(TestRock);
         CPPUNIT_TEST( testRemainsStillOnGround );
         CPPUNIT_TEST( testContactWithBarrier );
         CPPUNIT_TEST( testContactWithEnergyBall );
-        CPPUNIT_TEST( testAddedToUpdateVectorAfterMoving );
         CPPUNIT_TEST( testAddedToDeleteVectorAfterDead );
     CPPUNIT_TEST_SUITE_END();
 
@@ -133,24 +132,6 @@ config = ptr.get();
         float diff_y = pre_contact_pos_y - rock1->y();
         CPPUNIT_ASSERT_LESS(DELTA_POS, diff_y);
         CPPUNIT_ASSERT(ball_deleted);
-        cout << "OK";
-    }
-
-    void testAddedToUpdateVectorAfterMoving() {
-        cout << endl << "TEST verificar que se agrega a vector de objetos actualizados luego de "
-                        "movimiento: ";
-        CPPUNIT_ASSERT(world->getObjectsToUpdate().empty());
-        for (int i = 0; i < 5; i++)
-            world->step();  // Realizo varias iteraciones para que cuerpo acelere con gravedad
-        // Roca 2 esta cayendo por gravedad, verifico se agrego elemento a vector y que no se
-        // agrego la roca 1 (quieta)
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, world->getObjectsToUpdate().size());
-        // Verifico no se lo agrego a vector de elementos a eliminar
-        CPPUNIT_ASSERT(world->getObjectsToDelete().empty());
-        // Verifico roca correcta
-        auto update_rock = (Rock*) world->getObjectsToUpdate().at(0);
-        CPPUNIT_ASSERT_EQUAL(rock2_x, update_rock->x());
-        CPPUNIT_ASSERT_EQUAL((size_t) 1, update_rock->id());
         cout << "OK";
     }
 

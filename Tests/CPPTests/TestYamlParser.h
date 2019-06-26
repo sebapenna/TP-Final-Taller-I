@@ -38,7 +38,7 @@ public:
 #ifdef DEBUG_MODE
         parser = new YamlParser("Config/test.yaml");
 #else
-        parser = new YamlParser("/etc/Portal/Serever/Config/test.yaml");
+        parser = new YamlParser("/etc/Portal/Config/test.yaml");
 #endif
     }
 
